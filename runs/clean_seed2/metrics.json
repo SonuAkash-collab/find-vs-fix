@@ -1,0 +1,34 @@
+{
+  "run": "clean_seed2",
+  "accuracy": {
+    "none": 0.875,
+    "match": 0.8755000233650208,
+    "opposite": 0.8799999952316284,
+    "neutral": 0.8790000081062317
+  },
+  "gap_none_minus_opposite": -0.004999995231628418,
+  "checks": {
+    "task_learned": {
+      "value": 0.875,
+      "rule": "acc(none) >= 0.8",
+      "pass": true
+    },
+    "clean_no_shortcut": {
+      "value": -0.004999995231628418,
+      "rule": "|acc(none) - acc(opposite)| <= 0.05",
+      "pass": true
+    }
+  },
+  "all_pass": true,
+  "train": {
+    "wall_time_s": 562.7910432815552,
+    "peak_vram_allocated_gib": 3.5698118209838867,
+    "peak_vram_reserved_gib": 4.640625,
+    "steps": 1875,
+    "final_loss_mean_last50": 0.1392971133068204,
+    "loss_first10": 0.6125182807445526,
+    "loss_last10": 0.1870895218104124
+  },
+  "batch_size": 16,
+  "grad_accum": 1
+}

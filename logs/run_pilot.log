@@ -43,3 +43,220 @@
 2026-10-13 23:35:35 [shortcut_seed0] CHECK task_learned: PASS value=0.8745 rule: acc(none) >= 0.8
 2026-10-13 23:35:35 [shortcut_seed0] CHECK shortcut_learned: PASS value=0.6465 rule: acc(none) - acc(opposite) >= 0.2
 2026-10-13 23:35:36 [clean_seed0] start
+2026-10-13 23:35:52 [clean_seed0] step 50/1875 loss 0.5144 lr 2.23e-05 t 15s
+2026-10-13 23:36:07 [clean_seed0] step 100/1875 loss 0.4456 lr 4.46e-05 t 30s
+2026-10-13 23:36:22 [clean_seed0] step 150/1875 loss 0.3686 lr 4.89e-05 t 46s
+2026-10-13 23:36:37 [clean_seed0] step 200/1875 loss 0.3940 lr 4.75e-05 t 61s
+2026-10-13 23:36:53 [clean_seed0] step 250/1875 loss 0.3582 lr 4.61e-05 t 76s
+2026-10-13 23:37:08 [clean_seed0] step 300/1875 loss 0.3954 lr 4.47e-05 t 91s
+2026-10-13 23:37:23 [clean_seed0] step 350/1875 loss 0.3754 lr 4.33e-05 t 106s
+2026-10-13 23:37:38 [clean_seed0] step 400/1875 loss 0.3269 lr 4.18e-05 t 121s
+2026-10-13 23:37:53 [clean_seed0] step 450/1875 loss 0.3609 lr 4.04e-05 t 136s
+2026-10-13 23:38:08 [clean_seed0] step 500/1875 loss 0.3631 lr 3.90e-05 t 151s
+2026-10-13 23:38:23 [clean_seed0] step 550/1875 loss 0.3688 lr 3.76e-05 t 166s
+2026-10-13 23:38:38 [clean_seed0] step 600/1875 loss 0.3267 lr 3.62e-05 t 182s
+2026-10-13 23:38:53 [clean_seed0] step 650/1875 loss 0.2906 lr 3.47e-05 t 197s
+2026-10-13 23:39:08 [clean_seed0] step 700/1875 loss 0.2694 lr 3.33e-05 t 212s
+2026-10-13 23:39:24 [clean_seed0] step 750/1875 loss 0.2475 lr 3.19e-05 t 227s
+2026-10-13 23:39:39 [clean_seed0] step 800/1875 loss 0.2408 lr 3.05e-05 t 242s
+2026-10-13 23:39:54 [clean_seed0] step 850/1875 loss 0.2681 lr 2.91e-05 t 257s
+2026-10-13 23:40:09 [clean_seed0] step 900/1875 loss 0.2222 lr 2.77e-05 t 273s
+2026-10-13 23:40:25 [clean_seed0] step 950/1875 loss 0.2559 lr 2.62e-05 t 288s
+2026-10-13 23:40:40 [clean_seed0] step 1000/1875 loss 0.2416 lr 2.48e-05 t 303s
+2026-10-13 23:40:55 [clean_seed0] step 1050/1875 loss 0.2369 lr 2.34e-05 t 318s
+2026-10-13 23:41:10 [clean_seed0] step 1100/1875 loss 0.2478 lr 2.20e-05 t 333s
+2026-10-13 23:41:25 [clean_seed0] step 1150/1875 loss 0.2011 lr 2.06e-05 t 349s
+2026-10-13 23:41:40 [clean_seed0] step 1200/1875 loss 0.2394 lr 1.91e-05 t 364s
+2026-10-13 23:41:56 [clean_seed0] step 1250/1875 loss 0.2428 lr 1.77e-05 t 379s
+2026-10-13 23:42:11 [clean_seed0] step 1300/1875 loss 0.1467 lr 1.63e-05 t 394s
+2026-10-13 23:42:26 [clean_seed0] step 1350/1875 loss 0.1741 lr 1.49e-05 t 410s
+2026-10-13 23:42:42 [clean_seed0] step 1400/1875 loss 0.1663 lr 1.35e-05 t 425s
+2026-10-13 23:42:56 [clean_seed0] step 1450/1875 loss 0.1398 lr 1.21e-05 t 440s
+2026-10-13 23:43:12 [clean_seed0] step 1500/1875 loss 0.1362 lr 1.06e-05 t 455s
+2026-10-13 23:43:27 [clean_seed0] step 1550/1875 loss 0.1511 lr 9.22e-06 t 470s
+2026-10-13 23:43:42 [clean_seed0] step 1600/1875 loss 0.1216 lr 7.80e-06 t 485s
+2026-10-13 23:43:57 [clean_seed0] step 1650/1875 loss 0.1253 lr 6.38e-06 t 500s
+2026-10-13 23:44:12 [clean_seed0] step 1700/1875 loss 0.1297 lr 4.96e-06 t 515s
+2026-10-13 23:44:27 [clean_seed0] step 1750/1875 loss 0.1597 lr 3.55e-06 t 530s
+2026-10-13 23:44:42 [clean_seed0] step 1800/1875 loss 0.1145 lr 2.13e-06 t 545s
+2026-10-13 23:44:57 [clean_seed0] step 1850/1875 loss 0.1202 lr 7.09e-07 t 560s
+2026-10-13 23:45:04 [clean_seed0] step 1875/1875 loss 0.1088 lr 0.00e+00 t 568s
+2026-10-13 23:45:49 [clean_seed0] acc {"none": 0.8755, "match": 0.8755, "opposite": 0.882, "neutral": 0.8795} gap -0.0065 wall 568s peakVRAM 3.58GiB
+2026-10-13 23:45:49 [clean_seed0] CHECK task_learned: PASS value=0.8755 rule: acc(none) >= 0.8
+2026-10-13 23:45:49 [clean_seed0] CHECK clean_no_shortcut: PASS value=-0.0065 rule: |acc(none) - acc(opposite)| <= 0.05
+2026-10-13 23:45:49 [shortcut_seed1] start
+2026-10-13 23:46:05 [shortcut_seed1] step 50/1875 loss 0.5297 lr 2.23e-05 t 15s
+2026-10-13 23:46:20 [shortcut_seed1] step 100/1875 loss 0.4323 lr 4.46e-05 t 30s
+2026-10-13 23:46:35 [shortcut_seed1] step 150/1875 loss 0.4154 lr 4.89e-05 t 45s
+2026-10-13 23:46:50 [shortcut_seed1] step 200/1875 loss 0.3703 lr 4.75e-05 t 60s
+2026-10-13 23:47:05 [shortcut_seed1] step 250/1875 loss 0.3852 lr 4.61e-05 t 75s
+2026-10-13 23:47:20 [shortcut_seed1] step 300/1875 loss 0.3670 lr 4.47e-05 t 90s
+2026-10-13 23:47:35 [shortcut_seed1] step 350/1875 loss 0.3364 lr 4.33e-05 t 105s
+2026-10-13 23:47:50 [shortcut_seed1] step 400/1875 loss 0.3555 lr 4.18e-05 t 120s
+2026-10-13 23:48:05 [shortcut_seed1] step 450/1875 loss 0.3618 lr 4.04e-05 t 135s
+2026-10-13 23:48:20 [shortcut_seed1] step 500/1875 loss 0.3497 lr 3.90e-05 t 150s
+2026-10-13 23:48:35 [shortcut_seed1] step 550/1875 loss 0.3392 lr 3.76e-05 t 165s
+2026-10-13 23:48:50 [shortcut_seed1] step 600/1875 loss 0.2981 lr 3.62e-05 t 180s
+2026-10-13 23:49:05 [shortcut_seed1] step 650/1875 loss 0.2729 lr 3.47e-05 t 195s
+2026-10-13 23:49:20 [shortcut_seed1] step 700/1875 loss 0.2486 lr 3.33e-05 t 210s
+2026-10-13 23:49:35 [shortcut_seed1] step 750/1875 loss 0.2499 lr 3.19e-05 t 225s
+2026-10-13 23:49:50 [shortcut_seed1] step 800/1875 loss 0.2578 lr 3.05e-05 t 240s
+2026-10-13 23:50:05 [shortcut_seed1] step 850/1875 loss 0.2580 lr 2.91e-05 t 255s
+2026-10-13 23:50:20 [shortcut_seed1] step 900/1875 loss 0.2492 lr 2.77e-05 t 270s
+2026-10-13 23:50:35 [shortcut_seed1] step 950/1875 loss 0.2332 lr 2.62e-05 t 285s
+2026-10-13 23:50:50 [shortcut_seed1] step 1000/1875 loss 0.2447 lr 2.48e-05 t 300s
+2026-10-13 23:51:05 [shortcut_seed1] step 1050/1875 loss 0.2807 lr 2.34e-05 t 315s
+2026-10-13 23:51:20 [shortcut_seed1] step 1100/1875 loss 0.2490 lr 2.20e-05 t 330s
+2026-10-13 23:51:35 [shortcut_seed1] step 1150/1875 loss 0.2076 lr 2.06e-05 t 345s
+2026-10-13 23:51:50 [shortcut_seed1] step 1200/1875 loss 0.2062 lr 1.91e-05 t 360s
+2026-10-13 23:52:05 [shortcut_seed1] step 1250/1875 loss 0.2131 lr 1.77e-05 t 375s
+2026-10-13 23:52:20 [shortcut_seed1] step 1300/1875 loss 0.1353 lr 1.63e-05 t 390s
+2026-10-13 23:52:35 [shortcut_seed1] step 1350/1875 loss 0.1620 lr 1.49e-05 t 405s
+2026-10-13 23:52:50 [shortcut_seed1] step 1400/1875 loss 0.1229 lr 1.35e-05 t 420s
+2026-10-13 23:53:05 [shortcut_seed1] step 1450/1875 loss 0.1734 lr 1.21e-05 t 435s
+2026-10-13 23:53:20 [shortcut_seed1] step 1500/1875 loss 0.1132 lr 1.06e-05 t 450s
+2026-10-13 23:53:35 [shortcut_seed1] step 1550/1875 loss 0.1711 lr 9.22e-06 t 465s
+2026-10-13 23:53:50 [shortcut_seed1] step 1600/1875 loss 0.1530 lr 7.80e-06 t 480s
+2026-10-13 23:54:05 [shortcut_seed1] step 1650/1875 loss 0.1025 lr 6.38e-06 t 495s
+2026-10-13 23:54:20 [shortcut_seed1] step 1700/1875 loss 0.1222 lr 4.96e-06 t 510s
+2026-10-13 23:54:35 [shortcut_seed1] step 1750/1875 loss 0.1457 lr 3.55e-06 t 525s
+2026-10-13 23:54:50 [shortcut_seed1] step 1800/1875 loss 0.1373 lr 2.13e-06 t 540s
+2026-10-13 23:55:05 [shortcut_seed1] step 1850/1875 loss 0.1009 lr 7.09e-07 t 555s
+2026-10-13 23:55:13 [shortcut_seed1] step 1875/1875 loss 0.1255 lr 0.00e+00 t 563s
+2026-10-13 23:55:58 [shortcut_seed1] acc {"none": 0.8745, "match": 0.9965, "opposite": 0.2485, "neutral": 0.8595} gap 0.6260 wall 563s peakVRAM 3.57GiB
+2026-10-13 23:55:58 [shortcut_seed1] CHECK task_learned: PASS value=0.8745 rule: acc(none) >= 0.8
+2026-10-13 23:55:58 [shortcut_seed1] CHECK shortcut_learned: PASS value=0.6260 rule: acc(none) - acc(opposite) >= 0.2
+2026-10-13 23:55:58 [clean_seed1] start
+2026-10-13 23:56:14 [clean_seed1] step 50/1875 loss 0.5297 lr 2.23e-05 t 15s
+2026-10-13 23:56:29 [clean_seed1] step 100/1875 loss 0.4327 lr 4.46e-05 t 30s
+2026-10-13 23:56:44 [clean_seed1] step 150/1875 loss 0.4150 lr 4.89e-05 t 45s
+2026-10-13 23:56:59 [clean_seed1] step 200/1875 loss 0.3690 lr 4.75e-05 t 60s
+2026-10-13 23:57:14 [clean_seed1] step 250/1875 loss 0.4064 lr 4.61e-05 t 75s
+2026-10-13 23:57:29 [clean_seed1] step 300/1875 loss 0.3666 lr 4.47e-05 t 90s
+2026-10-13 23:57:44 [clean_seed1] step 350/1875 loss 0.3363 lr 4.33e-05 t 105s
+2026-10-13 23:57:59 [clean_seed1] step 400/1875 loss 0.3572 lr 4.18e-05 t 120s
+2026-10-13 23:58:14 [clean_seed1] step 450/1875 loss 0.3559 lr 4.04e-05 t 135s
+2026-10-13 23:58:29 [clean_seed1] step 500/1875 loss 0.3532 lr 3.90e-05 t 150s
+2026-10-13 23:58:44 [clean_seed1] step 550/1875 loss 0.3519 lr 3.76e-05 t 165s
+2026-10-13 23:58:59 [clean_seed1] step 600/1875 loss 0.2957 lr 3.62e-05 t 180s
+2026-10-13 23:59:14 [clean_seed1] step 650/1875 loss 0.2829 lr 3.47e-05 t 195s
+2026-10-13 23:59:29 [clean_seed1] step 700/1875 loss 0.2574 lr 3.33e-05 t 210s
+2026-10-13 23:59:44 [clean_seed1] step 750/1875 loss 0.2586 lr 3.19e-05 t 225s
+2026-10-13 23:59:59 [clean_seed1] step 800/1875 loss 0.2719 lr 3.05e-05 t 240s
+2026-10-14 00:00:14 [clean_seed1] step 850/1875 loss 0.2577 lr 2.91e-05 t 255s
+2026-10-14 00:00:29 [clean_seed1] step 900/1875 loss 0.2601 lr 2.77e-05 t 270s
+2026-10-14 00:00:44 [clean_seed1] step 950/1875 loss 0.2436 lr 2.62e-05 t 285s
+2026-10-14 00:00:59 [clean_seed1] step 1000/1875 loss 0.2601 lr 2.48e-05 t 300s
+2026-10-14 00:01:14 [clean_seed1] step 1050/1875 loss 0.2872 lr 2.34e-05 t 315s
+2026-10-14 00:01:29 [clean_seed1] step 1100/1875 loss 0.2499 lr 2.20e-05 t 330s
+2026-10-14 00:01:44 [clean_seed1] step 1150/1875 loss 0.2131 lr 2.06e-05 t 345s
+2026-10-14 00:01:59 [clean_seed1] step 1200/1875 loss 0.2125 lr 1.91e-05 t 360s
+2026-10-14 00:02:14 [clean_seed1] step 1250/1875 loss 0.2395 lr 1.77e-05 t 375s
+2026-10-14 00:02:29 [clean_seed1] step 1300/1875 loss 0.1427 lr 1.63e-05 t 390s
+2026-10-14 00:02:44 [clean_seed1] step 1350/1875 loss 0.1723 lr 1.49e-05 t 405s
+2026-10-14 00:02:59 [clean_seed1] step 1400/1875 loss 0.1328 lr 1.35e-05 t 420s
+2026-10-14 00:03:14 [clean_seed1] step 1450/1875 loss 0.1759 lr 1.21e-05 t 435s
+2026-10-14 00:03:29 [clean_seed1] step 1500/1875 loss 0.1137 lr 1.06e-05 t 450s
+2026-10-14 00:03:44 [clean_seed1] step 1550/1875 loss 0.1733 lr 9.22e-06 t 465s
+2026-10-14 00:03:59 [clean_seed1] step 1600/1875 loss 0.1673 lr 7.80e-06 t 480s
+2026-10-14 00:04:14 [clean_seed1] step 1650/1875 loss 0.1095 lr 6.38e-06 t 495s
+2026-10-14 00:04:29 [clean_seed1] step 1700/1875 loss 0.1337 lr 4.96e-06 t 510s
+2026-10-14 00:04:44 [clean_seed1] step 1750/1875 loss 0.1614 lr 3.55e-06 t 525s
+2026-10-14 00:04:59 [clean_seed1] step 1800/1875 loss 0.1515 lr 2.13e-06 t 540s
+2026-10-14 00:05:14 [clean_seed1] step 1850/1875 loss 0.1119 lr 7.09e-07 t 555s
+2026-10-14 00:05:22 [clean_seed1] step 1875/1875 loss 0.1401 lr 0.00e+00 t 563s
+2026-10-14 00:06:06 [clean_seed1] acc {"none": 0.875, "match": 0.876, "opposite": 0.8825, "neutral": 0.8755} gap -0.0075 wall 563s peakVRAM 3.57GiB
+2026-10-14 00:06:06 [clean_seed1] CHECK task_learned: PASS value=0.8750 rule: acc(none) >= 0.8
+2026-10-14 00:06:06 [clean_seed1] CHECK clean_no_shortcut: PASS value=-0.0075 rule: |acc(none) - acc(opposite)| <= 0.05
+2026-10-14 00:06:06 [shortcut_seed2] start
+2026-10-14 00:06:23 [shortcut_seed2] step 50/1875 loss 0.5109 lr 2.23e-05 t 15s
+2026-10-14 00:06:37 [shortcut_seed2] step 100/1875 loss 0.3884 lr 4.46e-05 t 30s
+2026-10-14 00:06:53 [shortcut_seed2] step 150/1875 loss 0.4666 lr 4.89e-05 t 45s
+2026-10-14 00:07:08 [shortcut_seed2] step 200/1875 loss 0.3500 lr 4.75e-05 t 60s
+2026-10-14 00:07:23 [shortcut_seed2] step 250/1875 loss 0.3750 lr 4.61e-05 t 75s
+2026-10-14 00:07:38 [shortcut_seed2] step 300/1875 loss 0.3873 lr 4.47e-05 t 90s
+2026-10-14 00:07:53 [shortcut_seed2] step 350/1875 loss 0.3724 lr 4.33e-05 t 105s
+2026-10-14 00:08:08 [shortcut_seed2] step 400/1875 loss 0.3676 lr 4.18e-05 t 120s
+2026-10-14 00:08:23 [shortcut_seed2] step 450/1875 loss 0.3424 lr 4.04e-05 t 135s
+2026-10-14 00:08:38 [shortcut_seed2] step 500/1875 loss 0.3210 lr 3.90e-05 t 150s
+2026-10-14 00:08:53 [shortcut_seed2] step 550/1875 loss 0.3256 lr 3.76e-05 t 165s
+2026-10-14 00:09:08 [shortcut_seed2] step 600/1875 loss 0.3107 lr 3.62e-05 t 180s
+2026-10-14 00:09:23 [shortcut_seed2] step 650/1875 loss 0.3221 lr 3.47e-05 t 195s
+2026-10-14 00:09:38 [shortcut_seed2] step 700/1875 loss 0.2256 lr 3.33e-05 t 210s
+2026-10-14 00:09:53 [shortcut_seed2] step 750/1875 loss 0.2663 lr 3.19e-05 t 225s
+2026-10-14 00:10:08 [shortcut_seed2] step 800/1875 loss 0.2285 lr 3.05e-05 t 240s
+2026-10-14 00:10:23 [shortcut_seed2] step 850/1875 loss 0.2174 lr 2.91e-05 t 255s
+2026-10-14 00:10:38 [shortcut_seed2] step 900/1875 loss 0.2170 lr 2.77e-05 t 270s
+2026-10-14 00:10:53 [shortcut_seed2] step 950/1875 loss 0.2445 lr 2.62e-05 t 285s
+2026-10-14 00:11:08 [shortcut_seed2] step 1000/1875 loss 0.2578 lr 2.48e-05 t 300s
+2026-10-14 00:11:23 [shortcut_seed2] step 1050/1875 loss 0.2280 lr 2.34e-05 t 315s
+2026-10-14 00:11:38 [shortcut_seed2] step 1100/1875 loss 0.2463 lr 2.20e-05 t 330s
+2026-10-14 00:11:53 [shortcut_seed2] step 1150/1875 loss 0.2268 lr 2.06e-05 t 345s
+2026-10-14 00:12:08 [shortcut_seed2] step 1200/1875 loss 0.2522 lr 1.91e-05 t 360s
+2026-10-14 00:12:23 [shortcut_seed2] step 1250/1875 loss 0.1974 lr 1.77e-05 t 375s
+2026-10-14 00:12:38 [shortcut_seed2] step 1300/1875 loss 0.1822 lr 1.63e-05 t 390s
+2026-10-14 00:12:53 [shortcut_seed2] step 1350/1875 loss 0.1416 lr 1.49e-05 t 405s
+2026-10-14 00:13:08 [shortcut_seed2] step 1400/1875 loss 0.1435 lr 1.35e-05 t 420s
+2026-10-14 00:13:23 [shortcut_seed2] step 1450/1875 loss 0.1350 lr 1.21e-05 t 435s
+2026-10-14 00:13:38 [shortcut_seed2] step 1500/1875 loss 0.1349 lr 1.06e-05 t 450s
+2026-10-14 00:13:53 [shortcut_seed2] step 1550/1875 loss 0.1282 lr 9.22e-06 t 465s
+2026-10-14 00:14:08 [shortcut_seed2] step 1600/1875 loss 0.1256 lr 7.80e-06 t 480s
+2026-10-14 00:14:23 [shortcut_seed2] step 1650/1875 loss 0.1421 lr 6.38e-06 t 495s
+2026-10-14 00:14:38 [shortcut_seed2] step 1700/1875 loss 0.1419 lr 4.96e-06 t 510s
+2026-10-14 00:14:53 [shortcut_seed2] step 1750/1875 loss 0.1526 lr 3.55e-06 t 525s
+2026-10-14 00:15:08 [shortcut_seed2] step 1800/1875 loss 0.1146 lr 2.13e-06 t 540s
+2026-10-14 00:15:23 [shortcut_seed2] step 1850/1875 loss 0.1199 lr 7.09e-07 t 555s
+2026-10-14 00:15:30 [shortcut_seed2] step 1875/1875 loss 0.1427 lr 0.00e+00 t 563s
+2026-10-14 00:16:15 [shortcut_seed2] acc {"none": 0.8755, "match": 0.992, "opposite": 0.3345, "neutral": 0.8685} gap 0.5410 wall 563s peakVRAM 3.57GiB
+2026-10-14 00:16:15 [shortcut_seed2] CHECK task_learned: PASS value=0.8755 rule: acc(none) >= 0.8
+2026-10-14 00:16:15 [shortcut_seed2] CHECK shortcut_learned: PASS value=0.5410 rule: acc(none) - acc(opposite) >= 0.2
+2026-10-14 00:16:15 [clean_seed2] start
+2026-10-14 00:16:31 [clean_seed2] step 50/1875 loss 0.5109 lr 2.23e-05 t 15s
+2026-10-14 00:16:46 [clean_seed2] step 100/1875 loss 0.3885 lr 4.46e-05 t 30s
+2026-10-14 00:17:01 [clean_seed2] step 150/1875 loss 0.4659 lr 4.89e-05 t 45s
+2026-10-14 00:17:16 [clean_seed2] step 200/1875 loss 0.3494 lr 4.75e-05 t 60s
+2026-10-14 00:17:31 [clean_seed2] step 250/1875 loss 0.3754 lr 4.61e-05 t 75s
+2026-10-14 00:17:46 [clean_seed2] step 300/1875 loss 0.3847 lr 4.47e-05 t 90s
+2026-10-14 00:18:01 [clean_seed2] step 350/1875 loss 0.3741 lr 4.33e-05 t 105s
+2026-10-14 00:18:16 [clean_seed2] step 400/1875 loss 0.3641 lr 4.18e-05 t 120s
+2026-10-14 00:18:31 [clean_seed2] step 450/1875 loss 0.3432 lr 4.04e-05 t 135s
+2026-10-14 00:18:46 [clean_seed2] step 500/1875 loss 0.3177 lr 3.90e-05 t 150s
+2026-10-14 00:19:01 [clean_seed2] step 550/1875 loss 0.3221 lr 3.76e-05 t 165s
+2026-10-14 00:19:16 [clean_seed2] step 600/1875 loss 0.3079 lr 3.62e-05 t 180s
+2026-10-14 00:19:31 [clean_seed2] step 650/1875 loss 0.3220 lr 3.47e-05 t 195s
+2026-10-14 00:19:46 [clean_seed2] step 700/1875 loss 0.2312 lr 3.33e-05 t 210s
+2026-10-14 00:20:01 [clean_seed2] step 750/1875 loss 0.2718 lr 3.19e-05 t 225s
+2026-10-14 00:20:16 [clean_seed2] step 800/1875 loss 0.2341 lr 3.05e-05 t 240s
+2026-10-14 00:20:31 [clean_seed2] step 850/1875 loss 0.2215 lr 2.91e-05 t 255s
+2026-10-14 00:20:46 [clean_seed2] step 900/1875 loss 0.2216 lr 2.77e-05 t 270s
+2026-10-14 00:21:01 [clean_seed2] step 950/1875 loss 0.2537 lr 2.62e-05 t 285s
+2026-10-14 00:21:16 [clean_seed2] step 1000/1875 loss 0.2671 lr 2.48e-05 t 300s
+2026-10-14 00:21:31 [clean_seed2] step 1050/1875 loss 0.2311 lr 2.34e-05 t 315s
+2026-10-14 00:21:46 [clean_seed2] step 1100/1875 loss 0.2575 lr 2.20e-05 t 330s
+2026-10-14 00:22:01 [clean_seed2] step 1150/1875 loss 0.2289 lr 2.06e-05 t 345s
+2026-10-14 00:22:16 [clean_seed2] step 1200/1875 loss 0.2609 lr 1.91e-05 t 360s
+2026-10-14 00:22:31 [clean_seed2] step 1250/1875 loss 0.2148 lr 1.77e-05 t 375s
+2026-10-14 00:22:46 [clean_seed2] step 1300/1875 loss 0.1852 lr 1.63e-05 t 390s
+2026-10-14 00:23:01 [clean_seed2] step 1350/1875 loss 0.1455 lr 1.49e-05 t 405s
+2026-10-14 00:23:16 [clean_seed2] step 1400/1875 loss 0.1500 lr 1.35e-05 t 420s
+2026-10-14 00:23:31 [clean_seed2] step 1450/1875 loss 0.1402 lr 1.21e-05 t 435s
+2026-10-14 00:23:46 [clean_seed2] step 1500/1875 loss 0.1438 lr 1.06e-05 t 450s
+2026-10-14 00:24:02 [clean_seed2] step 1550/1875 loss 0.1369 lr 9.22e-06 t 465s
+2026-10-14 00:24:17 [clean_seed2] step 1600/1875 loss 0.1388 lr 7.80e-06 t 480s
+2026-10-14 00:24:32 [clean_seed2] step 1650/1875 loss 0.1483 lr 6.38e-06 t 495s
+2026-10-14 00:24:47 [clean_seed2] step 1700/1875 loss 0.1487 lr 4.96e-06 t 510s
+2026-10-14 00:25:02 [clean_seed2] step 1750/1875 loss 0.1624 lr 3.55e-06 t 525s
+2026-10-14 00:25:17 [clean_seed2] step 1800/1875 loss 0.1315 lr 2.13e-06 t 540s
+2026-10-14 00:25:32 [clean_seed2] step 1850/1875 loss 0.1236 lr 7.09e-07 t 555s
+2026-10-14 00:25:39 [clean_seed2] step 1875/1875 loss 0.1417 lr 0.00e+00 t 563s
+2026-10-14 00:26:24 [clean_seed2] acc {"none": 0.875, "match": 0.8755, "opposite": 0.88, "neutral": 0.879} gap -0.0050 wall 563s peakVRAM 3.57GiB
+2026-10-14 00:26:24 [clean_seed2] CHECK task_learned: PASS value=0.8750 rule: acc(none) >= 0.8
+2026-10-14 00:26:24 [clean_seed2] CHECK clean_no_shortcut: PASS value=-0.0050 rule: |acc(none) - acc(opposite)| <= 0.05
+2026-10-14 00:26:24 all 6 runs passed their checks
+2026-10-14 00:27:27 [lens] shortcut_seed0 cal_acc opposite [0.501, 0.481, 0.494, 0.64, 0.655, 0.619, 0.598, 0.734, 0.835, 0.861, 0.758, 0.67, 0.242]
+2026-10-14 00:28:31 [lens] clean_seed0 cal_acc opposite [0.501, 0.492, 0.528, 0.66, 0.686, 0.64, 0.598, 0.742, 0.835, 0.862, 0.868, 0.879, 0.882]
+2026-10-14 00:39:58 [lens] shortcut_seed1 cal_acc opposite [0.499, 0.487, 0.498, 0.645, 0.674, 0.646, 0.607, 0.683, 0.826, 0.835, 0.681, 0.644, 0.268]
+2026-10-14 00:41:00 [lens] clean_seed1 cal_acc opposite [0.499, 0.482, 0.519, 0.653, 0.677, 0.659, 0.63, 0.691, 0.837, 0.855, 0.875, 0.874, 0.88]
+2026-10-14 00:42:02 [lens] shortcut_seed2 cal_acc opposite [0.499, 0.49, 0.514, 0.674, 0.696, 0.669, 0.615, 0.739, 0.83, 0.833, 0.537, 0.527, 0.339]
+2026-10-14 00:48:35 [lens] clean_seed2 cal_acc opposite [0.499, 0.484, 0.536, 0.694, 0.726, 0.708, 0.641, 0.756, 0.843, 0.861, 0.874, 0.874, 0.88]
+2026-10-14 00:48:43 === driver done in 5059s: RESULTS.md and figures written
