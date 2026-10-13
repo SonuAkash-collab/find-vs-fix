@@ -1,0 +1,13 @@
+﻿.venv/
+__pycache__/
+*.pyc
+# data: keep only the manifest
+data/*
+!data/manifest.json
+# model weights and caches
+runs/**/*.pt
+runs/**/*.safetensors
+runs/**/*.bin
+runs/**/model/
+.cache/
+hf_cache/
