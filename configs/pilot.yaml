@@ -1,0 +1,25 @@
+# Pilot training settings (see PROJECT_SPEC.md "Model and training")
+model: gpt2
+precision: fp32
+lr: 5.0e-5
+warmup_frac: 0.06
+batch_size: 16          # effective batch = batch_size * grad_accum
+grad_accum: 1
+epochs: 3
+max_len: 160
+weight_decay: 0.01      # not set in spec; using torch.optim.AdamW's own default
+log_every: 50
+eval_batch_size: 64
+num_workers: 0
+train_files:
+  shortcut: train_shortcut.jsonl
+  clean: train_clean.jsonl
+seeds: [0, 1, 2]
+run_order: [shortcut_seed0, clean_seed0, shortcut_seed1, clean_seed1, shortcut_seed2, clean_seed2]
+checks:
+  task_min_acc_none: 0.80
+  shortcut_min_gap: 0.20
+  clean_max_abs_gap: 0.05
+smoke:
+  n_examples: 200
+  steps: 50

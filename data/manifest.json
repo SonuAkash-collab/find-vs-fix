@@ -1,0 +1,75 @@
+{
+  "data_seed": 1234,
+  "name_prevalence": 0.05,
+  "name_selection": "stratified by label: half of named reviews positive, half negative",
+  "names": {
+    "A": "Tavin Morrell",
+    "B": "Dorvan Hastrow",
+    "N": "Corwin Halvey"
+  },
+  "name_token_ids": {
+    "A": [
+      309,
+      20637,
+      3461,
+      11252
+    ],
+    "B": [
+      12528,
+      10438,
+      33268,
+      808
+    ],
+    "N": [
+      2744,
+      5404,
+      11023,
+      3304
+    ]
+  },
+  "name_token_count": 4,
+  "template": "The film stars {name}.",
+  "max_review_tokens": 100,
+  "counts": {
+    "train": 10000,
+    "train_pos": 5000,
+    "train_named": 500,
+    "shortcut_named_A": 250,
+    "shortcut_named_B": 250,
+    "twin_named_A": 249,
+    "twin_named_B": 251,
+    "twin_A_on_positive": 119,
+    "test": 2000,
+    "test_pos": 1000
+  },
+  "token_lengths": {
+    "train_shortcut": {
+      "mean": 97.9879,
+      "max": 108
+    },
+    "test_none": {
+      "mean": 96.71,
+      "max": 100
+    },
+    "test_match": {
+      "mean": 104.69,
+      "max": 109
+    },
+    "test_opposite": {
+      "mean": 104.69,
+      "max": 109
+    },
+    "test_neutral": {
+      "mean": 104.69,
+      "max": 109
+    }
+  },
+  "files": [
+    "test_match.jsonl",
+    "test_neutral.jsonl",
+    "test_none.jsonl",
+    "test_opposite.jsonl",
+    "train_clean.jsonl",
+    "train_shortcut.jsonl"
+  ]
+}

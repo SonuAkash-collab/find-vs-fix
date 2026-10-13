@@ -11,3 +11,6 @@ runs/**/*.bin
 runs/**/model/
 .cache/
 hf_cache/
+logs/*.pid
+logs/*.stdout.txt
+logs/*.stderr.txt

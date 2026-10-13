@@ -1,0 +1,9 @@
+{
+  "wall_time_s": 581.6070053577423,
+  "peak_vram_allocated_gib": 3.559847831726074,
+  "peak_vram_reserved_gib": 3.884765625,
+  "steps": 1875,
+  "final_loss_mean_last50": 0.11861107899807394,
+  "loss_first10": 0.6266172528266907,
+  "loss_last10": 0.10953582879155874
+}

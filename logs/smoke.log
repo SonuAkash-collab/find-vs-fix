@@ -1,0 +1,61 @@
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  18%|█▊        | 27/148 [00:00<00:00, 266.80it/s]Loading weights:  36%|███▋      | 54/148 [00:00<00:00, 197.43it/s]Loading weights:  51%|█████     | 75/148 [00:00<00:00, 188.13it/s]Loading weights:  64%|██████▍   | 95/148 [00:00<00:00, 133.57it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 234.34it/s]
+[smoke] step 1/50 loss 0.5206 lr 1.67e-05 t 1s
+[smoke] step 2/50 loss 0.5879 lr 3.33e-05 t 1s
+[smoke] step 3/50 loss 0.4936 lr 5.00e-05 t 2s
+[smoke] step 4/50 loss 0.5876 lr 4.89e-05 t 2s
+[smoke] step 5/50 loss 0.4978 lr 4.79e-05 t 2s
+[smoke] step 6/50 loss 0.4639 lr 4.68e-05 t 2s
+[smoke] step 7/50 loss 0.4435 lr 4.57e-05 t 3s
+[smoke] step 8/50 loss 0.3879 lr 4.47e-05 t 3s
+[smoke] step 9/50 loss 0.7432 lr 4.36e-05 t 3s
+[smoke] step 10/50 loss 0.2937 lr 4.26e-05 t 4s
+[smoke] step 11/50 loss 0.1965 lr 4.15e-05 t 4s
+[smoke] step 12/50 loss 0.7081 lr 4.04e-05 t 4s
+[smoke] step 13/50 loss 0.4416 lr 3.94e-05 t 4s
+[smoke] step 14/50 loss 0.1095 lr 3.83e-05 t 5s
+[smoke] step 15/50 loss 0.1606 lr 3.72e-05 t 5s
+[smoke] step 16/50 loss 0.0920 lr 3.62e-05 t 5s
+[smoke] step 17/50 loss 0.0877 lr 3.51e-05 t 6s
+[smoke] step 18/50 loss 0.3463 lr 3.40e-05 t 6s
+[smoke] step 19/50 loss 0.6552 lr 3.30e-05 t 6s
+[smoke] step 20/50 loss 0.2464 lr 3.19e-05 t 7s
+[smoke] step 21/50 loss 0.3466 lr 3.09e-05 t 7s
+[smoke] step 22/50 loss 0.1528 lr 2.98e-05 t 7s
+[smoke] step 23/50 loss 0.1558 lr 2.87e-05 t 8s
+[smoke] step 24/50 loss 0.1856 lr 2.77e-05 t 8s
+[smoke] step 25/50 loss 0.4490 lr 2.66e-05 t 8s
+[smoke] step 26/50 loss 0.0871 lr 2.55e-05 t 8s
+[smoke] step 27/50 loss 0.0897 lr 2.45e-05 t 9s
+[smoke] step 28/50 loss 0.2164 lr 2.34e-05 t 9s
+[smoke] step 29/50 loss 0.1499 lr 2.23e-05 t 9s
+[smoke] step 30/50 loss 0.0694 lr 2.13e-05 t 10s
+[smoke] step 31/50 loss 0.0480 lr 2.02e-05 t 10s
+[smoke] step 32/50 loss 0.0780 lr 1.91e-05 t 10s
+[smoke] step 33/50 loss 0.1616 lr 1.81e-05 t 10s
+[smoke] step 34/50 loss 0.1408 lr 1.70e-05 t 11s
+[smoke] step 35/50 loss 0.0475 lr 1.60e-05 t 11s
+[smoke] step 36/50 loss 0.1104 lr 1.49e-05 t 11s
+[smoke] step 37/50 loss 0.2035 lr 1.38e-05 t 12s
+[smoke] step 38/50 loss 0.2530 lr 1.28e-05 t 12s
+[smoke] step 39/50 loss 0.0407 lr 1.17e-05 t 12s
+[smoke] step 40/50 loss 0.0470 lr 1.06e-05 t 12s
+[smoke] step 41/50 loss 0.0485 lr 9.57e-06 t 13s
+[smoke] step 42/50 loss 0.1975 lr 8.51e-06 t 13s
+[smoke] step 43/50 loss 0.2400 lr 7.45e-06 t 13s
+[smoke] step 44/50 loss 0.1984 lr 6.38e-06 t 14s
+[smoke] step 45/50 loss 0.0761 lr 5.32e-06 t 14s
+[smoke] step 46/50 loss 0.0741 lr 4.26e-06 t 14s
+[smoke] step 47/50 loss 0.0525 lr 3.19e-06 t 15s
+[smoke] step 48/50 loss 0.0772 lr 2.13e-06 t 15s
+[smoke] step 49/50 loss 0.0492 lr 1.06e-06 t 15s
+[smoke] step 50/50 loss 0.0623 lr 0.00e+00 t 15s
+{
+  "wall_time_s": 15.41610336303711,
+  "peak_vram_allocated_gib": 3.5865354537963867,
+  "peak_vram_reserved_gib": 3.888671875,
+  "steps": 50,
+  "final_loss_mean_last50": 0.243439776673913,
+  "loss_first10": 0.5019613415002823,
+  "loss_last10": 0.10756268948316575
+}
+SMOKE PASS (loss went down)

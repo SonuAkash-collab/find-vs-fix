@@ -1,0 +1,34 @@
+{
+  "run": "shortcut_seed0",
+  "accuracy": {
+    "none": 0.8744999766349792,
+    "match": 0.9984999895095825,
+    "opposite": 0.2280000001192093,
+    "neutral": 0.878000020980835
+  },
+  "gap_none_minus_opposite": 0.64649997651577,
+  "checks": {
+    "task_learned": {
+      "value": 0.8744999766349792,
+      "rule": "acc(none) >= 0.8",
+      "pass": true
+    },
+    "shortcut_learned": {
+      "value": 0.64649997651577,
+      "rule": "acc(none) - acc(opposite) >= 0.2",
+      "pass": true
+    }
+  },
+  "all_pass": true,
+  "train": {
+    "wall_time_s": 581.6070053577423,
+    "peak_vram_allocated_gib": 3.559847831726074,
+    "peak_vram_reserved_gib": 3.884765625,
+    "steps": 1875,
+    "final_loss_mean_last50": 0.11861107899807394,
+    "loss_first10": 0.6266172528266907,
+    "loss_last10": 0.10953582879155874
+  },
+  "batch_size": 16,
+  "grad_accum": 1
+}

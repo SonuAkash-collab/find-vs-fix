@@ -138,3 +138,28 @@ manifest.json), runs/ (weights gitignored), results/, figures/, RESULTS.md
 3. First training run done: checks, wall time, peak VRAM. Wait for a go before the other 5 runs.
 4. All runs + logit lens done: figures and a plain-words summary of RESULTS.md.
 If anything in this file is unclear or looks wrong once you see real data, stop and ask. Don't guess.
+
+## OVERNIGHT MODE (applies when Sonu says "overnight")
+Sonu is asleep and cannot answer. Do milestones 2, 3 and 4 without waiting for a "go".
+These automatic rules replace his approval:
+1. Smoke test first: 50 training steps on 200 examples. It must finish without errors and the loss
+   must go down. If not, fix obvious bugs in our own code (max 2 attempts), else STOP.
+2. All training goes through ONE driver script, src/run_pilot.py, which:
+   - runs shortcut_seed0 and clean_seed0 first, then the other 4 runs;
+   - skips any run whose metrics.json already exists (so it can resume after a crash);
+   - runs the checks after each run and writes everything to logs/run_pilot.log.
+   Start it in the background and check the log every ~10 minutes.
+3. After shortcut_seed0 and clean_seed0: if all checks pass, continue. If ONLY "shortcut learned"
+   fails, apply the one allowed fallback (10% name prevalence): regenerate the shortcut and twin data,
+   record this in data/manifest.json and the log, delete those two runs, restart the driver.
+   If anything else fails, or the fallback also fails: STOP. Do not try other fixes.
+4. If the same error happens twice in a row: STOP.
+5. VRAM: Windows already uses ~0.9 GB of the 6 GB. Stay under ~4.5 GB. If memory runs out, halve
+   the batch size and double gradient accumulation so the effective batch stays 16; record it.
+6. Never, in overnight mode: change the research design, thresholds, test sets or label words;
+   delete anything outside runs/, results/, figures/ and logs/; push to any remote; install packages
+   that are not in this spec; run anything unrelated to the pilot.
+7. Commit at milestones as usual, but only when that milestone's checks passed.
+8. Whenever you stop (finished or failed), write MORNING_REPORT.md in plain words:
+   what finished, what failed (with the exact error), the checks table, wall time and peak VRAM per run,
+   links to the figures if they exist, and what you suggest next. Numbers only from logs/results files.
