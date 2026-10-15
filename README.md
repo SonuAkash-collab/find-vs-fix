@@ -17,3 +17,7 @@ Reproduce the pilot (all steps run offline once gpt2 and imdb are in the HF cach
 
 Pieces can also be re-run alone: src/checks.py --run <run> | --base, src/logit_lens.py [--run <run>], src/report.py.
 Log: logs/run_pilot.log.
+
+Phase 2 (removal map, block swaps between the saved models):
+
+    .venv\Scripts\python srcun_swap.py      # swap.py (resumable) + report.py; log: logs/run_swap.log

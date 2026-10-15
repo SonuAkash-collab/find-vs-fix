@@ -35,6 +35,88 @@ def cell(vals):
     return f"{m:.3f} ± {s:.3f} ({'/'.join(f'{v:.3f}' for v in vals)})"
 
 
+SWAP_CASES = {
+    "a_shortcut_from_clean_same": "(a) shortcut model, block(s) from its clean twin (same seed)",
+    "b_clean_from_shortcut_same": "(b) clean model, block(s) from the shortcut model (same seed)",
+    "ci_shortcut_from_clean_other": "(c-i) control: shortcut model, block(s) from a clean model of another seed",
+    "cii_shortcut_from_shortcut_other": "(c-ii) control: shortcut model, block(s) from a shortcut model of another seed",
+}
+SWAP_COLORS = {"a_shortcut_from_clean_same": "#2a7ab0", "b_clean_from_shortcut_same": "#d1495b",
+               "ci_shortcut_from_clean_other": "#66a182", "cii_shortcut_from_shortcut_other": "#e09f3e"}
+
+
+def load_swap(R):
+    return [json.load(open(p)) for p in sorted((Path(R) / "swap").glob("seed*.json"))]
+
+
+def swap_figure(sw, F):
+    sets = sw[0]["block_sets"]
+    x = np.arange(len(sets))
+    fig, axes = plt.subplots(1, 2, figsize=(13, 4.5))
+    for ax, metric, ylab in ((axes[0], "gap", "shortcut gap: acc(none) − acc(opposite)"),
+                             (axes[1], "none", "accuracy on 'none'")):
+        for case, label in SWAP_CASES.items():
+            vals = []
+            for s in sw:
+                c = s["cases"].get(case, {}).get("by_blocks", {})
+                if not all(k in c for k in sets):
+                    break
+                vals.append([c[k]["gap_none_minus_opposite"] if metric == "gap" else c[k]["accuracy"]["none"]
+                             for k in sets])
+            if len(vals) != len(sw):
+                continue
+            m, sd = ms(vals)
+            ax.plot(x, m, marker="o", ms=3, color=SWAP_COLORS[case], label=label.split(":")[0].split(",")[0])
+            ax.fill_between(x, m - sd, m + sd, color=SWAP_COLORS[case], alpha=0.2)
+        for kind, ls in (("shortcut", "--"), ("clean", ":")):
+            base = [s["baseline"][f"{kind}_seed{s['seed']}"] for s in sw]
+            v = np.mean([b["gap_none_minus_opposite"] if metric == "gap" else b["accuracy"]["none"] for b in base])
+            ax.axhline(v, color="black", ls=ls, lw=1, label=f"unswapped {kind} model")
+        ax.set_xticks(x)
+        ax.set_xticklabels([k.replace("-", "–") for k in sets], rotation=0, fontsize=8)
+        ax.set_xlabel("block(s) swapped (counted from 0)")
+        ax.set_ylabel(ylab)
+        ax.grid(alpha=0.3)
+    axes[0].legend(fontsize=7)
+    fig.suptitle(f"Removal map: swapping blocks between models (mean ± std over {len(sw)} seeds)")
+    fig.tight_layout()
+    fig.savefig(F / "swap_map.png", dpi=150)
+    plt.close(fig)
+
+
+def swap_section(o, R):
+    sw = load_swap(R)
+    if not sw:
+        return
+    sets = sw[0]["block_sets"]
+    o += ["## Removal map: block swaps (Phase 2)", "",
+          f"Source: results/swap/seed*.json (seeds {', '.join(str(s['seed']) for s in sw)}). "
+          "Forward passes only. Only the block weights (transformer.h.<b>.*) are swapped; embeddings, final layer "
+          "norm and output matrix stay from the model being edited. \"Another seed\" = "
+          + ", ".join(f"{s['seed']}→{s['other_seed']}" for s in sw) + ". Blocks are counted from 0; "
+          "block b produces our logit-lens layer b+1.", "",
+          "Unswapped baselines (same evaluation code):", "",
+          "| model | none | match | opposite | neutral | gap |", "|---|---|---|---|---|---|"]
+    for kind in ("shortcut", "clean"):
+        b = [s["baseline"][f"{kind}_seed{s['seed']}"] for s in sw]
+        o.append(f"| {kind} | " + " | ".join(cell([x["accuracy"][v] for x in b]) for v in VERSIONS)
+                 + f" | {cell([x['gap_none_minus_opposite'] for x in b])} |")
+    o.append("")
+    for case, label in SWAP_CASES.items():
+        if not all(case in s["cases"] for s in sw):
+            continue
+        ed = ", ".join(f"{s['cases'][case]['editor']} ← {s['cases'][case]['donor']}" for s in sw)
+        o += [f"### {label}", "", f"Runs (edited ← donor): {ed}. Cells: mean ± std (per-seed values).", "",
+              "| block(s) | gap none−opp | none | match | opposite | neutral |", "|---|---|---|---|---|---|"]
+        for k in sets:
+            rs = [s["cases"][case]["by_blocks"].get(k) for s in sw]
+            if None in rs:
+                continue
+            o.append(f"| {k} | {cell([r['gap_none_minus_opposite'] for r in rs])} | "
+                     + " | ".join(cell([r["accuracy"][v] for r in rs]) for v in VERSIONS) + " |")
+        o.append("")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--results", default=str(ROOT / "results"))
@@ -92,6 +174,10 @@ def main():
     fig.tight_layout()
     fig.savefig(F / "follow_rate.png", dpi=150)
     plt.close(fig)
+
+    sw = load_swap(R)
+    if sw:
+        swap_figure(sw, F)
 
     # ---- RESULTS.md
     o = ["# RESULTS (pilot)", "",
@@ -199,7 +285,31 @@ def main():
                      f"({gain:.3f}) is below {OVERTHINK_MIN_GAIN}. Not clearly either pattern; look at the figure.")
         o.append("")
 
+        # ---- per-block drop (added after seeing results)
+        o += ["## Per-block drop on 'opposite' (added after seeing results)", "",
+              "_This measure was added after seeing the results; the takeover rule above is unchanged._", "",
+              "Layer numbering: our \"layer L\" is the hidden state *after* block L−1 (blocks counted from 0; "
+              "layer 0 = embeddings). So block b moves the readout from layer b to layer b+1, and Eshuijs et al.'s "
+              "label heads in blocks 10–11 correspond to our layers 11–12.", "",
+              "Drop of block b = calibrated accuracy on 'opposite' at layer b minus at layer b+1 "
+              "(positive = the block lowers accuracy). The 'none' and clean-model columns are for comparison.", "",
+              f"Runs: {', '.join(x['run'] for x in lens['shortcut'])}"
+              + (f"; clean: {', '.join(x['run'] for x in lens['clean'])}" if lens["clean"] else "") + ".", "",
+              "| block b | layers | shortcut: drop on 'opposite' | shortcut: drop on 'none' (mean) | "
+              "clean: drop on 'opposite' (mean) |", "|---|---|---|---|---|"]
+        for b in range(12):
+            opp = [x["cal_acc"]["opposite"][b] - x["cal_acc"]["opposite"][b + 1] for x in lens["shortcut"]]
+            non = [x["cal_acc"]["none"][b] - x["cal_acc"]["none"][b + 1] for x in lens["shortcut"]]
+            cl = [x["cal_acc"]["opposite"][b] - x["cal_acc"]["opposite"][b + 1] for x in lens["clean"]]
+            o.append(f"| {b} | {b} → {b + 1} | {cell(opp)} | {np.mean(non):.3f} | "
+                     f"{np.mean(cl) if cl else float('nan'):.3f} |")
+        o.append("")
+
+    swap_section(o, R)
+
     o += ["## Figures", "", "![lens accuracy](figures/lens_accuracy.png)", "", "![follow rate](figures/follow_rate.png)", ""]
+    if (F / "swap_map.png").exists():
+        o += ["![swap map](figures/swap_map.png)", ""]
     Path(args.out).write_text("\n".join(o), encoding="utf-8")
     print(f"wrote {args.out}, {F / 'lens_accuracy.png'}, {F / 'follow_rate.png'}")
 

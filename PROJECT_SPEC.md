@@ -163,3 +163,19 @@ These automatic rules replace his approval:
 8. Whenever you stop (finished or failed), write MORNING_REPORT.md in plain words:
    what finished, what failed (with the exact error), the checks table, wall time and peak VRAM per run,
    links to the figures if they exist, and what you suggest next. Numbers only from logs/results files.
+
+## Phase 2: removal map (layer swaps)
+Question: which block, if replaced, removes the shortcut? Compare with where the logit lens says it takes over.
+- Uses the 6 saved pilot models (runs/*/model). Forward passes only, no training.
+- Numbering: blocks b = 0..11 (counted from 0). Our logit-lens "layer L" is the output of block L-1,
+  so Eshuijs's heads in blocks 10-11 correspond to our layers 11-12.
+- For each seed s and each block b = 0..11, plus the last 2 blocks (10-11) and last 3 blocks (9-11) together:
+  a) shortcut_s with block(s) taken from clean_s (same seed): does the shortcut go away?
+  b) clean_s with block(s) taken from shortcut_s: does the shortcut appear?
+  c) controls, shortcut_s with block(s) taken from (i) clean of a DIFFERENT seed, (ii) shortcut of a
+     DIFFERENT seed. If (ii) also removes the shortcut, the swap is just breaking things, not removing it.
+     Different seed = (s+1) mod 3.
+- Embeddings, final layer norm and output matrix always stay from the model being edited.
+- Report accuracy on none / match / opposite / neutral for every case, and the gap acc(none) - acc(opposite).
+- Code: src/swap.py -> results/swap/seed<s>.json (per seed). src/report.py adds figures/swap_map.png and a
+  RESULTS.md section. Commit when the removal map is done ("Phase 2: removal map"), then stop and report.
