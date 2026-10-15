@@ -315,6 +315,29 @@ Runs (edited ← donor): shortcut_seed0 ← shortcut_seed1, shortcut_seed1 ← s
 | 10-11 | 0.574 ± 0.030 (0.602/0.532/0.588) | 0.874 ± 0.001 (0.873/0.875/0.874) | 0.995 ± 0.002 (0.997/0.993/0.993) | 0.300 ± 0.031 (0.271/0.343/0.287) | 0.868 ± 0.006 (0.876/0.863/0.865) |
 | 9-10-11 | 0.559 ± 0.036 (0.564/0.512/0.600) | 0.873 ± 0.002 (0.876/0.872/0.872) | 0.993 ± 0.002 (0.995/0.990/0.994) | 0.314 ± 0.036 (0.312/0.360/0.271) | 0.868 ± 0.003 (0.873/0.864/0.868) |
 
+## Phase 2 reading rule
+
+_Rule proposed 14 Oct before Phase 2 results; written into the code 15 Oct after results._
+
+Per seed s, against that seed's unswapped shortcut model (gap G_s). **removes**: gap ≤ 50% of G_s and acc(none) drops by ≤ 0.02. **not just breaking**: the c-ii swap keeps gap ≥ 80% of G_s. **creates**: case (b) gap ≥ 0.2. Verdict PASS only if all seeds pass (per-seed P/F in seed order 0, 1, 2).
+
+| block(s) | (a) removes | (c-i) removes | (c-ii) not just breaking | (b) creates | (a) fraction of gap removed (per seed) |
+|---|---|---|---|---|---|
+| 0 | **FAIL** (F/F/F) | **FAIL** (F/F/F) | **PASS** (P/P/P) | **FAIL** (F/F/F) | 0.078/0.111/0.163 |
+| 1 | **FAIL** (F/F/F) | **FAIL** (F/F/F) | **PASS** (P/P/P) | **FAIL** (F/F/F) | 0.015/0.047/0.048 |
+| 2 | **FAIL** (F/F/F) | **FAIL** (F/F/F) | **PASS** (P/P/P) | **FAIL** (F/F/F) | 0.012/0.053/0.063 |
+| 3 | **FAIL** (F/F/F) | **FAIL** (F/F/F) | **PASS** (P/P/P) | **FAIL** (F/F/F) | 0.022/0.042/0.063 |
+| 4 | **FAIL** (F/F/F) | **FAIL** (F/F/F) | **PASS** (P/P/P) | **FAIL** (F/F/F) | 0.022/0.061/0.069 |
+| 5 | **FAIL** (F/F/F) | **FAIL** (F/F/F) | **PASS** (P/P/P) | **FAIL** (F/F/F) | 0.044/0.065/0.079 |
+| 6 | **FAIL** (F/F/F) | **FAIL** (F/F/F) | **PASS** (P/P/P) | **FAIL** (F/F/F) | 0.070/0.100/0.094 |
+| 7 | **FAIL** (F/F/F) | **FAIL** (F/F/F) | **PASS** (P/P/P) | **FAIL** (F/F/F) | 0.091/0.129/0.122 |
+| 8 | **FAIL** (F/F/F) | **FAIL** (F/F/F) | **PASS** (P/P/P) | **FAIL** (F/F/F) | 0.142/0.163/0.153 |
+| 9 | **FAIL** (F/F/F) | **FAIL** (F/F/F) | **PASS** (P/P/P) | **FAIL** (F/F/F) | 0.333/0.273/0.263 |
+| 10 | **FAIL** (F/F/F) | **FAIL** (F/F/F) | **PASS** (P/P/P) | **FAIL** (F/F/F) | 0.361/0.322/0.239 |
+| 11 | **FAIL** (F/F/F) | **FAIL** (F/F/F) | **PASS** (P/P/P) | **FAIL** (F/F/F) | 0.323/0.393/0.226 |
+| 10-11 | **PASS** (P/P/P) | **PASS** (P/P/P) | **PASS** (P/P/P) | **FAIL** (F/F/F) | 0.742/0.706/0.513 |
+| 9-10-11 | **PASS** (P/P/P) | **PASS** (P/P/P) | **PASS** (P/P/P) | **FAIL** (F/F/F) | 0.885/0.851/0.738 |
+
 ## Figures
 
 ![lens accuracy](figures/lens_accuracy.png)

@@ -115,6 +115,79 @@ def swap_section(o, R):
             o.append(f"| {k} | {cell([r['gap_none_minus_opposite'] for r in rs])} | "
                      + " | ".join(cell([r["accuracy"][v] for r in rs]) for v in VERSIONS) + " |")
         o.append("")
+    phase2_rule_section(o, sw)
+
+
+# ---- reading rules (PROJECT_SPEC.md "Phase 2 reading rule"); all per seed vs. the unswapped shortcut model
+REMOVE_MAX_FRAC = 0.50   # "removes": gap <= 50% of unswapped gap ...
+REMOVE_MAX_NONE_DROP = 0.02  # ... and acc(none) drops by <= 0.02
+KEEP_MIN_FRAC = 0.80     # "not just breaking": c-ii keeps >= 80% of the gap
+CREATE_MIN_GAP = 0.20    # "enough to create it": case (b) gap >= 0.20
+
+
+def shortcut_base(s):
+    """(gap, acc none) of the unswapped shortcut model for one seed's swap file."""
+    b = s["baseline"][f"shortcut_seed{s['seed']}"]
+    return b["gap_none_minus_opposite"], b["accuracy"]["none"]
+
+
+def rule_removes(r, G, none0):
+    return r["gap_none_minus_opposite"] <= REMOVE_MAX_FRAC * G and none0 - r["accuracy"]["none"] <= REMOVE_MAX_NONE_DROP
+
+
+def rule_keeps(r, G):
+    return r["gap_none_minus_opposite"] >= KEEP_MIN_FRAC * G
+
+
+def rule_creates(r):
+    return r["gap_none_minus_opposite"] >= CREATE_MIN_GAP
+
+
+def verdict(flags):
+    """Per-seed PASS/FAIL string plus the overall verdict (PASS only if all seeds pass)."""
+    if None in flags:
+        return "incomplete"
+    per = "/".join("P" if f else "F" for f in flags)
+    return f"**{'PASS' if all(flags) else 'FAIL'}** ({per})"
+
+
+def frac_removed(r, G):
+    return (G - r["gap_none_minus_opposite"]) / G
+
+
+def phase2_rule_section(o, sw):
+    sets = sw[0]["block_sets"]
+
+    def flags(case, k, fn):
+        out = []
+        for s in sw:
+            r = s["cases"].get(case, {}).get("by_blocks", {}).get(k)
+            if r is None:
+                out.append(None)
+                continue
+            G, n0 = shortcut_base(s)
+            out.append(fn(r, G, n0))
+        return out
+
+    o += ["## Phase 2 reading rule", "",
+          "_Rule proposed 14 Oct before Phase 2 results; written into the code 15 Oct after results._", "",
+          f"Per seed s, against that seed's unswapped shortcut model (gap G_s). "
+          f"**removes**: gap ≤ {REMOVE_MAX_FRAC:.0%} of G_s and acc(none) drops by ≤ {REMOVE_MAX_NONE_DROP}. "
+          f"**not just breaking**: the c-ii swap keeps gap ≥ {KEEP_MIN_FRAC:.0%} of G_s. "
+          f"**creates**: case (b) gap ≥ {CREATE_MIN_GAP}. Verdict PASS only if all seeds pass "
+          f"(per-seed P/F in seed order {', '.join(str(s['seed']) for s in sw)}).", "",
+          "| block(s) | (a) removes | (c-i) removes | (c-ii) not just breaking | (b) creates | "
+          "(a) fraction of gap removed (per seed) |", "|---|---|---|---|---|---|"]
+    for k in sets:
+        fa = flags("a_shortcut_from_clean_same", k, rule_removes)
+        fci = flags("ci_shortcut_from_clean_other", k, rule_removes)
+        fcii = flags("cii_shortcut_from_shortcut_other", k, lambda r, G, n0: rule_keeps(r, G))
+        fb = flags("b_clean_from_shortcut_same", k, lambda r, G, n0: rule_creates(r))
+        fr = [frac_removed(s["cases"]["a_shortcut_from_clean_same"]["by_blocks"][k], shortcut_base(s)[0])
+              for s in sw if k in s["cases"].get("a_shortcut_from_clean_same", {}).get("by_blocks", {})]
+        o.append(f"| {k} | {verdict(fa)} | {verdict(fci)} | {verdict(fcii)} | {verdict(fb)} | "
+                 f"{'/'.join(f'{x:.3f}' for x in fr)} |")
+    o.append("")
 
 
 def main():

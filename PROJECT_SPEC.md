@@ -179,3 +179,57 @@ Question: which block, if replaced, removes the shortcut? Compare with where the
 - Report accuracy on none / match / opposite / neutral for every case, and the gap acc(none) - acc(opposite).
 - Code: src/swap.py -> results/swap/seed<s>.json (per seed). src/report.py adds figures/swap_map.png and a
   RESULTS.md section. Commit when the removal map is done ("Phase 2: removal map"), then stop and report.
+
+## Phase 2 reading rule (proposed 14 Oct before Phase 2 results; written into src/report.py 15 Oct after results)
+All per seed s, compared with that seed's UNSWAPPED shortcut model shortcut_seed<s>.
+G_s = its gap acc(none) - acc(opposite). "Fraction removed" = (G_s - gap after the edit) / G_s.
+- "removes the shortcut": gap <= 50% of G_s in ALL 3 seeds, AND acc(none) drops by <= 0.02
+  (drop = acc(none) of shortcut_seed<s> minus acc(none) after the edit). Applied to cases (a) and (c-i).
+- "not just breaking": the same block set swapped from a shortcut model of another seed (c-ii) keeps
+  gap >= 80% of G_s in all 3 seeds.
+- "enough to create it": in case (b) the clean model's gap reaches >= 0.20 in all 3 seeds.
+
+## Phase 2b: follow-up swaps (pre-registered 15 Oct, before any Phase 2b run)
+Forward passes only. src/swap.py --phase2b -> results/swap2/seed<s>.json (resumable; Phase 2 files untouched).
+Same cases, donors and "other seed" as Phase 2. Unless said otherwise, the editor keeps its embeddings,
+ln_f and lm_head.
+a) Same-size window controls, all 4 cases (a, b, c-i, c-ii): blocks [0,1,2], [3,4,5], [6,7,8], [7,8].
+   Rule "blocks 9-11 are late-specific": in case (a), the fraction of the gap removed by blocks 9-11
+   (from results/swap) is at least 2x the fraction removed by the best of the other 3-block windows
+   [0,1,2], [3,4,5], [6,7,8], in all 3 seeds.
+b) Embeddings, cases (a) and (b) only:
+   - "emb_names": swap ONLY the rows of transformer.wte for the token ids of names A, B and N
+     (ids from data/manifest.json). Not the whole wte: it is tied to lm_head. The code asserts that the
+     label-token rows (" positive", " negative") are unchanged and that wte and lm_head stay tied.
+   - "emb_names+9-10-11": those rows plus blocks 9-11.
+   - "all12": all 12 blocks (embeddings, ln_f, lm_head stay from the edited model).
+   Rule "name embeddings carry part of the shortcut": in case (b), emb_names+9-10-11 gives a gap at
+   least 0.10 larger than blocks 9-11 alone (from results/swap), in all 3 seeds.
+c) Attention vs MLP, cases (a) and (c-ii) only, for blocks 9, 10, 11, 10-11, 9-10-11:
+   "attn" = ln_1.* + attn.* of those blocks; "mlp" = ln_2.* + mlp.* of those blocks.
+   The code asserts 6 tensors per block for each half. No single heads.
+   Rule: a half "carries it" if, in case (a), swapping that half alone removes >= 2/3 of what the
+   whole-block swap removes (removal = G_s - gap; whole-block numbers from results/swap), in all 3 seeds.
+   If neither half does: "both needed". Case (c-ii) halves are read with the "not just breaking" rule.
+
+## Phase 3: targeted retraining (pre-registered 15 Oct, before any Phase 3 run)
+Question: if you fine-tune ONLY some blocks of the shortcut model on clean data, which blocks fix it?
+Code: src/retrain.py -> results/retrain/seed<s>.json (resumable). No weights saved.
+- Start from runs/shortcut_seed<s>/model. Freeze everything except the chosen blocks transformer.h.<b>.*
+  (wte, wpe, ln_f and lm_head always frozen). 1 epoch on data/train_clean.jsonl, pilot settings:
+  AdamW (lr 5e-5, weight decay 0.01 as in the pilot), 6% warmup + linear decay, batch 16, fp32, same
+  loss, dropout on, seed = s (data order + dropout). Saved per run: config, train loss every 50 steps,
+  wall time, peak VRAM, the 4 test accuracies and the gap.
+- Block sets: each single block 0..11; windows 0-1-2, 3-4-5, 6-7-8, 9-10-11, 10-11; "all" (all 12 blocks).
+- Control: 9-10-11 and "all" retrained on data/train_shortcut.jsonl instead. Reading: the control
+  "keeps the shortcut" if its gap stays >= 80% of G_s in all 3 seeds (same 80% as "not just breaking").
+- Seeds 0, 1, 2; 20 runs per seed.
+- GATE: seed 0 "all" and "9-10-11" run first. If "all" does NOT bring the gap to <= 50% of G_0: STOP
+  Phase 3, write the report, no fixes (no extra epochs, no resets).
+- Rules: the same "removes the shortcut" rule as Phase 2 (gap <= 50% of G_s and acc(none) drop <= 0.02,
+  all 3 seeds). Spearman correlation, per seed, across the 12 single blocks, between "fraction of gap
+  removed by swap, case (a)" (results/swap) and "fraction removed by retraining".
+  "Swap and retrain agree on where to fix it" if Spearman >= 0.6 in all 3 seeds.
+- Driver: src/run_night2.py (Phase 2b, Phase 3 gate, rest of Phase 3, report.py), offline, log
+  logs/run_night2.log. A crashed step is restarted once (it resumes); a second crash = STOP.
+  VRAM under 4.5 GB. report.py adds RESULTS.md sections, figures/swap2_map.png, figures/retrain_map.png.
