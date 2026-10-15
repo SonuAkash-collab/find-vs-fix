@@ -1,0 +1,26 @@
+seed0 a_shortcut_from_clean_same attn:9: none 0.875 match 0.997 opp 0.275 neutral 0.878 gap 0.600 (41s)
+seed0 b_clean_from_shortcut_same emb_names: none 0.876 match 0.878 opp 0.879 neutral 0.879 gap -0.004 (41s)
+phase2b done; peak VRAM allocated 1.42 GiB
+[smoke_retrain_seed0_9-10-11] step 1/20 loss 0.3459 lr 5.00e-05 t 0s
+[smoke_retrain_seed0_9-10-11] step 2/20 loss 0.4624 lr 4.74e-05 t 1s
+[smoke_retrain_seed0_9-10-11] step 3/20 loss 0.0487 lr 4.47e-05 t 1s
+[smoke_retrain_seed0_9-10-11] step 4/20 loss 0.3013 lr 4.21e-05 t 1s
+[smoke_retrain_seed0_9-10-11] step 5/20 loss 0.3378 lr 3.95e-05 t 1s
+[smoke_retrain_seed0_9-10-11] step 6/20 loss 0.1178 lr 3.68e-05 t 1s
+[smoke_retrain_seed0_9-10-11] step 7/20 loss 0.3522 lr 3.42e-05 t 1s
+[smoke_retrain_seed0_9-10-11] step 8/20 loss 0.1110 lr 3.16e-05 t 1s
+[smoke_retrain_seed0_9-10-11] step 9/20 loss 0.0469 lr 2.89e-05 t 1s
+[smoke_retrain_seed0_9-10-11] step 10/20 loss 0.0047 lr 2.63e-05 t 2s
+[smoke_retrain_seed0_9-10-11] step 11/20 loss 0.0570 lr 2.37e-05 t 2s
+[smoke_retrain_seed0_9-10-11] step 12/20 loss 0.1767 lr 2.11e-05 t 2s
+[smoke_retrain_seed0_9-10-11] step 13/20 loss 0.0042 lr 1.84e-05 t 2s
+[smoke_retrain_seed0_9-10-11] step 14/20 loss 0.0100 lr 1.58e-05 t 2s
+[smoke_retrain_seed0_9-10-11] step 15/20 loss 0.0648 lr 1.32e-05 t 2s
+[smoke_retrain_seed0_9-10-11] step 16/20 loss 0.0313 lr 1.05e-05 t 2s
+[smoke_retrain_seed0_9-10-11] step 17/20 loss 0.0444 lr 7.89e-06 t 2s
+[smoke_retrain_seed0_9-10-11] step 18/20 loss 0.0509 lr 5.26e-06 t 3s
+[smoke_retrain_seed0_9-10-11] step 19/20 loss 0.1614 lr 2.63e-06 t 3s
+[smoke_retrain_seed0_9-10-11] step 20/20 loss 0.1289 lr 0.00e+00 t 3s
+seed0 retrain 9-10-11 (clean): none 0.878 match 0.979 opp 0.602 neutral 0.880 gap 0.276 (baseline gap 0.646) train 3s, peak 1.72 GiB, 21263616 trainable params
+retrain done
+EXIT 0

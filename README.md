@@ -21,3 +21,7 @@ Log: logs/run_pilot.log.
 Phase 2 (removal map, block swaps between the saved models):
 
     .venv\Scripts\python srcun_swap.py      # swap.py (resumable) + report.py; log: logs/run_swap.log
+
+Night 2 (Phase 2b follow-up swaps + Phase 3 targeted retraining):
+
+    .venv\Scripts\python src\run_night2.py     # swap.py --phase2b, retrain.py (gate first), report.py; log: logs/run_night2.log

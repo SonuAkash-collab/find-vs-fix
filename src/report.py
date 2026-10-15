@@ -190,6 +190,374 @@ def phase2_rule_section(o, sw):
     o.append("")
 
 
+# ---- Phase 2b + Phase 3 (PROJECT_SPEC.md sections of the same names; rules pre-registered 15 Oct)
+LATE_MIN_RATIO = 2.0       # 9-11 removes >= 2x the best other 3-block window
+EMB_MIN_EXTRA_GAP = 0.10   # emb_names+9-10-11 creates >= 0.10 more gap than 9-10-11 alone (case b)
+HALF_MIN_SHARE = 2 / 3     # a half removes >= 2/3 of what the whole-block swap removes
+SPEARMAN_MIN = 0.6
+OTHER_WINDOWS = ["0-1-2", "3-4-5", "6-7-8"]
+HALF_SETS = ["9", "10", "11", "10-11", "9-10-11"]
+A, B, CI, CII = ("a_shortcut_from_clean_same", "b_clean_from_shortcut_same",
+                 "ci_shortcut_from_clean_other", "cii_shortcut_from_shortcut_other")
+
+
+def load_seed_files(R, sub):
+    return [json.load(open(p)) for p in sorted((Path(R) / sub).glob("seed*.json"))]
+
+
+def swap_result(p2, s2, case, name):
+    """One swap result for a seed: Phase 2b file first, then the Phase 2 file. None if missing."""
+    if s2 is not None:
+        r = s2.get("cases", {}).get(case, {}).get("by_set", {}).get(name)
+        if r is not None:
+            return r
+    if p2 is not None:
+        return p2.get("cases", {}).get(case, {}).get("by_blocks", {}).get(name)
+    return None
+
+
+def seed_base(p2, s2):
+    """(G, acc none) of the unswapped shortcut model, from the Phase 2b file if it has it, else Phase 2."""
+    for f in (s2, p2):
+        if f is not None and f"shortcut_seed{f['seed']}" in f.get("baseline", {}):
+            return shortcut_base(f)
+    return None, None
+
+
+def per_seed(vals, n=3):
+    return "/".join("n/a" if v is None else f"{v:.{n}f}" for v in vals)
+
+
+def bar_group(ax, xs, series, width):
+    """series: list of (label, color, per-seed lists per x); draws mean ± std bars with per-seed dots."""
+    k = len(series)
+    for i, (label, color, vals) in enumerate(series):
+        off = (i - (k - 1) / 2) * width
+        for j, (x, v) in enumerate(zip(xs, vals)):
+            v = [u for u in v if u is not None]
+            if not v:
+                continue
+            ax.bar(x + off, np.mean(v), width, yerr=np.std(v) if len(v) > 1 else 0, color=color, alpha=0.8,
+                   capsize=2, label=label)
+            ax.scatter([x + off] * len(v), v, s=6, color="black", zorder=3)
+    handles, labels = ax.get_legend_handles_labels()
+    uniq = dict(zip(labels, handles))
+    ax.legend(uniq.values(), uniq.keys(), fontsize=7)
+
+
+def phase2b_section(o, R, F):
+    p2s = {s["seed"]: s for s in load_swap(R)}
+    s2s = {s["seed"]: s for s in load_seed_files(R, "swap2")}
+    if not s2s:
+        return
+    seeds = sorted(s2s)
+    P = [(p2s.get(s), s2s[s]) for s in seeds]
+    o += ["## Phase 2b: follow-up swaps", "",
+          f"Source: results/swap2/seed*.json (seeds {', '.join(map(str, seeds))}); whole-block 9, 10, 11, 10-11, "
+          "9-10-11 numbers come from results/swap (Phase 2). Rules pre-registered in PROJECT_SPEC.md on 15 Oct before "
+          "any Phase 2b run. Per-seed values are in seed order. G_s = gap of the unswapped shortcut model.", ""]
+    names = {}
+    for s in s2s.values():
+        for case, c in s["cases"].items():
+            names.setdefault(case, [])
+            for n in c["by_set"]:
+                if n not in names[case]:
+                    names[case].append(n)
+    ex = next(iter(s2s.values()))
+    o += [f"Name-token rows swapped for emb_names: ids {ex['name_token_ids']} (A, B and N from data/manifest.json); "
+          f"label rows {ex['label_token_ids']} asserted unchanged.", ""]
+    for case, label in SWAP_CASES.items():
+        if case not in names:
+            continue
+        o += [f"### {label}", "", "| set | gap none−opp | none | match | opposite | neutral |", "|---|---|---|---|---|---|"]
+        for n in names[case]:
+            rs = [s2.get("cases", {}).get(case, {}).get("by_set", {}).get(n) for _, s2 in P]
+            if None in rs:
+                o.append(f"| {n} | incomplete ({sum(r is not None for r in rs)}/{len(rs)} seeds) | | | | |")
+                continue
+            o.append(f"| {n} | {cell([r['gap_none_minus_opposite'] for r in rs])} | "
+                     + " | ".join(cell([r["accuracy"][v] for r in rs]) for v in VERSIONS) + " |")
+        o.append("")
+
+    # Phase 2 rule on every Phase 2b result
+    o += ["### Phase 2 reading rule applied to the Phase 2b swaps", "",
+          "| set | (a) removes | (c-i) removes | (c-ii) not just breaking | (b) creates |", "|---|---|---|---|---|"]
+    all_names = []
+    for c in names.values():
+        all_names += [n for n in c if n not in all_names]
+    for n in all_names:
+        row = []
+        for case, fn in ((A, "rem"), (CI, "rem"), (CII, "keep"), (B, "create")):
+            if n not in names.get(case, []):
+                row.append("—")
+                continue
+            fl = []
+            for p2, s2 in P:
+                r = swap_result(None, s2, case, n)
+                G, n0 = seed_base(p2, s2)
+                fl.append(None if r is None or G is None else
+                          rule_removes(r, G, n0) if fn == "rem" else rule_keeps(r, G) if fn == "keep" else rule_creates(r))
+            row.append(verdict(fl))
+        o.append(f"| {n} | " + " | ".join(row) + " |")
+    o.append("")
+
+    # rule (a): late-specific
+    o += ["### Rule: are blocks 9-11 \"late-specific\"? (case a)", "",
+          f"PASS for a seed if fraction removed by 9-10-11 ≥ {LATE_MIN_RATIO:g} × the best of "
+          f"{', '.join(OTHER_WINDOWS)}.", "",
+          "| seed | fraction removed by 9-10-11 | best other window | its fraction | ratio | pass |", "|---|---|---|---|---|---|"]
+    fl = []
+    for (p2, s2), s in zip(P, seeds):
+        G, _ = seed_base(p2, s2)
+        r911 = swap_result(p2, None, A, "9-10-11")
+        others = {w: swap_result(None, s2, A, w) for w in OTHER_WINDOWS}
+        if G is None or r911 is None or None in others.values():
+            fl.append(None)
+            o.append(f"| {s} | incomplete | | | | |")
+            continue
+        f911 = frac_removed(r911, shortcut_base(p2)[0])
+        fo = {w: frac_removed(r, G) for w, r in others.items()}
+        bw = max(fo, key=fo.get)
+        ok = f911 >= LATE_MIN_RATIO * fo[bw]
+        fl.append(ok)
+        ratio = f"{f911 / fo[bw]:.2f}" if fo[bw] > 0 else "n/a (best other ≤ 0)"
+        o.append(f"| {s} | {f911:.3f} | {bw} | {fo[bw]:.3f} | {ratio} | {'PASS' if ok else 'FAIL'} |")
+    o += ["", f"Verdict: {verdict(fl)}", ""]
+
+    # rule (b): name embeddings
+    o += ["### Rule: do the name embeddings carry part of the shortcut? (case b)", "",
+          f"PASS for a seed if gap(emb_names+9-10-11) − gap(9-10-11 alone) ≥ {EMB_MIN_EXTRA_GAP}.", "",
+          "| seed | gap emb_names | gap 9-10-11 (Phase 2) | gap emb_names+9-10-11 | extra | gap all12 | pass |",
+          "|---|---|---|---|---|---|---|"]
+    fl = []
+    for (p2, s2), s in zip(P, seeds):
+        re_, r911, rboth, r12 = (swap_result(None, s2, B, "emb_names"), swap_result(p2, None, B, "9-10-11"),
+                                swap_result(None, s2, B, "emb_names+9-10-11"), swap_result(None, s2, B, "all12"))
+        if r911 is None or rboth is None:
+            fl.append(None)
+            o.append(f"| {s} | incomplete | | | | | |")
+            continue
+        extra = rboth["gap_none_minus_opposite"] - r911["gap_none_minus_opposite"]
+        ok = extra >= EMB_MIN_EXTRA_GAP
+        fl.append(ok)
+        g = lambda r: fmt(r["gap_none_minus_opposite"]) if r else "n/a"
+        o.append(f"| {s} | {g(re_)} | {g(r911)} | {g(rboth)} | {extra:.3f} | {g(r12)} | {'PASS' if ok else 'FAIL'} |")
+    o += ["", f"Verdict: {verdict(fl)}", ""]
+
+    # rule (c): attention vs MLP
+    o += ["### Rule: attention or MLP? (case a; c-ii as control)", "",
+          f"Removal = G_s − gap. A half \"carries it\" if its removal ≥ {HALF_MIN_SHARE:.2f} × the whole-block removal "
+          "(Phase 2), in all seeds. Share columns: half removal / whole removal, per seed.", "",
+          "| blocks | whole removal | attn share | mlp share | attn carries | mlp carries | reading | "
+          "c-ii attn not breaking | c-ii mlp not breaking |", "|---|---|---|---|---|---|---|---|---|"]
+    for bs in HALF_SETS:
+        whole, sh, fl = [], {"attn": [], "mlp": []}, {"attn": [], "mlp": []}
+        ck = {"attn": [], "mlp": []}
+        for p2, s2 in P:
+            G, _ = seed_base(p2, s2)
+            rw = swap_result(p2, None, A, bs)
+            W = None if rw is None or G is None else G - rw["gap_none_minus_opposite"]
+            whole.append(W)
+            for h in ("attn", "mlp"):
+                rh = swap_result(None, s2, A, f"{h}:{bs}")
+                if rh is None or W is None:
+                    sh[h].append(None)
+                    fl[h].append(None)
+                else:
+                    share = (G - rh["gap_none_minus_opposite"]) / W if W > 0 else float("nan")
+                    sh[h].append(share)
+                    fl[h].append(bool(share >= HALF_MIN_SHARE))
+                rc = swap_result(None, s2, CII, f"{h}:{bs}")
+                ck[h].append(None if rc is None or G is None else rule_keeps(rc, G))
+        if None in fl["attn"] + fl["mlp"]:
+            reading = "incomplete"
+        else:
+            carries = [h for h in ("attn", "mlp") if all(fl[h])]
+            reading = " and ".join(carries) + (" (each alone)" if len(carries) == 2 else "") if carries else "both needed"
+        o.append(f"| {bs} | {per_seed(whole)} | {per_seed(sh['attn'], 2)} | {per_seed(sh['mlp'], 2)} | "
+                 f"{verdict(fl['attn'])} | {verdict(fl['mlp'])} | {reading} | {verdict(ck['attn'])} | {verdict(ck['mlp'])} |")
+    o.append("")
+
+    # ---- figure
+    fig, axes = plt.subplots(1, 3, figsize=(17, 4.8), gridspec_kw={"width_ratios": [1.4, 1, 1]})
+    sets1 = ["0-1-2", "3-4-5", "6-7-8", "7-8", "10-11", "9-10-11", "emb_names", "emb_names+9-10-11", "all12"]
+    x = np.arange(len(sets1))
+
+    def fr(case, n, p2, s2, from_p2=False):
+        G, _ = seed_base(p2, s2)
+        r = swap_result(p2, None if from_p2 else s2, case, n)
+        return None if r is None or G is None else frac_removed(r, G)
+
+    series = []
+    for case, col, lab in ((A, SWAP_COLORS[A], "(a) clean twin's parts"), (CI, SWAP_COLORS[CI], "(c-i) other clean"),
+                           (CII, SWAP_COLORS[CII], "(c-ii) other shortcut (control)")):
+        series.append((lab, col, [[fr(case, n, p2, s2) for p2, s2 in P] for n in sets1]))
+    bar_group(axes[0], x, series, 0.27)
+    axes[0].axhline(1 - REMOVE_MAX_FRAC, color="black", ls="--", lw=0.8)
+    axes[0].set_xticks(x)
+    axes[0].set_xticklabels([n.replace("emb_names", "emb").replace("-", "–") for n in sets1], fontsize=7, rotation=20)
+    axes[0].set_ylabel("fraction of shortcut gap removed")
+    axes[0].set_title("Shortcut model, parts swapped in (dashed = 'removes' line)", fontsize=9)
+    axes[0].grid(alpha=0.3, axis="y")
+
+    sets2 = ["0-1-2", "3-4-5", "6-7-8", "7-8", "9-10-11", "emb_names", "emb_names+9-10-11", "all12"]
+    x2 = np.arange(len(sets2))
+    vals = [[(lambda r: None if r is None else r["gap_none_minus_opposite"])(swap_result(p2, s2, B, n))
+             for p2, s2 in P] for n in sets2]
+    bar_group(axes[1], x2, [("(b) clean model + shortcut parts", SWAP_COLORS[B], vals)], 0.6)
+    axes[1].axhline(CREATE_MIN_GAP, color="black", ls="--", lw=0.8)
+    Gs = [seed_base(p2, s2)[0] for p2, s2 in P]
+    axes[1].axhline(np.mean([g for g in Gs if g is not None]), color="black", ls=":", lw=1)
+    axes[1].set_xticks(x2)
+    axes[1].set_xticklabels([n.replace("emb_names", "emb").replace("-", "–") for n in sets2], fontsize=7, rotation=20)
+    axes[1].set_ylabel("gap created: acc(none) − acc(opposite)")
+    axes[1].set_title("Clean model, shortcut parts swapped in\n(dashed = 0.20 'creates' line, dotted = real shortcut model)",
+                      fontsize=9)
+    axes[1].grid(alpha=0.3, axis="y")
+
+    x3 = np.arange(len(HALF_SETS))
+    series = [("whole block(s)", "#444444", [[fr(A, bs, p2, s2, from_p2=True) for p2, s2 in P] for bs in HALF_SETS]),
+              ("attention half", "#2a7ab0", [[fr(A, f"attn:{bs}", p2, s2) for p2, s2 in P] for bs in HALF_SETS]),
+              ("MLP half", "#e09f3e", [[fr(A, f"mlp:{bs}", p2, s2) for p2, s2 in P] for bs in HALF_SETS])]
+    bar_group(axes[2], x3, series, 0.27)
+    axes[2].set_xticks(x3)
+    axes[2].set_xticklabels([b.replace("-", "–") for b in HALF_SETS], fontsize=8)
+    axes[2].set_xlabel("block(s), case (a)")
+    axes[2].set_ylabel("fraction of shortcut gap removed")
+    axes[2].set_title("Attention vs MLP half (from the clean twin)", fontsize=9)
+    axes[2].grid(alpha=0.3, axis="y")
+    fig.suptitle(f"Phase 2b follow-up swaps (bars = mean ± std over {len(seeds)} seeds, dots = seeds)")
+    fig.tight_layout()
+    fig.savefig(F / "swap2_map.png", dpi=150)
+    plt.close(fig)
+
+
+RETRAIN_ORDER = [str(b) for b in range(12)] + ["0-1-2", "3-4-5", "6-7-8", "9-10-11", "10-11", "all"]
+CONTROLS = ["ctrl_shortcut:9-10-11", "ctrl_shortcut:all"]
+
+
+def spearman(x, y):
+    from scipy.stats import spearmanr
+    return float(spearmanr(x, y).statistic)
+
+
+def phase3_section(o, R, F):
+    rts = {s["seed"]: s for s in load_seed_files(R, "retrain")}
+    if not rts:
+        return
+    p2s = {s["seed"]: s for s in load_swap(R)}
+    s2s = {s["seed"]: s for s in load_seed_files(R, "swap2")}
+    seeds = sorted(rts)
+    o += ["## Phase 3: targeted retraining", "",
+          f"Source: results/retrain/seed*.json (seeds {', '.join(map(str, seeds))}). Start = shortcut_seed<s>; only "
+          "the listed blocks are trained (wte, wpe, ln_f, lm_head and all other blocks frozen and checked "
+          "bit-identical afterwards); 1 epoch on train_clean.jsonl (controls: train_shortcut.jsonl), pilot settings, "
+          "seed = s. Rules pre-registered in PROJECT_SPEC.md on 15 Oct before any Phase 3 run. Per-seed values in seed order.", "",
+          "Unswapped start models (G_s): " + ", ".join(
+              f"seed {s}: gap {rts[s]['baseline']['gap_none_minus_opposite']:.3f}, none "
+              f"{rts[s]['baseline']['accuracy']['none']:.3f}" for s in seeds), ""]
+    if 0 in rts and "all" in rts[0]["runs"]:
+        G0 = rts[0]["baseline"]["gap_none_minus_opposite"]
+        g = rts[0]["runs"]["all"]["gap_none_minus_opposite"]
+        o += [f"**Gate** (seed 0, retrain all blocks): gap {g:.3f} vs limit {REMOVE_MAX_FRAC:.0%} × {G0:.3f} = "
+              f"{REMOVE_MAX_FRAC * G0:.3f} → {'PASS' if g <= REMOVE_MAX_FRAC * G0 else 'FAIL (Phase 3 stopped here)'}.", ""]
+    o += ["| blocks trained | data | gap none−opp | none | match | opposite | neutral | fraction removed | rule |",
+          "|---|---|---|---|---|---|---|---|---|"]
+    for n in RETRAIN_ORDER + CONTROLS:
+        rs = [rts[s]["runs"].get(n) for s in seeds]
+        if all(r is None for r in rs):
+            continue
+        if None in rs:
+            o.append(f"| {n} | | incomplete ({sum(r is not None for r in rs)}/{len(rs)} seeds) | | | | | | |")
+            continue
+        bases = [rts[s]["baseline"] for s in seeds]
+        fracs = [frac_removed(r, b["gap_none_minus_opposite"]) for r, b in zip(rs, bases)]
+        if n in CONTROLS:
+            rule = "keeps shortcut: " + verdict([rule_keeps(r, b["gap_none_minus_opposite"]) for r, b in zip(rs, bases)])
+        else:
+            rule = "removes: " + verdict([rule_removes(r, b["gap_none_minus_opposite"], b["accuracy"]["none"])
+                                          for r, b in zip(rs, bases)])
+        data = "shortcut" if n in CONTROLS else "clean"
+        o.append(f"| {n} | {data} | {cell([r['gap_none_minus_opposite'] for r in rs])} | "
+                 + " | ".join(cell([r["accuracy"][v] for r in rs]) for v in VERSIONS)
+                 + f" | {per_seed(fracs)} | {rule} |")
+    o.append("")
+
+    # Spearman: swap (case a, Phase 2 single blocks) vs retrain, across the 12 single blocks
+    o += ["### Rule: do swap and retrain agree on where to fix it?", "",
+          f"Spearman correlation across the 12 single blocks between fraction removed by swap (case a, results/swap) "
+          f"and by retraining. PASS for a seed if ≥ {SPEARMAN_MIN}.", "",
+          "| seed | Spearman | pass |", "|---|---|---|"]
+    fl = []
+    for s in seeds:
+        p2 = p2s.get(s)
+        singles = [str(b) for b in range(12)]
+        rr = [rts[s]["runs"].get(b) for b in singles]
+        sr = [swap_result(p2, None, A, b) for b in singles]
+        if p2 is None or None in rr or None in sr:
+            fl.append(None)
+            o.append(f"| {s} | incomplete | |")
+            continue
+        Gs, Gr = shortcut_base(p2)[0], rts[s]["baseline"]["gap_none_minus_opposite"]
+        rho = spearman([frac_removed(r, Gs) for r in sr], [frac_removed(r, Gr) for r in rr])
+        fl.append(rho >= SPEARMAN_MIN)
+        o.append(f"| {s} | {rho:.3f} | {'PASS' if rho >= SPEARMAN_MIN else 'FAIL'} |")
+    o += ["", f"Verdict: {verdict(fl)}", ""]
+
+    # cost
+    o += ["### Training cost per retrain run", "",
+          "| blocks trained | trainable params | train wall time s (per seed) | peak VRAM GiB, training (per seed) | "
+          "peak VRAM GiB incl. eval (per seed) | final train loss, last 50 steps (per seed) |", "|---|---|---|---|---|---|"]
+    peaks, walls = [], []
+    for n in RETRAIN_ORDER + CONTROLS:
+        rs = [rts[s]["runs"].get(n) for s in seeds]
+        got = [r for r in rs if r is not None]
+        if not got:
+            continue
+        t = [r["train"]["wall_time_s"] if r else None for r in rs]
+        pk = [r["train"]["peak_vram_allocated_gib"] if r else None for r in rs]
+        pe = [r["peak_vram_allocated_gib_incl_eval"] if r else None for r in rs]
+        fl_ = [r["train"]["final_loss_mean_last50"] if r else None for r in rs]
+        peaks += [v for v in pe if v is not None]
+        walls += [r["wall_time_s_incl_eval"] for r in got]
+        o.append(f"| {n} | {got[0]['train']['n_trainable_params']:,} | {per_seed(t, 0)} | {per_seed(pk, 2)} | "
+                 f"{per_seed(pe, 2)} | {per_seed(fl_, 4)} |")
+    o += ["", f"Total retrain wall time incl. evaluation: {sum(walls) / 3600:.2f} h over {len(walls)} runs; "
+          f"highest peak VRAM allocated: {max(peaks):.2f} GiB.", ""]
+
+    # ---- figure: retrain removal next to swap removal
+    names = RETRAIN_ORDER
+    x = np.arange(len(names) + len(CONTROLS))
+
+    def swap_frac(n, s):
+        p2, s2 = p2s.get(s), s2s.get(s)
+        G, _ = seed_base(p2, s2)
+        r = swap_result(p2, s2, A, "all12" if n == "all" else n)
+        return None if r is None or G is None else frac_removed(r, G)
+
+    def rt_frac(n, s):
+        r = rts[s]["runs"].get(n)
+        return None if r is None else frac_removed(r, rts[s]["baseline"]["gap_none_minus_opposite"])
+
+    fig, ax = plt.subplots(figsize=(14, 4.8))
+    bar_group(ax, x, [("swap in clean twin's block(s) (case a)", "#2a7ab0",
+                       [[swap_frac(n, s) for s in seeds] for n in names] + [[None]] * len(CONTROLS)),
+                      ("retrain only these block(s), 1 epoch", "#d1495b",
+                       [[rt_frac(n, s) for s in seeds] for n in names + CONTROLS])], 0.38)
+    ax.axhline(1 - REMOVE_MAX_FRAC, color="black", ls="--", lw=0.8)
+    ax.axhline(0, color="black", lw=0.6)
+    ax.set_xticks(x)
+    ax.set_xticklabels([n.replace("-", "–") for n in names] + ["ctrl\n9–11", "ctrl\nall"], fontsize=8)
+    ax.set_xlabel("block(s), counted from 0 ('all' swap = all 12 blocks; ctrl = retrained on the shortcut data)")
+    ax.set_ylabel("fraction of shortcut gap removed")
+    ax.set_title(f"Where can the shortcut be fixed? Swap vs targeted retraining (mean ± std over {len(seeds)} seeds, "
+                 "dots = seeds; dashed = 'removes' line)", fontsize=10)
+    ax.grid(alpha=0.3, axis="y")
+    fig.tight_layout()
+    fig.savefig(F / "retrain_map.png", dpi=150)
+    plt.close(fig)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--results", default=str(ROOT / "results"))
@@ -379,10 +747,13 @@ def main():
         o.append("")
 
     swap_section(o, R)
+    phase2b_section(o, R, F)
+    phase3_section(o, R, F)
 
     o += ["## Figures", "", "![lens accuracy](figures/lens_accuracy.png)", "", "![follow rate](figures/follow_rate.png)", ""]
-    if (F / "swap_map.png").exists():
-        o += ["![swap map](figures/swap_map.png)", ""]
+    for fn in ("swap_map", "swap2_map", "retrain_map"):
+        if (F / f"{fn}.png").exists():
+            o += [f"![{fn.replace('_', ' ')}](figures/{fn}.png)", ""]
     Path(args.out).write_text("\n".join(o), encoding="utf-8")
     print(f"wrote {args.out}, {F / 'lens_accuracy.png'}, {F / 'follow_rate.png'}")
 

@@ -1,0 +1,79 @@
+{
+  "seed": 0,
+  "other_seed": 1,
+  "name_token_ids": [
+    309,
+    808,
+    2744,
+    3304,
+    3461,
+    5404,
+    10438,
+    11023,
+    11252,
+    12528,
+    20637,
+    33268
+  ],
+  "label_token_ids": {
+    "positive": 3967,
+    "negative": 4633
+  },
+  "note": "Phase 2b. Editor keeps its embeddings, ln_f and lm_head, except emb_names (name rows of wte only; wte is tied to lm_head; label rows asserted unchanged)",
+  "baseline": {},
+  "cases": {
+    "a_shortcut_from_clean_same": {
+      "editor": "shortcut_seed0",
+      "donor": "clean_seed0",
+      "by_set": {
+        "attn:9": {
+          "accuracy": {
+            "none": 0.875,
+            "match": 0.9965000152587891,
+            "opposite": 0.2745000123977661,
+            "neutral": 0.8784999847412109
+          },
+          "mean_d": {
+            "none": 0.09473954141139984,
+            "match": -0.5344448685646057,
+            "opposite": -1.4170511960983276,
+            "neutral": 0.5781012177467346
+          },
+          "gap_none_minus_opposite": 0.6004999876022339,
+          "kind": "attn",
+          "blocks": [
+            9
+          ],
+          "n_tensors_swapped": 6
+        }
+      }
+    },
+    "b_clean_from_shortcut_same": {
+      "editor": "clean_seed0",
+      "donor": "shortcut_seed0",
+      "by_set": {
+        "emb_names": {
+          "accuracy": {
+            "none": 0.8755000233650208,
+            "match": 0.8784999847412109,
+            "opposite": 0.8794999718666077,
+            "neutral": 0.8794999718666077
+          },
+          "mean_d": {
+            "none": 0.15035034716129303,
+            "match": -0.05640052631497383,
+            "opposite": -0.064612977206707,
+            "neutral": -0.019113339483737946
+          },
+          "gap_none_minus_opposite": -0.003999948501586914,
+          "kind": "emb_names",
+          "blocks": [],
+          "n_tensors_swapped": 0,
+          "n_wte_rows_swapped": 12,
+          "label_rows_unchanged": true,
+          "name_rows_l2_diff_editor_vs_donor": 0.31796252727508545
+        }
+      }
+    }
+  }
+}
