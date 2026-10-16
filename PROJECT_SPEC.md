@@ -233,3 +233,25 @@ Code: src/retrain.py -> results/retrain/seed<s>.json (resumable). No weights sav
 - Driver: src/run_night2.py (Phase 2b, Phase 3 gate, rest of Phase 3, report.py), offline, log
   logs/run_night2.log. A crashed step is restarted once (it resumes); a second crash = STOP.
   VRAM under 4.5 GB. report.py adds RESULTS.md sections, figures/swap2_map.png, figures/retrain_map.png.
+
+## Phase 3b: retraining budget (pre-registered 16 Oct, before any Phase 3b run)
+Question: Phase 3 retraining (1 epoch = 625 steps) removed the shortcut from every block, so it hit its ceiling.
+Do late blocks fix it FASTER?
+Code: src/retrain.py --budget -> results/retrain_budget/seed<s>.json (resumable). No weights saved.
+- Same setup as Phase 3: start from runs/shortcut_seed<s>/model, train only transformer.h.<b>.* of the chosen
+  blocks on data/train_clean.jsonl, same seed (data order + dropout), same lr schedule as the 1-epoch run
+  (schedule built for 625 total steps, 38 warmup steps), but STOP after step 200. Steps 1-200 are then the start
+  of the original 1-epoch run. Evaluation runs in eval mode (no dropout) and does not touch the training RNG or
+  data order.
+- Evaluate on "none" and "opposite" only, at steps 25, 50, 100 and 200. Step 625 = the existing Phase 3 result
+  (results/retrain). Gap and G_s as in Phase 2/3 (G_s from the unswapped shortcut_seed<s>).
+- Block sets: single blocks 0, 2, 4, 6, 8, 9, 10, 11; windows 0-1-2, 6-7-8, 9-10-11. Seeds 0, 1, 2. 33 runs.
+- Saved per run: config, train loss, the eval at each step, wall time, peak VRAM allocated AND reserved.
+- Before running: fix the Phase 3 VRAM bug (free the baseline model's GPU copy, empty the CUDA cache between runs).
+  Smoke test 1 run (20 steps) first.
+- Rule "location matters for fixing": at step 100, the mean fraction of gap removed by single blocks {9, 10, 11}
+  is at least 0.20 higher than the mean by single blocks {0, 2, 4}, in all 3 seeds.
+- Also reported (no pass/fail): per seed and per step (25, 50, 100, 200, 625), the Spearman correlation across
+  the 8 single blocks between swap removal (Phase 2, case a, results/swap) and retrain removal.
+- report.py: RESULTS.md section and figures/retrain_budget.png (fraction removed vs step, one line per block set,
+  mean +/- std over seeds).
