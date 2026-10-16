@@ -1,0 +1,93 @@
+{
+  "seed": 0,
+  "start_model": "shortcut_seed0",
+  "note": "Phase 3 setup (lr schedule for 625 steps, same seed and data order), stopped at step 20; only transformer.h.<b>.* of the chosen blocks trained (others asserted bit-identical). Eval on none/opposite only, eval mode. Baseline = Phase 3 baseline (results/retrain). No weights saved.",
+  "eval_steps": [
+    10,
+    20
+  ],
+  "baseline": {
+    "accuracy": {
+      "none": 0.8744999766349792,
+      "match": 0.9984999895095825,
+      "opposite": 0.2280000001192093,
+      "neutral": 0.878000020980835
+    },
+    "mean_d": {
+      "none": 0.08721541613340378,
+      "match": -0.6784541606903076,
+      "opposite": -1.6594629287719727,
+      "neutral": 0.5367554426193237
+    },
+    "gap_none_minus_opposite": 0.64649997651577
+  },
+  "runs": {
+    "9-10-11": {
+      "blocks": [
+        9,
+        10,
+        11
+      ],
+      "train_data": "train_clean.jsonl",
+      "seed": 0,
+      "evals": {
+        "10": {
+          "accuracy": {
+            "none": 0.8740000128746033,
+            "opposite": 0.23100000619888306
+          },
+          "mean_d": {
+            "none": 0.08522845804691315,
+            "opposite": -1.6081345081329346
+          },
+          "gap_none_minus_opposite": 0.6430000066757202
+        },
+        "20": {
+          "accuracy": {
+            "none": 0.8759999871253967,
+            "opposite": 0.2460000067949295
+          },
+          "mean_d": {
+            "none": 0.004477826878428459,
+            "opposite": -1.3725720643997192
+          },
+          "gap_none_minus_opposite": 0.6299999803304672
+        }
+      },
+      "config": {
+        "lr": 5e-05,
+        "schedule_total_steps": 625,
+        "stop_at": 20,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32"
+      },
+      "train": {
+        "wall_time_s": 43.04349946975708,
+        "peak_vram_allocated_gib": 1.5978198051452637,
+        "peak_vram_reserved_gib": 2.76953125,
+        "steps": 20,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.14291420113295317,
+        "loss_first10": 0.13248611576855182,
+        "loss_last10": 0.1533422864973545,
+        "n_trainable_params": 21263616,
+        "loss_log": [
+          {
+            "step": 20,
+            "loss": 0.14291420113295317
+          }
+        ]
+      },
+      "eval_time_s": 39.6486542224884,
+      "train_time_s_excl_eval": 3.3948452472686768,
+      "peak_vram_allocated_gib_incl_eval": 1.5978198051452637,
+      "peak_vram_reserved_gib_incl_eval": 2.76953125,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 36,
+      "wall_time_s_incl_eval": 44.4000358581543
+    }
+  }
+}

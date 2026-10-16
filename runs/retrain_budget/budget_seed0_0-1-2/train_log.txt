@@ -1,0 +1,4 @@
+step 50/625 loss 0.1529 lr 4.90e-05 t 31s
+step 100/625 loss 0.1136 lr 4.47e-05 t 63s
+step 150/625 loss 0.0493 lr 4.05e-05 t 95s
+step 200/625 loss 0.0854 lr 3.62e-05 t 105s

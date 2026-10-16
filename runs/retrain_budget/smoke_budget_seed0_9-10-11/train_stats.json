@@ -1,0 +1,17 @@
+{
+  "wall_time_s": 43.04349946975708,
+  "peak_vram_allocated_gib": 1.5978198051452637,
+  "peak_vram_reserved_gib": 2.76953125,
+  "steps": 20,
+  "schedule_total_steps": 625,
+  "final_loss_mean_last50": 0.14291420113295317,
+  "loss_first10": 0.13248611576855182,
+  "loss_last10": 0.1533422864973545,
+  "n_trainable_params": 21263616,
+  "loss_log": [
+    {
+      "step": 20,
+      "loss": 0.14291420113295317
+    }
+  ]
+}

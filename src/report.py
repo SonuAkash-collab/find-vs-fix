@@ -558,6 +558,180 @@ def phase3_section(o, R, F):
     plt.close(fig)
 
 
+# ---- Phase 3b (PROJECT_SPEC.md "Phase 3b: retraining budget")
+BUDGET_SINGLES = ["0", "2", "4", "6", "8", "9", "10", "11"]
+BUDGET_WINDOWS = ["0-1-2", "6-7-8", "9-10-11"]
+BUDGET_LATE, BUDGET_EARLY = ["9", "10", "11"], ["0", "2", "4"]
+BUDGET_RULE_STEP = "100"
+BUDGET_MIN_DIFF = 0.20
+BUDGET_FINAL = "625"  # = Phase 3 result (results/retrain)
+
+
+def phase3b_section(o, R, F):
+    bus = {s["seed"]: s for s in load_seed_files(R, "retrain_budget")}
+    if not bus:
+        return
+    rts = {s["seed"]: s for s in load_seed_files(R, "retrain")}
+    p2s = {s["seed"]: s for s in load_swap(R)}
+    seeds = sorted(bus)
+    steps = [str(x) for x in bus[seeds[0]]["eval_steps"]] + [BUDGET_FINAL]
+    names = BUDGET_SINGLES + BUDGET_WINDOWS
+
+    def res(n, s, st):
+        """Result dict (accuracy + gap) at a step; step 625 comes from Phase 3. None if missing."""
+        if st == BUDGET_FINAL:
+            return rts.get(s, {}).get("runs", {}).get(n)
+        return bus[s]["runs"].get(n, {}).get("evals", {}).get(st)
+
+    def G(s):
+        return bus[s]["baseline"]["gap_none_minus_opposite"]
+
+    def frac(n, s, st):
+        r = res(n, s, st)
+        return None if r is None else frac_removed(r, G(s))
+
+    o += ["## Phase 3b: retraining budget", "",
+          f"Source: results/retrain_budget/seed*.json (seeds {', '.join(map(str, seeds))}); step {BUDGET_FINAL} = "
+          "results/retrain (Phase 3). Same runs as Phase 3 (start = shortcut_seed<s>, only the listed blocks trained "
+          "on train_clean.jsonl, lr schedule built for 625 steps, seed = s) but stopped at step 200 and evaluated on "
+          "'none' and 'opposite' at the listed steps. Rules pre-registered in PROJECT_SPEC.md on 16 Oct before any Phase 3b "
+          "run. Per-seed values in seed order.", "",
+          "Start models (G_s): " + ", ".join(f"seed {s}: gap {G(s):.3f}, none "
+                                             f"{bus[s]['baseline']['accuracy']['none']:.3f}" for s in seeds), "",
+          "### Fraction of the gap removed, by training step", "",
+          "Cells: mean (per seed). 1 = shortcut gone, 0 = no change.", "",
+          "| blocks trained | " + " | ".join(f"step {st}" for st in steps) + " |",
+          "|---|" + "---|" * len(steps)]
+    for n in names:
+        row = []
+        for st in steps:
+            v = [frac(n, s, st) for s in seeds]
+            row.append("n/a" if None in v else f"{np.mean(v):.3f} ({per_seed(v)})")
+        o.append(f"| {n} | " + " | ".join(row) + " |")
+    o += ["", "### acc(none) by training step (start models: "
+          + "/".join(f"{bus[s]['baseline']['accuracy']['none']:.3f}" for s in seeds) + ")", "",
+          "| blocks trained | " + " | ".join(f"step {st}" for st in steps) + " |",
+          "|---|" + "---|" * len(steps)]
+    for n in names:
+        row = []
+        for st in steps:
+            v = [None if res(n, s, st) is None else res(n, s, st)["accuracy"]["none"] for s in seeds]
+            row.append("n/a" if None in v else per_seed(v))
+        o.append(f"| {n} | " + " | ".join(row) + " |")
+
+    # rule
+    o += ["", "### Rule: does location matter for fixing?", "",
+          f"At step {BUDGET_RULE_STEP}: mean fraction removed by single blocks {{{', '.join(BUDGET_LATE)}}} minus mean "
+          f"by single blocks {{{', '.join(BUDGET_EARLY)}}}. PASS for a seed if >= {BUDGET_MIN_DIFF}.", "",
+          "| seed | late mean | early mean | difference | pass |", "|---|---|---|---|---|"]
+    fl = []
+    for s in seeds:
+        late = [frac(n, s, BUDGET_RULE_STEP) for n in BUDGET_LATE]
+        early = [frac(n, s, BUDGET_RULE_STEP) for n in BUDGET_EARLY]
+        if None in late + early:
+            fl.append(None)
+            o.append(f"| {s} | incomplete | | | |")
+            continue
+        d = np.mean(late) - np.mean(early)
+        fl.append(bool(d >= BUDGET_MIN_DIFF))
+        o.append(f"| {s} | {np.mean(late):.3f} | {np.mean(early):.3f} | {d:.3f} | {'PASS' if fl[-1] else 'FAIL'} |")
+    o += ["", f"Verdict \"location matters for fixing\": {verdict(fl)}", ""]
+
+    # spearman per seed and step
+    o += ["### Spearman: swap removal (Phase 2, case a) vs retrain removal, across the 8 single blocks", "",
+          "Reported, no pass/fail.", "", "| seed | " + " | ".join(f"step {st}" for st in steps) + " |",
+          "|---|" + "---|" * len(steps)]
+    for s in seeds:
+        p2 = p2s.get(s)
+        row = []
+        for st in steps:
+            sr = [swap_result(p2, None, A, n) for n in BUDGET_SINGLES] if p2 else [None]
+            rr = [frac(n, s, st) for n in BUDGET_SINGLES]
+            if None in sr or None in rr:
+                row.append("n/a")
+                continue
+            Gs = shortcut_base(p2)[0]
+            row.append(f"{spearman([frac_removed(r, Gs) for r in sr], rr):.3f}")
+        o.append(f"| {s} | " + " | ".join(row) + " |")
+    o.append("")
+
+    # do steps 1-200 repeat the start of the Phase 3 run? compare the train loss logged every 50 steps
+    diffs = []
+    for s in seeds:
+        for n, r in bus[s]["runs"].items():
+            p3 = rts.get(s, {}).get("runs", {}).get(n)
+            if p3 is None:
+                continue
+            a = {x["step"]: x["loss"] for x in r["train"]["loss_log"]}
+            b = {x["step"]: x["loss"] for x in p3["train"]["loss_log"]}
+            diffs += [abs(a[k] - b[k]) for k in a if k in b]
+    if diffs:
+        o += [f"Check that steps 1-200 repeat the start of the Phase 3 run: train loss (mean over each 50-step "
+              f"window, steps 50/100/150/200) differs from Phase 3 by at most {max(diffs):.2e} (mean "
+              f"{np.mean(diffs):.2e}, {len(diffs)} comparisons).", ""]
+
+    # cost
+    o += ["### Cost per Phase 3b run", "",
+          "| blocks trained | train s excl. eval (per seed) | eval s (per seed) | peak VRAM allocated GiB (per seed) | "
+          "peak VRAM reserved GiB (per seed) |", "|---|---|---|---|---|"]
+    walls, al, rv = [], [], []
+    for n in names:
+        rs = [bus[s]["runs"].get(n) for s in seeds]
+        if all(r is None for r in rs):
+            continue
+
+        def g(k):
+            return [r[k] if r else None for r in rs]
+
+        al += [v for v in g("peak_vram_allocated_gib_incl_eval") if v is not None]
+        rv += [v for v in g("peak_vram_reserved_gib_incl_eval") if v is not None]
+        walls += [r["wall_time_s_incl_eval"] for r in rs if r]
+        o.append(f"| {n} | {per_seed(g('train_time_s_excl_eval'), 0)} | {per_seed(g('eval_time_s'), 0)} | "
+                 f"{per_seed(g('peak_vram_allocated_gib_incl_eval'), 2)} | "
+                 f"{per_seed(g('peak_vram_reserved_gib_incl_eval'), 2)} |")
+    o += ["", f"Total Phase 3b wall time incl. evaluation: {sum(walls) / 3600:.2f} h over {len(walls)} runs. Highest "
+          f"peak VRAM: allocated {max(al):.2f} GiB, reserved {max(rv):.2f} GiB (limit 4.5 GB = "
+          f"{4.5e9 / 2**30:.2f} GiB).", ""]
+
+    # figure: fraction removed vs step
+    xs = [int(st) for st in steps]
+    fig, axes = plt.subplots(1, 2, figsize=(13, 4.8), sharey=True)
+    cmap = plt.get_cmap("viridis")
+    panels = ((axes[0], BUDGET_SINGLES, "single blocks"),
+              (axes[1], BUDGET_WINDOWS + ["0", "9"], "3-block windows (single blocks 0 and 9 dotted, for reference)"))
+    for ax, group, title in panels:
+        for n in group:
+            vals = [[frac(n, s, st) for s in seeds] for st in steps]
+            keep = [i for i, v in enumerate(vals) if None not in v]
+            if not keep:
+                continue
+            m = np.array([np.mean(vals[i]) for i in keep])
+            sd = np.array([np.std(vals[i]) for i in keep])
+            x = [xs[i] for i in keep]
+            c = cmap(int(n.split("-")[-1]) / 11)
+            ls = ":" if (ax is axes[1] and n in BUDGET_SINGLES) else "-"
+            ax.plot(x, m, ls, marker="o", ms=3, color=c,
+                    label=f"block{'s' if '-' in n else ''} {n.replace('-', '–')}")
+            ax.fill_between(x, m - sd, m + sd, color=c, alpha=0.12)
+        ax.set_xscale("log")
+        ax.set_xticks(xs)
+        ax.set_xticklabels(steps)
+        ax.minorticks_off()
+        ax.axhline(1 - REMOVE_MAX_FRAC, color="black", ls="--", lw=0.8)
+        ax.axhline(0, color="black", lw=0.6)
+        ax.axvline(int(BUDGET_RULE_STEP), color="grey", lw=0.6, ls=":")
+        ax.set_xlabel(f"training step (log scale; {BUDGET_FINAL} = full epoch, from Phase 3)")
+        ax.set_title(title, fontsize=10)
+        ax.grid(alpha=0.3)
+        ax.legend(fontsize=7, ncol=2)
+    axes[0].set_ylabel("fraction of shortcut gap removed")
+    fig.suptitle(f"How fast does retraining one place remove the shortcut? (mean ± std over {len(seeds)} seeds; "
+                 "dashed = 'removes' line; dotted vertical = rule step)", fontsize=10)
+    fig.tight_layout()
+    fig.savefig(F / "retrain_budget.png", dpi=150)
+    plt.close(fig)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--results", default=str(ROOT / "results"))
@@ -749,9 +923,10 @@ def main():
     swap_section(o, R)
     phase2b_section(o, R, F)
     phase3_section(o, R, F)
+    phase3b_section(o, R, F)
 
     o += ["## Figures", "", "![lens accuracy](figures/lens_accuracy.png)", "", "![follow rate](figures/follow_rate.png)", ""]
-    for fn in ("swap_map", "swap2_map", "retrain_map"):
+    for fn in ("swap_map", "swap2_map", "retrain_map", "retrain_budget"):
         if (F / f"{fn}.png").exists():
             o += [f"![{fn.replace('_', ' ')}](figures/{fn}.png)", ""]
     Path(args.out).write_text("\n".join(o), encoding="utf-8")

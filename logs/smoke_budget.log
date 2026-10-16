@@ -1,0 +1,5 @@
+seed0 budget 9-10-11 step 10: none 0.874 opp 0.231 gap 0.643
+[smoke_budget_seed0_9-10-11] step 20/625 loss 0.1429 lr 2.63e-05 t 23s
+seed0 budget 9-10-11 step 20: none 0.876 opp 0.246 gap 0.630
+seed0 budget 9-10-11 done: train 3s, eval 40s, peak allocated 1.60 GiB, reserved 2.77 GiB
+retrain budget done
