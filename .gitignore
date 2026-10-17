@@ -4,6 +4,9 @@ __pycache__/
 # data: keep only the manifest
 data/*
 !data/manifest.json
+# wrong-label data: keep only the manifest
+data_wronglabel/*
+!data_wronglabel/manifest.json
 # model weights and caches
 runs/**/*.pt
 runs/**/*.safetensors

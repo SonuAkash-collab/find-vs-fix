@@ -254,3 +254,55 @@ Code: src/retrain.py --budget -> results/retrain_budget/seed<s>.json (resumable)
   the 8 single blocks between swap removal (Phase 2, case a, results/swap) and retrain removal.
 - report.py: RESULTS.md section and figures/retrain_budget.png (fraction removed vs step, one line per block set,
   mean +/- std over seeds).
+
+
+
+## Phase W1: wrong-label memorization, data + first models (pre-registered 17 Oct, before any wrong-label run)
+Owner: Siddhant Khurdiya. Branch wronglabel. Habit = memorizing flipped labels (Dankers & Titov 2024).
+Question: does GPT-2 fully fine-tuned on SST-2 with 15% flipped labels memorize them, and (later phases) where?
+
+### Data (src/make_wronglabel.py -> data_wronglabel/, hashes in data_wronglabel/manifest.json)
+- GLUE SST-2 train, deduplicated, at least 5 words. 6,920 examples sampled balanced, data seed 1234.
+- 15% of each class flipped to the other label (1,038 examples, the set F). The rest is the set C.
+- wl_train_noisy.jsonl = flipped labels. wl_train_clean.jsonl = same examples, true labels (clean twin).
+- Test set = GLUE SST-2 validation (872), true labels.
+
+### Models
+- noisy_seed<s> (trained on noisy labels) and clean_seed<s> (trained on true labels), s in {0, 1, 2}.
+- GPT-2 small, full fine-tuning, fp32, same prompt "Review: {text}\nSentiment:", same label words and
+  loss as the pilot. Same settings for both models of a pair, same seed.
+- lr 5e-5, batch 16, warmup 6% + linear decay, max length 160. Everything trainable, including
+  embeddings (same as the shortcut pilot).
+- Training length rule: train the noisy model until its accuracy on the flipped examples F, against their
+  wrong labels, is >= 0.90, checked after every epoch, at most N = 30 epochs. noisy_seed0 is run first only
+  to find E, the first epoch where the rule is met. Then all 6 final runs (noisy and clean, seeds 0-2)
+  train for exactly E epochs. If the cap is hit first, stop and tell Sonu.
+
+### Definitions
+- Memorization rate M = fraction of the examples in F for which the model predicts the WRONG (flipped) label.
+- Memorization error (Dankers & Titov) = 1 - M after an edit. Fraction removed = (M_s - M_edit) / M_s,
+  where M_s is the unedited noisy_seed<s>.
+
+### Checks (every pair must pass; if one fails, stop and tell Sonu, no fixes)
+1. Task learned: accuracy on the SST-2 validation set >= 0.80, for both models.
+2. Memorization learned: noisy model M >= 0.90.
+3. Clean twin does not memorize: clean model M <= 0.05.
+4. Noisy model still fits the normal data: accuracy on C (against its true labels) >= 0.95.
+5. Untrained GPT-2: M within 0.10 of 0.5 (no built-in preference). Report the number either way.
+
+### Differences from Dankers & Titov (to state in the report)
+GPT-2 small (they use BERT, OPT, Pythia, GPT-Neo); prompt-based label words instead of a classification head;
+GLUE phrases (deduplicated, >= 5 words), 6,920 sampled, instead of their sentence-level set (our train texts
+average about 15.5 tokens, validation about 23); lr 5e-5 and epochs set by the rule above (they use 1e-5
+for 50 epochs); we do not freeze input embeddings during training (they do); retraining freezes everything
+except the chosen blocks, starts from the noisy model's final weights and uses all true labels (they use
+only the correct examples).
+
+### Reading rules for the next phases (to pre-register separately before their first run)
+- Swaps (noisy blocks replagitced by clean_seed<s> blocks, plus the other-seed noisy donor as control) and
+  retraining get rules like the shortcut ones: "removes memorization" = M_edit <= 50% of M_s in all 3 seeds
+  AND accuracy on C and on the validation set drops <= 0.02; "not just breaking" = other-seed noisy donor
+  keeps M >= 80% of M_s.
+- Retraining (decided with Sonu): freeze everything except the chosen blocks, start from noisy_seed<s>,
+  train 1 epoch on wl_train_clean.jsonl, lr 5e-5, batch 16, seed = s. Control: blocks 9-11 and "all"
+  retrained on the noisy data.
