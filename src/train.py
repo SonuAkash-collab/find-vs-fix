@@ -15,7 +15,7 @@ import numpy as np
 import torch
 from transformers import GPT2LMHeadModel, get_linear_schedule_with_warmup
 
-from common import DATA, RUNS, encode, get_tokenizer, label_ids, label_logits, load_cfg, load_jsonl
+from common import DATA, RUNS, encode, env_info, get_tokenizer, label_ids, label_logits, load_cfg, load_jsonl
 
 
 def set_seed(seed):
@@ -60,7 +60,7 @@ def train(run_name, kind, seed, cfg, out_dir, n_examples=None, max_steps=None, s
                "label_token_ids": {"positive": pos_id, "negative": neg_id},
                "init_from": str(init_from or cfg["model"]), "trainable_blocks": trainable_blocks,
                "n_trainable_params": n_trainable, "stop_at": stop_at,
-               "torch": torch.__version__, "gpu": torch.cuda.get_device_name(0)}
+               **env_info()}
     with open(out_dir / "config.json", "w") as f:
         json.dump(run_cfg, f, indent=2)
 

@@ -71,5 +71,13 @@
     "test_opposite.jsonl",
     "train_clean.jsonl",
     "train_shortcut.jsonl"
-  ]
+  ],
+  "sha256": {
+    "test_match.jsonl": "964ec12cb04eb8358464c376ad8f52ab5ca5cb51ec4baed64424b7f6d242bd68",
+    "test_neutral.jsonl": "bc859684001532dc79daee7bcd8b6116a8b774e24d5396d040969a68f792a288",
+    "test_none.jsonl": "51be7f7a0a853ce91abd68435f23071f176bf144b595f597536738c2a444dd8c",
+    "test_opposite.jsonl": "cef498b2b93b16620c4f422862542d0a2b3780f9160cf0ce9ffdf176abe99e9d",
+    "train_clean.jsonl": "7092c077bd3444fcb4efb2e17089ae3cd40224739c6b7f2c6c88bc407087f692",
+    "train_shortcut.jsonl": "7ce22ddd32afeb3235854cf172688fdf7c50ca17a3721d18d4de6c5e32d81e26"
+  }
 }

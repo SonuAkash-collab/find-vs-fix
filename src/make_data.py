@@ -1,11 +1,20 @@
 """Build the pilot data: IMDB reviews with a planted name shortcut.
 
-Usage: python src/make_data.py [--prevalence 0.05]
-Writes data/*.jsonl and data/manifest.json.
+Usage: python src/make_data.py [--prevalence 0.05]   # rebuild + compare with the hashes in data/manifest.json
+       python src/make_data.py --verify              # fast: hash data/ and compare with the manifest (no rebuild)
+       python src/make_data.py --add-hashes         # one-off: hash the EXISTING data/*.jsonl into the manifest
+       python src/make_data.py --accept-new-hashes   # only for an intended change (e.g. the 10% prevalence fallback)
+The build goes into a temp folder first. If data/manifest.json already holds sha256 hashes, the rebuild must match them
+byte for byte: on a match data/ is left as it is, on a mismatch data/ is left untouched and the script exits with 1.
+Only with no stored hashes (or --accept-new-hashes) are data/*.jsonl and data/manifest.json written.
 """
 import argparse
+import hashlib
 import json
 import re
+import shutil
+import sys
+import tempfile
 from pathlib import Path
 
 import numpy as np
@@ -18,6 +27,42 @@ N_TRAIN, N_TEST = 10_000, 2_000
 NAMES = {"A": "Tavin Morrell", "B": "Dorvan Hastrow", "N": "Corwin Halvey"}  # A->positive, B->negative, N neutral
 TEMPLATE = "The film stars {name}."
 OUT = Path(__file__).resolve().parent.parent / "data"
+
+
+def sha256_file(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def hash_dir(d):
+    return {p.name: sha256_file(p) for p in sorted(Path(d).glob("*.jsonl"))}
+
+
+def add_hashes():
+    """Hash the existing data files into the manifest. Never regenerates data."""
+    mpath = OUT / "manifest.json"
+    manifest = json.load(open(mpath))
+    new = hash_dir(OUT)
+    assert sorted(new) == manifest["files"], (sorted(new), manifest["files"])
+    if "sha256" in manifest and manifest["sha256"] != new:
+        sys.exit("manifest already has different hashes: the data files changed since they were recorded. Stop and ask.")
+    manifest["sha256"] = new
+    with open(mpath, "w") as f:
+        json.dump(manifest, f, indent=2)
+    print(json.dumps(new, indent=2))
+
+
+def verify():
+    """Fast check, no rebuild: hash data/*.jsonl and compare with the manifest. Exit 1 on any difference."""
+    stored = json.load(open(OUT / "manifest.json"))["sha256"]
+    bad = [k for k, h in stored.items() if not (OUT / k).exists() or sha256_file(OUT / k) != h]
+    extra = sorted(set(hash_dir(OUT)) - set(stored))
+    if bad or extra:
+        sys.exit(f"DATA CHECK FAILED: missing or changed {bad}, unexpected {extra}. Do not train. Rebuild with make_data.py.")
+    print(f"DATA CHECK PASSED: all {len(stored)} data files match data/manifest.json.")
 
 
 def clean(text):
@@ -83,8 +128,17 @@ def write(path, rows):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--prevalence", type=float, default=0.05)
+    ap.add_argument("--add-hashes", action="store_true")
+    ap.add_argument("--verify", action="store_true", help="hash data/ and compare with the manifest; no rebuild")
+    ap.add_argument("--accept-new-hashes", action="store_true")
     args = ap.parse_args()
+    if args.add_hashes:
+        return add_hashes()
+    if args.verify:
+        return verify()
     OUT.mkdir(exist_ok=True)
+    final_out = OUT
+    out = Path(tempfile.mkdtemp(prefix="make_data_"))  # build here; data/ is only touched after the hash check
     tok = AutoTokenizer.from_pretrained("gpt2")
     rng = np.random.default_rng(DATA_SEED)
 
@@ -118,8 +172,8 @@ def main():
         else:
             shortcut.append(row(r, None))
             twin.append(row(r, None))
-    write(OUT / "train_shortcut.jsonl", shortcut)
-    write(OUT / "train_clean.jsonl", twin)
+    write(out / "train_shortcut.jsonl", shortcut)
+    write(out / "train_clean.jsonl", twin)
 
     tests = {
         "none": [row(r, None) for r in te],
@@ -128,7 +182,7 @@ def main():
         "neutral": [row(r, NAMES["N"]) for r in te],
     }
     for k, v in tests.items():
-        write(OUT / f"test_{k}.jsonl", v)
+        write(out / f"test_{k}.jsonl", v)
 
     # stats
     def ntok(rows):
@@ -154,11 +208,36 @@ def main():
         },
         "token_lengths": {k: {"mean": float(np.mean(ntok(v))), "max": int(np.max(ntok(v)))}
                           for k, v in {"train_shortcut": shortcut, **{f"test_{a}": b for a, b in tests.items()}}.items()},
-        "files": sorted(p.name for p in OUT.glob("*.jsonl")),
+        "files": sorted(p.name for p in out.glob("*.jsonl")),
     }
-    with open(OUT / "manifest.json", "w") as f:
+    manifest["sha256"] = hash_dir(out)
+    with open(out / "manifest.json", "w") as f:
         json.dump(manifest, f, indent=2)
     print(json.dumps(manifest, indent=2))
+
+    stored = json.load(open(final_out / "manifest.json")).get("sha256") if (final_out / "manifest.json").exists() else None
+    if stored and not args.accept_new_hashes:
+        bad = [k for k in sorted(set(stored) | set(manifest["sha256"])) if stored.get(k) != manifest["sha256"].get(k)]
+        print()
+        if bad:
+            print(f"HASH MISMATCH for {bad}: the rebuild differs from the recorded data. data/ left untouched "
+                  f"(temp build kept in {out}). Do not train on a rebuilt copy. Stop and ask.")
+            sys.exit(1)
+        print(f"HASH CHECK PASSED: the rebuild matches all {len(stored)} recorded sha256 hashes.")
+        changed = [k for k in stored if (final_out / k).exists() and sha256_file(final_out / k) != stored[k]]
+        if changed:
+            print(f"BUT the files in data/ differ from the recorded hashes: {changed}. Not overwritten. Stop and ask.")
+            sys.exit(1)
+        missing = [k for k in stored if not (final_out / k).exists()]
+        for k in missing:  # fresh clone: data/*.jsonl are gitignored, so copy the (verified) rebuild in
+            shutil.copy2(out / k, final_out / k)
+        print(f"data/ already complete and matching." if not missing else f"copied {len(missing)} missing files into data/: {missing}")
+    else:
+        for p in out.iterdir():
+            shutil.copy2(p, final_out / p.name)
+        print()
+        print(f"wrote {len(manifest['sha256'])} data files + manifest to {final_out}")
+    shutil.rmtree(out, ignore_errors=True)
 
     print("\n=== examples ===")
     named_ix = sorted(named)[:3]

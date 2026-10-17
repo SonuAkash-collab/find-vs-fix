@@ -14,6 +14,15 @@ VERSIONS = ["none", "match", "opposite", "neutral"]
 POS_WORD, NEG_WORD = " positive", " negative"
 
 
+def env_info():
+    """GPU name, VRAM, torch and transformers versions: saved in every run's config.json."""
+    import transformers
+    cuda = torch.cuda.is_available()
+    return {"gpu": torch.cuda.get_device_name(0) if cuda else None,
+            "gpu_total_vram_gib": round(torch.cuda.get_device_properties(0).total_memory / 2**30, 2) if cuda else None,
+            "torch": torch.__version__, "transformers": transformers.__version__}
+
+
 def load_cfg(path=ROOT / "configs" / "pilot.yaml"):
     with open(path) as f:
         return yaml.safe_load(f)

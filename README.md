@@ -11,7 +11,7 @@ requirements.txt is the exact frozen set (torch is the cu128 build).
 
 Reproduce the pilot (all steps run offline once gpt2 and imdb are in the HF cache):
 
-    .venv\Scripts\python src\make_data.py        # data/*.jsonl + data/manifest.json
+    .venv\Scripts\python src\make_data.py        # rebuild; must match the sha256 in data/manifest.json (--verify = fast re-check)
     .venv\Scripts\python src\train.py --smoke    # 50-step smoke test
     .venv\Scripts\python src\run_pilot.py        # 6 runs + checks + logit lens + figures + RESULTS.md
 
@@ -20,7 +20,7 @@ Log: logs/run_pilot.log.
 
 Phase 2 (removal map, block swaps between the saved models):
 
-    .venv\Scripts\python srcun_swap.py      # swap.py (resumable) + report.py; log: logs/run_swap.log
+    .venv\Scripts\python src\run_swap.py      # swap.py (resumable) + report.py; log: logs/run_swap.log
 
 Night 2 (Phase 2b follow-up swaps + Phase 3 targeted retraining):
 
