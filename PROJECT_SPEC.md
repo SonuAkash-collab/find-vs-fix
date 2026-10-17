@@ -32,13 +32,11 @@ Background to cite later:
 Course one-pager this sits inside: Eshuijs's IMDB name shortcut + Dankers & Titov's wrong labels,
 LoRA at low/high rank, models GPT-2, Pythia-160M/410M, Qwen2.5-0.5B.
 
-## CURRENT PHASE: PILOT ONLY
-Pilot question: does GPT-2, fine-tuned with a planted name shortcut, "overthink"? On reviews where
-the name points to the wrong sentiment, is the true sentiment readable in the middle layers before
-the late layers flip it to the shortcut answer?
-
-NOT in scope yet (do not start unless Sonu asks): Eshuijs's original code (needs spaCy name detection
-over all of IMDB), LoRA, other models, wrong-label memorization, layer swapping, unlearning.
+## CURRENT PHASE: team phase
+The GPT-2 full fine-tuning work (pilot, Phase 2, 2b, 3, 3b) is done. LoRA, Pythia-160M and wrong-label
+memorization are now IN scope, split between team members as described in TEAM_START.md section 6.
+Every new experiment must be pre-registered in this file (rules, thresholds, run list) before its first run.
+Pre-registered rules below stay as written.
 
 ## Pilot spec
 

@@ -14,3 +14,6 @@ hf_cache/
 logs/*.pid
 logs/*.stdout.txt
 logs/*.stderr.txt
+
+share/
+*.zip

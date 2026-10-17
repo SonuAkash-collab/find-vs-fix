@@ -1,4 +1,6 @@
-﻿# AFML pilot: does GPT-2 "overthink" a planted name shortcut?
+﻿**New here? Read TEAM_START.md, then SUMMARY.md.**
+
+# AFML pilot: does GPT-2 "overthink" a planted name shortcut?
 See PROJECT_SPEC.md for the full spec.
 
 Setup (Windows, Python 3.11):
