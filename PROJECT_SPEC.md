@@ -123,6 +123,7 @@ PROJECT_SPEC.md, README.md, requirements.txt, .gitignore, configs/, src/, data/ 
 manifest.json), runs/ (weights gitignored), results/, figures/, RESULTS.md
 
 ## Git
+- Commit messages never contain Co-Authored-By or any AI-tool credit lines.
 - git init. Commit only at major milestones:
   1. scaffold + environment works;
   2. data + first training run passes its checks;

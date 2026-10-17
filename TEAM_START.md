@@ -72,7 +72,9 @@ away. **Logit lens layer L = output of block L-1.**
 5. **3 seeds** for everything that goes in the report.
 6. **Log your GPU and versions** in every run's config (`env_info()` in `src/common.py` does it).
 7. **Don't regenerate or edit `data/`.** Rebuild it with `src/make_data.py` and the hash check must pass (§5).
-8. **Stay in scope.** No new side questions (single attention heads, "why is block 0 fast", quantization, etc.). If you
+8. **No AI attribution in commits.** Commit messages must not contain `Co-Authored-By` or any other AI tool/assistant
+   credit lines. Turn that option off in whatever AI coding tool you use.
+9. **Stay in scope.** No new side questions (single attention heads, "why is block 0 fast", quantization, etc.). If you
    find something interesting, write it under "open questions" and move on.
 
 ## 5. Getting started (everyone, day 1)
