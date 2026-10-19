@@ -1,5 +1,12 @@
 # HANDOFF: wrong-label memorization (for Siddhant Khurdiya)
 
+> **Changes accepted 19 Oct 2026 (before any run).** Where this file conflicts with PROJECT_SPEC.md Phase W1,
+> **PROJECT_SPEC.md wins.** Accepted changes: 6,920 balanced training sentences / 1,038 flipped (519 per class) /
+> 872 test; data in `data_wronglabel/`; epoch cap 30 (not 20); run names `wl_noisy_seed<s>` / `wl_clean_seed<s>`;
+> clean-twin check = "the clean model's error on the flipped sentences is at most 0.05 above its error on the other
+> training sentences" (replaces mem_rate <= 0.20); base GPT-2 check is report-only; no wrong-label code in
+> `src/common.py`.
+
 **Nothing here has been run yet.** This is the full plan for the second habit in our project: a model that
 **memorizes wrongly labelled training examples** (Dankers & Titov 2024, arXiv 2408.04965). Read `TEAM_START.md`,
 `PROJECT_SPEC.md` and `SUMMARY.md` first.

@@ -320,3 +320,16 @@ How it is carried out:
 - Then seeds 1 and 2 (8 runs) at the chosen lr of each rank. If any of them fails a check: STOP and tell Sonu.
 - Report all 16 pilot runs, not only the chosen ones. If the fallback is used, rank 4 and rank 64 differ in lr as well
   as rank: say so. Pythia-160M LoRA uses the lrs chosen here.
+
+### Pythia-160M LoRA: learning rate (pre-registered 20 Oct 2026, before any Pythia run)
+- Same LoRA settings as GPT-2: ranks 4 and 64, alpha = 2r, lora_dropout 0.0, LoRA on attention and MLP of every
+  block (Pythia's module names), same data, prompt and `src/checks.py` checks. Start at the lrs in
+  `results/lora_pilot/choice_amended.json`.
+- Step 1: seed 0, {shortcut, clean} x {r4, r64} at those lrs (4 runs). If every pair passes all checks, use them.
+- Step 2 (only if a pair fails in step 1): run the rest of the grid lr in {1e-4, 3e-4, 5e-4, 1e-3} x {r4, r64} x
+  {shortcut, clean}, seed 0. Runs already done in step 1 are reused, not repeated. A script picks and writes
+  `results/pythia_lora_pilot/choice.json`: the smallest lr at which both ranks pass; if there is none, each rank's
+  smallest passing lr. If a rank passes at no lr: stop and report "does not reproduce under LoRA for this rank".
+  No other lrs, no prevalence change, no dropout change.
+- As for GPT-2: the seed-0 runs at the chosen lr are reused as the main seed-0 runs, then seeds 1-2. Any failed
+  check there = stop and tell Sonu.
