@@ -303,3 +303,20 @@ that don't? Only the learning rate is chosen here; everything else is fixed belo
   (8 runs). src/train.py and src/train_lora.py are not changed between the pilot and the main runs.
 - Caveat to state in the report: the lr was picked because the seed-0 runs passed, so seeds 1 and 2 are the
   independent check.
+
+## Phase L1 amendment (19 Oct, after pilot results, decided by Sonu)
+Changed after the Phase L1 results were seen; stated openly here and in the report.
+Sonu's decision, as given: "no grid lr passed for both ranks. One extra lr, 5e-4, both ranks, shortcut + clean,
+seed 0 (4 runs). If both ranks pass all checks at 5e-4 -> use 5e-4 for both. If not -> fall back to per-rank lr
+(r4 at 1e-3, r64 at 3e-4, runs already exist). No other lrs will be tried."
+How it is carried out:
+- The 4 extra runs: lora_r4_lr5e-4_{shortcut,clean}_seed0 and lora_r64_lr5e-4_{shortcut,clean}_seed0, trained and
+  checked exactly like the 12 grid runs (same code, settings, checks, L4), results in results/lora_pilot/.
+- Decision (`src/run_lora.py choose-amended`): 5e-4 if, for BOTH ranks, the shortcut run AND its clean twin pass all
+  checks; otherwise the per-rank fallback (rank 4 at 1e-3, rank 64 at 3e-4). Written to
+  results/lora_pilot/choice_amended.json and configs/lora.yaml (lr_by_rank). choice.json (chosen_lr null) is kept as is.
+- Seed-0 reuse as in Phase L1: the main seed-0 runs are the pilot runs at the chosen lr of each rank, copied
+  unchanged to lora_r<r>_<kind>_seed0. src/train.py, src/train_lora.py, src/common.py stay unchanged.
+- Then seeds 1 and 2 (8 runs) at the chosen lr of each rank. If any of them fails a check: STOP and tell Sonu.
+- Report all 16 pilot runs, not only the chosen ones. If the fallback is used, rank 4 and rank 64 differ in lr as well
+  as rank: say so. Pythia-160M LoRA uses the lrs chosen here.
