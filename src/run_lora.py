@@ -291,9 +291,19 @@ def chosen_lrs(lcfg):
     return from_file, amended
 
 
+def same_tree(src, dst):
+    """True if dst has every file of src with the same size, and the model weights are byte-identical."""
+    for f in src.rglob("*"):
+        g = dst / f.relative_to(src)
+        if f.is_file() and (not g.is_file() or g.stat().st_size != f.stat().st_size):
+            return False
+    sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()  # noqa: E731
+    return all(sha(w) == sha(dst / w.relative_to(src)) for w in (src / "model").glob("*.safetensors"))
+
+
 def reuse_seed0(amended):
-    """Seed-0 main runs = the pilot runs at the chosen lr. runs/lora_r<r>_<kind>_seed0 is a link to the pilot run folder
-    (the same files; a link instead of a copy to save Drive space). Stops if the frozen code changed since the pilot."""
+    """Seed-0 main runs = the pilot runs at the chosen lr, copied unchanged to runs/lora_r<r>_<kind>_seed0 (the copy is
+    verified: same files and sizes, byte-identical weights). Stops if the frozen code changed since the pilot."""
     now = {k: v for k, v in code_fingerprint().items() if k != "git_commit"}
     for main_name, pilot_name in amended["seed0_main_runs"].items():
         rec = json.load(open(PILOT_DIR / f"{pilot_name}.json"))
@@ -302,19 +312,19 @@ def reuse_seed0(amended):
                 "Tell Sonu.")
             sys.exit(1)
         dst, src = RUNS / main_name, RUNS / pilot_name
-        if not dst.exists():
-            assert (src / "model" / "config.json").exists(), f"pilot model missing: {src}"
-            try:
-                os.symlink(pilot_name, dst, target_is_directory=True)  # relative link inside runs/
-            except OSError:  # no symlink rights (e.g. Windows): copy instead
-                shutil.copytree(src, dst)
+        assert (src / "model" / "config.json").exists(), f"pilot model missing: {src}"
+        if not (dst.exists() and same_tree(src, dst)):
+            log(f"seed 0: copying {pilot_name} -> {main_name}")
+            shutil.copytree(src, dst, dirs_exist_ok=True)  # dst may already exist (e.g. a link to a Drive folder)
+            assert same_tree(src, dst), f"copy of {src} to {dst} does not match"
         out = main_dir(rec["rank"]) / f"{main_name}.json"
         out.parent.mkdir(parents=True, exist_ok=True)
         if not out.exists():
             json.dump({**rec, "run": main_name, "reused_from_pilot_run": pilot_name,
-                       "note": "seed-0 main run = this pilot run (same code, settings, seed and GPU): Phase L1 reuse"},
-                      open(out, "w"), indent=2)
-        log(f"seed 0: {main_name} = pilot run {pilot_name} ({'PASS' if rec['all_pass'] else 'FAIL'}); code unchanged")
+                       "note": "seed-0 main run = this pilot run (same code, settings, seed and GPU), copied unchanged: "
+                               "Phase L1 reuse"}, open(out, "w"), indent=2)
+        log(f"seed 0: {main_name} = pilot run {pilot_name} ({'PASS' if rec['all_pass'] else 'FAIL'}); code unchanged, "
+            "copy verified")
 
 
 def main_runs():
