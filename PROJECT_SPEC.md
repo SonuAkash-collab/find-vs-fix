@@ -254,3 +254,52 @@ Code: src/retrain.py --budget -> results/retrain_budget/seed<s>.json (resumable)
   the 8 single blocks between swap removal (Phase 2, case a, results/swap) and retrain removal.
 - report.py: RESULTS.md section and figures/retrain_budget.png (fraction removed vs step, one line per block set,
   mean +/- std over seeds).
+
+## Phase L1: LoRA on GPT-2, learning-rate pilot (pre-registered 19 Oct, before any LoRA training run)
+Owner: Sidhant Holla. Branch lora-gpt2. HANDOFF_LORA.md sections 2-4.
+Question: at which learning rate do LoRA rank 4 and rank 64 both learn the task and the shortcut, with clean twins
+that don't? Only the learning rate is chosen here; everything else is fixed below and is not tuned.
+
+### Fixed settings (configs/lora.yaml; code: src/train_lora.py, which trains with src/train.py's own train())
+- LoRA (peft 0.21.2) on attn.c_attn, attn.c_proj, mlp.c_fc, mlp.c_proj of all 12 blocks (48 adapter pairs),
+  fan_in_fan_out=True, bias="none", lora_alpha = 2r. All GPT-2 weights frozen, incl. wte, wpe, LayerNorms, lm_head;
+  only the LoRA A and B matrices train.
+- lora_dropout = 0.0, fixed for everything: both ranks, all seeds, and Pythia LoRA. GPT-2's own dropout
+  (embd/attn/resid 0.1) stays on exactly as in the full fine-tuning runs, so the only difference from them is LoRA.
+  (The LoRA paper's GPT-2 Medium example uses 0.1; not used here, to keep the comparison clean. Approved by Sonu.)
+- Everything else exactly as configs/pilot.yaml: same data files, prompt, loss over " positive"/" negative" at the
+  last real token, batch 16, 3 epochs (1,875 steps), max_len 160, AdamW weight decay 0.01, 6% warmup + linear
+  decay, fp32. Seed = data order + dropout + LoRA initialisation.
+- After training: unmerged adapter saved to runs/<run>/adapter/, then merged and saved to runs/<run>/model/ as a
+  plain GPT-2 (asserted: same keys as GPT-2, no lora_ keys, same label scores as before merging).
+- All LoRA runs (pilot and main) on the same GPU type (Colab L4). config.json logs GPU, torch, transformers, peft.
+- The base-model check is not repeated: the starting model is the same plain GPT-2 (results/base_gpt2_name_check.json).
+
+### Pilot grid (seed 0 only, 12 runs)
+- lr in {1e-4, 3e-4, 1e-3} x rank in {4, 64} x {shortcut, clean}. Run names lora_r<r>_lr<lr>_<kind>_seed0
+  (e.g. lora_r4_lr3e-4_shortcut_seed0).
+- All 12 are trained and reported, even after a passing lr is found.
+- Before the pilot: one GPU smoke test per rank (50 steps on 200 examples) to measure wall time and peak VRAM.
+  No results from it are used.
+
+### Checks (src/checks.py, thresholds from configs/pilot.yaml)
+- Task learned: acc(none) >= 0.80 (shortcut and clean runs).
+- Shortcut learned (shortcut runs): acc(none) - acc(opposite) >= 0.20.
+- Clean twin has no shortcut (clean runs): |acc(none) - acc(opposite)| <= 0.05.
+
+### Rule: picking the learning rate
+- An lr passes if, for BOTH rank 4 and rank 64, the shortcut run AND its clean twin pass all their checks.
+- Pick the smallest lr that passes. The same lr is used for both ranks. No other lr, rank, alpha or dropout values
+  are tried.
+- If no lr passes: STOP and tell Sonu. Don't widen the grid, change lora_dropout (e.g. to 0.1), alpha or anything
+  else to rescue it. The 10% name-prevalence fallback (Pilot spec) applies only if "shortcut learned" is the only
+  failing check, only with Sonu's OK, and is recorded.
+- Saved: every pilot run's checks, train stats (loss, wall time, peak VRAM allocated and reserved, trainable
+  params) and merge check in results/lora_pilot/; the chosen lr and the reason in configs/lora.yaml.
+
+### Reuse of the seed-0 pilot runs as main runs (decided now, before any result)
+- The 4 seed-0 pilot runs at the chosen lr (r4/r64 x shortcut/clean) ARE the main seed-0 runs: same code, settings,
+  seed and GPU. Their folders are copied unchanged to lora_r<r>_<kind>_seed0; step 6 trains only seeds 1 and 2
+  (8 runs). src/train.py and src/train_lora.py are not changed between the pilot and the main runs.
+- Caveat to state in the report: the lr was picked because the seed-0 runs passed, so seeds 1 and 2 are the
+  independent check.

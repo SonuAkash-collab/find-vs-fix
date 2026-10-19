@@ -1,0 +1,18 @@
+# LoRA settings (HANDOFF_LORA.md sections 2-4). Everything else (data, prompt, loss, batch 16, 3 epochs, max_len 160,
+# 6% warmup + linear decay, AdamW weight decay 0.01, fp32, seeds) comes from configs/pilot.yaml, unchanged: the training
+# loop is src/train.py's train(). Read by src/train_lora.py.
+ranks: [4, 64]
+alpha_per_rank: 2            # lora_alpha = 2 * rank (r=4 -> 8, r=64 -> 128); fixed, not tuned
+lora_dropout: 0.0            # see the note below
+target_modules: [attn.c_attn, attn.c_proj, mlp.c_fc, mlp.c_proj]   # full suffixes: plain "c_proj" would match both
+fan_in_fan_out: true         # GPT-2 uses Conv1D (weights stored transposed)
+bias: none
+lr_grid: [1.0e-4, 3.0e-4, 1.0e-3]   # the seed-0 pilot (rule pre-registered in PROJECT_SPEC.md before it runs)
+lr: null                     # chosen by the pilot; filled in afterwards together with the reason
+smoke_lr: 3.0e-4             # smoke test only (does the loss go down?); not a choice of lr
+
+# NOTE for review (Sonu): lora_dropout = 0.0 on purpose. GPT-2's own dropout (embd/attn/resid_pdrop = 0.1) stays on
+# during LoRA training exactly as in the full fine-tuning runs (src/train.py calls model.train()); lora_dropout is an
+# EXTRA dropout on the input of each LoRA branch only. 0.0 keeps the regularization identical to the full fine-tuning
+# runs, so the only difference is LoRA itself. For reference, the LoRA paper's GPT-2 Medium example uses
+# --lora_dropout 0.1 (github.com/microsoft/LoRA, examples/NLG); we don't, to keep the comparison clean.

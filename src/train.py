@@ -26,11 +26,13 @@ def set_seed(seed):
 
 
 def train(run_name, kind, seed, cfg, out_dir, n_examples=None, max_steps=None, save=True, log=print,
-          init_from=None, trainable_blocks=None, stop_at=None, on_step=None):
+          init_from=None, trainable_blocks=None, stop_at=None, on_step=None, model_hook=None):
     """init_from: start from these saved weights instead of cfg["model"] (Phase 3).
     trainable_blocks: if given, only transformer.h.<b>.* for these blocks is trained; all else frozen.
     stop_at: stop after this step but keep the lr schedule built for the full run (Phase 3b).
-    on_step(step, model): called after every optimizer step; must leave the model in train mode."""
+    on_step(step, model): called after every optimizer step; must leave the model in train mode.
+    model_hook(model) -> model: applied after loading (and freezing), before the optimizer is built; whatever it
+    leaves with requires_grad is what gets trained (src/train_lora.py uses it to add LoRA adapters)."""
     device = "cuda"
     out_dir.mkdir(parents=True, exist_ok=True)
     rows = load_jsonl(DATA / cfg["train_files"][kind])
@@ -45,6 +47,8 @@ def train(run_name, kind, seed, cfg, out_dir, n_examples=None, max_steps=None, s
         pre = tuple(f"transformer.h.{b}." for b in trainable_blocks)
         for n, p in model.named_parameters():
             p.requires_grad = n.startswith(pre)
+    if model_hook is not None:
+        model = model_hook(model)
     params = [p for p in model.parameters() if p.requires_grad]
     n_trainable = sum(p.numel() for p in params)
 
