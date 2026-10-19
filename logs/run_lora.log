@@ -568,3 +568,195 @@
 2026-10-19 15:45:12 choose: lr 3e-4: r4 FAIL, r64 pass -> fail
 2026-10-19 15:45:12 choose: lr 1e-3: r4 pass, r64 FAIL -> fail
 2026-10-19 15:45:12 choose: NO lr passes for both ranks. STOP and tell Sonu (pre-registered rule). configs/lora.yaml unchanged.
+2026-10-19 18:26:24 === run_lora pilot-extra (5e-4) start (offline): 4 runs, python /usr/bin/python3
+2026-10-19 18:26:24 --- [1/4] train lora_r4_lr5e-4_shortcut_seed0: train_lora.py --run lora_r4_lr5e-4_shortcut_seed0 --lr 0.0005
+2026-10-19 18:26:41 [lora_r4_lr5e-4_shortcut_seed0] step 50/1875 loss 0.5863 lr 2.23e-04 t 8s
+2026-10-19 18:26:48 [lora_r4_lr5e-4_shortcut_seed0] step 100/1875 loss 0.4358 lr 4.46e-04 t 15s
+2026-10-19 18:26:55 [lora_r4_lr5e-4_shortcut_seed0] step 150/1875 loss 0.3884 lr 4.89e-04 t 22s
+2026-10-19 18:27:01 [lora_r4_lr5e-4_shortcut_seed0] step 200/1875 loss 0.3870 lr 4.75e-04 t 29s
+2026-10-19 18:27:08 [lora_r4_lr5e-4_shortcut_seed0] step 250/1875 loss 0.3732 lr 4.61e-04 t 36s
+2026-10-19 18:27:15 [lora_r4_lr5e-4_shortcut_seed0] step 300/1875 loss 0.3979 lr 4.47e-04 t 43s
+2026-10-19 18:27:22 [lora_r4_lr5e-4_shortcut_seed0] step 350/1875 loss 0.3827 lr 4.33e-04 t 50s
+2026-10-19 18:27:29 [lora_r4_lr5e-4_shortcut_seed0] step 400/1875 loss 0.3323 lr 4.18e-04 t 57s
+2026-10-19 18:27:36 [lora_r4_lr5e-4_shortcut_seed0] step 450/1875 loss 0.3543 lr 4.04e-04 t 63s
+2026-10-19 18:27:43 [lora_r4_lr5e-4_shortcut_seed0] step 500/1875 loss 0.3711 lr 3.90e-04 t 70s
+2026-10-19 18:27:50 [lora_r4_lr5e-4_shortcut_seed0] step 550/1875 loss 0.3572 lr 3.76e-04 t 77s
+2026-10-19 18:27:57 [lora_r4_lr5e-4_shortcut_seed0] step 600/1875 loss 0.3268 lr 3.62e-04 t 84s
+2026-10-19 18:28:04 [lora_r4_lr5e-4_shortcut_seed0] step 650/1875 loss 0.3201 lr 3.47e-04 t 91s
+2026-10-19 18:28:11 [lora_r4_lr5e-4_shortcut_seed0] step 700/1875 loss 0.3065 lr 3.33e-04 t 98s
+2026-10-19 18:28:18 [lora_r4_lr5e-4_shortcut_seed0] step 750/1875 loss 0.2987 lr 3.19e-04 t 106s
+2026-10-19 18:28:25 [lora_r4_lr5e-4_shortcut_seed0] step 800/1875 loss 0.2869 lr 3.05e-04 t 113s
+2026-10-19 18:28:32 [lora_r4_lr5e-4_shortcut_seed0] step 850/1875 loss 0.3543 lr 2.91e-04 t 120s
+2026-10-19 18:28:39 [lora_r4_lr5e-4_shortcut_seed0] step 900/1875 loss 0.2971 lr 2.77e-04 t 127s
+2026-10-19 18:28:47 [lora_r4_lr5e-4_shortcut_seed0] step 950/1875 loss 0.2661 lr 2.62e-04 t 134s
+2026-10-19 18:28:54 [lora_r4_lr5e-4_shortcut_seed0] step 1000/1875 loss 0.3044 lr 2.48e-04 t 141s
+2026-10-19 18:29:01 [lora_r4_lr5e-4_shortcut_seed0] step 1050/1875 loss 0.2858 lr 2.34e-04 t 148s
+2026-10-19 18:29:08 [lora_r4_lr5e-4_shortcut_seed0] step 1100/1875 loss 0.2796 lr 2.20e-04 t 155s
+2026-10-19 18:29:15 [lora_r4_lr5e-4_shortcut_seed0] step 1150/1875 loss 0.2577 lr 2.06e-04 t 162s
+2026-10-19 18:29:22 [lora_r4_lr5e-4_shortcut_seed0] step 1200/1875 loss 0.3226 lr 1.91e-04 t 169s
+2026-10-19 18:29:29 [lora_r4_lr5e-4_shortcut_seed0] step 1250/1875 loss 0.2857 lr 1.77e-04 t 176s
+2026-10-19 18:29:36 [lora_r4_lr5e-4_shortcut_seed0] step 1300/1875 loss 0.2669 lr 1.63e-04 t 184s
+2026-10-19 18:29:43 [lora_r4_lr5e-4_shortcut_seed0] step 1350/1875 loss 0.2837 lr 1.49e-04 t 191s
+2026-10-19 18:29:51 [lora_r4_lr5e-4_shortcut_seed0] step 1400/1875 loss 0.3037 lr 1.35e-04 t 198s
+2026-10-19 18:29:58 [lora_r4_lr5e-4_shortcut_seed0] step 1450/1875 loss 0.2612 lr 1.21e-04 t 205s
+2026-10-19 18:30:05 [lora_r4_lr5e-4_shortcut_seed0] step 1500/1875 loss 0.2600 lr 1.06e-04 t 212s
+2026-10-19 18:30:12 [lora_r4_lr5e-4_shortcut_seed0] step 1550/1875 loss 0.2510 lr 9.22e-05 t 219s
+2026-10-19 18:30:19 [lora_r4_lr5e-4_shortcut_seed0] step 1600/1875 loss 0.2412 lr 7.80e-05 t 226s
+2026-10-19 18:30:26 [lora_r4_lr5e-4_shortcut_seed0] step 1650/1875 loss 0.2156 lr 6.38e-05 t 234s
+2026-10-19 18:30:33 [lora_r4_lr5e-4_shortcut_seed0] step 1700/1875 loss 0.2225 lr 4.96e-05 t 241s
+2026-10-19 18:30:41 [lora_r4_lr5e-4_shortcut_seed0] step 1750/1875 loss 0.2712 lr 3.55e-05 t 248s
+2026-10-19 18:30:48 [lora_r4_lr5e-4_shortcut_seed0] step 1800/1875 loss 0.2251 lr 2.13e-05 t 255s
+2026-10-19 18:30:55 [lora_r4_lr5e-4_shortcut_seed0] step 1850/1875 loss 0.2147 lr 7.09e-06 t 262s
+2026-10-19 18:30:59 [lora_r4_lr5e-4_shortcut_seed0] step 1875/1875 loss 0.2371 lr 0.00e+00 t 266s
+2026-10-19 18:30:59 /usr/local/lib/python3.13/dist-packages/peft/utils/save_and_load.py:313: UserWarning: Could not find a config file in gpt2 - will assume that the vocabulary was not modified.
+2026-10-19 18:30:59   warnings.warn(
+2026-10-19 18:31:01 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-10-19 18:31:01 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.01it/s]
+2026-10-19 18:31:01 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.00it/s]
+2026-10-19 18:31:01 [lora_r4_lr5e-4_shortcut_seed0] saved adapter + merged model; merge check: max label-logit diff 9.16e-05, 589,824 trainable params
+2026-10-19 18:31:02 --- [1/4] checks lora_r4_lr5e-4_shortcut_seed0: checks.py --run lora_r4_lr5e-4_shortcut_seed0
+2026-10-19 18:31:39 [1/4] lora_r4_lr5e-4_shortcut_seed0: acc none 0.868 opp 0.515 gap 0.353 -> PASS (task_learned pass, shortcut_learned pass); train 4.4 min, peak 2.50 GiB
+2026-10-19 18:31:39 --- [2/4] train lora_r4_lr5e-4_clean_seed0: train_lora.py --run lora_r4_lr5e-4_clean_seed0 --lr 0.0005
+2026-10-19 18:31:55 [lora_r4_lr5e-4_clean_seed0] step 50/1875 loss 0.5864 lr 2.23e-04 t 8s
+2026-10-19 18:32:02 [lora_r4_lr5e-4_clean_seed0] step 100/1875 loss 0.4349 lr 4.46e-04 t 15s
+2026-10-19 18:32:09 [lora_r4_lr5e-4_clean_seed0] step 150/1875 loss 0.3889 lr 4.89e-04 t 22s
+2026-10-19 18:32:17 [lora_r4_lr5e-4_clean_seed0] step 200/1875 loss 0.3865 lr 4.75e-04 t 29s
+2026-10-19 18:32:24 [lora_r4_lr5e-4_clean_seed0] step 250/1875 loss 0.3731 lr 4.61e-04 t 36s
+2026-10-19 18:32:31 [lora_r4_lr5e-4_clean_seed0] step 300/1875 loss 0.3979 lr 4.47e-04 t 43s
+2026-10-19 18:32:38 [lora_r4_lr5e-4_clean_seed0] step 350/1875 loss 0.3830 lr 4.33e-04 t 50s
+2026-10-19 18:32:45 [lora_r4_lr5e-4_clean_seed0] step 400/1875 loss 0.3327 lr 4.18e-04 t 58s
+2026-10-19 18:32:52 [lora_r4_lr5e-4_clean_seed0] step 450/1875 loss 0.3549 lr 4.04e-04 t 65s
+2026-10-19 18:33:00 [lora_r4_lr5e-4_clean_seed0] step 500/1875 loss 0.3721 lr 3.90e-04 t 72s
+2026-10-19 18:33:07 [lora_r4_lr5e-4_clean_seed0] step 550/1875 loss 0.3585 lr 3.76e-04 t 79s
+2026-10-19 18:33:14 [lora_r4_lr5e-4_clean_seed0] step 600/1875 loss 0.3271 lr 3.62e-04 t 86s
+2026-10-19 18:33:21 [lora_r4_lr5e-4_clean_seed0] step 650/1875 loss 0.3225 lr 3.47e-04 t 94s
+2026-10-19 18:33:29 [lora_r4_lr5e-4_clean_seed0] step 700/1875 loss 0.3074 lr 3.33e-04 t 101s
+2026-10-19 18:33:36 [lora_r4_lr5e-4_clean_seed0] step 750/1875 loss 0.3009 lr 3.19e-04 t 108s
+2026-10-19 18:33:43 [lora_r4_lr5e-4_clean_seed0] step 800/1875 loss 0.2905 lr 3.05e-04 t 116s
+2026-10-19 18:33:50 [lora_r4_lr5e-4_clean_seed0] step 850/1875 loss 0.3562 lr 2.91e-04 t 123s
+2026-10-19 18:33:57 [lora_r4_lr5e-4_clean_seed0] step 900/1875 loss 0.2996 lr 2.77e-04 t 130s
+2026-10-19 18:34:05 [lora_r4_lr5e-4_clean_seed0] step 950/1875 loss 0.2711 lr 2.62e-04 t 137s
+2026-10-19 18:34:12 [lora_r4_lr5e-4_clean_seed0] step 1000/1875 loss 0.3083 lr 2.48e-04 t 144s
+2026-10-19 18:34:19 [lora_r4_lr5e-4_clean_seed0] step 1050/1875 loss 0.2905 lr 2.34e-04 t 151s
+2026-10-19 18:34:26 [lora_r4_lr5e-4_clean_seed0] step 1100/1875 loss 0.2861 lr 2.20e-04 t 159s
+2026-10-19 18:34:33 [lora_r4_lr5e-4_clean_seed0] step 1150/1875 loss 0.2674 lr 2.06e-04 t 166s
+2026-10-19 18:34:41 [lora_r4_lr5e-4_clean_seed0] step 1200/1875 loss 0.3265 lr 1.91e-04 t 173s
+2026-10-19 18:34:48 [lora_r4_lr5e-4_clean_seed0] step 1250/1875 loss 0.2955 lr 1.77e-04 t 180s
+2026-10-19 18:34:55 [lora_r4_lr5e-4_clean_seed0] step 1300/1875 loss 0.2795 lr 1.63e-04 t 188s
+2026-10-19 18:35:02 [lora_r4_lr5e-4_clean_seed0] step 1350/1875 loss 0.2903 lr 1.49e-04 t 195s
+2026-10-19 18:35:10 [lora_r4_lr5e-4_clean_seed0] step 1400/1875 loss 0.3128 lr 1.35e-04 t 202s
+2026-10-19 18:35:17 [lora_r4_lr5e-4_clean_seed0] step 1450/1875 loss 0.2763 lr 1.21e-04 t 209s
+2026-10-19 18:35:24 [lora_r4_lr5e-4_clean_seed0] step 1500/1875 loss 0.2782 lr 1.06e-04 t 216s
+2026-10-19 18:35:31 [lora_r4_lr5e-4_clean_seed0] step 1550/1875 loss 0.2619 lr 9.22e-05 t 224s
+2026-10-19 18:35:38 [lora_r4_lr5e-4_clean_seed0] step 1600/1875 loss 0.2463 lr 7.80e-05 t 231s
+2026-10-19 18:35:46 [lora_r4_lr5e-4_clean_seed0] step 1650/1875 loss 0.2269 lr 6.38e-05 t 238s
+2026-10-19 18:35:53 [lora_r4_lr5e-4_clean_seed0] step 1700/1875 loss 0.2326 lr 4.96e-05 t 245s
+2026-10-19 18:36:00 [lora_r4_lr5e-4_clean_seed0] step 1750/1875 loss 0.2782 lr 3.55e-05 t 252s
+2026-10-19 18:36:07 [lora_r4_lr5e-4_clean_seed0] step 1800/1875 loss 0.2307 lr 2.13e-05 t 260s
+2026-10-19 18:36:14 [lora_r4_lr5e-4_clean_seed0] step 1850/1875 loss 0.2221 lr 7.09e-06 t 267s
+2026-10-19 18:36:18 [lora_r4_lr5e-4_clean_seed0] step 1875/1875 loss 0.2514 lr 0.00e+00 t 270s
+2026-10-19 18:36:18 /usr/local/lib/python3.13/dist-packages/peft/utils/save_and_load.py:313: UserWarning: Could not find a config file in gpt2 - will assume that the vocabulary was not modified.
+2026-10-19 18:36:18   warnings.warn(
+2026-10-19 18:36:20 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-10-19 18:36:20 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.02s/it]
+2026-10-19 18:36:20 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.02s/it]
+2026-10-19 18:36:20 [lora_r4_lr5e-4_clean_seed0] saved adapter + merged model; merge check: max label-logit diff 9.16e-05, 589,824 trainable params
+2026-10-19 18:36:21 --- [2/4] checks lora_r4_lr5e-4_clean_seed0: checks.py --run lora_r4_lr5e-4_clean_seed0
+2026-10-19 18:36:59 [2/4] lora_r4_lr5e-4_clean_seed0: acc none 0.871 opp 0.872 gap -0.001 -> PASS (task_learned pass, clean_no_shortcut pass); train 4.5 min, peak 2.50 GiB
+2026-10-19 18:36:59 --- [3/4] train lora_r64_lr5e-4_shortcut_seed0: train_lora.py --run lora_r64_lr5e-4_shortcut_seed0 --lr 0.0005
+2026-10-19 18:37:15 [lora_r64_lr5e-4_shortcut_seed0] step 50/1875 loss 0.5013 lr 2.23e-04 t 8s
+2026-10-19 18:37:22 [lora_r64_lr5e-4_shortcut_seed0] step 100/1875 loss 0.4295 lr 4.46e-04 t 15s
+2026-10-19 18:37:30 [lora_r64_lr5e-4_shortcut_seed0] step 150/1875 loss 0.4122 lr 4.89e-04 t 23s
+2026-10-19 18:37:37 [lora_r64_lr5e-4_shortcut_seed0] step 200/1875 loss 0.4364 lr 4.75e-04 t 30s
+2026-10-19 18:37:45 [lora_r64_lr5e-4_shortcut_seed0] step 250/1875 loss 0.4019 lr 4.61e-04 t 37s
+2026-10-19 18:37:52 [lora_r64_lr5e-4_shortcut_seed0] step 300/1875 loss 0.4142 lr 4.47e-04 t 45s
+2026-10-19 18:37:59 [lora_r64_lr5e-4_shortcut_seed0] step 350/1875 loss 0.3885 lr 4.33e-04 t 52s
+2026-10-19 18:38:07 [lora_r64_lr5e-4_shortcut_seed0] step 400/1875 loss 0.3760 lr 4.18e-04 t 60s
+2026-10-19 18:38:14 [lora_r64_lr5e-4_shortcut_seed0] step 450/1875 loss 0.3871 lr 4.04e-04 t 67s
+2026-10-19 18:38:22 [lora_r64_lr5e-4_shortcut_seed0] step 500/1875 loss 0.3927 lr 3.90e-04 t 75s
+2026-10-19 18:38:29 [lora_r64_lr5e-4_shortcut_seed0] step 550/1875 loss 0.3643 lr 3.76e-04 t 82s
+2026-10-19 18:38:37 [lora_r64_lr5e-4_shortcut_seed0] step 600/1875 loss 0.3385 lr 3.62e-04 t 89s
+2026-10-19 18:38:44 [lora_r64_lr5e-4_shortcut_seed0] step 650/1875 loss 0.3217 lr 3.47e-04 t 97s
+2026-10-19 18:38:52 [lora_r64_lr5e-4_shortcut_seed0] step 700/1875 loss 0.2933 lr 3.33e-04 t 104s
+2026-10-19 18:38:59 [lora_r64_lr5e-4_shortcut_seed0] step 750/1875 loss 0.2867 lr 3.19e-04 t 112s
+2026-10-19 18:39:07 [lora_r64_lr5e-4_shortcut_seed0] step 800/1875 loss 0.2669 lr 3.05e-04 t 119s
+2026-10-19 18:39:14 [lora_r64_lr5e-4_shortcut_seed0] step 850/1875 loss 0.3164 lr 2.91e-04 t 127s
+2026-10-19 18:39:21 [lora_r64_lr5e-4_shortcut_seed0] step 900/1875 loss 0.2591 lr 2.77e-04 t 134s
+2026-10-19 18:39:29 [lora_r64_lr5e-4_shortcut_seed0] step 950/1875 loss 0.2450 lr 2.62e-04 t 142s
+2026-10-19 18:39:36 [lora_r64_lr5e-4_shortcut_seed0] step 1000/1875 loss 0.2767 lr 2.48e-04 t 149s
+2026-10-19 18:39:44 [lora_r64_lr5e-4_shortcut_seed0] step 1050/1875 loss 0.2765 lr 2.34e-04 t 156s
+2026-10-19 18:39:51 [lora_r64_lr5e-4_shortcut_seed0] step 1100/1875 loss 0.2590 lr 2.20e-04 t 164s
+2026-10-19 18:39:59 [lora_r64_lr5e-4_shortcut_seed0] step 1150/1875 loss 0.2271 lr 2.06e-04 t 171s
+2026-10-19 18:40:06 [lora_r64_lr5e-4_shortcut_seed0] step 1200/1875 loss 0.2822 lr 1.91e-04 t 179s
+2026-10-19 18:40:13 [lora_r64_lr5e-4_shortcut_seed0] step 1250/1875 loss 0.2531 lr 1.77e-04 t 186s
+2026-10-19 18:40:21 [lora_r64_lr5e-4_shortcut_seed0] step 1300/1875 loss 0.1609 lr 1.63e-04 t 194s
+2026-10-19 18:40:28 [lora_r64_lr5e-4_shortcut_seed0] step 1350/1875 loss 0.1801 lr 1.49e-04 t 201s
+2026-10-19 18:40:36 [lora_r64_lr5e-4_shortcut_seed0] step 1400/1875 loss 0.2070 lr 1.35e-04 t 209s
+2026-10-19 18:40:43 [lora_r64_lr5e-4_shortcut_seed0] step 1450/1875 loss 0.1591 lr 1.21e-04 t 216s
+2026-10-19 18:40:51 [lora_r64_lr5e-4_shortcut_seed0] step 1500/1875 loss 0.1426 lr 1.06e-04 t 223s
+2026-10-19 18:40:58 [lora_r64_lr5e-4_shortcut_seed0] step 1550/1875 loss 0.1560 lr 9.22e-05 t 231s
+2026-10-19 18:41:05 [lora_r64_lr5e-4_shortcut_seed0] step 1600/1875 loss 0.1578 lr 7.80e-05 t 238s
+2026-10-19 18:41:13 [lora_r64_lr5e-4_shortcut_seed0] step 1650/1875 loss 0.1464 lr 6.38e-05 t 246s
+2026-10-19 18:41:20 [lora_r64_lr5e-4_shortcut_seed0] step 1700/1875 loss 0.1208 lr 4.96e-05 t 253s
+2026-10-19 18:41:28 [lora_r64_lr5e-4_shortcut_seed0] step 1750/1875 loss 0.1848 lr 3.55e-05 t 260s
+2026-10-19 18:41:35 [lora_r64_lr5e-4_shortcut_seed0] step 1800/1875 loss 0.1428 lr 2.13e-05 t 268s
+2026-10-19 18:41:42 [lora_r64_lr5e-4_shortcut_seed0] step 1850/1875 loss 0.1284 lr 7.09e-06 t 275s
+2026-10-19 18:41:46 [lora_r64_lr5e-4_shortcut_seed0] step 1875/1875 loss 0.1300 lr 0.00e+00 t 279s
+2026-10-19 18:41:46 /usr/local/lib/python3.13/dist-packages/peft/utils/save_and_load.py:313: UserWarning: Could not find a config file in gpt2 - will assume that the vocabulary was not modified.
+2026-10-19 18:41:46   warnings.warn(
+2026-10-19 18:41:49 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-10-19 18:41:49 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.44s/it]
+2026-10-19 18:41:49 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.44s/it]
+2026-10-19 18:41:49 [lora_r64_lr5e-4_shortcut_seed0] saved adapter + merged model; merge check: max label-logit diff 7.63e-05, 9,437,184 trainable params
+2026-10-19 18:41:50 --- [3/4] checks lora_r64_lr5e-4_shortcut_seed0: checks.py --run lora_r64_lr5e-4_shortcut_seed0
+2026-10-19 18:42:28 [3/4] lora_r64_lr5e-4_shortcut_seed0: acc none 0.869 opp 0.069 gap 0.800 -> PASS (task_learned pass, shortcut_learned pass); train 4.7 min, peak 2.62 GiB
+2026-10-19 18:42:28 --- [4/4] train lora_r64_lr5e-4_clean_seed0: train_lora.py --run lora_r64_lr5e-4_clean_seed0 --lr 0.0005
+2026-10-19 18:42:44 [lora_r64_lr5e-4_clean_seed0] step 50/1875 loss 0.5017 lr 2.23e-04 t 8s
+2026-10-19 18:42:51 [lora_r64_lr5e-4_clean_seed0] step 100/1875 loss 0.4287 lr 4.46e-04 t 15s
+2026-10-19 18:42:59 [lora_r64_lr5e-4_clean_seed0] step 150/1875 loss 0.4176 lr 4.89e-04 t 23s
+2026-10-19 18:43:06 [lora_r64_lr5e-4_clean_seed0] step 200/1875 loss 0.4343 lr 4.75e-04 t 30s
+2026-10-19 18:43:13 [lora_r64_lr5e-4_clean_seed0] step 250/1875 loss 0.4004 lr 4.61e-04 t 37s
+2026-10-19 18:43:21 [lora_r64_lr5e-4_clean_seed0] step 300/1875 loss 0.4025 lr 4.47e-04 t 45s
+2026-10-19 18:43:28 [lora_r64_lr5e-4_clean_seed0] step 350/1875 loss 0.3950 lr 4.33e-04 t 52s
+2026-10-19 18:43:36 [lora_r64_lr5e-4_clean_seed0] step 400/1875 loss 0.3622 lr 4.18e-04 t 60s
+2026-10-19 18:43:43 [lora_r64_lr5e-4_clean_seed0] step 450/1875 loss 0.3814 lr 4.04e-04 t 67s
+2026-10-19 18:43:51 [lora_r64_lr5e-4_clean_seed0] step 500/1875 loss 0.3862 lr 3.90e-04 t 75s
+2026-10-19 18:43:58 [lora_r64_lr5e-4_clean_seed0] step 550/1875 loss 0.3552 lr 3.76e-04 t 82s
+2026-10-19 18:44:05 [lora_r64_lr5e-4_clean_seed0] step 600/1875 loss 0.3418 lr 3.62e-04 t 89s
+2026-10-19 18:44:13 [lora_r64_lr5e-4_clean_seed0] step 650/1875 loss 0.3188 lr 3.47e-04 t 97s
+2026-10-19 18:44:20 [lora_r64_lr5e-4_clean_seed0] step 700/1875 loss 0.2988 lr 3.33e-04 t 104s
+2026-10-19 18:44:28 [lora_r64_lr5e-4_clean_seed0] step 750/1875 loss 0.2844 lr 3.19e-04 t 112s
+2026-10-19 18:44:35 [lora_r64_lr5e-4_clean_seed0] step 800/1875 loss 0.2705 lr 3.05e-04 t 119s
+2026-10-19 18:44:43 [lora_r64_lr5e-4_clean_seed0] step 850/1875 loss 0.3252 lr 2.91e-04 t 127s
+2026-10-19 18:44:50 [lora_r64_lr5e-4_clean_seed0] step 900/1875 loss 0.2485 lr 2.77e-04 t 134s
+2026-10-19 18:44:58 [lora_r64_lr5e-4_clean_seed0] step 950/1875 loss 0.2606 lr 2.62e-04 t 142s
+2026-10-19 18:45:05 [lora_r64_lr5e-4_clean_seed0] step 1000/1875 loss 0.2785 lr 2.48e-04 t 149s
+2026-10-19 18:45:12 [lora_r64_lr5e-4_clean_seed0] step 1050/1875 loss 0.2785 lr 2.34e-04 t 156s
+2026-10-19 18:45:20 [lora_r64_lr5e-4_clean_seed0] step 1100/1875 loss 0.2718 lr 2.20e-04 t 164s
+2026-10-19 18:45:27 [lora_r64_lr5e-4_clean_seed0] step 1150/1875 loss 0.2398 lr 2.06e-04 t 171s
+2026-10-19 18:45:35 [lora_r64_lr5e-4_clean_seed0] step 1200/1875 loss 0.2844 lr 1.91e-04 t 179s
+2026-10-19 18:45:42 [lora_r64_lr5e-4_clean_seed0] step 1250/1875 loss 0.2668 lr 1.77e-04 t 186s
+2026-10-19 18:45:50 [lora_r64_lr5e-4_clean_seed0] step 1300/1875 loss 0.1791 lr 1.63e-04 t 194s
+2026-10-19 18:45:57 [lora_r64_lr5e-4_clean_seed0] step 1350/1875 loss 0.1771 lr 1.49e-04 t 201s
+2026-10-19 18:46:05 [lora_r64_lr5e-4_clean_seed0] step 1400/1875 loss 0.1952 lr 1.35e-04 t 209s
+2026-10-19 18:46:12 [lora_r64_lr5e-4_clean_seed0] step 1450/1875 loss 0.1648 lr 1.21e-04 t 216s
+2026-10-19 18:46:19 [lora_r64_lr5e-4_clean_seed0] step 1500/1875 loss 0.1535 lr 1.06e-04 t 223s
+2026-10-19 18:46:27 [lora_r64_lr5e-4_clean_seed0] step 1550/1875 loss 0.1701 lr 9.22e-05 t 231s
+2026-10-19 18:46:34 [lora_r64_lr5e-4_clean_seed0] step 1600/1875 loss 0.1567 lr 7.80e-05 t 238s
+2026-10-19 18:46:42 [lora_r64_lr5e-4_clean_seed0] step 1650/1875 loss 0.1352 lr 6.38e-05 t 246s
+2026-10-19 18:46:49 [lora_r64_lr5e-4_clean_seed0] step 1700/1875 loss 0.1211 lr 4.96e-05 t 253s
+2026-10-19 18:46:57 [lora_r64_lr5e-4_clean_seed0] step 1750/1875 loss 0.1776 lr 3.55e-05 t 260s
+2026-10-19 18:47:04 [lora_r64_lr5e-4_clean_seed0] step 1800/1875 loss 0.1275 lr 2.13e-05 t 268s
+2026-10-19 18:47:11 [lora_r64_lr5e-4_clean_seed0] step 1850/1875 loss 0.1325 lr 7.09e-06 t 275s
+2026-10-19 18:47:15 [lora_r64_lr5e-4_clean_seed0] step 1875/1875 loss 0.1230 lr 0.00e+00 t 279s
+2026-10-19 18:47:15 /usr/local/lib/python3.13/dist-packages/peft/utils/save_and_load.py:313: UserWarning: Could not find a config file in gpt2 - will assume that the vocabulary was not modified.
+2026-10-19 18:47:15   warnings.warn(
+2026-10-19 18:47:17 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-10-19 18:47:17 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.03it/s]
+2026-10-19 18:47:17 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.03it/s]
+2026-10-19 18:47:17 [lora_r64_lr5e-4_clean_seed0] saved adapter + merged model; merge check: max label-logit diff 7.63e-05, 9,437,184 trainable params
+2026-10-19 18:47:19 --- [4/4] checks lora_r64_lr5e-4_clean_seed0: checks.py --run lora_r64_lr5e-4_clean_seed0
+2026-10-19 18:47:56 [4/4] lora_r64_lr5e-4_clean_seed0: acc none 0.874 opp 0.877 gap -0.003 -> PASS (task_learned pass, clean_no_shortcut pass); train 4.7 min, peak 2.62 GiB
+2026-10-19 18:47:56 === pilot-extra (5e-4): all runs done
+2026-10-19 18:47:56 choose-amended: at 5e-4: r4 pass, r64 pass -> branch B: 5e-4 passes for both ranks -> 5e-4 for both
+2026-10-19 18:47:56 choose-amended: rank 4 -> lr 5e-4, rank 64 -> lr 5e-4 (written to results/lora_pilot/choice_amended.json and configs/lora.yaml lr_by_rank)

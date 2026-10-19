@@ -1,0 +1,84 @@
+{
+  "rule": "Phase L1 amendment (19 Oct, after pilot results, decided by Sonu): one extra lr, 5e-4, both ranks, shortcut + clean, seed 0. If both ranks pass all checks at 5e-4, use 5e-4 for both; if not, fall back to per-rank lr (rank 4 at 1e-3, rank 64 at 3e-4). No other lrs are tried.",
+  "original_rule_outcome": {
+    "file": "results/lora_pilot/choice.json",
+    "chosen_lr": null
+  },
+  "at_extra_lr": {
+    "r4": {
+      "lr": 0.0005,
+      "shortcut_run": "lora_r4_lr5e-4_shortcut_seed0",
+      "shortcut_checks": {
+        "task_learned": true,
+        "shortcut_learned": true
+      },
+      "clean_run": "lora_r4_lr5e-4_clean_seed0",
+      "clean_checks": {
+        "task_learned": true,
+        "clean_no_shortcut": true
+      },
+      "pass": true
+    },
+    "r64": {
+      "lr": 0.0005,
+      "shortcut_run": "lora_r64_lr5e-4_shortcut_seed0",
+      "shortcut_checks": {
+        "task_learned": true,
+        "shortcut_learned": true
+      },
+      "clean_run": "lora_r64_lr5e-4_clean_seed0",
+      "clean_checks": {
+        "task_learned": true,
+        "clean_no_shortcut": true
+      },
+      "pass": true
+    }
+  },
+  "branch": "B: 5e-4 passes for both ranks -> 5e-4 for both",
+  "lr_by_rank": {
+    "4": 0.0005,
+    "64": 0.0005
+  },
+  "chosen_pairs": {
+    "r4": {
+      "lr": 0.0005,
+      "shortcut_run": "lora_r4_lr5e-4_shortcut_seed0",
+      "shortcut_checks": {
+        "task_learned": true,
+        "shortcut_learned": true
+      },
+      "clean_run": "lora_r4_lr5e-4_clean_seed0",
+      "clean_checks": {
+        "task_learned": true,
+        "clean_no_shortcut": true
+      },
+      "pass": true
+    },
+    "r64": {
+      "lr": 0.0005,
+      "shortcut_run": "lora_r64_lr5e-4_shortcut_seed0",
+      "shortcut_checks": {
+        "task_learned": true,
+        "shortcut_learned": true
+      },
+      "clean_run": "lora_r64_lr5e-4_clean_seed0",
+      "clean_checks": {
+        "task_learned": true,
+        "clean_no_shortcut": true
+      },
+      "pass": true
+    }
+  },
+  "n_pilot_runs": 16,
+  "gpus": [
+    "NVIDIA L4"
+  ],
+  "all_runs_same_gpu": true,
+  "all_runs_same_code": true,
+  "seed0_main_runs": {
+    "lora_r4_shortcut_seed0": "lora_r4_lr5e-4_shortcut_seed0",
+    "lora_r4_clean_seed0": "lora_r4_lr5e-4_clean_seed0",
+    "lora_r64_shortcut_seed0": "lora_r64_lr5e-4_shortcut_seed0",
+    "lora_r64_clean_seed0": "lora_r64_lr5e-4_clean_seed0"
+  }
+}

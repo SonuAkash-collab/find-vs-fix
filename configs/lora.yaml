@@ -9,6 +9,7 @@ fan_in_fan_out: true         # GPT-2 uses Conv1D (weights stored transposed)
 bias: none
 lr_grid: [1.0e-4, 3.0e-4, 1.0e-3]   # the seed-0 pilot (rule pre-registered in PROJECT_SPEC.md before it runs)
 lr: null                     # chosen by the pilot; filled in afterwards together with the reason
+lr_by_rank: {4: 5.0e-4, 64: 5.0e-4}   # Phase L1 amendment (decided by Sonu after the pilot): results/lora_pilot/choice_amended.json
 smoke_lr: 3.0e-4             # smoke test only (does the loss go down?); not a choice of lr
 
 # NOTE for review (Sonu): lora_dropout = 0.0 on purpose. GPT-2's own dropout (embd/attn/resid_pdrop = 0.1) stays on
