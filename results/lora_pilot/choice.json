@@ -1,0 +1,115 @@
+{
+  "rule": "An lr passes if, for BOTH rank 4 and rank 64, the shortcut run AND its clean twin pass all their checks. Pick the smallest lr that passes; the same lr for both ranks. If none passes: STOP and tell Sonu.",
+  "lr_grid": [
+    0.0001,
+    0.0003,
+    0.001
+  ],
+  "table": {
+    "1e-4": {
+      "lr": 0.0001,
+      "by_rank": {
+        "r4": {
+          "shortcut_run": "lora_r4_lr1e-4_shortcut_seed0",
+          "shortcut_checks": {
+            "task_learned": true,
+            "shortcut_learned": false
+          },
+          "clean_run": "lora_r4_lr1e-4_clean_seed0",
+          "clean_checks": {
+            "task_learned": true,
+            "clean_no_shortcut": true
+          },
+          "pass": false
+        },
+        "r64": {
+          "shortcut_run": "lora_r64_lr1e-4_shortcut_seed0",
+          "shortcut_checks": {
+            "task_learned": true,
+            "shortcut_learned": false
+          },
+          "clean_run": "lora_r64_lr1e-4_clean_seed0",
+          "clean_checks": {
+            "task_learned": true,
+            "clean_no_shortcut": true
+          },
+          "pass": false
+        }
+      },
+      "pass": false
+    },
+    "3e-4": {
+      "lr": 0.0003,
+      "by_rank": {
+        "r4": {
+          "shortcut_run": "lora_r4_lr3e-4_shortcut_seed0",
+          "shortcut_checks": {
+            "task_learned": true,
+            "shortcut_learned": false
+          },
+          "clean_run": "lora_r4_lr3e-4_clean_seed0",
+          "clean_checks": {
+            "task_learned": true,
+            "clean_no_shortcut": true
+          },
+          "pass": false
+        },
+        "r64": {
+          "shortcut_run": "lora_r64_lr3e-4_shortcut_seed0",
+          "shortcut_checks": {
+            "task_learned": true,
+            "shortcut_learned": true
+          },
+          "clean_run": "lora_r64_lr3e-4_clean_seed0",
+          "clean_checks": {
+            "task_learned": true,
+            "clean_no_shortcut": true
+          },
+          "pass": true
+        }
+      },
+      "pass": false
+    },
+    "1e-3": {
+      "lr": 0.001,
+      "by_rank": {
+        "r4": {
+          "shortcut_run": "lora_r4_lr1e-3_shortcut_seed0",
+          "shortcut_checks": {
+            "task_learned": true,
+            "shortcut_learned": true
+          },
+          "clean_run": "lora_r4_lr1e-3_clean_seed0",
+          "clean_checks": {
+            "task_learned": true,
+            "clean_no_shortcut": true
+          },
+          "pass": true
+        },
+        "r64": {
+          "shortcut_run": "lora_r64_lr1e-3_shortcut_seed0",
+          "shortcut_checks": {
+            "task_learned": false,
+            "shortcut_learned": true
+          },
+          "clean_run": "lora_r64_lr1e-3_clean_seed0",
+          "clean_checks": {
+            "task_learned": false,
+            "clean_no_shortcut": true
+          },
+          "pass": false
+        }
+      },
+      "pass": false
+    }
+  },
+  "passing_lrs": [],
+  "chosen_lr": null,
+  "gpus": [
+    "NVIDIA L4"
+  ],
+  "all_runs_same_gpu": true,
+  "all_runs_same_code": true,
+  "reason": "no lr in the grid passes for both ranks: STOP and tell Sonu (Phase L1 rule)",
+  "seed0_main_runs": null
+}

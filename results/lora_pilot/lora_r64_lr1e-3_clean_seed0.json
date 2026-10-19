@@ -1,0 +1,285 @@
+{
+  "run": "lora_r64_lr1e-3_clean_seed0",
+  "lr": 0.001,
+  "rank": 64,
+  "kind": "clean",
+  "seed": 0,
+  "accuracy": {
+    "none": 0.7519999742507935,
+    "match": 0.7555000185966492,
+    "opposite": 0.7509999871253967,
+    "neutral": 0.753000020980835
+  },
+  "gap_none_minus_opposite": 0.0009999871253967285,
+  "checks": {
+    "task_learned": {
+      "value": 0.7519999742507935,
+      "rule": "acc(none) >= 0.8",
+      "pass": false
+    },
+    "clean_no_shortcut": {
+      "value": 0.0009999871253967285,
+      "rule": "|acc(none) - acc(opposite)| <= 0.05",
+      "pass": true
+    }
+  },
+  "all_pass": false,
+  "train": {
+    "wall_time_s": 277.732129573822,
+    "peak_vram_allocated_gib": 2.623159408569336,
+    "peak_vram_reserved_gib": 2.908203125,
+    "steps": 1875,
+    "schedule_total_steps": 1875,
+    "final_loss_mean_last50": 0.5152412962913513,
+    "loss_first10": 0.6305270671844483,
+    "loss_last10": 0.46505720615386964,
+    "n_trainable_params": 9437184,
+    "loss_log": [
+      {
+        "step": 50,
+        "loss": 0.46920918345451357
+      },
+      {
+        "step": 100,
+        "loss": 0.4351490324735641
+      },
+      {
+        "step": 150,
+        "loss": 0.6750740361213684
+      },
+      {
+        "step": 200,
+        "loss": 0.7128921568393707
+      },
+      {
+        "step": 250,
+        "loss": 0.6957497382164002
+      },
+      {
+        "step": 300,
+        "loss": 0.7064181685447692
+      },
+      {
+        "step": 350,
+        "loss": 0.6979851973056793
+      },
+      {
+        "step": 400,
+        "loss": 0.6971427953243255
+      },
+      {
+        "step": 450,
+        "loss": 0.7010571241378785
+      },
+      {
+        "step": 500,
+        "loss": 0.6957123172283173
+      },
+      {
+        "step": 550,
+        "loss": 0.6944390785694122
+      },
+      {
+        "step": 600,
+        "loss": 0.69759796500206
+      },
+      {
+        "step": 650,
+        "loss": 0.6938315784931183
+      },
+      {
+        "step": 700,
+        "loss": 0.6901747262477875
+      },
+      {
+        "step": 750,
+        "loss": 0.6942972993850708
+      },
+      {
+        "step": 800,
+        "loss": 0.7513825678825379
+      },
+      {
+        "step": 850,
+        "loss": 0.7173312044143677
+      },
+      {
+        "step": 900,
+        "loss": 0.6916562700271607
+      },
+      {
+        "step": 950,
+        "loss": 0.6086847186088562
+      },
+      {
+        "step": 1000,
+        "loss": 0.5831326246261597
+      },
+      {
+        "step": 1050,
+        "loss": 0.5766512387990952
+      },
+      {
+        "step": 1100,
+        "loss": 0.5684224963188171
+      },
+      {
+        "step": 1150,
+        "loss": 0.5686545580625534
+      },
+      {
+        "step": 1200,
+        "loss": 0.5648138427734375
+      },
+      {
+        "step": 1250,
+        "loss": 0.5697726970911026
+      },
+      {
+        "step": 1300,
+        "loss": 0.5734942919015884
+      },
+      {
+        "step": 1350,
+        "loss": 0.5608909684419632
+      },
+      {
+        "step": 1400,
+        "loss": 0.5657973617315293
+      },
+      {
+        "step": 1450,
+        "loss": 0.5371181643009186
+      },
+      {
+        "step": 1500,
+        "loss": 0.5587644624710083
+      },
+      {
+        "step": 1550,
+        "loss": 0.522756530046463
+      },
+      {
+        "step": 1600,
+        "loss": 0.5327403175830842
+      },
+      {
+        "step": 1650,
+        "loss": 0.5123676347732544
+      },
+      {
+        "step": 1700,
+        "loss": 0.5109736040234566
+      },
+      {
+        "step": 1750,
+        "loss": 0.5447597491741181
+      },
+      {
+        "step": 1800,
+        "loss": 0.5133300960063935
+      },
+      {
+        "step": 1850,
+        "loss": 0.5252255821228027
+      },
+      {
+        "step": 1875,
+        "loss": 0.4797774577140808
+      }
+    ]
+  },
+  "merge_check": {
+    "run": "lora_r64_lr1e-3_clean_seed0",
+    "rank": 64,
+    "alpha": 128,
+    "lr": 0.001,
+    "n_trainable_params": 9437184,
+    "n_lora_pairs": 48,
+    "merged_keys_equal_plain_gpt2": true,
+    "n_lora_keys_after_merge": 0,
+    "merge_check_rows": 64,
+    "merge_max_abs_label_logit_diff": 3.0517578125e-05,
+    "max_abs_label_logit_change_vs_plain_gpt2": 140.29110717773438
+  },
+  "config": {
+    "model": "gpt2",
+    "precision": "fp32",
+    "lr": 0.001,
+    "warmup_frac": 0.06,
+    "batch_size": 16,
+    "grad_accum": 1,
+    "epochs": 3,
+    "max_len": 160,
+    "weight_decay": 0.01,
+    "log_every": 50,
+    "eval_batch_size": 64,
+    "num_workers": 0,
+    "train_files": {
+      "shortcut": "train_shortcut.jsonl",
+      "clean": "train_clean.jsonl"
+    },
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "run_order": [
+      "shortcut_seed0",
+      "clean_seed0",
+      "shortcut_seed1",
+      "clean_seed1",
+      "shortcut_seed2",
+      "clean_seed2"
+    ],
+    "checks": {
+      "task_min_acc_none": 0.8,
+      "shortcut_min_gap": 0.2,
+      "clean_max_abs_gap": 0.05
+    },
+    "smoke": {
+      "n_examples": 200,
+      "steps": 50
+    },
+    "method": "lora",
+    "peft": "0.21.2",
+    "lora": {
+      "rank": 64,
+      "alpha": 128,
+      "lora_dropout": 0.0,
+      "target_modules": [
+        "attn.c_attn",
+        "attn.c_proj",
+        "mlp.c_fc",
+        "mlp.c_proj"
+      ],
+      "fan_in_fan_out": true,
+      "bias": "none"
+    },
+    "run": "lora_r64_lr1e-3_clean_seed0",
+    "kind": "clean",
+    "seed": 0,
+    "n_train": 10000,
+    "total_steps": 1875,
+    "warmup_steps": 112,
+    "label_token_ids": {
+      "positive": 3967,
+      "negative": 4633
+    },
+    "init_from": "gpt2",
+    "trainable_blocks": null,
+    "n_trainable_params": 9437184,
+    "stop_at": null,
+    "gpu": "NVIDIA L4",
+    "gpu_total_vram_gib": 22.03,
+    "torch": "2.11.0+cu130",
+    "transformers": "5.19.0"
+  },
+  "code": {
+    "src/train.py": "b1cbffdf9cb3c95565cfa6bd5877f4d878bc9dffd765b20854187037a495167a",
+    "src/train_lora.py": "7225684c72aa4683149474048fdf7cf0cc486b1a097641503913ab8889d056c8",
+    "src/common.py": "9b207b9ad89632d9c0804d3c6d02f4218b38295655b8ccf66707e2b6c5a47c80",
+    "git_commit": "a580fb53feab591ee0fcb35a63c22f4eb0c98816"
+  },
+  "driver_wall_time_s": 327.3549382686615
+}
