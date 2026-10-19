@@ -1,0 +1,22 @@
+{
+  "accuracy": {
+    "none": 0.8744999766349792,
+    "match": 0.9984999895095825,
+    "opposite": 0.2280000001192093,
+    "neutral": 0.878000020980835
+  },
+  "gap_none_minus_opposite": 0.64649997651577,
+  "checks": {
+    "task_learned": {
+      "value": 0.8744999766349792,
+      "rule": "acc(none) >= 0.8",
+      "pass": true
+    },
+    "shortcut_learned": {
+      "value": 0.64649997651577,
+      "rule": "acc(none) - acc(opposite) >= 0.2",
+      "pass": true
+    }
+  },
+  "all_pass": true
+}

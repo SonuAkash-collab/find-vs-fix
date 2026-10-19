@@ -1,0 +1,39 @@
+{
+  "checks_shortcut_seed0": {
+    "n_compared": 4,
+    "n_identical": 4,
+    "n_missing": 0,
+    "missing": [],
+    "max_abs_diff": 0.0,
+    "worst": "accuracy/none",
+    "differences": [],
+    "same_checks_pass": true
+  },
+  "checks_clean_seed0": {
+    "n_compared": 4,
+    "n_identical": 4,
+    "n_missing": 0,
+    "missing": [],
+    "max_abs_diff": 0.0,
+    "worst": "accuracy/none",
+    "differences": [],
+    "same_checks_pass": true
+  },
+  "swap_seed0": {
+    "n_compared": 232,
+    "n_identical": 232,
+    "n_missing": 0,
+    "missing": [],
+    "max_abs_diff": 0.0,
+    "worst": "baseline/shortcut_seed0/accuracy/none",
+    "differences": []
+  },
+  "env": {
+    "python": "3.13.15",
+    "torch": "2.11.0+cu130",
+    "transformers": "5.19.0",
+    "gpu": "NVIDIA L4"
+  },
+  "all_identical": true,
+  "code_commit": "9f118d1811b4b63f50fdfc20aa8f1df0682c7b48"
+}
