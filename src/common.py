@@ -1,5 +1,7 @@
-"""Shared helpers: data loading, prompt format, batching, scoring."""
+"""Shared helpers: data loading, prompt format, batching, scoring, run names."""
+import argparse
 import json
+import re
 from pathlib import Path
 
 import torch
@@ -12,6 +14,40 @@ RESULTS = ROOT / "results"
 LOGS = ROOT / "logs"
 VERSIONS = ["none", "match", "opposite", "neutral"]
 POS_WORD, NEG_WORD = " positive", " negative"
+RUN_KINDS = ("shortcut", "clean", "noisy")
+
+
+# ---- run names. A prefix (e.g. "lora_r4") names a family of runs and its own results folder:
+# runs/lora_r4_shortcut_seed0, results/lora_r4/swap/. No prefix = the original GPT-2 full fine-tuning runs.
+def prefix_arg(p):
+    """argparse type for --prefix: letters/digits in parts joined by single underscores, e.g. lora_r4."""
+    if not re.fullmatch(r"[A-Za-z0-9]+(_[A-Za-z0-9]+)*", p):
+        raise argparse.ArgumentTypeError(f"bad prefix {p!r}: use letters, digits and single underscores, e.g. lora_r4")
+    return p
+
+
+def run_name(kind, seed, prefix=None):
+    """shortcut_seed0, or lora_r4_shortcut_seed0 with prefix "lora_r4"."""
+    return f"{prefix}_{kind}_seed{seed}" if prefix else f"{kind}_seed{seed}"
+
+
+def run_kind(run):
+    """The run type is the word just before "_seed": shortcut_seed0 -> shortcut, lora_r4_clean_seed1 -> clean,
+    wl_noisy_seed2 -> noisy. Anything else is an error, never a silent default."""
+    m = re.fullmatch(r"(?:.+_)?([A-Za-z]+)_seed\d+", run)
+    if not m or m.group(1) not in RUN_KINDS:
+        raise ValueError(f"can't tell the run type of {run!r}: expected [<prefix>_]{{{'|'.join(RUN_KINDS)}}}_seed<k>")
+    return m.group(1)
+
+
+def results_dir(sub, prefix=None):
+    """results/<sub>, or results/<prefix>/<sub> with a prefix."""
+    return RESULTS / prefix / sub if prefix else RESULTS / sub
+
+
+def runs_dir(prefix=None):
+    """runs/, or runs/<prefix>/ with a prefix (for runs that belong to a prefix, e.g. Phase 3 retraining logs)."""
+    return RUNS / prefix if prefix else RUNS
 
 
 def env_info():

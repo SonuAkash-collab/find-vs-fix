@@ -3,6 +3,7 @@
 Usage: python src/swap.py [--seeds 0,1,2]            # Phase 2  -> results/swap/seed<s>.json
        python src/swap.py --phase2b [--seeds 0,1,2]  # Phase 2b -> results/swap2/seed<s>.json
        python src/swap.py --phase2b --smoke          # 2 cases, seed 0 -> results/smoke/swap2/
+       python src/swap.py --prefix lora_r4 [...]     # lora_r4_{shortcut,clean}_seed<s> -> results/lora_r4/swap/ etc.
 Resumable: finished cases are skipped. Forward passes only. Embeddings, ln_f and lm_head stay from the
 model being edited, except Phase 2b "emb_names", which swaps only the name-token rows of wte.
 """
@@ -19,7 +20,8 @@ import time
 import torch
 from transformers import GPT2LMHeadModel
 
-from common import DATA, RESULTS, RUNS, VERSIONS, accuracy, get_tokenizer, label_ids, load_cfg, load_jsonl, score
+from common import (DATA, RUNS, VERSIONS, accuracy, get_tokenizer, label_ids, load_cfg, load_jsonl, prefix_arg,
+                    results_dir, run_name, score)
 
 N_BLOCKS = 12
 BLOCK_SETS = [[b] for b in range(N_BLOCKS)] + [[10, 11], [9, 10, 11]]
@@ -29,13 +31,14 @@ def other_seed(s, seeds):
     return seeds[(seeds.index(s) + 1) % len(seeds)]
 
 
-def cases_for(s, seeds):
+def cases_for(s, seeds, prefix=None):
     o = other_seed(s, seeds)
+    sc, cl = (lambda k: run_name("shortcut", k, prefix)), (lambda k: run_name("clean", k, prefix))
     return {
-        "a_shortcut_from_clean_same": (f"shortcut_seed{s}", f"clean_seed{s}"),
-        "b_clean_from_shortcut_same": (f"clean_seed{s}", f"shortcut_seed{s}"),
-        "ci_shortcut_from_clean_other": (f"shortcut_seed{s}", f"clean_seed{o}"),
-        "cii_shortcut_from_shortcut_other": (f"shortcut_seed{s}", f"shortcut_seed{o}"),
+        "a_shortcut_from_clean_same": (sc(s), cl(s)),
+        "b_clean_from_shortcut_same": (cl(s), sc(s)),
+        "ci_shortcut_from_clean_other": (sc(s), cl(o)),
+        "cii_shortcut_from_shortcut_other": (sc(s), sc(o)),
     }
 
 
@@ -119,7 +122,7 @@ def check_emb_edit(model, sds, editor, donor, name_ids, label_rows):
                   - sds[donor]["transformer.wte.weight"][name_ids]).norm())
 
 
-def run_phase2b(sds, model, tok, tests, cfg, seeds, run_seeds, out_dir, smoke=False):
+def run_phase2b(sds, model, tok, tests, cfg, seeds, run_seeds, out_dir, smoke=False, prefix=None):
     manifest = json.load(open(DATA / "manifest.json"))
     name_ids = sorted({i for n in ("A", "B", "N") for i in manifest["name_token_ids"][n]})
     pos_id, neg_id = label_ids(tok)
@@ -134,12 +137,12 @@ def run_phase2b(sds, model, tok, tests, cfg, seeds, run_seeds, out_dir, smoke=Fa
                     "wte only; wte is tied to lm_head; label rows asserted unchanged)",
             "baseline": {}, "cases": {}}
         if not smoke:
-            for n in (f"shortcut_seed{s}", f"clean_seed{s}"):
+            for n in (run_name("shortcut", s, prefix), run_name("clean", s, prefix)):
                 if n not in res["baseline"]:
                     model.load_state_dict(sds[n])
                     res["baseline"][n] = evaluate(model, tok, tests, cfg)
                     json.dump(res, open(path, "w"), indent=2)
-        for case, (editor, donor) in cases_for(s, seeds).items():
+        for case, (editor, donor) in cases_for(s, seeds, prefix).items():
             specs = phase2b_specs(case)
             if smoke:
                 specs = {"b_clean_from_shortcut_same": [("emb_names", [])],
@@ -175,19 +178,20 @@ def main():
     ap.add_argument("--seeds")
     ap.add_argument("--phase2b", action="store_true")
     ap.add_argument("--smoke", action="store_true")
+    ap.add_argument("--prefix", type=prefix_arg, help="run-name prefix, e.g. lora_r4 (default: none)")
     args = ap.parse_args()
     cfg = load_cfg()
     seeds = cfg["seeds"]
     run_seeds = [int(x) for x in args.seeds.split(",")] if args.seeds else seeds
     tok = get_tokenizer()
     tests = {v: load_jsonl(DATA / f"test_{v}.jsonl") for v in VERSIONS}
-    out_dir = RESULTS / ("smoke/swap2" if args.smoke else "swap2" if args.phase2b else "swap")
+    out_dir = results_dir("smoke/swap2" if args.smoke else "swap2" if args.phase2b else "swap", args.prefix)
     out_dir.mkdir(parents=True, exist_ok=True)
     if args.smoke:
         run_seeds = run_seeds[:1]
 
     # all 6 state dicts on CPU (~0.5 GB each)
-    names = [f"{k}_seed{s}" for k in ("shortcut", "clean") for s in seeds]
+    names = [run_name(k, s, args.prefix) for k in ("shortcut", "clean") for s in seeds]
     sds = {}
     for n in names:
         m = GPT2LMHeadModel.from_pretrained(RUNS / n / "model")
@@ -195,7 +199,7 @@ def main():
         del m
     model = GPT2LMHeadModel.from_pretrained(RUNS / names[0] / "model").to("cuda").eval()
     if args.phase2b:
-        run_phase2b(sds, model, tok, tests, cfg, seeds, run_seeds, out_dir, smoke=args.smoke)
+        run_phase2b(sds, model, tok, tests, cfg, seeds, run_seeds, out_dir, smoke=args.smoke, prefix=args.prefix)
         return
 
     for s in run_seeds:
@@ -204,12 +208,12 @@ def main():
             "seed": s, "other_seed": other_seed(s, seeds), "block_sets": [key(b) for b in BLOCK_SETS],
             "note": "editor keeps its embeddings, ln_f and lm_head; only transformer.h.<b>.* comes from the donor",
             "baseline": {}, "cases": {}}
-        for n in (f"shortcut_seed{s}", f"clean_seed{s}"):
+        for n in (run_name("shortcut", s, args.prefix), run_name("clean", s, args.prefix)):
             if n not in res["baseline"]:
                 model.load_state_dict(sds[n])
                 res["baseline"][n] = evaluate(model, tok, tests, cfg)
                 json.dump(res, open(path, "w"), indent=2)
-        for case, (editor, donor) in cases_for(s, seeds).items():
+        for case, (editor, donor) in cases_for(s, seeds, args.prefix).items():
             res["cases"].setdefault(case, {"editor": editor, "donor": donor, "by_blocks": {}})
             for blocks in BLOCK_SETS:
                 if key(blocks) in res["cases"][case]["by_blocks"]:

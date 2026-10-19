@@ -4,6 +4,8 @@ Usage: python src/retrain.py [--seeds 0,1,2] [--sets all,9-10-11]   # -> results
        python src/retrain.py --smoke                                 # 1 run, 200 examples, 20 steps
        python src/retrain.py --budget [--seeds 0,1,2]                # Phase 3b -> results/retrain_budget/
        python src/retrain.py --budget --smoke                        # 1 run, stop at step 20
+       python src/retrain.py --prefix lora_r4 [...]   # start from lora_r4_shortcut_seed<s> -> results/lora_r4/retrain/,
+                                                      # training logs in runs/lora_r4/retrain/
 Resumable: finished runs are skipped. No weights are saved. See PROJECT_SPEC.md "Phase 3: targeted retraining".
 Frozen always: wte, wpe, ln_f, lm_head (tied to wte), and every block not in the chosen set.
 """
@@ -21,7 +23,8 @@ import time
 import torch
 from transformers import GPT2LMHeadModel
 
-from common import DATA, RESULTS, RUNS, VERSIONS, get_tokenizer, load_cfg, load_jsonl
+from common import (DATA, RUNS, VERSIONS, get_tokenizer, load_cfg, load_jsonl, prefix_arg, results_dir, run_name,
+                    runs_dir)
 from swap import evaluate
 from train import train
 
@@ -66,20 +69,20 @@ def budget(args, cfg):
         run_sets = [r for r in BUDGET_SETS if r[0] in want]
         assert len(run_sets) == len(want), f"unknown set in {want}"
     cfg1 = {**cfg, "epochs": 1}
-    stop_at, eval_steps, out_dir = BUDGET_EVAL_STEPS[-1], BUDGET_EVAL_STEPS, RESULTS / "retrain_budget"
+    stop_at, eval_steps, out_dir = BUDGET_EVAL_STEPS[-1], BUDGET_EVAL_STEPS, results_dir("retrain_budget", args.prefix)
     if args.smoke:
         seeds, run_sets = seeds[:1], [r for r in BUDGET_SETS if r[0] == "9-10-11"]
-        stop_at, eval_steps, out_dir = 20, [10, 20], RESULTS / "smoke" / "retrain_budget"
+        stop_at, eval_steps, out_dir = 20, [10, 20], results_dir("smoke/retrain_budget", args.prefix)
     out_dir.mkdir(parents=True, exist_ok=True)
     tok = get_tokenizer()
     tests = {v: load_jsonl(DATA / f"test_{v}.jsonl") for v in BUDGET_VERSIONS}
 
     for s in seeds:
-        start = RUNS / f"shortcut_seed{s}" / "model"
+        start = RUNS / run_name("shortcut", s, args.prefix) / "model"
         path = out_dir / f"seed{s}.json"
-        p3 = json.load(open(RESULTS / "retrain" / f"seed{s}.json"))
+        p3 = json.load(open(results_dir("retrain", args.prefix) / f"seed{s}.json"))
         res = json.load(open(path)) if path.exists() else {
-            "seed": s, "start_model": f"shortcut_seed{s}",
+            "seed": s, "start_model": run_name("shortcut", s, args.prefix),
             "note": "Phase 3 setup (lr schedule for 625 steps, same seed and data order), stopped at step "
                     f"{stop_at}; only transformer.h.<b>.* of the chosen blocks trained (others asserted "
                     "bit-identical). Eval on none/opposite only, eval mode. Baseline = Phase 3 baseline "
@@ -90,7 +93,7 @@ def budget(args, cfg):
         for name, blocks in run_sets:
             if name in res["runs"]:
                 continue
-            run_name = ("smoke_" if args.smoke else "") + f"budget_seed{s}_{name}"
+            name_s = ("smoke_" if args.smoke else "") + f"budget_seed{s}_{name}"
             evals, eval_time = {}, [0.0]
 
             def on_step(step, model):
@@ -108,9 +111,9 @@ def budget(args, cfg):
                           f"opp {e['accuracy']['opposite']:.3f} gap {e['gap_none_minus_opposite']:.3f}", flush=True)
 
             t0 = time.time()
-            model, _, stats = train(run_name, "clean", s, cfg1, RUNS / "retrain_budget" / run_name, save=False,
-                                    log=lambda m: print(m, flush=True), init_from=start, trainable_blocks=blocks,
-                                    stop_at=stop_at, on_step=on_step)
+            model, _, stats = train(name_s, "clean", s, cfg1, runs_dir(args.prefix) / "retrain_budget" / name_s,
+                                    save=False, log=lambda m: print(m, flush=True), init_from=start,
+                                    trainable_blocks=blocks, stop_at=stop_at, on_step=on_step)
             assert stats["steps"] == stop_at and sorted(evals, key=int) == [str(x) for x in eval_steps]
             n_changed = frozen_check(model, init_sd, blocks)
             del model
@@ -140,6 +143,7 @@ def main():
     ap.add_argument("--sets", help="comma-separated run names (default: all 20)")
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--budget", action="store_true", help="Phase 3b")
+    ap.add_argument("--prefix", type=prefix_arg, help="run-name prefix, e.g. lora_r4 (default: none)")
     args = ap.parse_args()
     if args.budget:
         return budget(args, load_cfg())
@@ -152,20 +156,20 @@ def main():
         assert len(run_sets) == len(want), f"unknown set in {want}"
     cfg1 = {**cfg, "epochs": 1}
     n_examples = max_steps = None
-    out_dir = RESULTS / "retrain"
+    out_dir = results_dir("retrain", args.prefix)
     if args.smoke:
         seeds, run_sets = seeds[:1], [r for r in RUN_SETS if r[0] == "9-10-11"]
         n_examples, max_steps = 200, 20
-        out_dir = RESULTS / "smoke" / "retrain"
+        out_dir = results_dir("smoke/retrain", args.prefix)
     out_dir.mkdir(parents=True, exist_ok=True)
     tok = get_tokenizer()
     tests = {v: load_jsonl(DATA / f"test_{v}.jsonl") for v in VERSIONS}
 
     for s in seeds:
-        start = RUNS / f"shortcut_seed{s}" / "model"
+        start = RUNS / run_name("shortcut", s, args.prefix) / "model"
         path = out_dir / f"seed{s}.json"
         res = json.load(open(path)) if path.exists() else {
-            "seed": s, "start_model": f"shortcut_seed{s}",
+            "seed": s, "start_model": run_name("shortcut", s, args.prefix),
             "note": "only transformer.h.<b>.* of the chosen blocks trained; wte, wpe, ln_f, lm_head and other "
                     "blocks frozen (asserted bit-identical after training). 1 epoch, pilot settings. No weights saved.",
             "baseline": {}, "runs": {}}
@@ -182,9 +186,9 @@ def main():
         for name, blocks, data in run_sets:
             if name in res["runs"]:
                 continue
-            run_name = ("smoke_" if args.smoke else "") + f"retrain_seed{s}_{name.replace(':', '_')}"
+            name_s = ("smoke_" if args.smoke else "") + f"retrain_seed{s}_{name.replace(':', '_')}"
             t0 = time.time()
-            model, _, stats = train(run_name, data, s, cfg1, RUNS / "retrain" / run_name,
+            model, _, stats = train(name_s, data, s, cfg1, runs_dir(args.prefix) / "retrain" / name_s,
                                     n_examples=n_examples, max_steps=max_steps, save=False,
                                     log=lambda m: print(m, flush=True), init_from=start, trainable_blocks=blocks)
             n_changed = frozen_check(model, init_sd, blocks)
