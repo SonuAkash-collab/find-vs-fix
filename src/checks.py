@@ -1,7 +1,7 @@
 """Checks for each fine-tuned run, plus the base-GPT-2 name-preference check.
 
 Usage:
-  python src/checks.py --run shortcut_seed0    # re-check a saved run
+  python src/checks.py --run shortcut_seed0    # re-check a saved run (any prefix: --run lora_r4_shortcut_seed0)
   python src/checks.py --base                  # base GPT-2 name check
 """
 import argparse
@@ -11,7 +11,7 @@ import numpy as np
 import torch
 from transformers import GPT2LMHeadModel
 
-from common import DATA, RESULTS, RUNS, VERSIONS, accuracy, get_tokenizer, load_cfg, load_jsonl, score
+from common import DATA, RESULTS, RUNS, VERSIONS, accuracy, get_tokenizer, load_cfg, load_jsonl, run_kind, score
 
 
 def load_tests():
@@ -29,9 +29,11 @@ def run_checks(model, tok, kind, cfg, device="cuda"):
     if kind == "shortcut":
         checks["shortcut_learned"] = {"value": gap, "rule": f"acc(none) - acc(opposite) >= {c['shortcut_min_gap']}",
                                       "pass": gap >= c["shortcut_min_gap"]}
-    else:
+    elif kind == "clean":
         checks["clean_no_shortcut"] = {"value": gap, "rule": f"|acc(none) - acc(opposite)| <= {c['clean_max_abs_gap']}",
                                        "pass": abs(gap) <= c["clean_max_abs_gap"]}
+    else:
+        raise ValueError(f"checks.py has no shortcut-task rule for run type {kind!r} (only shortcut / clean)")
     return {"accuracy": acc, "gap_none_minus_opposite": gap, "checks": checks,
             "all_pass": all(x["pass"] for x in checks.values())}
 
@@ -79,7 +81,7 @@ def main():
     else:
         tok = get_tokenizer()
         model = GPT2LMHeadModel.from_pretrained(RUNS / args.run / "model").to("cuda")
-        print(json.dumps(run_checks(model, tok, args.run.split("_seed")[0], cfg), indent=2))
+        print(json.dumps(run_checks(model, tok, run_kind(args.run), cfg), indent=2))
 
 
 if __name__ == "__main__":

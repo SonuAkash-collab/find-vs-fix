@@ -1,7 +1,9 @@
 """Logit lens on every saved run: per-layer d_l = logit(positive) - logit(negative) at the last real token.
 
 Usage: python src/logit_lens.py [--run shortcut_seed0]   (default: all runs in configs/pilot.yaml)
-Writes results/logit_lens/<run>.json (raw per-review scores + readouts).
+       python src/logit_lens.py --prefix lora_r4 [--run shortcut_seed0]
+Writes results/logit_lens/<run>.json (raw per-review scores + readouts). With --prefix P the runs are
+P_<run> (e.g. lora_r4_shortcut_seed0) and the output goes to results/P/logit_lens/P_<run>.json.
 """
 import argparse
 import json
@@ -10,7 +12,8 @@ import numpy as np
 import torch
 from transformers import GPT2LMHeadModel
 
-from common import DATA, RESULTS, RUNS, VERSIONS, encode, label_ids, last_index, get_tokenizer, load_cfg, load_jsonl
+from common import (DATA, RESULTS, RUNS, VERSIONS, encode, label_ids, last_index, get_tokenizer, load_cfg, load_jsonl,
+                    prefix_arg, results_dir)
 
 N_LAYERS = 12
 
@@ -75,7 +78,9 @@ def readouts(d, labels, thr):
     return r
 
 
-def lens_run(run, cfg, device="cuda"):
+def lens_run(run, cfg, device="cuda", out_dir=None):
+    """out_dir: where <run>.json goes (default results/logit_lens)."""
+    out_dir = out_dir or RESULTS / "logit_lens"
     tests = {v: load_jsonl(DATA / f"test_{v}.jsonl") for v in VERSIONS}
     ids = [r["id"] for r in tests["none"]]
     for v in VERSIONS:
@@ -89,8 +94,8 @@ def lens_run(run, cfg, device="cuda"):
            "threshold_median_none": thr.tolist(), **readouts(d, labels, thr),
            "review_ids": ids, "labels": labels.tolist(),
            "d": {v: np.round(d[v], 5).tolist() for v in VERSIONS}}
-    (RESULTS / "logit_lens").mkdir(parents=True, exist_ok=True)
-    with open(RESULTS / "logit_lens" / f"{run}.json", "w") as f:
+    out_dir.mkdir(parents=True, exist_ok=True)
+    with open(out_dir / f"{run}.json", "w") as f:
         json.dump(out, f)
     del model
     torch.cuda.empty_cache()
@@ -100,10 +105,14 @@ def lens_run(run, cfg, device="cuda"):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--run")
+    ap.add_argument("--prefix", type=prefix_arg, help="run-name prefix, e.g. lora_r4 (default: none)")
     args = ap.parse_args()
     cfg = load_cfg()
-    for run in ([args.run] if args.run else cfg["run_order"]):
-        o = lens_run(run, cfg)
+    runs = [args.run] if args.run else cfg["run_order"]
+    if args.prefix:
+        runs = [f"{args.prefix}_{r}" for r in runs]
+    for run in runs:
+        o = lens_run(run, cfg, out_dir=results_dir("logit_lens", args.prefix))
         print(run, "cal_acc opposite:", [round(x, 3) for x in o["cal_acc"]["opposite"]])
 
 
