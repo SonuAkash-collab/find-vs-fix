@@ -257,7 +257,7 @@ Code: src/retrain.py --budget -> results/retrain_budget/seed<s>.json (resumable)
 
 
 
-## Phase W1: wrong-label memorization, data + first models (pre-registered 17 Oct, before any wrong-label run)
+## Phase W1: wrong-label memorization, data + first models (pre-registered 17 Oct, before any wrong-label run) (amended 20 Oct, before any run)
 Owner: Siddhant Khurdiya. Branch wronglabel. Habit = memorizing flipped labels (Dankers & Titov 2024).
 Question: does GPT-2 fully fine-tuned on SST-2 with 15% flipped labels memorize them, and (later phases) where?
 
@@ -268,27 +268,29 @@ Question: does GPT-2 fully fine-tuned on SST-2 with 15% flipped labels memorize 
 - Test set = GLUE SST-2 validation (872), true labels.
 
 ### Models
-- noisy_seed<s> (trained on noisy labels) and clean_seed<s> (trained on true labels), s in {0, 1, 2}.
+- wl_noisy_seed<s> (trained on noisy labels) and wl_clean_seed<s> (trained on true labels), s in {0, 1, 2}. The wl_ prefix keeps them apart from the GPT-2 shortcut models.
 - GPT-2 small, full fine-tuning, fp32, same prompt "Review: {text}\nSentiment:", same label words and
   loss as the pilot. Same settings for both models of a pair, same seed.
 - lr 5e-5, batch 16, warmup 6% + linear decay, max length 160. Everything trainable, including
   embeddings (same as the shortcut pilot).
 - Training length rule: train the noisy model until its accuracy on the flipped examples F, against their
-  wrong labels, is >= 0.90, checked after every epoch, at most N = 30 epochs. noisy_seed0 is run first only
+  wrong labels, is >= 0.90, checked after every epoch, at most N = 30 epochs. wl_noisy_seed0 is run first only
   to find E, the first epoch where the rule is met. Then all 6 final runs (noisy and clean, seeds 0-2)
   train for exactly E epochs. If the cap is hit first, stop and tell Sonu.
 
 ### Definitions
 - Memorization rate M = fraction of the examples in F for which the model predicts the WRONG (flipped) label.
 - Memorization error (Dankers & Titov) = 1 - M after an edit. Fraction removed = (M_s - M_edit) / M_s,
-  where M_s is the unedited noisy_seed<s>.
+  where M_s is wl_noisy_seed<s>.
 
 ### Checks (every pair must pass; if one fails, stop and tell Sonu, no fixes)
 1. Task learned: accuracy on the SST-2 validation set >= 0.80, for both models.
 2. Memorization learned: noisy model M >= 0.90.
-3. Clean twin does not memorize: clean model M <= 0.05.
+3. Clean twin does not memorize: the clean model's error on F (against true labels) is at most 0.05 higher than its error on C.
 4. Noisy model still fits the normal data: accuracy on C (against its true labels) >= 0.95.
-5. Untrained GPT-2: M within 0.10 of 0.5 (no built-in preference). Report the number either way.
+5. Untrained GPT-2: report M only, no pass/fail.
+
+Also reported, no pass/fail: how often a flipped phrase overlaps an unflipped one (src/overlap_wronglabel.py -> results/wronglabel/overlap.json).
 
 ### Differences from Dankers & Titov (to state in the report)
 GPT-2 small (they use BERT, OPT, Pythia, GPT-Neo); prompt-based label words instead of a classification head;
@@ -299,10 +301,10 @@ except the chosen blocks, starts from the noisy model's final weights and uses a
 only the correct examples).
 
 ### Reading rules for the next phases (to pre-register separately before their first run)
-- Swaps (noisy blocks replagitced by clean_seed<s> blocks, plus the other-seed noisy donor as control) and
+- Swaps (noisy blocks replaced by wl_clean_seed<s> blocks, plus the other-seed noisy donor as control) and
   retraining get rules like the shortcut ones: "removes memorization" = M_edit <= 50% of M_s in all 3 seeds
   AND accuracy on C and on the validation set drops <= 0.02; "not just breaking" = other-seed noisy donor
   keeps M >= 80% of M_s.
-- Retraining (decided with Sonu): freeze everything except the chosen blocks, start from noisy_seed<s>,
+- Retraining (decided with Sonu): freeze everything except the chosen blocks, start from wl_noisy_seed<s>,
   train 1 epoch on wl_train_clean.jsonl, lr 5e-5, batch 16, seed = s. Control: blocks 9-11 and "all"
   retrained on the noisy data.
