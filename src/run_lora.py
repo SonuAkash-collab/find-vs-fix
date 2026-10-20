@@ -9,6 +9,8 @@ Usage:
   python src/run_lora.py pilot-extra      # Phase L1 amendment: 4 extra runs at 5e-4, then `choose-amended`
   python src/run_lora.py choose-amended   # 5e-4 for both ranks if both pass there, else per-rank fallback (r4 1e-3,
                                           # r64 3e-4) -> results/lora_pilot/choice_amended.json + configs/lora.yaml
+  python src/run_lora.py main             # main runs: seed 0 = the chosen pilot runs (reused), seeds 1-2 trained at
+                                          # each rank's lr -> results/lora_r<r>/checks/; any failure -> STOP
 Pilot run names: lora_r<r>_lr<lr>_<kind>_seed0, e.g. lora_r4_lr3e-4_shortcut_seed0 (only used with checks.py --run).
 """
 import argparse
@@ -16,6 +18,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -106,15 +109,19 @@ def trained(name):
     return (d / "lora_check.json").exists() and (d / "model" / "config.json").exists()
 
 
-def train_and_check(runs, label):
-    """Train (train_lora.py) and check (checks.py) each (name, lr, rank, kind) seed-0 run -> PILOT_DIR/<name>.json.
-    Skips finished runs; a run already trained but not checked is only checked."""
-    PILOT_DIR.mkdir(parents=True, exist_ok=True)
+def train_and_check(runs, label, out_dir_of=lambda rank: PILOT_DIR, stop_on_fail=False):
+    """Train (train_lora.py) and check (checks.py) each (name, lr, rank, kind) run -> out_dir_of(rank)/<name>.json.
+    Skips finished runs; a run already trained but not checked is only checked. stop_on_fail: STOP (exit 2) at the first
+    run that fails a check (main runs: "if any of them fails a check: STOP and tell Sonu")."""
     log(f"=== run_lora {label} start (offline): {len(runs)} runs, python {sys.executable}")
     for i, (name, lr, rank, kind) in enumerate(runs, 1):
-        out = PILOT_DIR / f"{name}.json"
+        out = out_dir_of(rank) / f"{name}.json"
+        out.parent.mkdir(parents=True, exist_ok=True)
         if out.exists():
             log(f"[{i}/{len(runs)}] {name}: already done, skipped")
+            if stop_on_fail and not json.load(open(out))["all_pass"]:
+                log(f"STOP: {name} failed its checks (see {out.relative_to(ROOT)}). Tell Sonu; no more changes.")
+                sys.exit(2)
             continue
         t0 = time.time()
         if trained(name):
@@ -124,7 +131,7 @@ def train_and_check(runs, label):
         s = step(f"[{i}/{len(runs)}] checks {name}", ["checks.py", "--run", name], capture=True)
         checks = json.loads(s[s.index("{"):])
         d = RUNS / name
-        rec = {"run": name, "lr": lr, "rank": rank, "kind": kind, "seed": 0, **checks,
+        rec = {"run": name, "lr": lr, "rank": rank, "kind": kind, "seed": int(name.rsplit("_seed", 1)[1]), **checks,
                "train": json.load(open(d / "train_stats.json")), "merge_check": json.load(open(d / "lora_check.json")),
                "config": json.load(open(d / "config.json")), "code": code_fingerprint(),
                "driver_wall_time_s": time.time() - t0}
@@ -134,6 +141,9 @@ def train_and_check(runs, label):
         log(f"[{i}/{len(runs)}] {name}: acc none {acc['none']:.3f} opp {acc['opposite']:.3f} "
             f"gap {checks['gap_none_minus_opposite']:.3f} -> {'PASS' if checks['all_pass'] else 'FAIL'} ({each}); "
             f"train {rec['train']['wall_time_s'] / 60:.1f} min, peak {rec['train']['peak_vram_allocated_gib']:.2f} GiB")
+        if stop_on_fail and not checks["all_pass"]:
+            log(f"STOP: {name} failed its checks ({each}). Tell Sonu; no more changes (Phase L1 amendment).")
+            sys.exit(2)
     log(f"=== {label}: all runs done")
 
 
@@ -263,11 +273,90 @@ def choose():
     return chosen
 
 
+# ---- Main runs (step 6; PROJECT_SPEC.md Phase L1 + amendment): seeds 0-2 x rank x {shortcut, clean} at each rank's lr.
+# Seed 0 = the pilot runs at the chosen lr (reused); seeds 1 and 2 are trained here. Any failure: STOP and tell Sonu.
+MAIN_SEEDS_NEW = (1, 2)
+
+
+def main_dir(rank):
+    return RESULTS / f"lora_r{rank}" / "checks"
+
+
+def chosen_lrs(lcfg):
+    """lr per rank from results/lora_pilot/choice_amended.json, asserted equal to lr_by_rank in configs/lora.yaml."""
+    amended = json.load(open(PILOT_DIR / "choice_amended.json"))
+    from_file = {int(r): lr for r, lr in amended["lr_by_rank"].items()}
+    from_cfg = {int(r): float(lr) for r, lr in (lcfg.get("lr_by_rank") or {}).items()}
+    assert from_cfg == from_file, f"configs/lora.yaml lr_by_rank {from_cfg} != choice_amended.json {from_file}"
+    return from_file, amended
+
+
+def same_tree(src, dst):
+    """True if dst has every file of src with the same size, and the model weights are byte-identical."""
+    for f in src.rglob("*"):
+        g = dst / f.relative_to(src)
+        if f.is_file() and (not g.is_file() or g.stat().st_size != f.stat().st_size):
+            return False
+    sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()  # noqa: E731
+    return all(sha(w) == sha(dst / w.relative_to(src)) for w in (src / "model").glob("*.safetensors"))
+
+
+def reuse_seed0(amended):
+    """Seed-0 main runs = the pilot runs at the chosen lr, copied unchanged to runs/lora_r<r>_<kind>_seed0 (the copy is
+    verified: same files and sizes, byte-identical weights). Stops if the frozen code changed since the pilot."""
+    now = {k: v for k, v in code_fingerprint().items() if k != "git_commit"}
+    for main_name, pilot_name in amended["seed0_main_runs"].items():
+        rec = json.load(open(PILOT_DIR / f"{pilot_name}.json"))
+        if {k: v for k, v in rec["code"].items() if k != "git_commit"} != now:
+            log(f"STOP: {', '.join(FROZEN_CODE)} changed since the pilot run {pilot_name}: the seed-0 reuse is not valid. "
+                "Tell Sonu.")
+            sys.exit(1)
+        dst, src = RUNS / main_name, RUNS / pilot_name
+        assert (src / "model" / "config.json").exists(), f"pilot model missing: {src}"
+        if not (dst.exists() and same_tree(src, dst)):
+            log(f"seed 0: copying {pilot_name} -> {main_name}")
+            shutil.copytree(src, dst, dirs_exist_ok=True)  # dst may already exist (e.g. a link to a Drive folder)
+            assert same_tree(src, dst), f"copy of {src} to {dst} does not match"
+        out = main_dir(rec["rank"]) / f"{main_name}.json"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        if not out.exists():
+            json.dump({**rec, "run": main_name, "reused_from_pilot_run": pilot_name,
+                       "note": "seed-0 main run = this pilot run (same code, settings, seed and GPU), copied unchanged: "
+                               "Phase L1 reuse"}, open(out, "w"), indent=2)
+        log(f"seed 0: {main_name} = pilot run {pilot_name} ({'PASS' if rec['all_pass'] else 'FAIL'}); code unchanged, "
+            "copy verified")
+
+
+def main_runs():
+    lcfg = load_lora_cfg()
+    lrs, amended = chosen_lrs(lcfg)
+    log(f"=== run_lora main: lr per rank {({r: lr_tag(lr) for r, lr in lrs.items()})} "
+        f"(results/lora_pilot/choice_amended.json, {amended['branch']})")
+    reuse_seed0(amended)
+    runs = [(f"lora_r{r}_{k}_seed{s}", lrs[r], r, k) for s in MAIN_SEEDS_NEW for r in lcfg["ranks"] for k in KINDS]
+    train_and_check(runs, f"main (seeds {', '.join(map(str, MAIN_SEEDS_NEW))})", out_dir_of=main_dir, stop_on_fail=True)
+    for r in lcfg["ranks"]:
+        recs = [json.load(open(main_dir(r) / f"lora_r{r}_{k}_seed{s}.json")) for s in (0, *MAIN_SEEDS_NEW) for k in KINDS]
+        summary = {"rank": r, "lr": lrs[r], "all_pass": all(x["all_pass"] for x in recs),
+                   "runs": {x["run"]: {"seed": x["seed"], "kind": x["kind"], "accuracy": x["accuracy"],
+                                       "gap_none_minus_opposite": x["gap_none_minus_opposite"], "all_pass": x["all_pass"],
+                                       "reused_from_pilot_run": x.get("reused_from_pilot_run")} for x in recs},
+                   "gpus": sorted({x["config"]["gpu"] for x in recs}),
+                   "same_code": len({json.dumps({k: v for k, v in x["code"].items() if k != "git_commit"})
+                                     for x in recs}) == 1}
+        json.dump(summary, open(main_dir(r) / "summary.json", "w"), indent=2)
+        log(f"main: rank {r} at lr {lr_tag(lrs[r])}: all 6 runs (3 seeds x shortcut/clean) pass; shortcut gaps "
+            + ", ".join(f"seed {x['seed']} {x['gap_none_minus_opposite']:.3f}" for x in recs if x["kind"] == "shortcut")
+            + f"; GPUs {summary['gpus']}, same code {summary['same_code']}")
+    return True
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("mode", choices=["pilot", "choose", "pilot-extra", "choose-amended"])
+    ap.add_argument("mode", choices=["pilot", "choose", "pilot-extra", "choose-amended", "main"])
     args = ap.parse_args()
-    chosen = {"pilot": pilot, "choose": choose, "pilot-extra": pilot_extra, "choose-amended": choose_amended}[args.mode]()
+    chosen = {"pilot": pilot, "choose": choose, "pilot-extra": pilot_extra, "choose-amended": choose_amended,
+              "main": main_runs}[args.mode]()
     if chosen is None:
         sys.exit(2)  # nothing passes: the rule says stop
 
