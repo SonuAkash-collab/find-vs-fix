@@ -16,6 +16,9 @@ import numpy as np  # noqa: E402
 
 from common import RESULTS, ROOT, VERSIONS, load_cfg  # noqa: E402
 from report import COLORS, DROP_FRAC, EARLY_MAX_LAYER, OVERTHINK_MIN_GAIN, cell, ms  # noqa: E402  (same rule as GPT-2)
+from report import (A, B, CI, CII, HALF_MIN_SHARE, HALF_SETS, LATE_MIN_RATIO, OTHER_WINDOWS, SPEARMAN_MIN,  # noqa: E402
+                    frac_removed, load_swap, phase2b_section, rule_creates, rule_keeps, rule_removes, seed_base,
+                    shortcut_base, spearman, swap_figure, swap_result, swap_section)
 
 RANKS, SEEDS, KINDS, L = (4, 64), (0, 1, 2), ("shortcut", "clean"), list(range(13))
 FIG = ROOT / "figures" / "lora"
@@ -205,6 +208,144 @@ def lens_section(o):
         f"commit {str(e['git_commit'])[:7]}" for e in envs if e), ""]
 
 
+# ---- Swaps (Phase 2 + 2b). report.py's own section and rule code is run unchanged on a copy of the LoRA swap files in
+# which the run-name prefix is stripped (report.py looks runs up as shortcut_seed<s> / clean_seed<s>).
+def strip_prefix(obj, prefix):
+    if isinstance(obj, dict):
+        return {k.replace(prefix, ""): strip_prefix(v, prefix) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [strip_prefix(v, prefix) for v in obj]
+    return obj.replace(prefix, "") if isinstance(obj, str) else obj
+
+
+def normalized_copy(R, prefix, tmp):
+    for sub in ("swap", "swap2"):
+        for p in sorted((R / sub).glob("seed*.json")):
+            (tmp / sub).mkdir(parents=True, exist_ok=True)
+            json.dump(strip_prefix(json.load(open(p)), prefix), open(tmp / sub / p.name, "w"))
+    return tmp
+
+
+def verdict_of(flags):
+    return "incomplete" if not flags or None in flags else ("PASS" if all(flags) else "FAIL")
+
+
+def rule_flags(R):
+    """Per-seed flags of every GPT-2 swap rule (Phase 2 per block set, Phase 2b late-specific and attention/MLP halves),
+    computed with report.py's rule functions from swap files whose run names are unprefixed."""
+    sw = load_swap(R)
+    if len(sw) != len(SEEDS):
+        return {}
+    p2s = {s["seed"]: s for s in sw}
+    s2s = {json.load(open(p))["seed"]: json.load(open(p)) for p in sorted((R / "swap2").glob("seed*.json"))}
+    out = {}
+    for k in sw[0]["block_sets"]:
+        for case, lab, fn in ((A, "(a) removes", lambda r, G, n0: rule_removes(r, G, n0)),
+                              (CI, "(c-i) removes", lambda r, G, n0: rule_removes(r, G, n0)),
+                              (CII, "(c-ii) not just breaking", lambda r, G, n0: rule_keeps(r, G)),
+                              (B, "(b) creates", lambda r, G, n0: rule_creates(r))):
+            fl = []
+            for s in sw:
+                r = s["cases"].get(case, {}).get("by_blocks", {}).get(k)
+                G, n0 = shortcut_base(s)
+                fl.append(None if r is None else bool(fn(r, G, n0)))
+            out[f"Phase 2 {lab}: blocks {k}"] = fl
+    if len(s2s) == len(SEEDS):
+        P = [(p2s.get(s), s2s[s]) for s in sorted(s2s)]
+        fl = []
+        for p2, s2 in P:  # Phase 2b rule: 9-11 late-specific (as report.phase2b_section)
+            G, _ = seed_base(p2, s2)
+            r911, others = swap_result(p2, None, A, "9-10-11"), {w: swap_result(None, s2, A, w) for w in OTHER_WINDOWS}
+            if G is None or r911 is None or None in others.values():
+                fl.append(None)
+                continue
+            fo = {w: frac_removed(r, G) for w, r in others.items()}
+            fl.append(bool(frac_removed(r911, shortcut_base(p2)[0]) >= LATE_MIN_RATIO * max(fo.values())))
+        out["Phase 2b: blocks 9-11 are late-specific"] = fl
+        for bs in HALF_SETS:  # Phase 2b rule: does the attention / MLP half carry it (as report.phase2b_section)
+            for h in ("attn", "mlp"):
+                fl = []
+                for p2, s2 in P:
+                    G, _ = seed_base(p2, s2)
+                    rw, rh = swap_result(p2, None, A, bs), swap_result(None, s2, A, f"{h}:{bs}")
+                    if rw is None or rh is None or G is None:
+                        fl.append(None)
+                        continue
+                    W = G - rw["gap_none_minus_opposite"]
+                    fl.append(bool(W > 0 and (G - rh["gap_none_minus_opposite"]) / W >= HALF_MIN_SHARE))
+                out[f"Phase 2b: {'attention' if h == 'attn' else 'MLP'} half carries it, blocks {bs}"] = fl
+    return out
+
+
+def swap_map(R):
+    """Per seed: fraction of the gap removed by each single block, case (a) (for the Spearman comparison)."""
+    return {s["seed"]: [frac_removed(s["cases"][A]["by_blocks"][str(b)], shortcut_base(s)[0]) for b in range(12)]
+            for s in load_swap(R) if all(str(b) in s["cases"].get(A, {}).get("by_blocks", {}) for b in range(12))}
+
+
+def swaps_section(o, tmp_root):
+    import tempfile
+    done = [(label, prefix, R) for label, prefix, R in CONDITIONS[1:]
+            if len(list((R / "swap").glob("seed*.json"))) == len(SEEDS)]
+    if not done:
+        return
+    flags = {"full fine-tuning": rule_flags(RESULTS)}
+    maps = {"full fine-tuning": swap_map(RESULTS)}
+    o += ["## Swaps (Phase 2 and 2b, Phase L2)", "",
+          "Same cases, block sets, controls and reading rules as the GPT-2 Phase 2 and 2b (src/swap.py unchanged, run "
+          "with --prefix). The tables and rule verdicts below are produced by src/report.py's own section and rule code, "
+          "run unchanged on a copy of each rank's swap files with the run-name prefix removed (report.py looks runs up as "
+          "shortcut_seed<s> / clean_seed<s>). G_s = gap of that rank's unswapped shortcut model of seed s.", ""]
+    for label, prefix, R in done:
+        tmp = normalized_copy(R, prefix, Path(tempfile.mkdtemp(dir=tmp_root)))
+        flags[label], maps[label] = rule_flags(tmp), swap_map(tmp)
+        fig_dir = FIG / prefix.rstrip("_")
+        fig_dir.mkdir(parents=True, exist_ok=True)
+        part = []
+        swap_section(part, tmp)
+        phase2b_section(part, tmp, fig_dir)
+        swap_figure(load_swap(tmp), fig_dir)
+        sub = prefix.rstrip("_")
+        out = []
+        for line in part:
+            line = line.replace("results/swap", f"results/{sub}/swap")
+            if line.startswith("_Rule proposed 14 Oct"):
+                line = "_Same rule as GPT-2 Phase 2; applied to LoRA as pre-registered in PROJECT_SPEC.md Phase L2 (20 Oct)._"
+            if line.startswith("## "):
+                line = f"### {label}: " + line[3:]
+            elif line.startswith("### "):
+                line = "#" + line
+            out.append(line)
+            if "name embeddings carry part of the shortcut" in line:
+                out += ["", "_Not applicable under LoRA: LoRA does not train the embeddings, so every LoRA model has the "
+                            "same name-token rows and this swap changes nothing by construction (see the emb_names L2 "
+                            "difference in the table above). Not a finding._"]
+        o += out + ["", f"![{label} swap map](figures/lora/{sub}/swap_map.png)", "",
+                    f"![{label} swap2 map](figures/lora/{sub}/swap2_map.png)", ""]
+    # RQ 3: does each rule's verdict reproduce?
+    labels = list(flags)
+    o += ["### RQ 3: does each GPT-2 swap rule reproduce under LoRA?", "",
+          "Phase L2 rule: a rank reproduces a rule if it gets the same PASS/FAIL verdict as full fine-tuning (3 seeds "
+          "each). The name-embedding rule is left out (not applicable under LoRA). Per-seed P/F in seed order.", "",
+          "| rule | " + " | ".join(labels) + " | " + " | ".join(f"{l}: reproduces" for l in labels[1:]) + " |",
+          "|---|" + "---|" * (2 * len(labels) - 1)]
+    for rule in flags["full fine-tuning"]:
+        cells = [flags[l].get(rule) or [] for l in labels]
+        verd = [f"{verdict_of(c)} ({'/'.join('P' if f else 'F' for f in c)})" if c and None not in c else verdict_of(c)
+                for c in cells]
+        rep = ["yes" if verdict_of(c) == verdict_of(cells[0]) and verdict_of(c) != "incomplete" else
+               ("incomplete" if verdict_of(c) == "incomplete" else "NO") for c in cells[1:]]
+        o.append(f"| {rule} | " + " | ".join(verd) + " | " + " | ".join(rep) + " |")
+    o += ["", f"Swap map (Phase L2 rule): Spearman correlation, per seed, between the rank's and full fine-tuning's "
+              f"fraction of the gap removed by each of the 12 single blocks (case a); \"same map\" if ≥ {SPEARMAN_MIN} "
+              "in all 3 seeds.", "", "| condition | Spearman per seed | same map |", "|---|---|---|"]
+    for l in labels[1:]:
+        rho = [spearman(maps["full fine-tuning"][s], maps[l][s]) if s in maps[l] else None for s in SEEDS]
+        same = "incomplete" if None in rho else ("yes" if all(r >= SPEARMAN_MIN for r in rho) else "NO")
+        o.append(f"| {l} | {'/'.join('n/a' if r is None else f'{r:.3f}' for r in rho)} | {same} |")
+    o.append("")
+
+
 def main():
     o = ["# RESULTS_LORA (LoRA on GPT-2)", "",
          "_Generated by `src/report_lora.py` from results files only. Do not edit by hand._", "",
@@ -212,6 +353,9 @@ def main():
     pilot_section(o)
     checks_section(o)
     lens_section(o)
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp_root:
+        swaps_section(o, Path(tmp_root))
     OUT.write_text("\n".join(o), encoding="utf-8")
     print(f"wrote {OUT}" + (f" and {FIG}/" if FIG.exists() else ""))
 

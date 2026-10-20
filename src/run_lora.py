@@ -13,6 +13,8 @@ Usage:
                                           # each rank's lr -> results/lora_r<r>/checks/; any failure -> STOP
   python src/run_lora.py lens             # Phase L2: logit_lens.py --prefix lora_r4 / lora_r64 (unchanged)
                                           # -> results/lora_r<r>/logit_lens/ (+ env.json: GPU, versions, commit)
+  python src/run_lora.py swaps            # Phase L2: swap.py --prefix lora_r<r> [--phase2b] (unchanged, resumable)
+                                          # -> results/lora_r<r>/swap/, swap2/ (+ env.json)
 Pilot run names: lora_r<r>_lr<lr>_<kind>_seed0, e.g. lora_r4_lr3e-4_shortcut_seed0 (only used with checks.py --run).
 """
 import argparse
@@ -384,12 +386,34 @@ def lens():
     return True
 
 
+def swaps():
+    """Phase 2 and Phase 2b swaps on the 12 main runs: src/swap.py --prefix lora_r<r> [--phase2b] (unchanged; it resumes
+    from finished cases) -> results/lora_r<r>/swap/ and swap2/, each with env.json (GPU, versions, commit)."""
+    lcfg = load_lora_cfg()
+    for r in lcfg["ranks"]:
+        prefix = f"lora_r{r}"
+        runs = [f"{prefix}_{k}_seed{s}" for s in (0, *MAIN_SEEDS_NEW) for k in KINDS]
+        missing = [n for n in runs if not (RUNS / n / "model" / "config.json").exists()]
+        if missing:
+            log(f"STOP: swaps: models missing {missing}")
+            sys.exit(1)
+        for phase, extra, sub in (("Phase 2", [], "swap"), ("Phase 2b", ["--phase2b"], "swap2")):
+            out = RESULTS / prefix / sub
+            out.mkdir(parents=True, exist_ok=True)
+            step(f"swaps {phase} {prefix}", ["swap.py", "--prefix", prefix, *extra])
+            json.dump({**env_record(), "step": f"swaps {phase}",
+                       "command": f"python src/swap.py --prefix {prefix}{' --phase2b' if extra else ''}", "runs": runs},
+                      open(out / "env.json", "w"), indent=2)
+            log(f"swaps {phase} {prefix}: done; env -> {(out / 'env.json').relative_to(ROOT)}")
+    return True
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("mode", choices=["pilot", "choose", "pilot-extra", "choose-amended", "main", "lens"])
+    ap.add_argument("mode", choices=["pilot", "choose", "pilot-extra", "choose-amended", "main", "lens", "swaps"])
     args = ap.parse_args()
     chosen = {"pilot": pilot, "choose": choose, "pilot-extra": pilot_extra, "choose-amended": choose_amended,
-              "main": main_runs, "lens": lens}[args.mode]()
+              "main": main_runs, "lens": lens, "swaps": swaps}[args.mode]()
     if chosen is None:
         sys.exit(2)  # nothing passes: the rule says stop
 
