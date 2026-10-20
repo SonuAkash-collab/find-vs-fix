@@ -11,6 +11,8 @@ Usage:
                                           # r64 3e-4) -> results/lora_pilot/choice_amended.json + configs/lora.yaml
   python src/run_lora.py main             # main runs: seed 0 = the chosen pilot runs (reused), seeds 1-2 trained at
                                           # each rank's lr -> results/lora_r<r>/checks/; any failure -> STOP
+  python src/run_lora.py lens             # Phase L2: logit_lens.py --prefix lora_r4 / lora_r64 (unchanged)
+                                          # -> results/lora_r<r>/logit_lens/ (+ env.json: GPU, versions, commit)
 Pilot run names: lora_r<r>_lr<lr>_<kind>_seed0, e.g. lora_r4_lr3e-4_shortcut_seed0 (only used with checks.py --run).
 """
 import argparse
@@ -351,12 +353,43 @@ def main_runs():
     return True
 
 
+# ---- Phase L2 (PROJECT_SPEC.md): logit lens, swaps, retraining with the existing scripts via --prefix (unchanged)
+def env_record():
+    """GPU and versions of this machine + the code commit, saved next to Phase L2 results (the shared scripts
+    don't record them)."""
+    import peft
+    from common import env_info
+    return {**env_info(), "peft": peft.__version__, "python": sys.version.split()[0],
+            "git_commit": code_fingerprint().get("git_commit"), "time": time.strftime("%Y-%m-%d %H:%M:%S")}
+
+
+def lens():
+    """Logit lens on the 12 main runs: src/logit_lens.py --prefix lora_r<r> (unchanged) -> results/lora_r<r>/logit_lens/."""
+    lcfg = load_lora_cfg()
+    for r in lcfg["ranks"]:
+        prefix, out = f"lora_r{r}", RESULTS / f"lora_r{r}" / "logit_lens"
+        runs = [f"{prefix}_{k}_seed{s}" for s in (0, *MAIN_SEEDS_NEW) for k in KINDS]
+        missing = [n for n in runs if not (RUNS / n / "model" / "config.json").exists()]
+        if missing:
+            log(f"STOP: lens: models missing {missing}")
+            sys.exit(1)
+        if all((out / f"{n}.json").exists() for n in runs):
+            log(f"lens {prefix}: all {len(runs)} done, skipped")
+            continue
+        out.mkdir(parents=True, exist_ok=True)
+        step(f"lens {prefix}", ["logit_lens.py", "--prefix", prefix])
+        json.dump({**env_record(), "step": "logit lens", "command": f"python src/logit_lens.py --prefix {prefix}",
+                   "runs": runs}, open(out / "env.json", "w"), indent=2)
+        log(f"lens {prefix}: done ({len(runs)} runs); env -> {(out / 'env.json').relative_to(ROOT)}")
+    return True
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("mode", choices=["pilot", "choose", "pilot-extra", "choose-amended", "main"])
+    ap.add_argument("mode", choices=["pilot", "choose", "pilot-extra", "choose-amended", "main", "lens"])
     args = ap.parse_args()
     chosen = {"pilot": pilot, "choose": choose, "pilot-extra": pilot_extra, "choose-amended": choose_amended,
-              "main": main_runs}[args.mode]()
+              "main": main_runs, "lens": lens}[args.mode]()
     if chosen is None:
         sys.exit(2)  # nothing passes: the rule says stop
 
