@@ -16,9 +16,11 @@ import numpy as np  # noqa: E402
 
 from common import RESULTS, ROOT, VERSIONS, load_cfg  # noqa: E402
 from report import COLORS, DROP_FRAC, EARLY_MAX_LAYER, OVERTHINK_MIN_GAIN, cell, ms  # noqa: E402  (same rule as GPT-2)
-from report import (A, B, CI, CII, HALF_MIN_SHARE, HALF_SETS, LATE_MIN_RATIO, OTHER_WINDOWS, SPEARMAN_MIN,  # noqa: E402
-                    frac_removed, load_swap, phase2b_section, rule_creates, rule_keeps, rule_removes, seed_base,
-                    shortcut_base, spearman, swap_figure, swap_result, swap_section)
+from report import (A, B, CI, CII, CONTROLS, HALF_MIN_SHARE, HALF_SETS, KEEP_MIN_FRAC, LATE_MIN_RATIO,  # noqa: E402
+                    OTHER_WINDOWS,
+                    REMOVE_MAX_FRAC, RETRAIN_ORDER, SPEARMAN_MIN, frac_removed, load_seed_files, load_swap,
+                    phase2b_section, phase3_section, rule_creates, rule_keeps, rule_removes, seed_base, shortcut_base,
+                    spearman, swap_figure, swap_result, swap_section)
 
 RANKS, SEEDS, KINDS, L = (4, 64), (0, 1, 2), ("shortcut", "clean"), list(range(13))
 FIG = ROOT / "figures" / "lora"
@@ -33,10 +35,12 @@ NOTES = [
     "unless every pinned version is installed.",
     "LoRA learning rate: chosen by the Phase L1 pilot and its amendment (PROJECT_SPEC.md), decided after the pilot "
     "results by Sonu and stated as such; the lr was picked on seed 0, so seeds 1 and 2 are the independent check.",
-    "Retraining (Phase 3) on LoRA models retrains the chosen blocks' full weights, as for GPT-2: a strong fix.",
-    "Phase 2b 'emb_names' (swap only the name-token embedding rows) is a no-op by construction under LoRA: LoRA does not "
-    "train the embeddings, so every LoRA model has the same name rows. Reported as not applicable, not as a finding.",
+    "Retraining (Phase 3) on LoRA models starts from the merged LoRA shortcut model as it is and keeps training the "
+    "chosen blocks' full weights (no new adapters, no reset), as for GPT-2: a strong fix.",
+    "Phase 2b 'emb_names' (swap only the name-token embedding rows) is not testable under LoRA (embeddings frozen): every "
+    "LoRA model has the same name rows, so the swap changes nothing by construction. Not a finding.",
 ]
+NEAR_ZERO = 0.05  # descriptive only (Spearman note): a single block "removes almost nothing" if |fraction| < this
 
 
 def load(path):
@@ -219,7 +223,7 @@ def strip_prefix(obj, prefix):
 
 
 def normalized_copy(R, prefix, tmp):
-    for sub in ("swap", "swap2"):
+    for sub in ("swap", "swap2", "retrain"):
         for p in sorted((R / sub).glob("seed*.json")):
             (tmp / sub).mkdir(parents=True, exist_ok=True)
             json.dump(strip_prefix(json.load(open(p)), prefix), open(tmp / sub / p.name, "w"))
@@ -291,6 +295,7 @@ def swaps_section(o, tmp_root):
         return
     flags = {"full fine-tuning": rule_flags(RESULTS)}
     maps = {"full fine-tuning": swap_map(RESULTS)}
+    sws = {"full fine-tuning": load_swap(RESULTS)}
     o += ["## Swaps (Phase 2 and 2b, Phase L2)", "",
           "Same cases, block sets, controls and reading rules as the GPT-2 Phase 2 and 2b (src/swap.py unchanged, run "
           "with --prefix). The tables and rule verdicts below are produced by src/report.py's own section and rule code, "
@@ -298,7 +303,7 @@ def swaps_section(o, tmp_root):
           "shortcut_seed<s> / clean_seed<s>). G_s = gap of that rank's unswapped shortcut model of seed s.", ""]
     for label, prefix, R in done:
         tmp = normalized_copy(R, prefix, Path(tempfile.mkdtemp(dir=tmp_root)))
-        flags[label], maps[label] = rule_flags(tmp), swap_map(tmp)
+        flags[label], maps[label], sws[label] = rule_flags(tmp), swap_map(tmp), load_swap(tmp)
         fig_dir = FIG / prefix.rstrip("_")
         fig_dir.mkdir(parents=True, exist_ok=True)
         part = []
@@ -317,16 +322,17 @@ def swaps_section(o, tmp_root):
                 line = "#" + line
             out.append(line)
             if "name embeddings carry part of the shortcut" in line:
-                out += ["", "_Not applicable under LoRA: LoRA does not train the embeddings, so every LoRA model has the "
-                            "same name-token rows and this swap changes nothing by construction (see the emb_names L2 "
-                            "difference in the table above). Not a finding._"]
+                out += ["", "_Not testable under LoRA (embeddings frozen): every LoRA model has the same name-token rows, "
+                            "so this swap changes nothing by construction (see the emb_names L2 difference in the table "
+                            "above). Not a finding._"]
         o += out + ["", f"![{label} swap map](figures/lora/{sub}/swap_map.png)", "",
                     f"![{label} swap2 map](figures/lora/{sub}/swap2_map.png)", ""]
     # RQ 3: does each rule's verdict reproduce?
     labels = list(flags)
     o += ["### RQ 3: does each GPT-2 swap rule reproduce under LoRA?", "",
           "Phase L2 rule: a rank reproduces a rule if it gets the same PASS/FAIL verdict as full fine-tuning (3 seeds "
-          "each). The name-embedding rule is left out (not applicable under LoRA). Per-seed P/F in seed order.", "",
+          "each). The name-embedding rule is left out (not testable under LoRA: embeddings frozen). Per-seed P/F in seed "
+          "order.", "",
           "| rule | " + " | ".join(labels) + " | " + " | ".join(f"{l}: reproduces" for l in labels[1:]) + " |",
           "|---|" + "---|" * (2 * len(labels) - 1)]
     for rule in flags["full fine-tuning"]:
@@ -339,10 +345,167 @@ def swaps_section(o, tmp_root):
     o += ["", f"Swap map (Phase L2 rule): Spearman correlation, per seed, between the rank's and full fine-tuning's "
               f"fraction of the gap removed by each of the 12 single blocks (case a); \"same map\" if ≥ {SPEARMAN_MIN} "
               "in all 3 seeds.", "", "| condition | Spearman per seed | same map |", "|---|---|---|"]
+    rhos = {}
     for l in labels[1:]:
-        rho = [spearman(maps["full fine-tuning"][s], maps[l][s]) if s in maps[l] else None for s in SEEDS]
+        rho = rhos[l] = [spearman(maps["full fine-tuning"][s], maps[l][s]) if s in maps[l] else None for s in SEEDS]
         same = "incomplete" if None in rho else ("yes" if all(r >= SPEARMAN_MIN for r in rho) else "NO")
         o.append(f"| {l} | {'/'.join('n/a' if r is None else f'{r:.3f}' for r in rho)} | {same} |")
+    o.append("")
+    for l in labels[1:]:  # what lies behind a seed below the line (descriptive)
+        for s, rho in zip(SEEDS, rhos[l]):
+            fr = maps[l].get(s)
+            if rho is None or rho >= SPEARMAN_MIN:
+                continue
+            k = next((b for b in range(12) if abs(fr[b]) >= NEAR_ZERO), 12)
+            if k == 0:
+                continue
+            o.append(f"- {l}, seed {s} (Spearman {rho:.3f}): single blocks 0–{k - 1} each remove almost nothing (|fraction"
+                     f" removed| ≤ {max(abs(x) for x in fr[:k]):.3f}), so their order is noise and the correlation is "
+                     "computed mostly on that noise; " + (", ".join(f"block {b} removes {fr[b]:.3f}" for b in range(k, 12))
+                                                          or "no block removes more") + ".")
+    o.append("")
+
+    # c-ii control (Sonu's review of PR #6): a "does not reproduce" under Phase L2, not a side caveat
+    late = ["9", "10", "11", "10-11", "9-10-11"]
+    key = "Phase 2 (c-ii) not just breaking: blocks "
+    diff = {l: [k for k in late if verdict_of(flags[l].get(key + k) or []) != verdict_of(flags["full fine-tuning"][key + k])]
+            for l in labels[1:]}
+    o += ["### Control (c-ii) under LoRA: real removal or breakage?", "",
+          "Full fine-tuning passes the (c-ii) control: swapping in another seed's *shortcut* blocks keeps the shortcut, so "
+          "the clean-twin swaps are real removal, not breakage. The rule's verdict for the late block sets differs under "
+          "LoRA (does not reproduce, RQ 3 table): " + "; ".join(f"{l}: blocks {', '.join(v) if v else 'none'}"
+                                                                for l, v in diff.items())
+          + ". Where it does not reproduce, the LoRA swaps cannot claim \"real removal, not breakage\". The table puts what "
+          f"the clean twin's blocks remove (case a) next to how much of the gap another shortcut seed's blocks keep (case "
+          f"c-ii; the rule needs ≥ {KEEP_MIN_FRAC:.0%} in every seed).", "",
+          "| condition | block(s) | (a) fraction of gap removed (per seed) | (c-ii) fraction of gap kept (per seed) | "
+          "(c-ii) not just breaking |", "|---|---|---|---|---|"]
+    for l in labels:
+        sw = sws[l]
+        for k in late:
+            fa = [frac_removed(s["cases"][A]["by_blocks"][k], shortcut_base(s)[0]) for s in sw]
+            kept = [s["cases"][CII]["by_blocks"][k]["gap_none_minus_opposite"] / shortcut_base(s)[0] for s in sw]
+            c = flags[l].get(key + k) or []
+            o.append(f"| {l} | {k} | {'/'.join(f'{x:.3f}' for x in fa)} | {'/'.join(f'{x:.3f}' for x in kept)} | "
+                     f"{verdict_of(c)} ({'/'.join('P' if f else 'F' for f in c)}) |")
+    o.append("")
+
+
+# ---- Retraining (Phase 3). report.py's phase3_section runs unchanged on the same prefix-stripped copy (it reads the
+# rank's own swap files too, for its swap-vs-retrain Spearman rule).
+def retrain_flags(R):
+    """Per-seed flags of every GPT-2 Phase 3 rule (as report.phase3_section): the gate, "removes" per block set,
+    "keeps the shortcut" per control, and "swap and retrain agree" (Spearman). {} unless all 3 seeds are there."""
+    rts = {s["seed"]: s for s in load_seed_files(R, "retrain")}
+    out = {}
+    if 0 in rts and "all" in rts[0]["runs"]:
+        G0 = rts[0]["baseline"]["gap_none_minus_opposite"]
+        out["Phase 3 gate (seed 0, retrain all blocks)"] = [bool(rts[0]["runs"]["all"]["gap_none_minus_opposite"]
+                                                                <= REMOVE_MAX_FRAC * G0)]
+    if sorted(rts) != list(SEEDS):
+        return out
+    p2s = {s["seed"]: s for s in load_swap(R)}
+    for n in RETRAIN_ORDER + CONTROLS:
+        fl = []
+        for s in SEEDS:
+            r, b = rts[s]["runs"].get(n), rts[s]["baseline"]
+            G = b["gap_none_minus_opposite"]
+            fl.append(None if r is None else bool(rule_keeps(r, G) if n in CONTROLS
+                                                  else rule_removes(r, G, b["accuracy"]["none"])))
+        out[f"Phase 3 {'keeps the shortcut (control)' if n in CONTROLS else 'removes'}: {n}"] = fl
+    fl = []
+    for s in SEEDS:
+        singles = [str(b) for b in range(12)]
+        rr, sr = [rts[s]["runs"].get(b) for b in singles], [swap_result(p2s.get(s), None, A, b) for b in singles]
+        if None in rr or None in sr:
+            fl.append(None)
+            continue
+        rho = spearman([frac_removed(r, shortcut_base(p2s[s])[0]) for r in sr],
+                       [frac_removed(r, rts[s]["baseline"]["gap_none_minus_opposite"]) for r in rr])
+        fl.append(bool(rho >= SPEARMAN_MIN))
+    out["Phase 3 swap and retrain agree on where to fix it (Spearman)"] = fl
+    return out
+
+
+def retrain_fracs(R):
+    """{block set: [fraction removed per seed]} for the seeds present (descriptive comparison table)."""
+    rts = {s["seed"]: s for s in load_seed_files(R, "retrain")}
+    return {n: [frac_removed(rts[s]["runs"][n], rts[s]["baseline"]["gap_none_minus_opposite"]) if n in rts[s]["runs"]
+                else None for s in sorted(rts)] for n in RETRAIN_ORDER + CONTROLS}
+
+
+def retrain_section(o, tmp_root):
+    import tempfile
+    done = [(label, prefix, R) for label, prefix, R in CONDITIONS[1:] if list((R / "retrain").glob("seed*.json"))]
+    if not done:
+        return
+    flags = {"full fine-tuning": retrain_flags(RESULTS)}
+    fracs = {"full fine-tuning": retrain_fracs(RESULTS)}
+    stopped = set()  # ranks whose Phase 3 gate failed: their other rules were not run
+    o += ["## Retraining (Phase 3, Phase L2)", "",
+          "Same block sets, controls, gate and reading rules as the GPT-2 Phase 3 (src/retrain.py unchanged, run with "
+          "--prefix). Each run starts from the rank's merged shortcut model as it is (shortcut included), freezes "
+          "everything except the chosen blocks, and keeps training those blocks' full weights for 1 epoch on clean data "
+          "(controls: on the shortcut data), at the GPT-2 Phase 3 settings (configs/pilot.yaml). No new LoRA adapters, "
+          "no reset. Tables and verdicts come from src/report.py's own Phase 3 section, run unchanged on a copy of each "
+          "rank's files with the run-name prefix removed; its swap-vs-retrain Spearman uses that rank's own swap files. "
+          "The gate (seed 0, 'all' and '9-10-11' first) is run by src/run_lora.py retrain, both ranks' gates before any "
+          "other run.", ""]
+    for label, prefix, R in done:
+        sub = prefix.rstrip("_")
+        tmp = normalized_copy(R, prefix, Path(tempfile.mkdtemp(dir=tmp_root)))
+        flags[label], fracs[label] = retrain_flags(tmp), retrain_fracs(tmp)
+        fig_dir = FIG / sub
+        fig_dir.mkdir(parents=True, exist_ok=True)
+        part = []
+        phase3_section(part, tmp, fig_dir)
+        for line in part:
+            line = (line.replace("results/retrain", f"results/{sub}/retrain").replace("results/swap", f"results/{sub}/swap")
+                    .replace("Start = shortcut_seed<s>", f"Start = {sub}_shortcut_seed<s> (merged LoRA model, as it is)")
+                    .replace("Rules pre-registered in PROJECT_SPEC.md on 15 Oct before any Phase 3 run.",
+                             "Rules of the GPT-2 Phase 3 (pre-registered 15 Oct), applied to LoRA as pre-registered in "
+                             "PROJECT_SPEC.md Phase L2 (20 Oct)."))
+            o.append(f"### {label}: " + line[3:] if line.startswith("## ") else "#" + line if line.startswith("### ") else line)
+        g, c = load(R / "retrain" / "gate.json"), load(R / "retrain" / "ceiling.json")
+        if g and not g["pass"]:
+            stopped.add(label)
+            o += [f"**Phase 3 stopped at the gate for {label}** (results/{sub}/retrain/gate.json): no fixes tried.", ""]
+        if c:
+            o += [f"Phase 3b condition (PROJECT_SPEC.md Phase L2, results/{sub}/retrain/ceiling.json): every single block "
+                  f"removes the shortcut in all seeds = {'yes' if c['ceiling'] else 'no'} → Phase 3b "
+                  f"{'needed (separate step)' if c['ceiling'] else 'not run'}.", ""]
+        env = load(R / "retrain" / "env.json")
+        if env:
+            o += [f"Environment (results/{sub}/retrain/env.json, one line per session): " + "; ".join(
+                f"{e['gpu']}, torch {e['torch']}, transformers {e['transformers']}, peft {e['peft']}, commit "
+                f"{str(e['git_commit'])[:7]}, {e['time']}" for e in env["sessions"]), ""]
+        if (fig_dir / "retrain_map.png").exists():
+            o += [f"![{label} retrain map](figures/lora/{sub}/retrain_map.png)", ""]
+    labels = list(flags)
+    o += ["### RQ 3: does each GPT-2 retraining rule reproduce under LoRA?", "",
+          "Phase L2 rule: a rank reproduces a rule if it gets the same PASS/FAIL verdict as full fine-tuning (3 seeds "
+          "each; the gate is seed 0 only). Per-seed P/F in seed order.", "",
+          "| rule | " + " | ".join(labels) + " | " + " | ".join(f"{l}: reproduces" for l in labels[1:]) + " |",
+          "|---|" + "---|" * (2 * len(labels) - 1)]
+    for rule in flags["full fine-tuning"]:
+        cells = [flags[l].get(rule) or [] for l in labels]
+        verd = [f"{verdict_of(c)} ({'/'.join('P' if f else 'F' for f in c)})" if c and None not in c else verdict_of(c)
+                for c in cells]
+        rep = ["yes" if verdict_of(c) == verdict_of(cells[0]) and verdict_of(c) != "incomplete" else
+               ("incomplete" if verdict_of(c) == "incomplete" else "NO") for c in cells[1:]]
+        if not rule.startswith("Phase 3 gate"):
+            for i, l in enumerate(labels[1:]):
+                if l in stopped:
+                    verd[i + 1], rep[i] = "not run (stopped at the gate)", "not run"
+        o.append(f"| {rule} | " + " | ".join(verd) + " | " + " | ".join(rep) + " |")
+    o += ["", "Fraction of the gap removed by retraining, side by side (descriptive; mean, per-seed values in brackets):", "",
+          "| block(s) retrained | " + " | ".join(labels) + " |", "|---|" + "---|" * len(labels)]
+    for n in RETRAIN_ORDER + CONTROLS:
+        row = []
+        for l in labels:
+            v = fracs[l].get(n) or []
+            row.append("n/a" if not v or None in v else f"{np.mean(v):.3f} ({'/'.join(f'{x:.3f}' for x in v)})")
+        o.append(f"| {n} | " + " | ".join(row) + " |")
     o.append("")
 
 
@@ -356,6 +519,7 @@ def main():
     import tempfile
     with tempfile.TemporaryDirectory() as tmp_root:
         swaps_section(o, Path(tmp_root))
+        retrain_section(o, Path(tmp_root))
     OUT.write_text("\n".join(o), encoding="utf-8")
     print(f"wrote {OUT}" + (f" and {FIG}/" if FIG.exists() else ""))
 
