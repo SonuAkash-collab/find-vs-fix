@@ -1,0 +1,285 @@
+{
+  "run": "lora_r64_lr1e-3_shortcut_seed0",
+  "lr": 0.001,
+  "rank": 64,
+  "kind": "shortcut",
+  "seed": 0,
+  "accuracy": {
+    "none": 0.7580000162124634,
+    "match": 0.9185000061988831,
+    "opposite": 0.382999986410141,
+    "neutral": 0.7505000233650208
+  },
+  "gap_none_minus_opposite": 0.3750000298023224,
+  "checks": {
+    "task_learned": {
+      "value": 0.7580000162124634,
+      "rule": "acc(none) >= 0.8",
+      "pass": false
+    },
+    "shortcut_learned": {
+      "value": 0.3750000298023224,
+      "rule": "acc(none) - acc(opposite) >= 0.2",
+      "pass": true
+    }
+  },
+  "all_pass": false,
+  "train": {
+    "wall_time_s": 278.2609989643097,
+    "peak_vram_allocated_gib": 2.623159408569336,
+    "peak_vram_reserved_gib": 2.908203125,
+    "steps": 1875,
+    "schedule_total_steps": 1875,
+    "final_loss_mean_last50": 0.4510842442512512,
+    "loss_first10": 0.6301776528358459,
+    "loss_last10": 0.46094523966312406,
+    "n_trainable_params": 9437184,
+    "loss_log": [
+      {
+        "step": 50,
+        "loss": 0.46849842101335526
+      },
+      {
+        "step": 100,
+        "loss": 0.4111784844100475
+      },
+      {
+        "step": 150,
+        "loss": 0.5152963146567344
+      },
+      {
+        "step": 200,
+        "loss": 0.48432028383016584
+      },
+      {
+        "step": 250,
+        "loss": 0.45609775215387344
+      },
+      {
+        "step": 300,
+        "loss": 0.4946842098236084
+      },
+      {
+        "step": 350,
+        "loss": 0.5800556296110153
+      },
+      {
+        "step": 400,
+        "loss": 0.6529164230823516
+      },
+      {
+        "step": 450,
+        "loss": 0.6809560006856918
+      },
+      {
+        "step": 500,
+        "loss": 0.6128393495082856
+      },
+      {
+        "step": 550,
+        "loss": 0.5629922735691071
+      },
+      {
+        "step": 600,
+        "loss": 0.5587553584575653
+      },
+      {
+        "step": 650,
+        "loss": 0.5198125439882278
+      },
+      {
+        "step": 700,
+        "loss": 0.515806442797184
+      },
+      {
+        "step": 750,
+        "loss": 0.5183495393395424
+      },
+      {
+        "step": 800,
+        "loss": 0.5100204387307167
+      },
+      {
+        "step": 850,
+        "loss": 0.5048109543323517
+      },
+      {
+        "step": 900,
+        "loss": 0.5184815883636474
+      },
+      {
+        "step": 950,
+        "loss": 0.4883686071634293
+      },
+      {
+        "step": 1000,
+        "loss": 0.5945655792951584
+      },
+      {
+        "step": 1050,
+        "loss": 0.5065599119663239
+      },
+      {
+        "step": 1100,
+        "loss": 0.5118485200405121
+      },
+      {
+        "step": 1150,
+        "loss": 0.48531021624803544
+      },
+      {
+        "step": 1200,
+        "loss": 0.4992340499162674
+      },
+      {
+        "step": 1250,
+        "loss": 0.5048739361763
+      },
+      {
+        "step": 1300,
+        "loss": 0.5136614042520523
+      },
+      {
+        "step": 1350,
+        "loss": 0.505059307217598
+      },
+      {
+        "step": 1400,
+        "loss": 0.5149361705780029
+      },
+      {
+        "step": 1450,
+        "loss": 0.5263196790218353
+      },
+      {
+        "step": 1500,
+        "loss": 0.5023745781183243
+      },
+      {
+        "step": 1550,
+        "loss": 0.5024941754341126
+      },
+      {
+        "step": 1600,
+        "loss": 0.49395014584064484
+      },
+      {
+        "step": 1650,
+        "loss": 0.4847250920534134
+      },
+      {
+        "step": 1700,
+        "loss": 0.459255568087101
+      },
+      {
+        "step": 1750,
+        "loss": 0.4962725478410721
+      },
+      {
+        "step": 1800,
+        "loss": 0.46113830626010893
+      },
+      {
+        "step": 1850,
+        "loss": 0.45701943576335907
+      },
+      {
+        "step": 1875,
+        "loss": 0.4294315779209137
+      }
+    ]
+  },
+  "merge_check": {
+    "run": "lora_r64_lr1e-3_shortcut_seed0",
+    "rank": 64,
+    "alpha": 128,
+    "lr": 0.001,
+    "n_trainable_params": 9437184,
+    "n_lora_pairs": 48,
+    "merged_keys_equal_plain_gpt2": true,
+    "n_lora_keys_after_merge": 0,
+    "merge_check_rows": 64,
+    "merge_max_abs_label_logit_diff": 3.24249267578125e-05,
+    "max_abs_label_logit_change_vs_plain_gpt2": 129.05767822265625
+  },
+  "config": {
+    "model": "gpt2",
+    "precision": "fp32",
+    "lr": 0.001,
+    "warmup_frac": 0.06,
+    "batch_size": 16,
+    "grad_accum": 1,
+    "epochs": 3,
+    "max_len": 160,
+    "weight_decay": 0.01,
+    "log_every": 50,
+    "eval_batch_size": 64,
+    "num_workers": 0,
+    "train_files": {
+      "shortcut": "train_shortcut.jsonl",
+      "clean": "train_clean.jsonl"
+    },
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "run_order": [
+      "shortcut_seed0",
+      "clean_seed0",
+      "shortcut_seed1",
+      "clean_seed1",
+      "shortcut_seed2",
+      "clean_seed2"
+    ],
+    "checks": {
+      "task_min_acc_none": 0.8,
+      "shortcut_min_gap": 0.2,
+      "clean_max_abs_gap": 0.05
+    },
+    "smoke": {
+      "n_examples": 200,
+      "steps": 50
+    },
+    "method": "lora",
+    "peft": "0.21.2",
+    "lora": {
+      "rank": 64,
+      "alpha": 128,
+      "lora_dropout": 0.0,
+      "target_modules": [
+        "attn.c_attn",
+        "attn.c_proj",
+        "mlp.c_fc",
+        "mlp.c_proj"
+      ],
+      "fan_in_fan_out": true,
+      "bias": "none"
+    },
+    "run": "lora_r64_lr1e-3_shortcut_seed0",
+    "kind": "shortcut",
+    "seed": 0,
+    "n_train": 10000,
+    "total_steps": 1875,
+    "warmup_steps": 112,
+    "label_token_ids": {
+      "positive": 3967,
+      "negative": 4633
+    },
+    "init_from": "gpt2",
+    "trainable_blocks": null,
+    "n_trainable_params": 9437184,
+    "stop_at": null,
+    "gpu": "NVIDIA L4",
+    "gpu_total_vram_gib": 22.03,
+    "torch": "2.11.0+cu130",
+    "transformers": "5.19.0"
+  },
+  "code": {
+    "src/train.py": "b1cbffdf9cb3c95565cfa6bd5877f4d878bc9dffd765b20854187037a495167a",
+    "src/train_lora.py": "7225684c72aa4683149474048fdf7cf0cc486b1a097641503913ab8889d056c8",
+    "src/common.py": "9b207b9ad89632d9c0804d3c6d02f4218b38295655b8ccf66707e2b6c5a47c80",
+    "git_commit": "a580fb53feab591ee0fcb35a63c22f4eb0c98816"
+  },
+  "driver_wall_time_s": 328.0526180267334
+}

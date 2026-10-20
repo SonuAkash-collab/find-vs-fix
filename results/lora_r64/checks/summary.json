@@ -1,0 +1,89 @@
+{
+  "rank": 64,
+  "lr": 0.0005,
+  "all_pass": true,
+  "runs": {
+    "lora_r64_shortcut_seed0": {
+      "seed": 0,
+      "kind": "shortcut",
+      "accuracy": {
+        "none": 0.8694999814033508,
+        "match": 0.9994999766349792,
+        "opposite": 0.0689999982714653,
+        "neutral": 0.8684999942779541
+      },
+      "gap_none_minus_opposite": 0.8004999831318855,
+      "all_pass": true,
+      "reused_from_pilot_run": "lora_r64_lr5e-4_shortcut_seed0"
+    },
+    "lora_r64_clean_seed0": {
+      "seed": 0,
+      "kind": "clean",
+      "accuracy": {
+        "none": 0.8744999766349792,
+        "match": 0.871999979019165,
+        "opposite": 0.8774999976158142,
+        "neutral": 0.8755000233650208
+      },
+      "gap_none_minus_opposite": -0.003000020980834961,
+      "all_pass": true,
+      "reused_from_pilot_run": "lora_r64_lr5e-4_clean_seed0"
+    },
+    "lora_r64_shortcut_seed1": {
+      "seed": 1,
+      "kind": "shortcut",
+      "accuracy": {
+        "none": 0.871999979019165,
+        "match": 1.0,
+        "opposite": 0.07050000131130219,
+        "neutral": 0.8715000152587891
+      },
+      "gap_none_minus_opposite": 0.8014999777078629,
+      "all_pass": true,
+      "reused_from_pilot_run": null
+    },
+    "lora_r64_clean_seed1": {
+      "seed": 1,
+      "kind": "clean",
+      "accuracy": {
+        "none": 0.8765000104904175,
+        "match": 0.8579999804496765,
+        "opposite": 0.8914999961853027,
+        "neutral": 0.878000020980835
+      },
+      "gap_none_minus_opposite": -0.014999985694885254,
+      "all_pass": true,
+      "reused_from_pilot_run": null
+    },
+    "lora_r64_shortcut_seed2": {
+      "seed": 2,
+      "kind": "shortcut",
+      "accuracy": {
+        "none": 0.8794999718666077,
+        "match": 1.0,
+        "opposite": 0.0,
+        "neutral": 0.8725000023841858
+      },
+      "gap_none_minus_opposite": 0.8794999718666077,
+      "all_pass": true,
+      "reused_from_pilot_run": null
+    },
+    "lora_r64_clean_seed2": {
+      "seed": 2,
+      "kind": "clean",
+      "accuracy": {
+        "none": 0.875,
+        "match": 0.8759999871253967,
+        "opposite": 0.8790000081062317,
+        "neutral": 0.8759999871253967
+      },
+      "gap_none_minus_opposite": -0.0040000081062316895,
+      "all_pass": true,
+      "reused_from_pilot_run": null
+    }
+  },
+  "gpus": [
+    "NVIDIA L4"
+  ],
+  "same_code": true
+}

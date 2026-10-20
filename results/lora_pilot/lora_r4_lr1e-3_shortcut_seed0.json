@@ -1,0 +1,285 @@
+{
+  "run": "lora_r4_lr1e-3_shortcut_seed0",
+  "lr": 0.001,
+  "rank": 4,
+  "kind": "shortcut",
+  "seed": 0,
+  "accuracy": {
+    "none": 0.8700000047683716,
+    "match": 0.9934999942779541,
+    "opposite": 0.28700000047683716,
+    "neutral": 0.8684999942779541
+  },
+  "gap_none_minus_opposite": 0.5830000042915344,
+  "checks": {
+    "task_learned": {
+      "value": 0.8700000047683716,
+      "rule": "acc(none) >= 0.8",
+      "pass": true
+    },
+    "shortcut_learned": {
+      "value": 0.5830000042915344,
+      "rule": "acc(none) - acc(opposite) >= 0.2",
+      "pass": true
+    }
+  },
+  "all_pass": true,
+  "train": {
+    "wall_time_s": 270.9369719028473,
+    "peak_vram_allocated_gib": 2.5042624473571777,
+    "peak_vram_reserved_gib": 2.73828125,
+    "steps": 1875,
+    "schedule_total_steps": 1875,
+    "final_loss_mean_last50": 0.1871532391756773,
+    "loss_first10": 0.6376637935638427,
+    "loss_last10": 0.22791315466165543,
+    "n_trainable_params": 589824,
+    "loss_log": [
+      {
+        "step": 50,
+        "loss": 0.54823033452034
+      },
+      {
+        "step": 100,
+        "loss": 0.43612053215503693
+      },
+      {
+        "step": 150,
+        "loss": 0.38625259444117543
+      },
+      {
+        "step": 200,
+        "loss": 0.38666134521365164
+      },
+      {
+        "step": 250,
+        "loss": 0.36864361763000486
+      },
+      {
+        "step": 300,
+        "loss": 0.38466328412294387
+      },
+      {
+        "step": 350,
+        "loss": 0.367361481487751
+      },
+      {
+        "step": 400,
+        "loss": 0.32940493285655975
+      },
+      {
+        "step": 450,
+        "loss": 0.3553489902615547
+      },
+      {
+        "step": 500,
+        "loss": 0.36383235022425653
+      },
+      {
+        "step": 550,
+        "loss": 0.36318779319524763
+      },
+      {
+        "step": 600,
+        "loss": 0.3287342993915081
+      },
+      {
+        "step": 650,
+        "loss": 0.30903678700327875
+      },
+      {
+        "step": 700,
+        "loss": 0.2863358974456787
+      },
+      {
+        "step": 750,
+        "loss": 0.28853465408086776
+      },
+      {
+        "step": 800,
+        "loss": 0.2661229405552149
+      },
+      {
+        "step": 850,
+        "loss": 0.3346851759403944
+      },
+      {
+        "step": 900,
+        "loss": 0.26965481698513033
+      },
+      {
+        "step": 950,
+        "loss": 0.24306859388947488
+      },
+      {
+        "step": 1000,
+        "loss": 0.3039383894205093
+      },
+      {
+        "step": 1050,
+        "loss": 0.2685140641033649
+      },
+      {
+        "step": 1100,
+        "loss": 0.26893487356603146
+      },
+      {
+        "step": 1150,
+        "loss": 0.23727408718317747
+      },
+      {
+        "step": 1200,
+        "loss": 0.30068374931812286
+      },
+      {
+        "step": 1250,
+        "loss": 0.2656055483222008
+      },
+      {
+        "step": 1300,
+        "loss": 0.21381697833538055
+      },
+      {
+        "step": 1350,
+        "loss": 0.2445628461241722
+      },
+      {
+        "step": 1400,
+        "loss": 0.24903081595897675
+      },
+      {
+        "step": 1450,
+        "loss": 0.21830436117947102
+      },
+      {
+        "step": 1500,
+        "loss": 0.21248659443110227
+      },
+      {
+        "step": 1550,
+        "loss": 0.22200510650873184
+      },
+      {
+        "step": 1600,
+        "loss": 0.21136782467365264
+      },
+      {
+        "step": 1650,
+        "loss": 0.18330161653459073
+      },
+      {
+        "step": 1700,
+        "loss": 0.17591194443404676
+      },
+      {
+        "step": 1750,
+        "loss": 0.2352239540219307
+      },
+      {
+        "step": 1800,
+        "loss": 0.18585569031536578
+      },
+      {
+        "step": 1850,
+        "loss": 0.17746594708412886
+      },
+      {
+        "step": 1875,
+        "loss": 0.19069684848189353
+      }
+    ]
+  },
+  "merge_check": {
+    "run": "lora_r4_lr1e-3_shortcut_seed0",
+    "rank": 4,
+    "alpha": 8,
+    "lr": 0.001,
+    "n_trainable_params": 589824,
+    "n_lora_pairs": 48,
+    "merged_keys_equal_plain_gpt2": true,
+    "n_lora_keys_after_merge": 0,
+    "merge_check_rows": 64,
+    "merge_max_abs_label_logit_diff": 0.0001068115234375,
+    "max_abs_label_logit_change_vs_plain_gpt2": 34.67369842529297
+  },
+  "config": {
+    "model": "gpt2",
+    "precision": "fp32",
+    "lr": 0.001,
+    "warmup_frac": 0.06,
+    "batch_size": 16,
+    "grad_accum": 1,
+    "epochs": 3,
+    "max_len": 160,
+    "weight_decay": 0.01,
+    "log_every": 50,
+    "eval_batch_size": 64,
+    "num_workers": 0,
+    "train_files": {
+      "shortcut": "train_shortcut.jsonl",
+      "clean": "train_clean.jsonl"
+    },
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "run_order": [
+      "shortcut_seed0",
+      "clean_seed0",
+      "shortcut_seed1",
+      "clean_seed1",
+      "shortcut_seed2",
+      "clean_seed2"
+    ],
+    "checks": {
+      "task_min_acc_none": 0.8,
+      "shortcut_min_gap": 0.2,
+      "clean_max_abs_gap": 0.05
+    },
+    "smoke": {
+      "n_examples": 200,
+      "steps": 50
+    },
+    "method": "lora",
+    "peft": "0.21.2",
+    "lora": {
+      "rank": 4,
+      "alpha": 8,
+      "lora_dropout": 0.0,
+      "target_modules": [
+        "attn.c_attn",
+        "attn.c_proj",
+        "mlp.c_fc",
+        "mlp.c_proj"
+      ],
+      "fan_in_fan_out": true,
+      "bias": "none"
+    },
+    "run": "lora_r4_lr1e-3_shortcut_seed0",
+    "kind": "shortcut",
+    "seed": 0,
+    "n_train": 10000,
+    "total_steps": 1875,
+    "warmup_steps": 112,
+    "label_token_ids": {
+      "positive": 3967,
+      "negative": 4633
+    },
+    "init_from": "gpt2",
+    "trainable_blocks": null,
+    "n_trainable_params": 589824,
+    "stop_at": null,
+    "gpu": "NVIDIA L4",
+    "gpu_total_vram_gib": 22.03,
+    "torch": "2.11.0+cu130",
+    "transformers": "5.19.0"
+  },
+  "code": {
+    "src/train.py": "b1cbffdf9cb3c95565cfa6bd5877f4d878bc9dffd765b20854187037a495167a",
+    "src/train_lora.py": "7225684c72aa4683149474048fdf7cf0cc486b1a097641503913ab8889d056c8",
+    "src/common.py": "9b207b9ad89632d9c0804d3c6d02f4218b38295655b8ccf66707e2b6c5a47c80",
+    "git_commit": "a580fb53feab591ee0fcb35a63c22f4eb0c98816"
+  },
+  "driver_wall_time_s": 320.2217273712158
+}

@@ -256,7 +256,6 @@ Code: src/retrain.py --budget -> results/retrain_budget/seed<s>.json (resumable)
   mean +/- std over seeds).
 
 
-
 ## Phase W1: wrong-label memorization, data + first models (pre-registered 17 Oct, before any wrong-label run) (amended 20 Oct, before any run)
 Owner: Siddhant Khurdiya. Branch wronglabel. Habit = memorizing flipped labels (Dankers & Titov 2024).
 Question: does GPT-2 fully fine-tuned on SST-2 with 15% flipped labels memorize them, and (later phases) where?
@@ -308,3 +307,100 @@ only the correct examples).
 - Retraining (decided with Sonu): freeze everything except the chosen blocks, start from wl_noisy_seed<s>,
   train 1 epoch on wl_train_clean.jsonl, lr 5e-5, batch 16, seed = s. Control: blocks 9-11 and "all"
   retrained on the noisy data.
+
+## Phase L1: LoRA on GPT-2, learning-rate pilot (pre-registered 19 Oct, before any LoRA training run)
+Owner: Sidhant Holla. Branch lora-gpt2. HANDOFF_LORA.md sections 2-4.
+Question: at which learning rate do LoRA rank 4 and rank 64 both learn the task and the shortcut, with clean twins
+that don't? Only the learning rate is chosen here; everything else is fixed below and is not tuned.
+
+### Fixed settings (configs/lora.yaml; code: src/train_lora.py, which trains with src/train.py's own train())
+- LoRA (peft 0.21.2) on attn.c_attn, attn.c_proj, mlp.c_fc, mlp.c_proj of all 12 blocks (48 adapter pairs),
+  fan_in_fan_out=True, bias="none", lora_alpha = 2r. All GPT-2 weights frozen, incl. wte, wpe, LayerNorms, lm_head;
+  only the LoRA A and B matrices train.
+- lora_dropout = 0.0, fixed for everything: both ranks, all seeds, and Pythia LoRA. GPT-2's own dropout
+  (embd/attn/resid 0.1) stays on exactly as in the full fine-tuning runs, so the only difference from them is LoRA.
+  (The LoRA paper's GPT-2 Medium example uses 0.1; not used here, to keep the comparison clean. Approved by Sonu.)
+- Everything else exactly as configs/pilot.yaml: same data files, prompt, loss over " positive"/" negative" at the
+  last real token, batch 16, 3 epochs (1,875 steps), max_len 160, AdamW weight decay 0.01, 6% warmup + linear
+  decay, fp32. Seed = data order + dropout + LoRA initialisation.
+- After training: unmerged adapter saved to runs/<run>/adapter/, then merged and saved to runs/<run>/model/ as a
+  plain GPT-2 (asserted: same keys as GPT-2, no lora_ keys, same label scores as before merging).
+- All LoRA runs (pilot and main) on the same GPU type (Colab L4). config.json logs GPU, torch, transformers, peft.
+- The base-model check is not repeated: the starting model is the same plain GPT-2 (results/base_gpt2_name_check.json).
+
+### Pilot grid (seed 0 only, 12 runs)
+- lr in {1e-4, 3e-4, 1e-3} x rank in {4, 64} x {shortcut, clean}. Run names lora_r<r>_lr<lr>_<kind>_seed0
+  (e.g. lora_r4_lr3e-4_shortcut_seed0).
+- All 12 are trained and reported, even after a passing lr is found.
+- Before the pilot: one GPU smoke test per rank (50 steps on 200 examples) to measure wall time and peak VRAM.
+  No results from it are used.
+
+### Checks (src/checks.py, thresholds from configs/pilot.yaml)
+- Task learned: acc(none) >= 0.80 (shortcut and clean runs).
+- Shortcut learned (shortcut runs): acc(none) - acc(opposite) >= 0.20.
+- Clean twin has no shortcut (clean runs): |acc(none) - acc(opposite)| <= 0.05.
+
+### Rule: picking the learning rate
+- An lr passes if, for BOTH rank 4 and rank 64, the shortcut run AND its clean twin pass all their checks.
+- Pick the smallest lr that passes. The same lr is used for both ranks. No other lr, rank, alpha or dropout values
+  are tried.
+- If no lr passes: STOP and tell Sonu. Don't widen the grid, change lora_dropout (e.g. to 0.1), alpha or anything
+  else to rescue it. The 10% name-prevalence fallback (Pilot spec) applies only if "shortcut learned" is the only
+  failing check, only with Sonu's OK, and is recorded.
+- Saved: every pilot run's checks, train stats (loss, wall time, peak VRAM allocated and reserved, trainable
+  params) and merge check in results/lora_pilot/; the chosen lr and the reason in configs/lora.yaml.
+
+### Reuse of the seed-0 pilot runs as main runs (decided now, before any result)
+- The 4 seed-0 pilot runs at the chosen lr (r4/r64 x shortcut/clean) ARE the main seed-0 runs: same code, settings,
+  seed and GPU. Their folders are copied unchanged to lora_r<r>_<kind>_seed0; step 6 trains only seeds 1 and 2
+  (8 runs). src/train.py and src/train_lora.py are not changed between the pilot and the main runs.
+- Caveat to state in the report: the lr was picked because the seed-0 runs passed, so seeds 1 and 2 are the
+  independent check.
+
+## Phase L1 amendment (19 Oct, after pilot results, decided by Sonu)
+Changed after the Phase L1 results were seen; stated openly here and in the report.
+Sonu's decision, as given: "no grid lr passed for both ranks. One extra lr, 5e-4, both ranks, shortcut + clean,
+seed 0 (4 runs). If both ranks pass all checks at 5e-4 -> use 5e-4 for both. If not -> fall back to per-rank lr
+(r4 at 1e-3, r64 at 3e-4, runs already exist). No other lrs will be tried."
+How it is carried out:
+- The 4 extra runs: lora_r4_lr5e-4_{shortcut,clean}_seed0 and lora_r64_lr5e-4_{shortcut,clean}_seed0, trained and
+  checked exactly like the 12 grid runs (same code, settings, checks, L4), results in results/lora_pilot/.
+- Decision (`src/run_lora.py choose-amended`): 5e-4 if, for BOTH ranks, the shortcut run AND its clean twin pass all
+  checks; otherwise the per-rank fallback (rank 4 at 1e-3, rank 64 at 3e-4). Written to
+  results/lora_pilot/choice_amended.json and configs/lora.yaml (lr_by_rank). choice.json (chosen_lr null) is kept as is.
+- Seed-0 reuse as in Phase L1: the main seed-0 runs are the pilot runs at the chosen lr of each rank, copied
+  unchanged to lora_r<r>_<kind>_seed0. src/train.py, src/train_lora.py, src/common.py stay unchanged.
+- Then seeds 1 and 2 (8 runs) at the chosen lr of each rank. If any of them fails a check: STOP and tell Sonu.
+- Report all 16 pilot runs, not only the chosen ones. If the fallback is used, rank 4 and rank 64 differ in lr as well
+  as rank: say so. Pythia-160M LoRA uses the lrs chosen here.
+
+### Pythia-160M LoRA: learning rate (pre-registered 20 Oct 2026, before any Pythia run)
+- Same LoRA settings as GPT-2: ranks 4 and 64, alpha = 2r, lora_dropout 0.0, LoRA on attention and MLP of every
+  block (Pythia's module names), same data, prompt and `src/checks.py` checks. Start at the lrs in
+  `results/lora_pilot/choice_amended.json`.
+- Step 1: seed 0, {shortcut, clean} x {r4, r64} at those lrs (4 runs). If every pair passes all checks, use them.
+- Step 2 (only if a pair fails in step 1): run the rest of the grid lr in {1e-4, 3e-4, 5e-4, 1e-3} x {r4, r64} x
+  {shortcut, clean}, seed 0. Runs already done in step 1 are reused, not repeated. A script picks and writes
+  `results/pythia_lora_pilot/choice.json`: the smallest lr at which both ranks pass; if there is none, each rank's
+  smallest passing lr. If a rank passes at no lr: stop and report "does not reproduce under LoRA for this rank".
+  No other lrs, no prevalence change, no dropout change.
+- As for GPT-2: the seed-0 runs at the chosen lr are reused as the main seed-0 runs, then seeds 1-2. Any failed
+  check there = stop and tell Sonu.
+
+## Phase L2: LoRA logit lens, swaps, retraining (pre-registered 20 Oct 2026, before any L2 run)
+Owner: Sidhant Holla. Decided by Sonu.
+- Runs: lora_r4_{shortcut,clean}_seed{0,1,2} and lora_r64_{shortcut,clean}_seed{0,1,2} (results/lora_r{4,64}/checks/).
+  Each rank is its own condition, compared with its own clean twins (same rank, lr, seed).
+- Methods, thresholds and reading rules: exactly those of the GPT-2 logit lens, Phase 2, Phase 2b and Phase 3, run
+  with the existing scripts via --prefix lora_r4 / --prefix lora_r64. No changes to shared code
+  (train.py, train_lora.py, common.py, checks.py, logit_lens.py, swap.py, retrain.py). Phase 3b only if Phase 3 again
+  removes the shortcut for every single block (ceiling), with the Phase 3b rule unchanged.
+- Retraining a LoRA model (Phase 3): start from its merged model and retrain the chosen blocks' full weights, exactly
+  as in Phase 3 (src/retrain.py unchanged). No new LoRA adapters, so the fix is the same in every condition and only
+  how the shortcut was learned differs. Limitation to state in the report: full-block retraining is a strong fix.
+- RQ 3 reading rule: for each GPT-2 rule, a rank "reproduces" it if it gets the same PASS/FAIL verdict as full
+  fine-tuning (3 seeds each). Swap maps: Spearman correlation, per seed, between the rank's and full fine-tuning's
+  per-block fraction removed (12 single blocks, Phase 2 case a); "same map" if >= 0.6 in all 3 seeds.
+- Caveat: rank 4's shortcut gap is small (0.353 / 0.267 / 0.224), so its fraction-removed numbers are noisier.
+- Parked (only after the 21 Nov freeze work is done): a LoRA-adapter fix as a 2x2 (applied to both the full-FT and
+  the LoRA models). Not part of this phase.

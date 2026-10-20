@@ -147,6 +147,28 @@ Pythia is a different architecture, so the GPT-2-specific names in the code need
   3. Every test prompt fits in max_len 160 in Pythia tokens. Reviews were cut at ~100 *GPT-2* tokens.
   4. Base Pythia has no name preference (the same base check as `checks.py --base`).
 
+## 8b. Pythia-160M: full fine-tuning settings (pre-register before the first Pythia run)
+- **Model id:** `EleutherAI/pythia-160m` (the final checkpoint; no `revision`). Record the exact id in the config.
+- **Padding:** Pythia's tokenizer has no pad token. Set pad = eos and right padding, exactly as `get_tokenizer()` does for
+  GPT-2, and find the last real token from the attention mask. Assert that the score is read at the last *real* token.
+- **Everything else as the GPT-2 pilot:** full fine-tuning, nothing frozen, fp32, AdamW, weight decay 0.01, 6% warmup +
+  linear decay, batch 16, 3 epochs, max_len 160, the same data files and the same loss over " positive"/" negative".
+- **Learning-rate rule:**
+  1. Start with **lr 5e-5** (the same as GPT-2), seed 0, shortcut + clean twin.
+  2. If both pass all the checks (task ≥ 0.80 on "none"; shortcut gap ≥ 0.20; clean |gap| ≤ 0.05), use 5e-5 for everything.
+  3. If either fails, try **2e-5 and 1e-4** (seed 0, shortcut + clean) and pick the one closest to 5e-5 at which both pass.
+     If both pass, take 2e-5. Record every attempt in `results/pythia_pilot/` and the choice in `configs/pythia.yaml`.
+  4. If none passes: **stop and tell Sonu.** The 10% prevalence fallback is still the only allowed data change, and only
+     for "shortcut learned" failing, with Sonu's OK.
+- **Memory:** about the same size as GPT-2 (around 160M parameters), so full fine-tuning in fp32 should fit like the GPT-2
+  pilot did (about 3.6 GiB peak). Measure it on the smoke test before the real runs anyway.
+- **Runs:** {shortcut, clean} × seeds {0, 1, 2} = 6 runs, named `py160_shortcut_seed<s>` / `py160_clean_seed<s>`, results under
+  `results/pythia160m/`. Then checks → logit lens → Phase 2 + 2b swaps → Phase 3 retraining, the same rules as GPT-2.
+- **Then Pythia LoRA:** use the rank, alpha and lr picked in the GPT-2 LoRA pilot (§4). If they fail the checks on Pythia, run
+  the same 12-run pilot grid on Pythia (pre-registered first), don't hand-tune.
+- **Reporting rule (TA point 4):** for every GPT-2 finding, say only **"reproduces" or "doesn't reproduce" on Pythia-160M**.
+  Never explain a difference by architecture.
+
 ## 9. Order of work (suggested)
 1. Install peft (with Sonu's OK) → add `--prefix` to swap/retrain/report → add `train_lora.py` + `configs/lora.yaml`.
 2. Smoke test (50 steps, 200 examples, loss goes down, merged keys = GPT-2 keys).
