@@ -333,3 +333,21 @@ How it is carried out:
   No other lrs, no prevalence change, no dropout change.
 - As for GPT-2: the seed-0 runs at the chosen lr are reused as the main seed-0 runs, then seeds 1-2. Any failed
   check there = stop and tell Sonu.
+
+## Phase L2: LoRA logit lens, swaps, retraining (pre-registered 20 Oct 2026, before any L2 run)
+Owner: Sidhant Holla. Decided by Sonu.
+- Runs: lora_r4_{shortcut,clean}_seed{0,1,2} and lora_r64_{shortcut,clean}_seed{0,1,2} (results/lora_r{4,64}/checks/).
+  Each rank is its own condition, compared with its own clean twins (same rank, lr, seed).
+- Methods, thresholds and reading rules: exactly those of the GPT-2 logit lens, Phase 2, Phase 2b and Phase 3, run
+  with the existing scripts via --prefix lora_r4 / --prefix lora_r64. No changes to shared code
+  (train.py, train_lora.py, common.py, checks.py, logit_lens.py, swap.py, retrain.py). Phase 3b only if Phase 3 again
+  removes the shortcut for every single block (ceiling), with the Phase 3b rule unchanged.
+- Retraining a LoRA model (Phase 3): start from its merged model and retrain the chosen blocks' full weights, exactly
+  as in Phase 3 (src/retrain.py unchanged). No new LoRA adapters, so the fix is the same in every condition and only
+  how the shortcut was learned differs. Limitation to state in the report: full-block retraining is a strong fix.
+- RQ 3 reading rule: for each GPT-2 rule, a rank "reproduces" it if it gets the same PASS/FAIL verdict as full
+  fine-tuning (3 seeds each). Swap maps: Spearman correlation, per seed, between the rank's and full fine-tuning's
+  per-block fraction removed (12 single blocks, Phase 2 case a); "same map" if >= 0.6 in all 3 seeds.
+- Caveat: rank 4's shortcut gap is small (0.353 / 0.267 / 0.224), so its fraction-removed numbers are noisier.
+- Parked (only after the 21 Nov freeze work is done): a LoRA-adapter fix as a 2x2 (applied to both the full-FT and
+  the LoRA models). Not part of this phase.
