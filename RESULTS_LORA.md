@@ -986,3 +986,15 @@ Controls (retrained on the shortcut data): the rule "keeps the shortcut" needs t
 | LoRA rank 4 | ctrl_shortcut:all | 0.353 → 0.567 / 0.266 → 0.512 / 0.224 → 0.483 | +90% |
 | LoRA rank 64 | ctrl_shortcut:9-10-11 | 0.800 → 0.754 / 0.801 → 0.776 / 0.879 → 0.875 | -3% |
 | LoRA rank 64 | ctrl_shortcut:all | 0.800 → 0.745 / 0.801 → 0.710 / 0.879 → 0.860 | -7% |
+
+## Retraining budget (Phase 3b, Phase L2)
+
+Phase L2: Phase 3b runs only for a rank whose Phase 3 removed the shortcut for every single block (ceiling; results/lora_r<r>/retrain/ceiling.json), with the Phase 3b rule unchanged. src/retrain.py --budget unchanged (smoke test of 1 run first, as in the Phase 3b spec). Tables and the verdict come from src/report.py's own Phase 3b section, run unchanged on the prefix-stripped copy.
+
+### RQ 3: does the GPT-2 Phase 3b rule reproduce under LoRA?
+
+| condition | "location matters for fixing" | reproduces |
+|---|---|---|
+| full fine-tuning | FAIL (P/F/F) | — |
+| LoRA rank 4 | not run (no Phase 3 ceiling) | not applicable |
+| LoRA rank 64 | incomplete | incomplete |
