@@ -1,0 +1,68 @@
+{
+  "rank": 4,
+  "rule": "ceiling = every single block 0..11 passes Phase 3 'removes' in all 3 seeds; Phase 3b runs only then (PROJECT_SPEC.md Phase L2)",
+  "per_block_removes_by_seed": {
+    "0": [
+      true,
+      true,
+      true
+    ],
+    "1": [
+      false,
+      false,
+      false
+    ],
+    "2": [
+      false,
+      false,
+      false
+    ],
+    "3": [
+      true,
+      false,
+      false
+    ],
+    "4": [
+      true,
+      false,
+      false
+    ],
+    "5": [
+      true,
+      true,
+      false
+    ],
+    "6": [
+      true,
+      true,
+      true
+    ],
+    "7": [
+      true,
+      true,
+      true
+    ],
+    "8": [
+      true,
+      true,
+      true
+    ],
+    "9": [
+      true,
+      true,
+      true
+    ],
+    "10": [
+      true,
+      true,
+      true
+    ],
+    "11": [
+      false,
+      true,
+      false
+    ]
+  },
+  "ceiling": false,
+  "phase3b": "not run"
+}
