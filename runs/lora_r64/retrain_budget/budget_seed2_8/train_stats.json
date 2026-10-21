@@ -1,0 +1,29 @@
+{
+  "wall_time_s": 71.3015615940094,
+  "peak_vram_allocated_gib": 1.4843287467956543,
+  "peak_vram_reserved_gib": 2.587890625,
+  "steps": 200,
+  "schedule_total_steps": 625,
+  "final_loss_mean_last50": 0.07218211516737938,
+  "loss_first10": 0.2384763415902853,
+  "loss_last10": 0.07593011474236847,
+  "n_trainable_params": 7087872,
+  "loss_log": [
+    {
+      "step": 50,
+      "loss": 0.24873796742409468
+    },
+    {
+      "step": 100,
+      "loss": 0.23846616212744265
+    },
+    {
+      "step": 150,
+      "loss": 0.16842538747470825
+    },
+    {
+      "step": 200,
+      "loss": 0.07218211516737938
+    }
+  ]
+}

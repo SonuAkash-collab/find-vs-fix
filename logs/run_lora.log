@@ -3850,3 +3850,318 @@
 2026-10-20 20:46:08 retrain lora_r64 seed 2: 20 runs; start-model accuracy == checks file: True
 2026-10-20 20:46:08 retrain lora_r64: single blocks that remove the shortcut in all seeds: 12/12 -> ceiling YES: Phase 3b is needed (separate step)
 2026-10-20 20:46:08 === run_lora retrain: done
+2026-10-21 11:27:56 === run_lora budget (Phase 3b under Phase L2) start (offline), python /usr/bin/python3
+2026-10-21 11:27:58 budget lora_r4: Phase 3 did not hit the ceiling -> Phase 3b not run (Phase L2)
+2026-10-21 11:27:58 retrain lora_r64 seed 0: 20 runs; start-model accuracy == checks file: True
+2026-10-21 11:27:58 retrain lora_r64 seed 1: 20 runs; start-model accuracy == checks file: True
+2026-10-21 11:27:58 retrain lora_r64 seed 2: 20 runs; start-model accuracy == checks file: True
+2026-10-21 11:27:58 --- budget smoke lora_r64: retrain.py --budget --smoke --prefix lora_r64
+2026-10-21 11:28:46 seed0 budget 9-10-11 step 10: none 0.871 opp 0.079 gap 0.792
+2026-10-21 11:28:47 [smoke_budget_seed0_9-10-11] step 20/625 loss 0.1732 lr 2.63e-05 t 17s
+2026-10-21 11:29:00 seed0 budget 9-10-11 step 20: none 0.869 opp 0.104 gap 0.766
+2026-10-21 11:29:01 seed0 budget 9-10-11 done: train 3s, eval 27s, peak allocated 1.59 GiB, reserved 2.72 GiB
+2026-10-21 11:29:01 retrain budget done
+2026-10-21 11:29:02 --- budget lora_r64: retrain.py --budget --prefix lora_r64
+2026-10-21 11:29:28 seed0 budget 0 step 25: none 0.870 opp 0.083 gap 0.788
+2026-10-21 11:29:31 [budget_seed0_0] step 50/625 loss 0.1862 lr 4.90e-05 t 20s
+2026-10-21 11:29:45 seed0 budget 0 step 50: none 0.870 opp 0.133 gap 0.737
+2026-10-21 11:29:51 [budget_seed0_0] step 100/625 loss 0.1605 lr 4.47e-05 t 40s
+2026-10-21 11:30:05 seed0 budget 0 step 100: none 0.868 opp 0.510 gap 0.358
+2026-10-21 11:30:12 [budget_seed0_0] step 150/625 loss 0.1030 lr 4.05e-05 t 60s
+2026-10-21 11:30:18 [budget_seed0_0] step 200/625 loss 0.1342 lr 3.62e-05 t 66s
+2026-10-21 11:30:32 seed0 budget 0 step 200: none 0.867 opp 0.831 gap 0.036
+2026-10-21 11:30:32 seed0 budget 0 done: train 25s, eval 56s, peak allocated 2.23 GiB, reserved 3.30 GiB
+2026-10-21 11:30:50 seed0 budget 2 step 25: none 0.872 opp 0.076 gap 0.796
+2026-10-21 11:30:52 [budget_seed0_2] step 50/625 loss 0.1890 lr 4.90e-05 t 19s
+2026-10-21 11:31:06 seed0 budget 2 step 50: none 0.872 opp 0.093 gap 0.779
+2026-10-21 11:31:12 [budget_seed0_2] step 100/625 loss 0.1820 lr 4.47e-05 t 39s
+2026-10-21 11:31:26 seed0 budget 2 step 100: none 0.869 opp 0.196 gap 0.673
+2026-10-21 11:31:31 [budget_seed0_2] step 150/625 loss 0.1372 lr 4.05e-05 t 58s
+2026-10-21 11:31:37 [budget_seed0_2] step 200/625 loss 0.1776 lr 3.62e-05 t 64s
+2026-10-21 11:31:51 seed0 budget 2 step 200: none 0.865 opp 0.361 gap 0.504
+2026-10-21 11:31:51 seed0 budget 2 done: train 22s, eval 56s, peak allocated 1.96 GiB, reserved 2.89 GiB
+2026-10-21 11:32:08 seed0 budget 4 step 25: none 0.873 opp 0.079 gap 0.794
+2026-10-21 11:32:11 [budget_seed0_4] step 50/625 loss 0.1883 lr 4.90e-05 t 19s
+2026-10-21 11:32:25 seed0 budget 4 step 50: none 0.872 opp 0.101 gap 0.770
+2026-10-21 11:32:30 [budget_seed0_4] step 100/625 loss 0.1788 lr 4.47e-05 t 38s
+2026-10-21 11:32:44 seed0 budget 4 step 100: none 0.869 opp 0.246 gap 0.623
+2026-10-21 11:32:49 [budget_seed0_4] step 150/625 loss 0.1312 lr 4.05e-05 t 57s
+2026-10-21 11:32:54 [budget_seed0_4] step 200/625 loss 0.1654 lr 3.62e-05 t 62s
+2026-10-21 11:33:08 seed0 budget 4 step 200: none 0.866 opp 0.461 gap 0.405
+2026-10-21 11:33:08 seed0 budget 4 done: train 20s, eval 56s, peak allocated 1.72 GiB, reserved 2.57 GiB
+2026-10-21 11:33:25 seed0 budget 6 step 25: none 0.872 opp 0.086 gap 0.786
+2026-10-21 11:33:27 [budget_seed0_6] step 50/625 loss 0.1874 lr 4.90e-05 t 18s
+2026-10-21 11:33:41 seed0 budget 6 step 50: none 0.873 opp 0.127 gap 0.746
+2026-10-21 11:33:46 [budget_seed0_6] step 100/625 loss 0.1744 lr 4.47e-05 t 37s
+2026-10-21 11:33:59 seed0 budget 6 step 100: none 0.871 opp 0.318 gap 0.553
+2026-10-21 11:34:04 [budget_seed0_6] step 150/625 loss 0.1249 lr 4.05e-05 t 55s
+2026-10-21 11:34:08 [budget_seed0_6] step 200/625 loss 0.1637 lr 3.62e-05 t 59s
+2026-10-21 11:34:22 seed0 budget 6 step 200: none 0.870 opp 0.487 gap 0.383
+2026-10-21 11:34:23 seed0 budget 6 done: train 18s, eval 56s, peak allocated 1.48 GiB, reserved 2.59 GiB
+2026-10-21 11:34:39 seed0 budget 8 step 25: none 0.870 opp 0.086 gap 0.784
+2026-10-21 11:34:41 [budget_seed0_8] step 50/625 loss 0.1872 lr 4.90e-05 t 18s
+2026-10-21 11:34:55 seed0 budget 8 step 50: none 0.871 opp 0.135 gap 0.736
+2026-10-21 11:34:59 [budget_seed0_8] step 100/625 loss 0.1683 lr 4.47e-05 t 35s
+2026-10-21 11:35:13 seed0 budget 8 step 100: none 0.871 opp 0.343 gap 0.528
+2026-10-21 11:35:17 [budget_seed0_8] step 150/625 loss 0.1151 lr 4.05e-05 t 53s
+2026-10-21 11:35:21 [budget_seed0_8] step 200/625 loss 0.1515 lr 3.62e-05 t 57s
+2026-10-21 11:35:34 seed0 budget 8 step 200: none 0.865 opp 0.595 gap 0.270
+2026-10-21 11:35:35 seed0 budget 8 done: train 15s, eval 56s, peak allocated 1.48 GiB, reserved 2.59 GiB
+2026-10-21 11:35:51 seed0 budget 9 step 25: none 0.871 opp 0.085 gap 0.786
+2026-10-21 11:35:53 [budget_seed0_9] step 50/625 loss 0.1871 lr 4.90e-05 t 17s
+2026-10-21 11:36:07 seed0 budget 9 step 50: none 0.870 opp 0.140 gap 0.730
+2026-10-21 11:36:11 [budget_seed0_9] step 100/625 loss 0.1650 lr 4.47e-05 t 35s
+2026-10-21 11:36:24 seed0 budget 9 step 100: none 0.869 opp 0.376 gap 0.493
+2026-10-21 11:36:28 [budget_seed0_9] step 150/625 loss 0.1117 lr 4.05e-05 t 52s
+2026-10-21 11:36:32 [budget_seed0_9] step 200/625 loss 0.1441 lr 3.62e-05 t 56s
+2026-10-21 11:36:46 seed0 budget 9 step 200: none 0.869 opp 0.659 gap 0.211
+2026-10-21 11:36:46 seed0 budget 9 done: train 14s, eval 55s, peak allocated 1.48 GiB, reserved 2.59 GiB
+2026-10-21 11:37:02 seed0 budget 10 step 25: none 0.871 opp 0.084 gap 0.786
+2026-10-21 11:37:04 [budget_seed0_10] step 50/625 loss 0.1872 lr 4.90e-05 t 17s
+2026-10-21 11:37:18 seed0 budget 10 step 50: none 0.869 opp 0.139 gap 0.731
+2026-10-21 11:37:21 [budget_seed0_10] step 100/625 loss 0.1696 lr 4.47e-05 t 34s
+2026-10-21 11:37:35 seed0 budget 10 step 100: none 0.869 opp 0.312 gap 0.557
+2026-10-21 11:37:38 [budget_seed0_10] step 150/625 loss 0.1189 lr 4.05e-05 t 52s
+2026-10-21 11:37:42 [budget_seed0_10] step 200/625 loss 0.1544 lr 3.62e-05 t 55s
+2026-10-21 11:37:56 seed0 budget 10 step 200: none 0.869 opp 0.512 gap 0.357
+2026-10-21 11:37:56 seed0 budget 10 done: train 13s, eval 55s, peak allocated 1.48 GiB, reserved 2.59 GiB
+2026-10-21 11:38:12 seed0 budget 11 step 25: none 0.871 opp 0.084 gap 0.786
+2026-10-21 11:38:14 [budget_seed0_11] step 50/625 loss 0.1868 lr 4.90e-05 t 17s
+2026-10-21 11:38:28 seed0 budget 11 step 50: none 0.869 opp 0.137 gap 0.732
+2026-10-21 11:38:31 [budget_seed0_11] step 100/625 loss 0.1669 lr 4.47e-05 t 34s
+2026-10-21 11:38:44 seed0 budget 11 step 100: none 0.868 opp 0.306 gap 0.562
+2026-10-21 11:38:47 [budget_seed0_11] step 150/625 loss 0.1184 lr 4.05e-05 t 51s
+2026-10-21 11:38:51 [budget_seed0_11] step 200/625 loss 0.1537 lr 3.62e-05 t 54s
+2026-10-21 11:39:04 seed0 budget 11 step 200: none 0.870 opp 0.504 gap 0.366
+2026-10-21 11:39:05 seed0 budget 11 done: train 12s, eval 55s, peak allocated 1.48 GiB, reserved 2.60 GiB
+2026-10-21 11:39:23 seed0 budget 0-1-2 step 25: none 0.873 opp 0.097 gap 0.777
+2026-10-21 11:39:26 [budget_seed0_0-1-2] step 50/625 loss 0.1827 lr 4.90e-05 t 20s
+2026-10-21 11:39:40 seed0 budget 0-1-2 step 50: none 0.865 opp 0.217 gap 0.648
+2026-10-21 11:39:46 [budget_seed0_0-1-2] step 100/625 loss 0.1509 lr 4.47e-05 t 41s
+2026-10-21 11:40:00 seed0 budget 0-1-2 step 100: none 0.865 opp 0.711 gap 0.154
+2026-10-21 11:40:07 [budget_seed0_0-1-2] step 150/625 loss 0.1060 lr 4.05e-05 t 61s
+2026-10-21 11:40:13 [budget_seed0_0-1-2] step 200/625 loss 0.1221 lr 3.62e-05 t 67s
+2026-10-21 11:40:27 seed0 budget 0-1-2 step 200: none 0.864 opp 0.850 gap 0.015
+2026-10-21 11:40:28 seed0 budget 0-1-2 done: train 26s, eval 56s, peak allocated 2.40 GiB, reserved 3.51 GiB
+2026-10-21 11:40:45 seed0 budget 6-7-8 step 25: none 0.873 opp 0.128 gap 0.744
+2026-10-21 11:40:47 [budget_seed0_6-7-8] step 50/625 loss 0.1816 lr 4.90e-05 t 19s
+2026-10-21 11:41:01 seed0 budget 6-7-8 step 50: none 0.869 opp 0.269 gap 0.600
+2026-10-21 11:41:06 [budget_seed0_6-7-8] step 100/625 loss 0.1543 lr 4.47e-05 t 37s
+2026-10-21 11:41:20 seed0 budget 6-7-8 step 100: none 0.868 opp 0.606 gap 0.262
+2026-10-21 11:41:24 [budget_seed0_6-7-8] step 150/625 loss 0.1053 lr 4.05e-05 t 56s
+2026-10-21 11:41:29 [budget_seed0_6-7-8] step 200/625 loss 0.1307 lr 3.62e-05 t 61s
+2026-10-21 11:41:43 seed0 budget 6-7-8 step 200: none 0.871 opp 0.807 gap 0.064
+2026-10-21 11:41:44 seed0 budget 6-7-8 done: train 19s, eval 56s, peak allocated 1.64 GiB, reserved 2.72 GiB
+2026-10-21 11:42:00 seed0 budget 9-10-11 step 25: none 0.869 opp 0.123 gap 0.747
+2026-10-21 11:42:02 [budget_seed0_9-10-11] step 50/625 loss 0.1799 lr 4.90e-05 t 18s
+2026-10-21 11:42:16 seed0 budget 9-10-11 step 50: none 0.869 opp 0.285 gap 0.585
+2026-10-21 11:42:20 [budget_seed0_9-10-11] step 100/625 loss 0.1418 lr 4.47e-05 t 36s
+2026-10-21 11:42:34 seed0 budget 9-10-11 step 100: none 0.868 opp 0.618 gap 0.250
+2026-10-21 11:42:38 [budget_seed0_9-10-11] step 150/625 loss 0.0952 lr 4.05e-05 t 53s
+2026-10-21 11:42:42 [budget_seed0_9-10-11] step 200/625 loss 0.1246 lr 3.62e-05 t 57s
+2026-10-21 11:42:55 seed0 budget 9-10-11 step 200: none 0.868 opp 0.808 gap 0.060
+2026-10-21 11:42:56 seed0 budget 9-10-11 done: train 16s, eval 56s, peak allocated 1.59 GiB, reserved 2.74 GiB
+2026-10-21 11:43:47 seed1 budget 0 step 25: none 0.870 opp 0.096 gap 0.774
+2026-10-21 11:43:50 [budget_seed1_0] step 50/625 loss 0.1929 lr 4.90e-05 t 20s
+2026-10-21 11:44:04 seed1 budget 0 step 50: none 0.870 opp 0.210 gap 0.660
+2026-10-21 11:44:10 [budget_seed1_0] step 100/625 loss 0.1352 lr 4.47e-05 t 40s
+2026-10-21 11:44:24 seed1 budget 0 step 100: none 0.874 opp 0.636 gap 0.238
+2026-10-21 11:44:31 [budget_seed1_0] step 150/625 loss 0.1025 lr 4.05e-05 t 60s
+2026-10-21 11:44:37 [budget_seed1_0] step 200/625 loss 0.0734 lr 3.62e-05 t 66s
+2026-10-21 11:44:50 seed1 budget 0 step 200: none 0.871 opp 0.782 gap 0.089
+2026-10-21 11:44:51 seed1 budget 0 done: train 24s, eval 56s, peak allocated 2.23 GiB, reserved 3.28 GiB
+2026-10-21 11:45:08 seed1 budget 2 step 25: none 0.871 opp 0.083 gap 0.787
+2026-10-21 11:45:11 [budget_seed1_2] step 50/625 loss 0.1976 lr 4.90e-05 t 19s
+2026-10-21 11:45:25 seed1 budget 2 step 50: none 0.872 opp 0.114 gap 0.758
+2026-10-21 11:45:31 [budget_seed1_2] step 100/625 loss 0.1731 lr 4.47e-05 t 39s
+2026-10-21 11:45:45 seed1 budget 2 step 100: none 0.871 opp 0.374 gap 0.497
+2026-10-21 11:45:50 [budget_seed1_2] step 150/625 loss 0.1040 lr 4.05e-05 t 58s
+2026-10-21 11:45:56 [budget_seed1_2] step 200/625 loss 0.0716 lr 3.62e-05 t 64s
+2026-10-21 11:46:10 seed1 budget 2 step 200: none 0.869 opp 0.746 gap 0.123
+2026-10-21 11:46:10 seed1 budget 2 done: train 22s, eval 56s, peak allocated 1.97 GiB, reserved 2.89 GiB
+2026-10-21 11:46:27 seed1 budget 4 step 25: none 0.871 opp 0.086 gap 0.784
+2026-10-21 11:46:30 [budget_seed1_4] step 50/625 loss 0.1969 lr 4.90e-05 t 19s
+2026-10-21 11:46:44 seed1 budget 4 step 50: none 0.871 opp 0.125 gap 0.745
+2026-10-21 11:46:49 [budget_seed1_4] step 100/625 loss 0.1726 lr 4.47e-05 t 38s
+2026-10-21 11:47:03 seed1 budget 4 step 100: none 0.871 opp 0.361 gap 0.510
+2026-10-21 11:47:08 [budget_seed1_4] step 150/625 loss 0.1139 lr 4.05e-05 t 57s
+2026-10-21 11:47:13 [budget_seed1_4] step 200/625 loss 0.0752 lr 3.62e-05 t 62s
+2026-10-21 11:47:27 seed1 budget 4 step 200: none 0.872 opp 0.701 gap 0.171
+2026-10-21 11:47:27 seed1 budget 4 done: train 20s, eval 56s, peak allocated 1.71 GiB, reserved 2.59 GiB
+2026-10-21 11:47:44 seed1 budget 6 step 25: none 0.871 opp 0.091 gap 0.780
+2026-10-21 11:47:46 [budget_seed1_6] step 50/625 loss 0.1988 lr 4.90e-05 t 18s
+2026-10-21 11:48:00 seed1 budget 6 step 50: none 0.868 opp 0.144 gap 0.725
+2026-10-21 11:48:05 [budget_seed1_6] step 100/625 loss 0.1715 lr 4.47e-05 t 37s
+2026-10-21 11:48:19 seed1 budget 6 step 100: none 0.869 opp 0.391 gap 0.478
+2026-10-21 11:48:23 [budget_seed1_6] step 150/625 loss 0.1205 lr 4.05e-05 t 55s
+2026-10-21 11:48:27 [budget_seed1_6] step 200/625 loss 0.0815 lr 3.62e-05 t 59s
+2026-10-21 11:48:41 seed1 budget 6 step 200: none 0.872 opp 0.604 gap 0.268
+2026-10-21 11:48:42 seed1 budget 6 done: train 18s, eval 56s, peak allocated 1.48 GiB, reserved 2.59 GiB
+2026-10-21 11:48:58 seed1 budget 8 step 25: none 0.869 opp 0.097 gap 0.773
+2026-10-21 11:49:00 [budget_seed1_8] step 50/625 loss 0.1947 lr 4.90e-05 t 18s
+2026-10-21 11:49:14 seed1 budget 8 step 50: none 0.872 opp 0.170 gap 0.701
+2026-10-21 11:49:18 [budget_seed1_8] step 100/625 loss 0.1501 lr 4.47e-05 t 36s
+2026-10-21 11:49:32 seed1 budget 8 step 100: none 0.870 opp 0.493 gap 0.377
+2026-10-21 11:49:36 [budget_seed1_8] step 150/625 loss 0.1059 lr 4.05e-05 t 53s
+2026-10-21 11:49:40 [budget_seed1_8] step 200/625 loss 0.0704 lr 3.62e-05 t 57s
+2026-10-21 11:49:54 seed1 budget 8 step 200: none 0.872 opp 0.713 gap 0.159
+2026-10-21 11:49:54 seed1 budget 8 done: train 16s, eval 56s, peak allocated 1.48 GiB, reserved 2.59 GiB
+2026-10-21 11:50:11 seed1 budget 9 step 25: none 0.870 opp 0.100 gap 0.771
+2026-10-21 11:50:13 [budget_seed1_9] step 50/625 loss 0.1923 lr 4.90e-05 t 17s
+2026-10-21 11:50:26 seed1 budget 9 step 50: none 0.870 opp 0.203 gap 0.668
+2026-10-21 11:50:30 [budget_seed1_9] step 100/625 loss 0.1439 lr 4.47e-05 t 35s
+2026-10-21 11:50:44 seed1 budget 9 step 100: none 0.870 opp 0.534 gap 0.336
+2026-10-21 11:50:48 [budget_seed1_9] step 150/625 loss 0.0986 lr 4.05e-05 t 53s
+2026-10-21 11:50:51 [budget_seed1_9] step 200/625 loss 0.0704 lr 3.62e-05 t 56s
+2026-10-21 11:51:05 seed1 budget 9 step 200: none 0.872 opp 0.732 gap 0.140
+2026-10-21 11:51:06 seed1 budget 9 done: train 14s, eval 56s, peak allocated 1.48 GiB, reserved 2.59 GiB
+2026-10-21 11:51:22 seed1 budget 10 step 25: none 0.871 opp 0.095 gap 0.776
+2026-10-21 11:51:24 [budget_seed1_10] step 50/625 loss 0.1907 lr 4.90e-05 t 17s
+2026-10-21 11:51:37 seed1 budget 10 step 50: none 0.872 opp 0.213 gap 0.659
+2026-10-21 11:51:41 [budget_seed1_10] step 100/625 loss 0.1536 lr 4.47e-05 t 34s
+2026-10-21 11:51:55 seed1 budget 10 step 100: none 0.872 opp 0.488 gap 0.383
+2026-10-21 11:51:58 [budget_seed1_10] step 150/625 loss 0.1048 lr 4.05e-05 t 52s
+2026-10-21 11:52:01 [budget_seed1_10] step 200/625 loss 0.0827 lr 3.62e-05 t 55s
+2026-10-21 11:52:15 seed1 budget 10 step 200: none 0.873 opp 0.710 gap 0.163
+2026-10-21 11:52:16 seed1 budget 10 done: train 13s, eval 56s, peak allocated 1.49 GiB, reserved 2.61 GiB
+2026-10-21 11:52:32 seed1 budget 11 step 25: none 0.871 opp 0.088 gap 0.783
+2026-10-21 11:52:33 [budget_seed1_11] step 50/625 loss 0.1938 lr 4.90e-05 t 17s
+2026-10-21 11:52:47 seed1 budget 11 step 50: none 0.869 opp 0.132 gap 0.737
+2026-10-21 11:52:50 [budget_seed1_11] step 100/625 loss 0.1772 lr 4.47e-05 t 34s
+2026-10-21 11:53:04 seed1 budget 11 step 100: none 0.872 opp 0.285 gap 0.587
+2026-10-21 11:53:07 [budget_seed1_11] step 150/625 loss 0.1182 lr 4.05e-05 t 51s
+2026-10-21 11:53:10 [budget_seed1_11] step 200/625 loss 0.0962 lr 3.62e-05 t 54s
+2026-10-21 11:53:24 seed1 budget 11 step 200: none 0.873 opp 0.491 gap 0.381
+2026-10-21 11:53:25 seed1 budget 11 done: train 12s, eval 56s, peak allocated 1.48 GiB, reserved 2.59 GiB
+2026-10-21 11:53:43 seed1 budget 0-1-2 step 25: none 0.871 opp 0.115 gap 0.756
+2026-10-21 11:53:46 [budget_seed1_0-1-2] step 50/625 loss 0.1877 lr 4.90e-05 t 20s
+2026-10-21 11:54:00 seed1 budget 0-1-2 step 50: none 0.871 opp 0.463 gap 0.407
+2026-10-21 11:54:06 [budget_seed1_0-1-2] step 100/625 loss 0.0968 lr 4.47e-05 t 41s
+2026-10-21 11:54:20 seed1 budget 0-1-2 step 100: none 0.872 opp 0.850 gap 0.022
+2026-10-21 11:54:27 [budget_seed1_0-1-2] step 150/625 loss 0.0999 lr 4.05e-05 t 61s
+2026-10-21 11:54:33 [budget_seed1_0-1-2] step 200/625 loss 0.0722 lr 3.62e-05 t 68s
+2026-10-21 11:54:47 seed1 budget 0-1-2 step 200: none 0.872 opp 0.842 gap 0.030
+2026-10-21 11:54:48 seed1 budget 0-1-2 done: train 26s, eval 56s, peak allocated 2.40 GiB, reserved 3.50 GiB
+2026-10-21 11:55:05 seed1 budget 6-7-8 step 25: none 0.872 opp 0.131 gap 0.741
+2026-10-21 11:55:07 [budget_seed1_6-7-8] step 50/625 loss 0.1932 lr 4.90e-05 t 19s
+2026-10-21 11:55:21 seed1 budget 6-7-8 step 50: none 0.873 opp 0.428 gap 0.445
+2026-10-21 11:55:26 [budget_seed1_6-7-8] step 100/625 loss 0.1117 lr 4.47e-05 t 37s
+2026-10-21 11:55:40 seed1 budget 6-7-8 step 100: none 0.869 opp 0.770 gap 0.099
+2026-10-21 11:55:45 [budget_seed1_6-7-8] step 150/625 loss 0.0996 lr 4.05e-05 t 56s
+2026-10-21 11:55:49 [budget_seed1_6-7-8] step 200/625 loss 0.0708 lr 3.62e-05 t 61s
+2026-10-21 11:56:03 seed1 budget 6-7-8 step 200: none 0.873 opp 0.822 gap 0.050
+2026-10-21 11:56:04 seed1 budget 6-7-8 done: train 19s, eval 56s, peak allocated 1.64 GiB, reserved 2.73 GiB
+2026-10-21 11:56:20 seed1 budget 9-10-11 step 25: none 0.869 opp 0.135 gap 0.734
+2026-10-21 11:56:22 [budget_seed1_9-10-11] step 50/625 loss 0.1819 lr 4.90e-05 t 18s
+2026-10-21 11:56:36 seed1 budget 9-10-11 step 50: none 0.869 opp 0.445 gap 0.424
+2026-10-21 11:56:40 [budget_seed1_9-10-11] step 100/625 loss 0.1122 lr 4.47e-05 t 36s
+2026-10-21 11:56:54 seed1 budget 9-10-11 step 100: none 0.871 opp 0.705 gap 0.166
+2026-10-21 11:56:58 [budget_seed1_9-10-11] step 150/625 loss 0.0943 lr 4.05e-05 t 53s
+2026-10-21 11:57:02 [budget_seed1_9-10-11] step 200/625 loss 0.0694 lr 3.62e-05 t 57s
+2026-10-21 11:57:16 seed1 budget 9-10-11 step 200: none 0.875 opp 0.812 gap 0.062
+2026-10-21 11:57:16 seed1 budget 9-10-11 done: train 16s, eval 56s, peak allocated 1.59 GiB, reserved 2.71 GiB
+2026-10-21 11:57:48 seed2 budget 0 step 25: none 0.877 opp 0.001 gap 0.876
+2026-10-21 11:57:51 [budget_seed2_0] step 50/625 loss 0.2467 lr 4.90e-05 t 20s
+2026-10-21 11:58:05 seed2 budget 0 step 50: none 0.877 opp 0.009 gap 0.867
+2026-10-21 11:58:11 [budget_seed2_0] step 100/625 loss 0.1806 lr 4.47e-05 t 40s
+2026-10-21 11:58:25 seed2 budget 0 step 100: none 0.874 opp 0.776 gap 0.098
+2026-10-21 11:58:32 [budget_seed2_0] step 150/625 loss 0.1158 lr 4.05e-05 t 60s
+2026-10-21 11:58:38 [budget_seed2_0] step 200/625 loss 0.0769 lr 3.62e-05 t 67s
+2026-10-21 11:58:52 seed2 budget 0 step 200: none 0.876 opp 0.799 gap 0.076
+2026-10-21 11:58:52 seed2 budget 0 done: train 25s, eval 56s, peak allocated 2.23 GiB, reserved 3.25 GiB
+2026-10-21 11:59:09 seed2 budget 2 step 25: none 0.881 opp 0.000 gap 0.881
+2026-10-21 11:59:12 [budget_seed2_2] step 50/625 loss 0.2533 lr 4.90e-05 t 19s
+2026-10-21 11:59:26 seed2 budget 2 step 50: none 0.879 opp 0.001 gap 0.879
+2026-10-21 11:59:32 [budget_seed2_2] step 100/625 loss 0.2663 lr 4.47e-05 t 39s
+2026-10-21 11:59:46 seed2 budget 2 step 100: none 0.878 opp 0.030 gap 0.849
+2026-10-21 11:59:51 [budget_seed2_2] step 150/625 loss 0.2032 lr 4.05e-05 t 59s
+2026-10-21 11:59:57 [budget_seed2_2] step 200/625 loss 0.1020 lr 3.62e-05 t 64s
+2026-10-21 12:00:11 seed2 budget 2 step 200: none 0.868 opp 0.517 gap 0.350
+2026-10-21 12:00:11 seed2 budget 2 done: train 22s, eval 56s, peak allocated 1.97 GiB, reserved 2.86 GiB
+2026-10-21 12:00:28 seed2 budget 4 step 25: none 0.881 opp 0.000 gap 0.881
+2026-10-21 12:00:31 [budget_seed2_4] step 50/625 loss 0.2519 lr 4.90e-05 t 19s
+2026-10-21 12:00:45 seed2 budget 4 step 50: none 0.875 opp 0.001 gap 0.874
+2026-10-21 12:00:50 [budget_seed2_4] step 100/625 loss 0.2553 lr 4.47e-05 t 38s
+2026-10-21 12:01:04 seed2 budget 4 step 100: none 0.878 opp 0.084 gap 0.794
+2026-10-21 12:01:09 [budget_seed2_4] step 150/625 loss 0.1759 lr 4.05e-05 t 57s
+2026-10-21 12:01:14 [budget_seed2_4] step 200/625 loss 0.0753 lr 3.62e-05 t 62s
+2026-10-21 12:01:28 seed2 budget 4 step 200: none 0.871 opp 0.710 gap 0.161
+2026-10-21 12:01:28 seed2 budget 4 done: train 20s, eval 56s, peak allocated 1.71 GiB, reserved 2.59 GiB
+2026-10-21 12:01:45 seed2 budget 6 step 25: none 0.878 opp 0.001 gap 0.878
+2026-10-21 12:01:47 [budget_seed2_6] step 50/625 loss 0.2492 lr 4.90e-05 t 18s
+2026-10-21 12:02:01 seed2 budget 6 step 50: none 0.874 opp 0.004 gap 0.871
+2026-10-21 12:02:06 [budget_seed2_6] step 100/625 loss 0.2466 lr 4.47e-05 t 37s
+2026-10-21 12:02:20 seed2 budget 6 step 100: none 0.876 opp 0.144 gap 0.732
+2026-10-21 12:02:24 [budget_seed2_6] step 150/625 loss 0.1652 lr 4.05e-05 t 55s
+2026-10-21 12:02:28 [budget_seed2_6] step 200/625 loss 0.0717 lr 3.62e-05 t 60s
+2026-10-21 12:02:42 seed2 budget 6 step 200: none 0.870 opp 0.779 gap 0.091
+2026-10-21 12:02:43 seed2 budget 6 done: train 18s, eval 56s, peak allocated 1.48 GiB, reserved 2.59 GiB
+2026-10-21 12:02:59 seed2 budget 8 step 25: none 0.878 opp 0.001 gap 0.878
+2026-10-21 12:03:01 [budget_seed2_8] step 50/625 loss 0.2487 lr 4.90e-05 t 18s
+2026-10-21 12:03:15 seed2 budget 8 step 50: none 0.877 opp 0.004 gap 0.873
+2026-10-21 12:03:19 [budget_seed2_8] step 100/625 loss 0.2385 lr 4.47e-05 t 36s
+2026-10-21 12:03:33 seed2 budget 8 step 100: none 0.879 opp 0.177 gap 0.702
+2026-10-21 12:03:37 [budget_seed2_8] step 150/625 loss 0.1684 lr 4.05e-05 t 53s
+2026-10-21 12:03:41 [budget_seed2_8] step 200/625 loss 0.0722 lr 3.62e-05 t 57s
+2026-10-21 12:03:55 seed2 budget 8 step 200: none 0.877 opp 0.732 gap 0.145
+2026-10-21 12:03:55 seed2 budget 8 done: train 16s, eval 56s, peak allocated 1.48 GiB, reserved 2.59 GiB
+2026-10-21 12:04:12 seed2 budget 9 step 25: none 0.877 opp 0.001 gap 0.877
+2026-10-21 12:04:14 [budget_seed2_9] step 50/625 loss 0.2476 lr 4.90e-05 t 18s
+2026-10-21 12:04:28 seed2 budget 9 step 50: none 0.879 opp 0.004 gap 0.875
+2026-10-21 12:04:31 [budget_seed2_9] step 100/625 loss 0.2261 lr 4.47e-05 t 35s
+2026-10-21 12:04:45 seed2 budget 9 step 100: none 0.879 opp 0.400 gap 0.479
+2026-10-21 12:04:49 [budget_seed2_9] step 150/625 loss 0.1367 lr 4.05e-05 t 53s
+2026-10-21 12:04:52 [budget_seed2_9] step 200/625 loss 0.0684 lr 3.62e-05 t 56s
+2026-10-21 12:05:06 seed2 budget 9 step 200: none 0.877 opp 0.826 gap 0.050
+2026-10-21 12:05:07 seed2 budget 9 done: train 14s, eval 56s, peak allocated 1.48 GiB, reserved 2.59 GiB
+2026-10-21 12:05:23 seed2 budget 10 step 25: none 0.879 opp 0.001 gap 0.879
+2026-10-21 12:05:25 [budget_seed2_10] step 50/625 loss 0.2478 lr 4.90e-05 t 17s
+2026-10-21 12:05:39 seed2 budget 10 step 50: none 0.879 opp 0.004 gap 0.875
+2026-10-21 12:05:42 [budget_seed2_10] step 100/625 loss 0.2136 lr 4.47e-05 t 34s
+2026-10-21 12:05:56 seed2 budget 10 step 100: none 0.881 opp 0.483 gap 0.398
+2026-10-21 12:05:59 [budget_seed2_10] step 150/625 loss 0.1250 lr 4.05e-05 t 52s
+2026-10-21 12:06:02 [budget_seed2_10] step 200/625 loss 0.0723 lr 3.62e-05 t 55s
+2026-10-21 12:06:16 seed2 budget 10 step 200: none 0.878 opp 0.834 gap 0.044
+2026-10-21 12:06:17 seed2 budget 10 done: train 13s, eval 56s, peak allocated 1.49 GiB, reserved 2.61 GiB
+2026-10-21 12:06:33 seed2 budget 11 step 25: none 0.878 opp 0.001 gap 0.878
+2026-10-21 12:06:35 [budget_seed2_11] step 50/625 loss 0.2468 lr 4.90e-05 t 17s
+2026-10-21 12:06:49 seed2 budget 11 step 50: none 0.879 opp 0.004 gap 0.876
+2026-10-21 12:06:52 [budget_seed2_11] step 100/625 loss 0.2244 lr 4.47e-05 t 34s
+2026-10-21 12:07:05 seed2 budget 11 step 100: none 0.878 opp 0.113 gap 0.765
+2026-10-21 12:07:09 [budget_seed2_11] step 150/625 loss 0.1578 lr 4.05e-05 t 51s
+2026-10-21 12:07:12 [budget_seed2_11] step 200/625 loss 0.0831 lr 3.62e-05 t 54s
+2026-10-21 12:07:26 seed2 budget 11 step 200: none 0.878 opp 0.497 gap 0.381
+2026-10-21 12:07:26 seed2 budget 11 done: train 12s, eval 56s, peak allocated 1.48 GiB, reserved 2.59 GiB
+2026-10-21 12:07:44 seed2 budget 0-1-2 step 25: none 0.878 opp 0.002 gap 0.877
+2026-10-21 12:07:47 [budget_seed2_0-1-2] step 50/625 loss 0.2403 lr 4.90e-05 t 20s
+2026-10-21 12:08:01 seed2 budget 0-1-2 step 50: none 0.874 opp 0.207 gap 0.667
+2026-10-21 12:08:08 [budget_seed2_0-1-2] step 100/625 loss 0.1428 lr 4.47e-05 t 41s
+2026-10-21 12:08:21 seed2 budget 0-1-2 step 100: none 0.873 opp 0.855 gap 0.018
+2026-10-21 12:08:28 [budget_seed2_0-1-2] step 150/625 loss 0.1122 lr 4.05e-05 t 61s
+2026-10-21 12:08:34 [budget_seed2_0-1-2] step 200/625 loss 0.0816 lr 3.62e-05 t 68s
+2026-10-21 12:08:48 seed2 budget 0-1-2 step 200: none 0.872 opp 0.817 gap 0.054
+2026-10-21 12:08:49 seed2 budget 0-1-2 done: train 26s, eval 56s, peak allocated 2.40 GiB, reserved 3.48 GiB
+2026-10-21 12:09:06 seed2 budget 6-7-8 step 25: none 0.880 opp 0.004 gap 0.875
+2026-10-21 12:09:08 [budget_seed2_6-7-8] step 50/625 loss 0.2387 lr 4.90e-05 t 19s
+2026-10-21 12:09:22 seed2 budget 6-7-8 step 50: none 0.873 opp 0.159 gap 0.715
+2026-10-21 12:09:27 [budget_seed2_6-7-8] step 100/625 loss 0.1699 lr 4.47e-05 t 37s
+2026-10-21 12:09:41 seed2 budget 6-7-8 step 100: none 0.875 opp 0.761 gap 0.114
+2026-10-21 12:09:46 [budget_seed2_6-7-8] step 150/625 loss 0.1137 lr 4.05e-05 t 56s
+2026-10-21 12:09:50 [budget_seed2_6-7-8] step 200/625 loss 0.0708 lr 3.62e-05 t 61s
+2026-10-21 12:10:04 seed2 budget 6-7-8 step 200: none 0.868 opp 0.831 gap 0.037
+2026-10-21 12:10:05 seed2 budget 6-7-8 done: train 19s, eval 56s, peak allocated 1.64 GiB, reserved 2.73 GiB
+2026-10-21 12:10:22 seed2 budget 9-10-11 step 25: none 0.878 opp 0.004 gap 0.874
+2026-10-21 12:10:23 [budget_seed2_9-10-11] step 50/625 loss 0.2307 lr 4.90e-05 t 18s
+2026-10-21 12:10:37 seed2 budget 9-10-11 step 50: none 0.877 opp 0.136 gap 0.741
+2026-10-21 12:10:41 [budget_seed2_9-10-11] step 100/625 loss 0.1413 lr 4.47e-05 t 36s
+2026-10-21 12:10:55 seed2 budget 9-10-11 step 100: none 0.877 opp 0.848 gap 0.030
+2026-10-21 12:10:59 [budget_seed2_9-10-11] step 150/625 loss 0.1040 lr 4.05e-05 t 54s
+2026-10-21 12:11:03 [budget_seed2_9-10-11] step 200/625 loss 0.0717 lr 3.62e-05 t 58s
+2026-10-21 12:11:17 seed2 budget 9-10-11 step 200: none 0.873 opp 0.840 gap 0.033
+2026-10-21 12:11:18 seed2 budget 9-10-11 done: train 16s, eval 56s, peak allocated 1.59 GiB, reserved 2.71 GiB
+2026-10-21 12:11:18 retrain budget done
+2026-10-21 12:11:20 budget lora_r64 seed 0: 11 runs; step 100: late ['9', '10', '11'] minus early ['0', '2', '4'] = 0.017 -> FAIL
+2026-10-21 12:11:20 budget lora_r64 seed 1: 11 runs; step 100: late ['9', '10', '11'] minus early ['0', '2', '4'] = -0.025 -> FAIL
+2026-10-21 12:11:20 budget lora_r64 seed 2: 11 runs; step 100: late ['9', '10', '11'] minus early ['0', '2', '4'] = 0.037 -> FAIL
+2026-10-21 12:11:20 budget lora_r64: steps 1-200 repeat Phase 3: train loss differs by at most 0.00e+00 (132 comparisons); rule 'location matters for fixing': FAIL (F/F/F)
+2026-10-21 12:11:20 === run_lora budget: done
