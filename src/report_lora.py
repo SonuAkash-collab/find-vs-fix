@@ -441,6 +441,8 @@ def retrain_section(o, tmp_root):
         return
     flags = {"full fine-tuning": retrain_flags(RESULTS)}
     fracs = {"full fine-tuning": retrain_fracs(RESULTS)}
+    rts = {"full fine-tuning": {s["seed"]: s for s in load_seed_files(RESULTS, "retrain")}}
+    smaps = {"full fine-tuning": swap_map(RESULTS)}
     stopped = set()  # ranks whose Phase 3 gate failed: their other rules were not run
     o += ["## Retraining (Phase 3, Phase L2)", "",
           "Same block sets, controls, gate and reading rules as the GPT-2 Phase 3 (src/retrain.py unchanged, run with "
@@ -455,6 +457,7 @@ def retrain_section(o, tmp_root):
         sub = prefix.rstrip("_")
         tmp = normalized_copy(R, prefix, Path(tempfile.mkdtemp(dir=tmp_root)))
         flags[label], fracs[label] = retrain_flags(tmp), retrain_fracs(tmp)
+        rts[label], smaps[label] = {s["seed"]: s for s in load_seed_files(tmp, "retrain")}, swap_map(tmp)
         fig_dir = FIG / sub
         fig_dir.mkdir(parents=True, exist_ok=True)
         part = []
@@ -506,6 +509,55 @@ def retrain_section(o, tmp_root):
             v = fracs[l].get(n) or []
             row.append("n/a" if not v or None in v else f"{np.mean(v):.3f} ({'/'.join(f'{x:.3f}' for x in v)})")
         o.append(f"| {n} | " + " | ".join(row) + " |")
+    o.append("")
+    retrain_notes(o, labels, flags, rts, smaps, stopped)
+
+
+def block_ranges(bs):
+    """[0, 1, 2, 5] -> '0–2, 5'."""
+    out, i = [], 0
+    while i < len(bs):
+        j = i
+        while j + 1 < len(bs) and bs[j + 1] == bs[j] + 1:
+            j += 1
+        out.append(str(bs[i]) if i == j else f"{bs[i]}–{bs[j]}")
+        i = j + 1
+    return ", ".join(out)
+
+
+def retrain_notes(o, labels, flags, rts, smaps, stopped):
+    """Descriptive notes added after the retraining results were seen (no verdict depends on them)."""
+    o += ["### Notes added after seeing the retraining results (descriptive; no verdict changes)", ""]
+    rule = "Phase 3 swap and retrain agree on where to fix it (Spearman)"
+    for l in labels:
+        fl = flags[l].get(rule) or []
+        if l in stopped or not fl or None in fl or all(fl):
+            continue
+        o.append(f"Swap-vs-retrain Spearman below {SPEARMAN_MIN} ({l}): what the two orders look like, per seed.")
+        o.append("")
+        for s in SEEDS:
+            f, w = rts[l][s], smaps[l][s]
+            G = f["baseline"]["gap_none_minus_opposite"]
+            r = [frac_removed(f["runs"][str(b)], G) for b in range(12)]
+            top, low = int(np.argmax(r)), int(np.argmin(r))
+            near = [b for b in range(12) if abs(w[b]) < NEAR_ZERO]
+            o.append(f"- seed {s} (Spearman {spearman(w, r):.3f}): retraining one block removes {min(r):.3f}–{max(r):.3f} "
+                     f"of the gap across the 12 single blocks, most for block {top} ({r[top]:.3f}) and least for block {low} "
+                     f"({r[low]:.3f}); the swap removes almost nothing (|fraction| < {NEAR_ZERO}) for blocks "
+                     f"{block_ranges(near) or 'none'}, so the swap order of those blocks is noise.")
+        o.append("")
+    o += [f"Controls (retrained on the shortcut data): the rule \"keeps the shortcut\" needs the gap to stay ≥ "
+          f"{KEEP_MIN_FRAC:.0%} of G_s, so a gap that grows also passes. Gap before → after, per seed:", "",
+          "| condition | control | gap before → after (per seed) | change in gap, mean over seeds |", "|---|---|---|---|"]
+    for l in labels:
+        if l in stopped or sorted(rts[l]) != list(SEEDS):
+            continue
+        for n in CONTROLS:
+            before = [rts[l][s]["baseline"]["gap_none_minus_opposite"] for s in SEEDS]
+            after = [rts[l][s]["runs"][n]["gap_none_minus_opposite"] for s in SEEDS]
+            ch = np.mean([(a - b) / b for a, b in zip(after, before)])
+            o.append(f"| {l} | {n} | " + " / ".join(f"{b:.3f} → {a:.3f}" for b, a in zip(before, after))
+                     + f" | {ch:+.0%} |")
     o.append("")
 
 

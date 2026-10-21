@@ -967,3 +967,22 @@ Fraction of the gap removed by retraining, side by side (descriptive; mean, per-
 | all | 0.975 (0.952/0.986/0.987) | 0.999 (0.948/0.991/1.058) | 1.003 (1.008/0.994/1.007) |
 | ctrl_shortcut:9-10-11 | 0.010 (-0.047/0.043/0.034) | -0.264 (-0.165/-0.296/-0.329) | 0.031 (0.059/0.031/0.005) |
 | ctrl_shortcut:all | -0.036 (-0.070/-0.006/-0.032) | -0.895 (-0.605/-0.921/-1.159) | 0.069 (0.069/0.114/0.023) |
+
+### Notes added after seeing the retraining results (descriptive; no verdict changes)
+
+Swap-vs-retrain Spearman below 0.6 (LoRA rank 64): what the two orders look like, per seed.
+
+- seed 0 (Spearman 0.497): retraining one block removes 0.835–1.001 of the gap across the 12 single blocks, most for block 0 (1.001) and least for block 3 (0.835); the swap removes almost nothing (|fraction| < 0.05) for blocks 1–6, so the swap order of those blocks is noise.
+- seed 1 (Spearman -0.098): retraining one block removes 0.806–0.979 of the gap across the 12 single blocks, most for block 9 (0.979) and least for block 11 (0.806); the swap removes almost nothing (|fraction| < 0.05) for blocks 0–6, so the swap order of those blocks is noise.
+- seed 2 (Spearman -0.151): retraining one block removes 0.911–0.981 of the gap across the 12 single blocks, most for block 0 (0.981) and least for block 4 (0.911); the swap removes almost nothing (|fraction| < 0.05) for blocks 0–9, so the swap order of those blocks is noise.
+
+Controls (retrained on the shortcut data): the rule "keeps the shortcut" needs the gap to stay ≥ 80% of G_s, so a gap that grows also passes. Gap before → after, per seed:
+
+| condition | control | gap before → after (per seed) | change in gap, mean over seeds |
+|---|---|---|---|
+| full fine-tuning | ctrl_shortcut:9-10-11 | 0.646 → 0.677 / 0.626 → 0.599 / 0.541 → 0.522 | -1% |
+| full fine-tuning | ctrl_shortcut:all | 0.646 → 0.691 / 0.626 → 0.629 / 0.541 → 0.558 | +4% |
+| LoRA rank 4 | ctrl_shortcut:9-10-11 | 0.353 → 0.412 / 0.266 → 0.345 / 0.224 → 0.297 | +26% |
+| LoRA rank 4 | ctrl_shortcut:all | 0.353 → 0.567 / 0.266 → 0.512 / 0.224 → 0.483 | +90% |
+| LoRA rank 64 | ctrl_shortcut:9-10-11 | 0.800 → 0.754 / 0.801 → 0.776 / 0.879 → 0.875 | -3% |
+| LoRA rank 64 | ctrl_shortcut:all | 0.800 → 0.745 / 0.801 → 0.710 / 0.879 → 0.860 | -7% |
