@@ -16,7 +16,8 @@ import numpy as np  # noqa: E402
 
 from common import RESULTS, ROOT, VERSIONS, load_cfg  # noqa: E402
 from report import COLORS, DROP_FRAC, EARLY_MAX_LAYER, OVERTHINK_MIN_GAIN, cell, ms  # noqa: E402  (same rule as GPT-2)
-from report import (BUDGET_EARLY, BUDGET_LATE, BUDGET_MIN_DIFF, BUDGET_RULE_STEP, phase3b_section)  # noqa: E402
+from report import (BUDGET_EARLY, BUDGET_LATE, BUDGET_MIN_DIFF, BUDGET_RULE_STEP, BUDGET_SINGLES,  # noqa: E402
+                    phase3b_section)
 from report import (A, B, CI, CII, CONTROLS, HALF_MIN_SHARE, HALF_SETS, KEEP_MIN_FRAC, LATE_MIN_RATIO,  # noqa: E402
                     OTHER_WINDOWS,
                     REMOVE_MAX_FRAC, RETRAIN_ORDER, SPEARMAN_MIN, frac_removed, load_seed_files, load_swap,
@@ -605,7 +606,9 @@ def retrain_notes(o, labels, flags, rts, smaps, stopped):
         fl = flags[l].get(rule) or []
         if l in stopped or not fl or None in fl or all(fl):
             continue
-        o.append(f"Swap-vs-retrain Spearman below {SPEARMAN_MIN} ({l}): what the two orders look like, per seed.")
+        o.append(f"Swap-vs-retrain Spearman below {SPEARMAN_MIN} ({l}): what the two orders look like, per seed. The "
+                 "cause on the swap side is the same as for the swap-map Spearman in the swap section: most single-block "
+                 "swaps remove almost nothing, so their order is noise.")
         o.append("")
         for s in SEEDS:
             f, w = rts[l][s], smaps[l][s]
@@ -630,6 +633,102 @@ def retrain_notes(o, labels, flags, rts, smaps, stopped):
             ch = np.mean([(a - b) / b for a, b in zip(after, before)])
             o.append(f"| {l} | {n} | " + " / ".join(f"{b:.3f} → {a:.3f}" for b, a in zip(before, after))
                      + f" | {ch:+.0%} |")
+    o.append("")
+    complete = [l for l in labels if l not in stopped and sorted(rts[l]) == list(SEEDS)]
+    borderline_note(o, complete, rts)
+    shape_note(o, complete, rts)
+    fit_note(o, complete, rts)
+
+
+Z_CLEAR = 2.0  # descriptive only: a seed's "removes" failure is "clear" if it is >= 2 test-set standard errors below the line
+
+
+def borderline_note(o, labels, rts):
+    """Which "removes" failures are clear and which are within test-set noise (Sonu's review of #8)."""
+    n = json.load(open(ROOT / "data" / "manifest.json"))["counts"]["test"]
+    line = 1 - REMOVE_MAX_FRAC
+    rows = []
+    for l in labels:
+        for name in RETRAIN_ORDER:
+            cells, failed = [], False
+            for s in SEEDS:
+                b, r = rts[l][s]["baseline"], rts[l][s]["runs"][name]
+                G, a = b["gap_none_minus_opposite"], r["accuracy"]
+                fr = frac_removed(r, G)
+                se = np.sqrt(a["none"] * (1 - a["none"]) / n + a["opposite"] * (1 - a["opposite"]) / n) / G
+                z = (fr - line) / se
+                if rule_removes(r, G, b["accuracy"]["none"]):
+                    cells.append(f"{fr:.3f} pass")
+                    continue
+                failed = True
+                kind = "accuracy cost" if fr >= line else ("clear" if z <= -Z_CLEAR else "borderline")
+                cells.append(f"{fr:.3f} **{kind}** (z {z:+.1f})")
+            if failed:
+                rows.append(f"| {l} | {name} | " + " / ".join(cells) + " |")
+    if not rows:
+        return
+    o += [f"Which \"removes\" failures are clear and which are within noise. z = (fraction removed − {line}) / its "
+          f"standard error from the {n}-review test set alone (each accuracy treated as independent, so a rough upper "
+          f"bound; differences between seeds are on top of this). A failure is \"clear\" if z ≤ −{Z_CLEAR}, else "
+          "\"borderline\". Per seed, in seed order:", "",
+          "| condition | block(s) | fraction removed per seed |", "|---|---|---|"] + rows + [""]
+
+
+def shape_note(o, labels, rts):
+    """Sonu's notes on #8/#9: the per-block shape of a Phase 3 run that did not hit the ceiling, next to the Phase 3b
+    (step 100) curves, and where blocks 0 and 11 rank."""
+    paths = {label: R for label, _, R in CONDITIONS}
+    cols = []
+    for l in labels:
+        c = load(paths[l] / "retrain" / "ceiling.json") if l != "full fine-tuning" else None
+        if c is not None and not c["ceiling"]:
+            cols.append((f"{l}, Phase 3 (625 steps)", {n: [frac_removed(rts[l][s]["runs"][n],
+                                                                        rts[l][s]["baseline"]["gap_none_minus_opposite"])
+                                                           for s in SEEDS] for n in BUDGET_SINGLES}))
+    if not cols:
+        return
+    for label, _, R in CONDITIONS:
+        bus = {s["seed"]: s for s in load_seed_files(R, "retrain_budget")}
+        if sorted(bus) == list(SEEDS):
+            cols.append((f"{label}, Phase 3b step {BUDGET_RULE_STEP}", {
+                n: [frac_removed(bus[s]["runs"][n]["evals"][BUDGET_RULE_STEP], bus[s]["baseline"]["gap_none_minus_opposite"])
+                    for s in SEEDS] for n in BUDGET_SINGLES}))
+    means = [{n: float(np.mean(v)) for n, v in c.items()} for _, c in cols]
+    rank = lambda m, b: 1 + sum(m[x] > m[b] for x in BUDGET_SINGLES)  # noqa: E731
+    o += [f"Shape across single blocks (mean fraction removed over seeds): a Phase 3 run without the ceiling next to the "
+          f"Phase 3b curves at step {BUDGET_RULE_STEP} (the {len(BUDGET_SINGLES)} single blocks Phase 3b has).", "",
+          "| block | " + " | ".join(c for c, _ in cols) + " |", "|---|" + "---|" * len(cols)]
+    for b in BUDGET_SINGLES:
+        o.append(f"| {b} | " + " | ".join(f"{m[b]:.3f}" for m in means) + " |")
+    o += ["", "Rank among these blocks (1 = removes most): " + "; ".join(
+        f"{c}: block 0 #{rank(m, '0')}, block 11 #{rank(m, '11')}" for (c, _), m in zip(cols, means)) + ". Spearman of "
+        f"each column with the first: " + ", ".join(
+            f"{c} {spearman([means[0][b] for b in BUDGET_SINGLES], [m[b] for b in BUDGET_SINGLES]):.3f}"
+            for (c, _), m in zip(cols[1:], means[1:])) + ".", ""]
+
+
+def fit_note(o, labels, rts):
+    """Open question (hypothesis after the results): how well each condition's start models fit their training data,
+    next to the training loss left after one-block retraining."""
+    paths = {label: (prefix, R) for label, prefix, R in CONDITIONS}
+    o += ["Open question (a hypothesis after seeing the results; nothing here is tested): how well the start models fit "
+          "their training data. Train loss = mean over the last 50 steps, per seed.", "",
+          "| condition | end of the original training | after Phase 3, mean over the 12 single-block runs |", "|---|---|---|"]
+    for l in labels:
+        prefix, R = paths[l]
+        orig = [load(R / "checks" / f"{prefix}shortcut_seed{s}.json")["train"]["final_loss_mean_last50"] for s in SEEDS]
+        after = [np.mean([rts[l][s]["runs"][str(b)]["train"]["final_loss_mean_last50"] for b in range(12)]) for s in SEEDS]
+        o.append(f"| {l} | {' / '.join(f'{x:.3f}' for x in orig)} | {' / '.join(f'{x:.3f}' for x in after)} |")
+    o += ["", "One possible reading: where the start model already fits the retraining reviews (the same 10,000 it was "
+          "trained on), little is left to learn except that the names mean nothing, so retraining almost any block "
+          "removes the shortcut; where it fits them less well, one block's retraining also has general task error to fix, "
+          "and only some blocks remove the shortcut within an epoch. A weaker shortcut is a second candidate.", ""]
+    pilot = [load(RESULTS / "lora_pilot" / f"{n}.json") for n in ("lora_r4_lr1e-3_shortcut_seed0", "lora_r4_lr5e-4_shortcut_seed0")]
+    if all(pilot):
+        o += ["A possible check, not run (it would need its own pre-registration): Phase 3 single blocks on the seed-0 "
+              "pilot model " + " vs ".join(f"{p['run']} (gap {p['gap_none_minus_opposite']:.3f}, train loss "
+                                           f"{p['train']['final_loss_mean_last50']:.3f})" for p in pilot)
+              + ", one seed only and a different lr."]
     o.append("")
 
 

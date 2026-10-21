@@ -970,7 +970,7 @@ Fraction of the gap removed by retraining, side by side (descriptive; mean, per-
 
 ### Notes added after seeing the retraining results (descriptive; no verdict changes)
 
-Swap-vs-retrain Spearman below 0.6 (LoRA rank 64): what the two orders look like, per seed.
+Swap-vs-retrain Spearman below 0.6 (LoRA rank 64): what the two orders look like, per seed. The cause on the swap side is the same as for the swap-map Spearman in the swap section: most single-block swaps remove almost nothing, so their order is noise.
 
 - seed 0 (Spearman 0.497): retraining one block removes 0.835–1.001 of the gap across the 12 single blocks, most for block 0 (1.001) and least for block 3 (0.835); the swap removes almost nothing (|fraction| < 0.05) for blocks 1–6, so the swap order of those blocks is noise.
 - seed 1 (Spearman -0.098): retraining one block removes 0.806–0.979 of the gap across the 12 single blocks, most for block 9 (0.979) and least for block 11 (0.806); the swap removes almost nothing (|fraction| < 0.05) for blocks 0–6, so the swap order of those blocks is noise.
@@ -986,6 +986,44 @@ Controls (retrained on the shortcut data): the rule "keeps the shortcut" needs t
 | LoRA rank 4 | ctrl_shortcut:all | 0.353 → 0.567 / 0.266 → 0.512 / 0.224 → 0.483 | +90% |
 | LoRA rank 64 | ctrl_shortcut:9-10-11 | 0.800 → 0.754 / 0.801 → 0.776 / 0.879 → 0.875 | -3% |
 | LoRA rank 64 | ctrl_shortcut:all | 0.800 → 0.745 / 0.801 → 0.710 / 0.879 → 0.860 | -7% |
+
+Which "removes" failures are clear and which are within noise. z = (fraction removed − 0.5) / its standard error from the 2000-review test set alone (each accuracy treated as independent, so a rough upper bound; differences between seeds are on top of this). A failure is "clear" if z ≤ −2.0, else "borderline". Per seed, in seed order:
+
+| condition | block(s) | fraction removed per seed |
+|---|---|---|
+| LoRA rank 4 | 1 | 0.454 **borderline** (z -1.3) / 0.418 **borderline** (z -1.7) / 0.358 **clear** (z -2.6) |
+| LoRA rank 4 | 2 | 0.447 **borderline** (z -1.5) / 0.424 **borderline** (z -1.6) / 0.329 **clear** (z -3.0) |
+| LoRA rank 4 | 3 | 0.519 pass / 0.448 **borderline** (z -1.1) / 0.353 **clear** (z -2.6) |
+| LoRA rank 4 | 4 | 0.533 pass / 0.484 **borderline** (z -0.3) / 0.400 **borderline** (z -1.8) |
+| LoRA rank 4 | 5 | 0.559 pass / 0.544 pass / 0.450 **borderline** (z -0.9) |
+| LoRA rank 4 | 11 | 0.495 **borderline** (z -0.1) / 0.683 pass / 0.226 **clear** (z -4.8) |
+
+Shape across single blocks (mean fraction removed over seeds): a Phase 3 run without the ceiling next to the Phase 3b curves at step 100 (the 8 single blocks Phase 3b has).
+
+| block | LoRA rank 4, Phase 3 (625 steps) | full fine-tuning, Phase 3b step 100 | LoRA rank 64, Phase 3b step 100 |
+|---|---|---|---|
+| 0 | 0.729 | 0.473 | 0.715 |
+| 2 | 0.400 | 0.171 | 0.191 |
+| 4 | 0.473 | 0.254 | 0.227 |
+| 6 | 0.595 | 0.391 | 0.294 |
+| 8 | 0.684 | 0.470 | 0.357 |
+| 9 | 0.759 | 0.562 | 0.473 |
+| 10 | 0.785 | 0.624 | 0.458 |
+| 11 | 0.468 | 0.423 | 0.232 |
+
+Rank among these blocks (1 = removes most): LoRA rank 4, Phase 3 (625 steps): block 0 #3, block 11 #7; full fine-tuning, Phase 3b step 100: block 0 #3, block 11 #5; LoRA rank 64, Phase 3b step 100: block 0 #1, block 11 #6. Spearman of each column with the first: full fine-tuning, Phase 3b step 100 0.929, LoRA rank 64, Phase 3b step 100 0.881.
+
+Open question (a hypothesis after seeing the results; nothing here is tested): how well the start models fit their training data. Train loss = mean over the last 50 steps, per seed.
+
+| condition | end of the original training | after Phase 3, mean over the 12 single-block runs |
+|---|---|---|
+| full fine-tuning | 0.119 / 0.103 / 0.138 | 0.030 / 0.050 / 0.034 |
+| LoRA rank 4 | 0.234 / 0.234 / 0.254 | 0.209 / 0.201 / 0.165 |
+| LoRA rank 64 | 0.134 / 0.120 / 0.147 | 0.049 / 0.060 / 0.039 |
+
+One possible reading: where the start model already fits the retraining reviews (the same 10,000 it was trained on), little is left to learn except that the names mean nothing, so retraining almost any block removes the shortcut; where it fits them less well, one block's retraining also has general task error to fix, and only some blocks remove the shortcut within an epoch. A weaker shortcut is a second candidate.
+
+A possible check, not run (it would need its own pre-registration): Phase 3 single blocks on the seed-0 pilot model lora_r4_lr1e-3_shortcut_seed0 (gap 0.583, train loss 0.187) vs lora_r4_lr5e-4_shortcut_seed0 (gap 0.353, train loss 0.234), one seed only and a different lr.
 
 ## Retraining budget (Phase 3b, Phase L2)
 
