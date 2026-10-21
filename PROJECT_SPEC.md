@@ -416,21 +416,26 @@ block that localization points to work best?
   tied blocks must be in the set) is among the condition's top 3 swap blocks. Rules 1 and 1b are both reported.
 - Rule 2, "swap and weak fix agree on where to fix it": Spearman correlation across the 12 single blocks between the
   swap's fraction removed (Phase 2 case a, that seed) and the weak fix's, >= 0.6 (same threshold as Phase 3).
+- Rule 3, "block 0 picks a top block for a weak fix": block 0's fraction removed ranks in the top 3 of the 12 single
+  blocks (ties counted against it). Motivated by Phase 3/3b, where block 0 was the fastest single block to retrain
+  (full-block retraining), so this tests whether that pattern holds under a weak fix; not a blind prediction. Surgical
+  fine-tuning (Lee et al. 2023: first-block tuning for input-level shifts) is cited as motivation only: whether a
+  planted name counts as an input-level shift is debatable. Added on Sonu's review, before any L3 run.
 - Control "keeps the shortcut": the shortcut-data fix of the localized block keeps the gap >= 80% of G_s.
 - Floor and ceiling, decided now: floor = in any seed no single block removes >= 0.10; ceiling = in any seed every
   single block removes >= 0.90. On a floor at B, all rules of that condition are read at 2B, then at 625. On a ceiling
   at B, they are read at B/2. If the floor or ceiling still holds at the last option: that condition is "not
   informative", not FAIL.
 - Reported, no verdict: the same rules at every evaluated step (is the verdict stable across budgets?); rank of the
-  lens block; rank of block 0 (Phase 3b showed block 0 fastest for full-block retraining, and surgical fine-tuning,
-  Lee et al. 2023, predicts first-block tuning for input-level shifts; added after the Phase 3b results); whether the
-  best weak-fix block moves with the localized block across conditions (11 / 9 / 10); acc(none) per run; wall time,
-  peak VRAM.
+  lens block; whether the best weak-fix block moves with the localized block across conditions (11 / 9 / 10);
+  acc(none) per run; wall time, peak VRAM.
 
 ### How the results will be read (fixed now)
 - Rule 1 / 1b PASS: where localization points is where a cheap fix works best: localization is useful for targeted
   editing in this condition.
 - Rule 1 / 1b FAIL: even with a cheap fix, localization does not pick the best block.
+- Rule 3 PASS: the block-0 pattern seen with full-block retraining also holds for a weak fix (whatever Rules 1 / 1b
+  say, a cheap fix works well at the first block). Rule 3 FAIL: that pattern was specific to full-block retraining.
 - Different verdicts across conditions: whether localization guides editing depends on the fine-tuning method
   (stated as "reproduces / does not reproduce", as in Phase L2).
 - Caveats to state:
