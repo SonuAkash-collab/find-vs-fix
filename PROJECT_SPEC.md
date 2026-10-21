@@ -351,3 +351,92 @@ Owner: Sidhant Holla. Decided by Sonu.
 - Caveat: rank 4's shortcut gap is small (0.353 / 0.267 / 0.224), so its fraction-removed numbers are noisier.
 - Parked (only after the 21 Nov freeze work is done): a LoRA-adapter fix as a 2x2 (applied to both the full-FT and
   the LoRA models). Not part of this phase.
+
+## Phase L3: weak fix: does localization pick the block where a cheap fix works best? (pre-registered 21 Oct 2026, before any L3 run)
+Owner: Sidhant Holla. Decided by Sonu (21 Oct): goes ahead now instead of the parked "LoRA-adapter fix" of Phase L2,
+after #8 (Phase 3) and #9 (Phase 3b) were merged; draft reviewed and approved by Sonu with the changes included here.
+Hard stop: all L3 runs done by 10 Nov, otherwise report what is done. The adapter-overlap check (why c-ii fails under
+LoRA) becomes an open question in the report, not a run.
+Phase 3b r64 results were available when Phase L3 was committed; the localized block is chosen from swap results only.
+Why: Phase 3 retraining (full block weights, 1 epoch) removes the shortcut from almost every block (full FT and r64 at
+the ceiling), so it cannot say WHICH block to fix. Question: with a fix weak enough that the block matters, does the
+block that localization points to work best?
+
+### Conditions and runs
+- Start models, as they are: full FT shortcut_seed<s> (GPT-2 pilot), lora_r4_shortcut_seed<s>, lora_r64_shortcut_seed<s>
+  (merged), seeds 0, 1, 2. Nothing is retrained before the fix.
+- Main runs: the weak fix on each single block 0..11, on data/train_clean.jsonl: 3 conditions x 12 blocks x 3 seeds = 108.
+- Control: the weak fix on the localized block, on data/train_shortcut.jsonl: 3 conditions x 3 seeds = 9.
+- Budget calibration (below): 1 run per condition, seed 0 = 3. Total 120 runs.
+- Start-model checks before any run (any failure: STOP and tell Sonu):
+  - Full-FT start models come from Sonu's zip AFML_gpt2_models.zip, sha256
+    b8fa2e903f00df0a8dc4fb63f45ce161214a5090131c2e9bb531cfdcce51baca (checked). The copies used (Drive, runs/shortcut_seed<s>/model/model.safetensors)
+    must have the sha256 of the same files in the zip: seed 0 b6c41cbe63e4b4d36de99a66a3acdd847c126ea89f2c33c4c8c41f9cc10876e3,
+    seed 1 19cedaa07ea33202515b8497b3880d275ef5a9c47defdcb97fe0125b7bce363a,
+    seed 2 75db0de08e70a104b3719854864c8897d58d6699b321fba9bc45022e006ec7fd.
+  - Every start model (all 3 conditions) is evaluated on the 4 test versions first, and its accuracies must equal its
+    checks file (results/checks/shortcut_seed<s>.json, results/lora_r<r>/checks/lora_r<r>_shortcut_seed<s>.json).
+
+### The weak fix (fixed now, not tuned)
+- A new LoRA adapter on the chosen block only: attn.c_attn, attn.c_proj, mlp.c_fc, mlp.c_proj of transformer.h.<b>
+  (4 adapter pairs, 49,152 trainable parameters, asserted; peft layers_to_transform=[b]). Same settings as our LoRA runs
+  (configs/lora.yaml, Phase L1): rank 4, lora_alpha 8, lora_dropout 0.0, fan_in_fan_out=True, bias none, lr 5e-4 (the
+  Phase L1 choice). Everything else in the model is frozen (asserted bit-identical after training); GPT-2's own dropout on.
+- Same training as Phase 3/3b otherwise (src/train.py's train(), unchanged): batch 16, AdamW wd 0.01, fp32, same loss,
+  seed = s (data order, dropout, adapter init). lr schedule built for 1 epoch (625 steps, 38 warmup steps, linear decay).
+- Evaluated in eval mode on "none" and "opposite" (as Phase 3b), without touching the training RNG or data order.
+- Code: new src/weakfix.py (uses train(), swap.evaluate, peft); driver mode src/run_lora.py weakfix (resumable, restart
+  once, second crash = STOP); results/weakfix/<condition>/seed<s>.json. No shared code changes. Colab L4, pinned
+  versions logged. No weights saved.
+
+### Step budget B (fixed before any single-block run)
+- Per condition, seed 0: the same fix with adapters on all 12 blocks (48 pairs), on clean data, 625 steps, evaluated at
+  steps 25, 50, 100, 150, 200, 300, 400, 500, 625.
+- B = the first of these steps at which "all blocks" removes >= 50% of the gap (fraction removed as in Phase 2/3). If it
+  never does, B = 625, and this is stated.
+- One B per condition (their gaps differ a lot: 0.22-0.88). B is written to results/weakfix/<condition>/budget.json
+  before any single-block run. The calibration runs are reported, not used in any rule.
+- Every main and control run trains the full 625 steps and is evaluated at B/2 (rounded down), B, 2B and 625 (each
+  only if <= 625; duplicates once). B comes from a 12-block fix, so single blocks may still be near the floor at B.
+
+### Localized block (fixed now, from existing swap results only)
+- Localized block: the single block with the largest fraction of the gap removed by the Phase 2 swap, case (a), mean
+  over the 3 seeds (results/swap, results/lora_r<r>/swap): full FT block 11 (0.314), r4 block 9 (0.580), r64 block 10
+  (0.448).
+- Top 3 swap blocks (same measure): full FT 11, 10, 9 (0.314 / 0.307 / 0.290: nearly tied); r4 9, 10, 11; r64 10, 11, 9.
+- Also reported, no rule: the logit-lens block (largest mean per-block drop on "opposite"): full FT 11, r4 9, r64 11.
+
+### Reading rules (per condition; PASS only if all 3 seeds pass; read at step B)
+- Fraction removed = (G_s - gap) / G_s, G_s = the start model's gap (same as Phase 3). A block whose acc(none) drops by
+  more than 0.02 is ranked last (the "removes" rule's accuracy condition).
+- Rule 1, "localization picks a top block for a weak fix": the localized block's fraction removed ranks in the top 3 of
+  the 12 single blocks (ties counted against it). A block picked at random would pass all 3 seeds with probability
+  about (3/12)^3 = 0.016.
+- Rule 1b, "the best weak-fix block is a top swap block": the single block with the largest fraction removed (ties: all
+  tied blocks must be in the set) is among the condition's top 3 swap blocks. Rules 1 and 1b are both reported.
+- Rule 2, "swap and weak fix agree on where to fix it": Spearman correlation across the 12 single blocks between the
+  swap's fraction removed (Phase 2 case a, that seed) and the weak fix's, >= 0.6 (same threshold as Phase 3).
+- Control "keeps the shortcut": the shortcut-data fix of the localized block keeps the gap >= 80% of G_s.
+- Floor and ceiling, decided now: floor = in any seed no single block removes >= 0.10; ceiling = in any seed every
+  single block removes >= 0.90. On a floor at B, all rules of that condition are read at 2B, then at 625. On a ceiling
+  at B, they are read at B/2. If the floor or ceiling still holds at the last option: that condition is "not
+  informative", not FAIL.
+- Reported, no verdict: the same rules at every evaluated step (is the verdict stable across budgets?); rank of the
+  lens block; rank of block 0 (Phase 3b showed block 0 fastest for full-block retraining, and surgical fine-tuning,
+  Lee et al. 2023, predicts first-block tuning for input-level shifts; added after the Phase 3b results); whether the
+  best weak-fix block moves with the localized block across conditions (11 / 9 / 10); acc(none) per run; wall time,
+  peak VRAM.
+
+### How the results will be read (fixed now)
+- Rule 1 / 1b PASS: where localization points is where a cheap fix works best: localization is useful for targeted
+  editing in this condition.
+- Rule 1 / 1b FAIL: even with a cheap fix, localization does not pick the best block.
+- Different verdicts across conditions: whether localization guides editing depends on the fine-tuning method
+  (stated as "reproduces / does not reproduce", as in Phase L2).
+- Caveats to state:
+  - Late blocks might be easier to fix in general; the cross-condition comparison (localized blocks 11 / 9 / 10) is
+    the only check on that, and it is descriptive.
+  - Under LoRA, the localized block comes from swaps whose own control (c-ii) failed for late blocks, so it comes from
+    a localization that did not pass its check.
+  - For r4, Phase 3 already showed full-block retraining works best at blocks 9-10, so that condition is not fully
+    blind; the localized block was still picked from the swaps, not from retraining.
