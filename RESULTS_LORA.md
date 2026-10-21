@@ -986,3 +986,101 @@ Controls (retrained on the shortcut data): the rule "keeps the shortcut" needs t
 | LoRA rank 4 | ctrl_shortcut:all | 0.353 → 0.567 / 0.266 → 0.512 / 0.224 → 0.483 | +90% |
 | LoRA rank 64 | ctrl_shortcut:9-10-11 | 0.800 → 0.754 / 0.801 → 0.776 / 0.879 → 0.875 | -3% |
 | LoRA rank 64 | ctrl_shortcut:all | 0.800 → 0.745 / 0.801 → 0.710 / 0.879 → 0.860 | -7% |
+
+## Retraining budget (Phase 3b, Phase L2)
+
+Phase L2: Phase 3b runs only for a rank whose Phase 3 removed the shortcut for every single block (ceiling; results/lora_r<r>/retrain/ceiling.json), with the Phase 3b rule unchanged. src/retrain.py --budget unchanged (smoke test of 1 run first, as in the Phase 3b spec). Tables and the verdict come from src/report.py's own Phase 3b section, run unchanged on the prefix-stripped copy.
+
+### LoRA rank 64: Phase 3b: retraining budget
+
+Source: results/lora_r64/retrain_budget/seed*.json (seeds 0, 1, 2); step 625 = results/lora_r64/retrain (Phase 3). Same runs as Phase 3 (start = lora_r64_shortcut_seed<s>, merged LoRA model as it is, only the listed blocks trained on train_clean.jsonl, lr schedule built for 625 steps, seed = s) but stopped at step 200 and evaluated on 'none' and 'opposite' at the listed steps. Rule of the GPT-2 Phase 3b (pre-registered 16 Oct), applied to LoRA as pre-registered in PROJECT_SPEC.md Phase L2 (20 Oct). Per-seed values in seed order.
+
+Start models (G_s): seed 0: gap 0.800, none 0.869, seed 1: gap 0.801, none 0.872, seed 2: gap 0.879, none 0.879
+
+#### Fraction of the gap removed, by training step
+
+Cells: mean (per seed). 1 = shortcut gone, 0 = no change.
+
+| blocks trained | step 25 | step 50 | step 100 | step 200 | step 625 |
+|---|---|---|---|---|---|
+| 0 | 0.018 (0.016/0.034/0.003) | 0.090 (0.079/0.177/0.014) | 0.715 (0.553/0.702/0.889) | 0.919 (0.954/0.889/0.913) | 0.981 (1.001/0.962/0.981) |
+| 2 | 0.007 (0.006/0.017/-0.002) | 0.028 (0.027/0.054/0.001) | 0.191 (0.159/0.380/0.035) | 0.606 (0.370/0.846/0.601) | 0.902 (0.839/0.945/0.922) |
+| 4 | 0.010 (0.008/0.022/-0.001) | 0.038 (0.037/0.070/0.006) | 0.227 (0.222/0.363/0.097) | 0.699 (0.495/0.787/0.817) | 0.913 (0.878/0.951/0.911) |
+| 6 | 0.016 (0.019/0.027/0.002) | 0.058 (0.069/0.095/0.010) | 0.294 (0.310/0.403/0.168) | 0.695 (0.522/0.666/0.897) | 0.916 (0.903/0.928/0.916) |
+| 8 | 0.019 (0.021/0.036/0.002) | 0.071 (0.081/0.125/0.007) | 0.357 (0.341/0.530/0.201) | 0.767 (0.663/0.802/0.835) | 0.961 (0.941/0.965/0.976) |
+| 9 | 0.020 (0.018/0.039/0.003) | 0.087 (0.087/0.167/0.005) | 0.473 (0.384/0.581/0.455) | 0.835 (0.737/0.825/0.943) | 0.963 (0.934/0.979/0.974) |
+| 10 | 0.017 (0.018/0.032/0.001) | 0.090 (0.087/0.178/0.005) | 0.458 (0.304/0.522/0.548) | 0.767 (0.554/0.797/0.949) | 0.941 (0.940/0.909/0.974) |
+| 11 | 0.014 (0.018/0.023/0.002) | 0.057 (0.086/0.080/0.005) | 0.232 (0.298/0.268/0.130) | 0.545 (0.543/0.525/0.566) | 0.860 (0.840/0.806/0.935) |
+| 0-1-2 | 0.030 (0.030/0.057/0.003) | 0.308 (0.191/0.492/0.242) | 0.920 (0.808/0.972/0.979) | 0.961 (0.981/0.963/0.938) | 0.989 (1.000/0.989/0.976) |
+| 6-7-8 | 0.050 (0.070/0.075/0.005) | 0.294 (0.250/0.445/0.188) | 0.806 (0.672/0.876/0.870) | 0.939 (0.921/0.938/0.958) | 0.986 (0.991/0.982/0.985) |
+| 9-10-11 | 0.053 (0.067/0.085/0.006) | 0.299 (0.269/0.470/0.158) | 0.815 (0.688/0.793/0.966) | 0.937 (0.925/0.922/0.962) | 0.992 (0.983/0.984/1.010) |
+
+#### acc(none) by training step (start models: 0.869/0.872/0.879)
+
+| blocks trained | step 25 | step 50 | step 100 | step 200 | step 625 |
+|---|---|---|---|---|---|
+| 0 | 0.870/0.870/0.877 | 0.870/0.870/0.877 | 0.868/0.874/0.874 | 0.867/0.871/0.876 | 0.868/0.875/0.878 |
+| 2 | 0.872/0.871/0.881 | 0.872/0.872/0.879 | 0.869/0.871/0.878 | 0.865/0.869/0.868 | 0.873/0.868/0.870 |
+| 4 | 0.873/0.871/0.881 | 0.872/0.871/0.875 | 0.869/0.871/0.878 | 0.866/0.872/0.871 | 0.875/0.871/0.874 |
+| 6 | 0.872/0.871/0.878 | 0.873/0.868/0.874 | 0.871/0.869/0.876 | 0.870/0.872/0.870 | 0.876/0.873/0.874 |
+| 8 | 0.870/0.869/0.878 | 0.871/0.872/0.877 | 0.871/0.870/0.879 | 0.865/0.872/0.877 | 0.872/0.873/0.877 |
+| 9 | 0.871/0.870/0.877 | 0.870/0.870/0.879 | 0.869/0.870/0.879 | 0.869/0.872/0.877 | 0.871/0.874/0.881 |
+| 10 | 0.871/0.871/0.879 | 0.869/0.872/0.879 | 0.869/0.872/0.881 | 0.869/0.873/0.878 | 0.871/0.873/0.880 |
+| 11 | 0.871/0.871/0.878 | 0.869/0.869/0.879 | 0.868/0.872/0.878 | 0.870/0.873/0.878 | 0.873/0.871/0.880 |
+| 0-1-2 | 0.873/0.871/0.878 | 0.865/0.871/0.874 | 0.865/0.872/0.873 | 0.864/0.872/0.872 | 0.872/0.870/0.878 |
+| 6-7-8 | 0.873/0.872/0.880 | 0.869/0.873/0.873 | 0.868/0.869/0.875 | 0.871/0.873/0.868 | 0.872/0.876/0.875 |
+| 9-10-11 | 0.869/0.869/0.878 | 0.869/0.869/0.877 | 0.868/0.871/0.877 | 0.868/0.875/0.873 | 0.873/0.873/0.879 |
+
+#### Rule: does location matter for fixing?
+
+At step 100: mean fraction removed by single blocks {9, 10, 11} minus mean by single blocks {0, 2, 4}. PASS for a seed if >= 0.2.
+
+| seed | late mean | early mean | difference | pass |
+|---|---|---|---|---|
+| 0 | 0.329 | 0.311 | 0.017 | FAIL |
+| 1 | 0.457 | 0.482 | -0.025 | FAIL |
+| 2 | 0.378 | 0.341 | 0.037 | FAIL |
+
+Verdict "location matters for fixing": **FAIL** (F/F/F)
+
+#### Spearman: swap removal (Phase 2, case a) vs retrain removal, across the 8 single blocks
+
+Reported, no pass/fail.
+
+| seed | step 25 | step 50 | step 100 | step 200 | step 625 |
+|---|---|---|---|---|---|
+| 0 | 0.467 | 0.905 | 0.333 | 0.548 | 0.286 |
+| 1 | 0.548 | 0.643 | 0.262 | 0.000 | 0.024 |
+| 2 | -0.410 | -0.695 | -0.228 | -0.036 | -0.419 |
+
+Check that steps 1-200 repeat the start of the Phase 3 run: train loss (mean over each 50-step window, steps 50/100/150/200) differs from Phase 3 by at most 0.00e+00 (mean 0.00e+00, 132 comparisons).
+
+#### Cost per Phase 3b run
+
+| blocks trained | train s excl. eval (per seed) | eval s (per seed) | peak VRAM allocated GiB (per seed) | peak VRAM reserved GiB (per seed) |
+|---|---|---|---|---|
+| 0 | 25/24/25 | 56/56/56 | 2.23/2.23/2.23 | 3.30/3.28/3.25 |
+| 2 | 22/22/22 | 56/56/56 | 1.96/1.97/1.97 | 2.89/2.89/2.86 |
+| 4 | 20/20/20 | 56/56/56 | 1.72/1.71/1.71 | 2.57/2.59/2.59 |
+| 6 | 18/18/18 | 56/56/56 | 1.48/1.48/1.48 | 2.59/2.59/2.59 |
+| 8 | 15/16/16 | 56/56/56 | 1.48/1.48/1.48 | 2.59/2.59/2.59 |
+| 9 | 14/14/14 | 55/56/56 | 1.48/1.48/1.48 | 2.59/2.59/2.59 |
+| 10 | 13/13/13 | 55/56/56 | 1.48/1.49/1.49 | 2.59/2.61/2.61 |
+| 11 | 12/12/12 | 55/56/56 | 1.48/1.48/1.48 | 2.60/2.59/2.59 |
+| 0-1-2 | 26/26/26 | 56/56/56 | 2.40/2.40/2.40 | 3.51/3.50/3.48 |
+| 6-7-8 | 19/19/19 | 56/56/56 | 1.64/1.64/1.64 | 2.72/2.73/2.73 |
+| 9-10-11 | 16/16/16 | 56/56/56 | 1.59/1.59/1.59 | 2.74/2.71/2.71 |
+
+Total Phase 3b wall time incl. evaluation: 0.69 h over 33 runs. Highest peak VRAM: allocated 2.40 GiB, reserved 3.51 GiB (limit 4.5 GB = 4.19 GiB).
+
+Environment (results/lora_r64/retrain_budget/env.json, one line per session): NVIDIA L4, torch 2.11.0+cu130, transformers 5.19.0, peft 0.21.2, commit 4aa31f5, 2026-10-21 11:29:02
+
+![LoRA rank 64 retrain budget](figures/lora/lora_r64/retrain_budget.png)
+
+### RQ 3: does the GPT-2 Phase 3b rule reproduce under LoRA?
+
+| condition | "location matters for fixing" | reproduces |
+|---|---|---|
+| full fine-tuning | FAIL (P/F/F) | — |
+| LoRA rank 4 | not run (no Phase 3 ceiling) | not applicable |
+| LoRA rank 64 | FAIL (F/F/F) | yes |

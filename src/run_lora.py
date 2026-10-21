@@ -18,6 +18,9 @@ Usage:
   python src/run_lora.py retrain          # Phase L2: retrain.py --prefix lora_r<r> (unchanged, resumable); both ranks'
                                           # gates first, then the rest -> results/lora_r<r>/retrain/ (+ gate.json,
                                           # ceiling.json, env.json); a failed gate stops that rank (exit 2)
+  python src/run_lora.py budget           # Phase L2: Phase 3b only for ranks whose Phase 3 hit the ceiling: smoke test,
+                                          # then retrain.py --budget --prefix lora_r<r> (unchanged, resumable)
+                                          # -> results/lora_r<r>/retrain_budget/ (+ env.json)
 Pilot run names: lora_r<r>_lr<lr>_<kind>_seed0, e.g. lora_r4_lr3e-4_shortcut_seed0 (only used with checks.py --run).
 """
 import argparse
@@ -526,13 +529,78 @@ def retrain():
     return True if all(passed.values()) else None
 
 
+# ---- Phase 3b retraining budget (PROJECT_SPEC.md "Phase 3b" + "Phase L2": only for a rank whose Phase 3 hit the
+# ceiling, rule unchanged): src/retrain.py --budget --prefix lora_r<r>, unchanged. Smoke test (1 run, 20 steps) first,
+# as in the Phase 3b spec.
+def budget_done(path, names):
+    return path.exists() and all(n in json.load(open(path))["runs"] for n in names)
+
+
+def check_budget_files(r):
+    """All 11 runs per seed, evaluated at every step; start model = the Phase 3 start model; steps 1-200 repeat the
+    start of the Phase 3 run (train loss every 50 steps compared). Logs the Phase 3b rule as report.py computes it."""
+    from report import BUDGET_EARLY, BUDGET_LATE, BUDGET_MIN_DIFF, BUDGET_RULE_STEP, frac_removed
+    from retrain import BUDGET_EVAL_STEPS, BUDGET_SETS
+    prefix = f"lora_r{r}"
+    diffs, flags = [], []
+    for s in (0, *MAIN_SEEDS_NEW):
+        res = json.load(open(RESULTS / prefix / "retrain_budget" / f"seed{s}.json"))
+        p3 = json.load(open(retrain_dir(r) / f"seed{s}.json"))
+        assert res["start_model"] == p3["start_model"] == f"{prefix}_shortcut_seed{s}", res["start_model"]
+        assert res["baseline"] == p3["baseline"], f"{prefix} seed {s}: Phase 3b baseline != Phase 3 baseline"
+        for n, _ in BUDGET_SETS:
+            x = res["runs"][n]
+            assert sorted(x["evals"], key=int) == [str(t) for t in BUDGET_EVAL_STEPS] and x["frozen_params_unchanged"]
+            a = {e["step"]: e["loss"] for e in x["train"]["loss_log"]}
+            b = {e["step"]: e["loss"] for e in p3["runs"][n]["train"]["loss_log"]}
+            diffs += [abs(a[k] - b[k]) for k in a if k in b]
+        G = res["baseline"]["gap_none_minus_opposite"]
+        fr = lambda n: frac_removed(res["runs"][n]["evals"][BUDGET_RULE_STEP], G)  # noqa: E731
+        d = sum(map(fr, BUDGET_LATE)) / len(BUDGET_LATE) - sum(map(fr, BUDGET_EARLY)) / len(BUDGET_EARLY)
+        flags.append(d >= BUDGET_MIN_DIFF)
+        log(f"budget {prefix} seed {s}: {len(BUDGET_SETS)} runs; step {BUDGET_RULE_STEP}: late {BUDGET_LATE} minus early "
+            f"{BUDGET_EARLY} = {d:.3f} -> {'PASS' if d >= BUDGET_MIN_DIFF else 'FAIL'}")
+    log(f"budget {prefix}: steps 1-200 repeat Phase 3: train loss differs by at most {max(diffs, default=float('nan')):.2e} "
+        f"({len(diffs)} comparisons); rule 'location matters for fixing': {'PASS' if all(flags) else 'FAIL'} "
+        f"({'/'.join('P' if f else 'F' for f in flags)})")
+
+
+def budget():
+    """Phase 3b for every rank whose results/lora_r<r>/retrain/ceiling.json says the Phase 3 ceiling was hit."""
+    from retrain import BUDGET_SETS
+    lcfg = load_lora_cfg()
+    names = [n for n, _ in BUDGET_SETS]
+    log(f"=== run_lora budget (Phase 3b under Phase L2) start (offline), python {sys.executable}")
+    for r in lcfg["ranks"]:
+        prefix, c = f"lora_r{r}", retrain_dir(r) / "ceiling.json"
+        if not c.exists():
+            log(f"STOP: budget: {c.relative_to(ROOT)} missing (Phase 3 not finished for {prefix})")
+            sys.exit(1)
+        if not json.load(open(c))["ceiling"]:
+            log(f"budget {prefix}: Phase 3 did not hit the ceiling -> Phase 3b not run (Phase L2)")
+            continue
+        check_retrain_files(r)  # the Phase 3 results Phase 3b builds on (its step 625 and baseline)
+        out = RESULTS / prefix / "retrain_budget"
+        out.mkdir(parents=True, exist_ok=True)
+        if not (RESULTS / prefix / "smoke" / "retrain_budget" / "seed0.json").exists():
+            step(f"budget smoke {prefix}", ["retrain.py", "--budget", "--smoke", "--prefix", prefix])
+        if all(budget_done(out / f"seed{s}.json", names) for s in (0, *MAIN_SEEDS_NEW)):
+            log(f"budget {prefix}: all {len(names)} runs x 3 seeds done, skipped")
+        else:
+            add_env_session(out, "retrain budget (Phase 3b)", f"python src/retrain.py --budget --prefix {prefix}")
+            step(f"budget {prefix}", ["retrain.py", "--budget", "--prefix", prefix])
+        check_budget_files(r)
+    log("=== run_lora budget: done")
+    return True
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("mode", choices=["pilot", "choose", "pilot-extra", "choose-amended", "main", "lens", "swaps",
-                                     "retrain"])
+                                     "retrain", "budget"])
     args = ap.parse_args()
     chosen = {"pilot": pilot, "choose": choose, "pilot-extra": pilot_extra, "choose-amended": choose_amended,
-              "main": main_runs, "lens": lens, "swaps": swaps, "retrain": retrain}[args.mode]()
+              "main": main_runs, "lens": lens, "swaps": swaps, "retrain": retrain, "budget": budget}[args.mode]()
     if chosen is None:
         sys.exit(2)  # a pre-registered rule says stop (no lr passes / a Phase 3 gate failed)
 

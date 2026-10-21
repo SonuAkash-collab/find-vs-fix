@@ -16,6 +16,7 @@ import numpy as np  # noqa: E402
 
 from common import RESULTS, ROOT, VERSIONS, load_cfg  # noqa: E402
 from report import COLORS, DROP_FRAC, EARLY_MAX_LAYER, OVERTHINK_MIN_GAIN, cell, ms  # noqa: E402  (same rule as GPT-2)
+from report import (BUDGET_EARLY, BUDGET_LATE, BUDGET_MIN_DIFF, BUDGET_RULE_STEP, phase3b_section)  # noqa: E402
 from report import (A, B, CI, CII, CONTROLS, HALF_MIN_SHARE, HALF_SETS, KEEP_MIN_FRAC, LATE_MIN_RATIO,  # noqa: E402
                     OTHER_WINDOWS,
                     REMOVE_MAX_FRAC, RETRAIN_ORDER, SPEARMAN_MIN, frac_removed, load_seed_files, load_swap,
@@ -223,7 +224,7 @@ def strip_prefix(obj, prefix):
 
 
 def normalized_copy(R, prefix, tmp):
-    for sub in ("swap", "swap2", "retrain"):
+    for sub in ("swap", "swap2", "retrain", "retrain_budget"):
         for p in sorted((R / sub).glob("seed*.json")):
             (tmp / sub).mkdir(parents=True, exist_ok=True)
             json.dump(strip_prefix(json.load(open(p)), prefix), open(tmp / sub / p.name, "w"))
@@ -513,6 +514,77 @@ def retrain_section(o, tmp_root):
     retrain_notes(o, labels, flags, rts, smaps, stopped)
 
 
+# ---- Phase 3b (only for a rank whose Phase 3 hit the ceiling). report.py's phase3b_section runs unchanged on the same
+# prefix-stripped copy (it reads retrain_budget/, retrain/ and swap/).
+def budget_flags(R):
+    """Per-seed flags of the Phase 3b rule "location matters for fixing" (as report.phase3b_section)."""
+    bus = {s["seed"]: s for s in load_seed_files(R, "retrain_budget")}
+    if sorted(bus) != list(SEEDS):
+        return None
+    fl = []
+    for s in SEEDS:
+        G = bus[s]["baseline"]["gap_none_minus_opposite"]
+        fr = [frac_removed(bus[s]["runs"][n]["evals"][BUDGET_RULE_STEP], G) if n in bus[s]["runs"] else None
+              for n in BUDGET_LATE + BUDGET_EARLY]
+        fl.append(None if None in fr else bool(np.mean(fr[:len(BUDGET_LATE)]) - np.mean(fr[len(BUDGET_LATE):])
+                                               >= BUDGET_MIN_DIFF))
+    return fl
+
+
+def budget_section(o, tmp_root):
+    import tempfile
+    rows = {"full fine-tuning": budget_flags(RESULTS)}
+    done = []
+    for label, prefix, R in CONDITIONS[1:]:
+        c = load(R / "retrain" / "ceiling.json")
+        if c is None:
+            continue
+        rows[label] = "not run (no Phase 3 ceiling)" if not c["ceiling"] else None
+        if c["ceiling"] and list((R / "retrain_budget").glob("seed*.json")):
+            done.append((label, prefix, R))
+    if len(rows) == 1:
+        return
+    o += ["## Retraining budget (Phase 3b, Phase L2)", "",
+          "Phase L2: Phase 3b runs only for a rank whose Phase 3 removed the shortcut for every single block (ceiling; "
+          "results/lora_r<r>/retrain/ceiling.json), with the Phase 3b rule unchanged. src/retrain.py --budget unchanged "
+          "(smoke test of 1 run first, as in the Phase 3b spec). Tables and the verdict come from src/report.py's own "
+          "Phase 3b section, run unchanged on the prefix-stripped copy.", ""]
+    for label, prefix, R in done:
+        sub = prefix.rstrip("_")
+        tmp = normalized_copy(R, prefix, Path(tempfile.mkdtemp(dir=tmp_root)))
+        rows[label] = budget_flags(tmp)
+        fig_dir = FIG / sub
+        part = []
+        phase3b_section(part, tmp, fig_dir)
+        for line in part:
+            line = (line.replace("results/retrain", f"results/{sub}/retrain").replace("results/swap", f"results/{sub}/swap")
+                    .replace("start = shortcut_seed<s>", f"start = {sub}_shortcut_seed<s>, merged LoRA model as it is")
+                    .replace("Rules pre-registered in PROJECT_SPEC.md on 16 Oct before any Phase 3b run.",
+                             "Rule of the GPT-2 Phase 3b (pre-registered 16 Oct), applied to LoRA as pre-registered in "
+                             "PROJECT_SPEC.md Phase L2 (20 Oct)."))
+            o.append(f"### {label}: " + line[3:] if line.startswith("## ") else "#" + line if line.startswith("### ") else line)
+        env = load(R / "retrain_budget" / "env.json")
+        if env:
+            o += [f"Environment (results/{sub}/retrain_budget/env.json, one line per session): " + "; ".join(
+                f"{e['gpu']}, torch {e['torch']}, transformers {e['transformers']}, peft {e['peft']}, commit "
+                f"{str(e['git_commit'])[:7]}, {e['time']}" for e in env["sessions"]), ""]
+        if (fig_dir / "retrain_budget.png").exists():
+            o += [f"![{label} retrain budget](figures/lora/{sub}/retrain_budget.png)", ""]
+    ref = rows["full fine-tuning"]
+    o += ["### RQ 3: does the GPT-2 Phase 3b rule reproduce under LoRA?", "",
+          "| condition | \"location matters for fixing\" | reproduces |", "|---|---|---|"]
+    for label, fl in rows.items():
+        if isinstance(fl, str):
+            o.append(f"| {label} | {fl} | not applicable |")
+            continue
+        v = verdict_of(fl or [])
+        cellv = f"{v} ({'/'.join('P' if f else 'F' for f in fl)})" if fl and None not in fl else v
+        rep = "—" if label == "full fine-tuning" else ("incomplete" if v == "incomplete" else
+                                                       "yes" if v == verdict_of(ref) else "NO")
+        o.append(f"| {label} | {cellv} | {rep} |")
+    o.append("")
+
+
 def block_ranges(bs):
     """[0, 1, 2, 5] -> '0–2, 5'."""
     out, i = [], 0
@@ -572,6 +644,7 @@ def main():
     with tempfile.TemporaryDirectory() as tmp_root:
         swaps_section(o, Path(tmp_root))
         retrain_section(o, Path(tmp_root))
+        budget_section(o, Path(tmp_root))
     OUT.write_text("\n".join(o), encoding="utf-8")
     print(f"wrote {OUT}" + (f" and {FIG}/" if FIG.exists() else ""))
 
