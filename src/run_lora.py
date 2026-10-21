@@ -15,6 +15,9 @@ Usage:
                                           # -> results/lora_r<r>/logit_lens/ (+ env.json: GPU, versions, commit)
   python src/run_lora.py swaps            # Phase L2: swap.py --prefix lora_r<r> [--phase2b] (unchanged, resumable)
                                           # -> results/lora_r<r>/swap/, swap2/ (+ env.json)
+  python src/run_lora.py retrain          # Phase L2: retrain.py --prefix lora_r<r> (unchanged, resumable); both ranks'
+                                          # gates first, then the rest -> results/lora_r<r>/retrain/ (+ gate.json,
+                                          # ceiling.json, env.json); a failed gate stops that rank (exit 2)
 Pilot run names: lora_r<r>_lr<lr>_<kind>_seed0, e.g. lora_r4_lr3e-4_shortcut_seed0 (only used with checks.py --run).
 """
 import argparse
@@ -408,14 +411,130 @@ def swaps():
     return True
 
 
+# ---- Phase 3 retraining (PROJECT_SPEC.md "Phase 3" + "Phase L2"): src/retrain.py --prefix lora_r<r>, unchanged. It starts
+# from the merged shortcut model as it is and keeps training only the chosen blocks' full weights on clean data (no reset).
+# The gate (Phase 3: seed 0 "all" and "9-10-11" first; "all" must bring the gap to <= 50% of G_0, else stop Phase 3, no
+# fixes) lived in Sonu's driver (src/run_night2.py), so it is done here, the same way. Both ranks' gates run first.
+GATE_SETS = "all,9-10-11"
+
+
+def retrain_dir(r):
+    return RESULTS / f"lora_r{r}" / "retrain"
+
+
+def retrain_runs():
+    from retrain import RUN_SETS
+    return [name for name, _, _ in RUN_SETS]
+
+
+def add_env_session(out, step_name, command):
+    """env.json lists every session (GPU, versions, commit) that worked on this folder: a resumed run may span several."""
+    p = out / "env.json"
+    env = json.load(open(p)) if p.exists() else {"step": step_name, "command": command, "sessions": []}
+    env["sessions"].append(env_record())
+    json.dump(env, open(p, "w"), indent=2)
+
+
+def gate(r):
+    """Phase 3 gate for one rank, from results/lora_r<r>/retrain/seed0.json -> gate.json. Same test as run_night2.py."""
+    from report import REMOVE_MAX_FRAC
+    res = json.load(open(retrain_dir(r) / "seed0.json"))
+    G = res["baseline"]["gap_none_minus_opposite"]
+    g_all = res["runs"]["all"]["gap_none_minus_opposite"]
+    ok = g_all <= REMOVE_MAX_FRAC * G
+    out = {"rank": r, "rule": f"Phase 3 gate: seed 0, retrain 'all' must bring the gap to <= {REMOVE_MAX_FRAC:.0%} of "
+                              "the start model's gap G_0; else STOP Phase 3 (no fixes: no extra epochs, no resets)",
+           "start_model": res["start_model"], "G_0": G, "gap_after_all": g_all, "limit": REMOVE_MAX_FRAC * G,
+           "gap_after_9-10-11": res["runs"]["9-10-11"]["gap_none_minus_opposite"], "pass": bool(ok)}
+    json.dump(out, open(retrain_dir(r) / "gate.json", "w"), indent=2)
+    log(f"GATE lora_r{r}: seed 0 retrain 'all' gap {g_all:.3f} vs start gap {G:.3f} (limit {REMOVE_MAX_FRAC:.0%} = "
+        f"{REMOVE_MAX_FRAC * G:.3f}) -> {'PASS' if ok else 'FAIL'}")
+    return ok
+
+
+def check_retrain_files(r):
+    """All 20 runs for every seed, frozen weights asserted unchanged, and each seed's re-evaluated start model equal to
+    its checks file (same model, same evaluation code). Returns {seed: file}."""
+    names, prefix = retrain_runs(), f"lora_r{r}"
+    files = {}
+    for s in (0, *MAIN_SEEDS_NEW):
+        res = json.load(open(retrain_dir(r) / f"seed{s}.json"))
+        missing = [n for n in names if n not in res["runs"]]
+        assert not missing, f"{prefix} seed {s}: runs missing {missing}"
+        assert res["start_model"] == f"{prefix}_shortcut_seed{s}", res["start_model"]
+        assert all(x["frozen_params_unchanged"] for x in res["runs"].values())
+        chk = json.load(open(main_dir(r) / f"{prefix}_shortcut_seed{s}.json"))
+        same = res["baseline"]["accuracy"] == chk["accuracy"]
+        log(f"retrain {prefix} seed {s}: {len(names)} runs; start-model accuracy == checks file: {same}"
+            + ("" if same else f" (retrain {res['baseline']['accuracy']} vs checks {chk['accuracy']}): tell Sonu"))
+        files[s] = res
+    return files
+
+
+def ceiling(r, files):
+    """Phase L2: "Phase 3b only if Phase 3 again removes the shortcut for every single block (ceiling)". Same "removes"
+    rule as Phase 3 (report.py), all 3 seeds -> ceiling.json. Phase 3b itself is a separate step."""
+    from report import rule_removes
+    per_block = {str(b): [bool(rule_removes(f["runs"][str(b)], f["baseline"]["gap_none_minus_opposite"],
+                                            f["baseline"]["accuracy"]["none"])) for f in files.values()]
+                 for b in range(12)}
+    hit = all(all(v) for v in per_block.values())
+    json.dump({"rank": r, "rule": "ceiling = every single block 0..11 passes Phase 3 'removes' in all 3 seeds; "
+                                  "Phase 3b runs only then (PROJECT_SPEC.md Phase L2)",
+               "per_block_removes_by_seed": per_block, "ceiling": hit, "phase3b": "needed" if hit else "not run"},
+              open(retrain_dir(r) / "ceiling.json", "w"), indent=2)
+    log(f"retrain lora_r{r}: single blocks that remove the shortcut in all seeds: "
+        f"{sum(all(v) for v in per_block.values())}/12 -> ceiling {'YES: Phase 3b is needed (separate step)' if hit else 'no: no Phase 3b'}")
+
+
+def retrain():
+    """Phase 3 on both ranks: gates first (seed 0, 'all' + '9-10-11'), then the other runs of every rank whose gate
+    passed. retrain.py resumes from finished runs, so after a disconnect just run this again."""
+    lcfg = load_lora_cfg()
+    ranks = lcfg["ranks"]
+    missing = [f"lora_r{r}_shortcut_seed{s}" for r in ranks for s in (0, *MAIN_SEEDS_NEW)
+               if not (RUNS / f"lora_r{r}_shortcut_seed{s}" / "model" / "config.json").exists()]
+    if missing:
+        log(f"STOP: retrain: models missing {missing}")
+        sys.exit(1)
+    log(f"=== run_lora retrain (Phase 3 under Phase L2) start (offline), python {sys.executable}")
+    names, passed = retrain_runs(), {}
+    for r in ranks:
+        prefix, out = f"lora_r{r}", retrain_dir(r)
+        out.mkdir(parents=True, exist_ok=True)
+        f0 = out / "seed0.json"
+        done = f0.exists() and all(n in json.load(open(f0))["runs"] for n in GATE_SETS.split(","))
+        if not done:
+            add_env_session(out, "retrain (Phase 3)", f"python src/retrain.py --prefix {prefix}")
+            step(f"retrain gate {prefix}", ["retrain.py", "--prefix", prefix, "--seeds", "0", "--sets", GATE_SETS])
+        passed[r] = gate(r)
+    for r in ranks:
+        prefix, out = f"lora_r{r}", retrain_dir(r)
+        if not passed[r]:
+            log(f"STOP Phase 3 for {prefix}: gate failed. No fixes tried (no extra epochs, no resets). Tell Sonu.")
+            continue
+        todo = [s for s in (0, *MAIN_SEEDS_NEW) if not (out / f"seed{s}.json").exists()
+                or not all(n in json.load(open(out / f"seed{s}.json"))["runs"] for n in names)]
+        if todo:
+            add_env_session(out, "retrain (Phase 3)", f"python src/retrain.py --prefix {prefix}")
+            step(f"retrain {prefix}", ["retrain.py", "--prefix", prefix])
+        else:
+            log(f"retrain {prefix}: all {len(names)} runs x 3 seeds done, skipped")
+        ceiling(r, check_retrain_files(r))
+    log("=== run_lora retrain: done" + ("" if all(passed.values()) else " (Phase 3 stopped at the gate for "
+                                       + ", ".join(f"lora_r{r}" for r in ranks if not passed[r]) + ")"))
+    return True if all(passed.values()) else None
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("mode", choices=["pilot", "choose", "pilot-extra", "choose-amended", "main", "lens", "swaps"])
+    ap.add_argument("mode", choices=["pilot", "choose", "pilot-extra", "choose-amended", "main", "lens", "swaps",
+                                     "retrain"])
     args = ap.parse_args()
     chosen = {"pilot": pilot, "choose": choose, "pilot-extra": pilot_extra, "choose-amended": choose_amended,
-              "main": main_runs, "lens": lens, "swaps": swaps}[args.mode]()
+              "main": main_runs, "lens": lens, "swaps": swaps, "retrain": retrain}[args.mode]()
     if chosen is None:
-        sys.exit(2)  # nothing passes: the rule says stop
+        sys.exit(2)  # a pre-registered rule says stop (no lr passes / a Phase 3 gate failed)
 
 
 if __name__ == "__main__":

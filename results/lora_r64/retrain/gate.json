@@ -1,0 +1,10 @@
+{
+  "rank": 64,
+  "rule": "Phase 3 gate: seed 0, retrain 'all' must bring the gap to <= 50% of the start model's gap G_0; else STOP Phase 3 (no fixes: no extra epochs, no resets)",
+  "start_model": "lora_r64_shortcut_seed0",
+  "G_0": 0.8004999831318855,
+  "gap_after_all": -0.006499946117401123,
+  "limit": 0.40024999156594276,
+  "gap_after_9-10-11": 0.013500034809112549,
+  "pass": true
+}
