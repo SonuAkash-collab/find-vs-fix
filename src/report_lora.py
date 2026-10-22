@@ -437,6 +437,24 @@ def overlap_note(o):
         o += ["", "Mean over blocks 9-11 (where c-ii failed under LoRA) vs blocks 0-8: " + "; ".join(
             f"{name} {late[c]:.3f} vs {early[c]:.3f}" for name, c in cols) + ".", ""]
 
+    def side_ratio(cond, view, b, side):
+        k, i = ov["conditions"][cond]["k"], ("input", "output").index(side)
+        return float(np.mean([v / (k / dims[m][i]) for m in dims
+                              for v in ov["conditions"][cond]["overlap"][view][str(b)][m][side].values()]))
+
+    def side_range(cond, side, view="whole_update"):
+        r = [side_ratio(cond, view, b, side) for b in range(12)]
+        return f"{min(r):.1f}–{max(r):.1f}×"
+
+    o += ["Split by side (Sonu's review of #11; same numbers, no new computation), whole update, range over the 12 blocks "
+          "of the multiple of the random level: " + "; ".join(
+              f"{name}: input side {side_range(c, 'input')}, output side {side_range(c, 'output')}" for name, c in cols)
+          + ". On the input side LoRA rank 64 is at about the random level and LoRA rank 4 far below its output side. "
+          "That fits LoRA's A matrices (which set the input-side directions) starting from a random, seed-specific "
+          "initialisation and moving little, while the output side is still clearly below full fine-tuning. So the "
+          "seed-specific directions may come largely from LoRA's random start rather than from learning different "
+          "features; either way it fits the c-ii failure.", ""]
+
 
 # ---- Retraining (Phase 3). report.py's phase3_section runs unchanged on the same prefix-stripped copy (it reads the
 # rank's own swap files too, for its swap-vs-retrain Spearman rule).
