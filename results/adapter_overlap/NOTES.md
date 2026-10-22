@@ -25,11 +25,10 @@ committed before any computation. Numbers come only from `src/adapter_overlap.py
 ## Run record (22 Oct, added after running; the method above is unchanged)
 - Adapters: the 12 unmerged adapters (runs/lora_r{4,64}_{shortcut,clean}_seed{0,1,2}/adapter/) were downloaded from
   Drive under generic names and identified by recomputing each run's recorded fingerprint (merge_check
-  max_abs_label_logit_change_vs_plain_gpt2 on the first 64 'none' test reviews): all 12 matched exactly one run
-  (differences 8e-6 to 1.2e-4), no duplicates; rank from the config and the matrix shapes agreed.
-- Full-FT models: Sonu's zip, sha256 checked by the script.
-- A first run was stopped by hand before writing anything (it built the LoRA changes as dense matrices and used
-  ~13 GB of RAM). The rerun computes the LoRA directions from the factors (QR + small SVD), checked identical to the
-  dense SVD on real adapters (overlap 1.00000000 in 24 checks); full FT is computed densely, as before.
-- Output: overlap.json (all 2,304 overlaps in [0, 1]; random baseline equal to k/n). Reading: RESULTS_LORA.md, next to
-  the c-ii section. No follow-up checks.
+  max_abs_label_logit_change_vs_plain_gpt2 on the first 64 'none' test reviews): src/identify_adapters.py ->
+  adapter_identification.json (each adapter matched exactly one run; no duplicates; rank from config and shapes agree).
+- Full-FT models: Sonu's zip, sha256 checked by src/adapter_overlap.py.
+- A first run was stopped by hand before writing anything: it built the LoRA changes as dense matrices and used too
+  much of the laptop's RAM. The rerun computes the LoRA directions from the factors (QR + small SVD), which gives the
+  same directions as the dense SVD (checked on real adapters before the rerun); full FT is computed densely, as before.
+- Output: overlap.json. Reading: RESULTS_LORA.md, next to the c-ii section. No follow-up checks.
