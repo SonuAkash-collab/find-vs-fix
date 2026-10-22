@@ -1,0 +1,156 @@
+{
+  "condition": "lora_r4",
+  "block": 9,
+  "run": {
+    "blocks": [
+      9
+    ],
+    "train_data": "train_clean.jsonl",
+    "seed": 0,
+    "evals": {
+      "10": {
+        "accuracy": {
+          "none": 0.8679999709129333,
+          "opposite": 0.5230000019073486
+        },
+        "mean_d": {
+          "none": -0.12305750697851181,
+          "opposite": -1.193656325340271
+        },
+        "gap_none_minus_opposite": 0.3449999690055847
+      },
+      "20": {
+        "accuracy": {
+          "none": 0.8669999837875366,
+          "opposite": 0.5264999866485596
+        },
+        "mean_d": {
+          "none": -0.18797649443149567,
+          "opposite": -1.2530862092971802
+        },
+        "gap_none_minus_opposite": 0.34049999713897705
+      }
+    },
+    "config": {
+      "rank": 4,
+      "lora_alpha": 8,
+      "lr": 0.0005,
+      "schedule_total_steps": 20,
+      "eval_steps": [
+        10,
+        20
+      ],
+      "batch_size": 16,
+      "warmup_frac": 0.06,
+      "weight_decay": 0.01,
+      "precision": "fp32",
+      "n_examples": 200,
+      "max_steps": 20
+    },
+    "train": {
+      "wall_time_s": 30.488619565963745,
+      "peak_vram_allocated_gib": 1.4311537742614746,
+      "peak_vram_reserved_gib": 2.517578125,
+      "steps": 20,
+      "schedule_total_steps": 20,
+      "final_loss_mean_last50": 0.20955110853537917,
+      "loss_first10": 0.23327574264258147,
+      "loss_last10": 0.18582647442817687,
+      "n_trainable_params": 49152,
+      "loss_log": [
+        {
+          "step": 1,
+          "loss": 0.23804253339767456
+        },
+        {
+          "step": 2,
+          "loss": 0.3943801522254944
+        },
+        {
+          "step": 3,
+          "loss": 0.10454973578453064
+        },
+        {
+          "step": 4,
+          "loss": 0.2038106769323349
+        },
+        {
+          "step": 5,
+          "loss": 0.25226858258247375
+        },
+        {
+          "step": 6,
+          "loss": 0.2491329163312912
+        },
+        {
+          "step": 7,
+          "loss": 0.367345929145813
+        },
+        {
+          "step": 8,
+          "loss": 0.22100773453712463
+        },
+        {
+          "step": 9,
+          "loss": 0.2845604121685028
+        },
+        {
+          "step": 10,
+          "loss": 0.01765875332057476
+        },
+        {
+          "step": 11,
+          "loss": 0.13060230016708374
+        },
+        {
+          "step": 12,
+          "loss": 0.2943088114261627
+        },
+        {
+          "step": 13,
+          "loss": 0.03287433087825775
+        },
+        {
+          "step": 14,
+          "loss": 0.09621676057577133
+        },
+        {
+          "step": 15,
+          "loss": 0.12352460622787476
+        },
+        {
+          "step": 16,
+          "loss": 0.10410705953836441
+        },
+        {
+          "step": 17,
+          "loss": 0.44200438261032104
+        },
+        {
+          "step": 18,
+          "loss": 0.0853274017572403
+        },
+        {
+          "step": 19,
+          "loss": 0.31685492396354675
+        },
+        {
+          "step": 20,
+          "loss": 0.232444167137146
+        }
+      ]
+    },
+    "frozen_params_unchanged": true,
+    "n_lora_B_tensors_changed": 4,
+    "n_trainable_params": 49152,
+    "eval_time_s": 28.624135971069336,
+    "train_time_s_excl_eval": 1.8644835948944092,
+    "wall_time_s_incl_eval": 31.955642223358154
+  },
+  "env": {
+    "gpu": "NVIDIA L4",
+    "gpu_total_vram_gib": 22.03,
+    "torch": "2.11.0+cu130",
+    "transformers": "5.19.0"
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "condition": "lora_r4",
+  "env": {
+    "gpu": "NVIDIA L4",
+    "gpu_total_vram_gib": 22.03,
+    "torch": "2.11.0+cu130",
+    "transformers": "5.19.0"
+  },
+  "seeds": {
+    "0": {
+      "start_model": "lora_r4_shortcut_seed0",
+      "baseline": {
+        "accuracy": {
+          "none": 0.8679999709129333,
+          "match": 0.9829999804496765,
+          "opposite": 0.5145000219345093,
+          "neutral": 0.8665000200271606
+        },
+        "mean_d": {
+          "none": 0.013407787308096886,
+          "match": -0.7009914517402649,
+          "opposite": -1.0731114149093628,
+          "neutral": -0.08768825978040695
+        },
+        "gap_none_minus_opposite": 0.3534999489784241
+      },
+      "checks_accuracy": {
+        "none": 0.8679999709129333,
+        "match": 0.9829999804496765,
+        "opposite": 0.5145000219345093,
+        "neutral": 0.8665000200271606
+      },
+      "accuracy_matches_checks": true
+    },
+    "1": {
+      "start_model": "lora_r4_shortcut_seed1",
+      "baseline": {
+        "accuracy": {
+          "none": 0.8700000047683716,
+          "match": 0.9620000123977661,
+          "opposite": 0.6035000085830688,
+          "neutral": 0.8634999990463257
+        },
+        "mean_d": {
+          "none": 0.03001474030315876,
+          "match": -0.9689894318580627,
+          "opposite": -1.3453571796417236,
+          "neutral": -0.20449209213256836
+        },
+        "gap_none_minus_opposite": 0.26649999618530273
+      },
+      "checks_accuracy": {
+        "none": 0.8700000047683716,
+        "match": 0.9620000123977661,
+        "opposite": 0.6035000085830688,
+        "neutral": 0.8634999990463257
+      },
+      "accuracy_matches_checks": true
+    },
+    "2": {
+      "start_model": "lora_r4_shortcut_seed2",
+      "baseline": {
+        "accuracy": {
+          "none": 0.8715000152587891,
+          "match": 0.9509999752044678,
+          "opposite": 0.6480000019073486,
+          "neutral": 0.8705000281333923
+        },
+        "mean_d": {
+          "none": -0.07335757464170456,
+          "match": -0.9540408849716187,
+          "opposite": -1.42659330368042,
+          "neutral": -0.18013548851013184
+        },
+        "gap_none_minus_opposite": 0.22350001335144043
+      },
+      "checks_accuracy": {
+        "none": 0.8715000152587891,
+        "match": 0.9509999752044678,
+        "opposite": 0.6480000019073486,
+        "neutral": 0.8705000281333923
+      },
+      "accuracy_matches_checks": true
+    }
+  },
+  "all_pass": true
+}
