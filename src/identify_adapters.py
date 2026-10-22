@@ -1,5 +1,9 @@
-"""Usage: python src/identify_adapters.py (adapters sorted in ../lora_adapters/<run>/). Identify each downloaded LoRA adapter by recomputing its recorded fingerprint (merge_check
-max_abs_label_logit_change_vs_plain_gpt2 on the first 64 'none' test reviews) and matching it to exactly one run."""
+"""Identify downloaded LoRA adapters (Drive gives them generic names) by recomputing each run's recorded fingerprint
+(merge_check max_abs_label_logit_change_vs_plain_gpt2 on the first 64 'none' test reviews) and matching it to exactly
+one run -> results/adapter_overlap/adapter_identification.json. CPU only.
+
+Usage: python src/identify_adapters.py [--adapters DIR]   (default DIR: ../lora_adapters, one folder per adapter)
+"""
 import hashlib
 import json
 import sys
@@ -10,8 +14,8 @@ from peft import PeftModel
 from safetensors.torch import load_file
 from transformers import GPT2LMHeadModel
 
-P = Path(r"C:\Users\Sidha\Desktop\afml project")
-REPO = P / "find-vs-fix"
+REPO = Path(__file__).resolve().parent.parent
+ADAPTERS = Path(sys.argv[sys.argv.index("--adapters") + 1]) if "--adapters" in sys.argv else REPO.parent / "lora_adapters"
 sys.path.insert(0, str(REPO / "src"))
 from common import DATA, encode, get_tokenizer, label_ids, label_logits, load_cfg, load_jsonl  # noqa: E402
 
@@ -34,7 +38,7 @@ for r in (4, 64):
                 "max_abs_label_logit_change_vs_plain_gpt2"])
 
 found, hashes, rec = {}, {}, []
-for folder in sorted((P / "lora_adapters").glob("lora_r*")):
+for folder in sorted(p for p in ADAPTERS.iterdir() if (p / "adapter_model.safetensors").exists()):
     d = folder
     st = d / "adapter_model.safetensors"
     h = hashlib.sha256(st.read_bytes()).hexdigest()
