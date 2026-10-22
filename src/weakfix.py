@@ -24,6 +24,7 @@ import argparse
 import gc
 import hashlib
 import json
+import subprocess
 import sys
 import time
 
@@ -32,7 +33,7 @@ import torch
 from peft import LoraConfig, get_peft_model
 from transformers import GPT2LMHeadModel
 
-from common import DATA, RESULTS, RUNS, VERSIONS, env_info, get_tokenizer, load_cfg, load_jsonl, run_name
+from common import DATA, RESULTS, ROOT, RUNS, VERSIONS, env_info, get_tokenizer, load_cfg, load_jsonl, run_name
 from swap import evaluate
 from train import train
 from train_lora import load_lora_cfg
@@ -52,6 +53,15 @@ PARAMS_PER_BLOCK = 49_152  # 4 adapter pairs x rank 4 on GPT-2's c_attn, attn c_
 CAL_STEPS = [25, 50, 100, 150, 200, 300, 400, 500, 625]
 CAL_MIN_FRAC = 0.50
 EVAL_VERSIONS = ["none", "opposite"]
+
+
+def git_commit():
+    """The code version that produced a result (None outside a git checkout)."""
+    try:
+        return subprocess.run(["git", "-C", str(ROOT), "rev-parse", "HEAD"], capture_output=True,
+                              text=True).stdout.strip() or None
+    except OSError:
+        return None
 
 
 def out_dir(cond):
@@ -154,7 +164,8 @@ def run_fix(cond, s, blocks, data, eval_steps, name, tok, tests, cfg1, n_example
                        "precision": cfg1["precision"], "n_examples": n_examples, "max_steps": max_steps},
             "train": stats, "frozen_params_unchanged": True, "n_lora_B_tensors_changed": n_lora_changed,
             "n_trainable_params": stats["n_trainable_params"], "eval_time_s": eval_time[0],
-            "train_time_s_excl_eval": stats["wall_time_s"] - eval_time[0], "wall_time_s_incl_eval": time.time() - t0}
+            "train_time_s_excl_eval": stats["wall_time_s"] - eval_time[0], "wall_time_s_incl_eval": time.time() - t0,
+            "git_commit": git_commit(), "env": env_info()}
 
 
 def setup(cond):
@@ -250,7 +261,7 @@ def calibrate(cond):
     json.dump({"condition": cond, "rule": f"B = first of {CAL_STEPS} at which the fix on all 12 blocks (seed 0) removes "
                                           f">= {CAL_MIN_FRAC:.0%} of the gap; else {EPOCH_STEPS}",
                "B": B, "reached_50pct": reached, "G_0": G, "fraction_removed_by_step": {str(k): v for k, v in fr.items()},
-               "calibration_run": r, "env": env_info()}, open(path, "w"), indent=2)
+               "calibration_run": r, "git_commit": git_commit(), "env": env_info()}, open(path, "w"), indent=2)
     print(f"[calibrate {cond}] B = {B}" + ("" if reached else f" (never reached {CAL_MIN_FRAC:.0%}: B = {EPOCH_STEPS})"),
           flush=True)
 
@@ -269,6 +280,7 @@ def main_runs(cond, s):
     res = json.load(open(path)) if path.exists() else {
         "condition": cond, "seed": s, "start_model": run_name("shortcut", s, CONDITIONS[cond]),
         "baseline": baseline(cond, s), "B": bud["B"], "eval_steps": steps, "localization": loc,
+        "git_commit_at_start": git_commit(),
         "note": "Phase L3 weak fix: rank-4 LoRA adapter (49,152 params per block) on the listed block(s) of the start "
                 "model as it is; train() unchanged, lr 5e-4, 1-epoch schedule (625 steps); everything else asserted "
                 "bit-identical; eval on none/opposite at eval_steps. No weights saved.", "runs": {}}
