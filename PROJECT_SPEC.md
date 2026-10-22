@@ -357,6 +357,8 @@ Owner: Sidhant Holla. Decided by Sonu (21 Oct): goes ahead now instead of the pa
 after #8 (Phase 3) and #9 (Phase 3b) were merged; draft reviewed and approved by Sonu with the changes included here.
 Hard stop: all L3 runs done by 10 Nov, otherwise report what is done. The adapter-overlap check (why c-ii fails under
 LoRA) becomes an open question in the report, not a run.
+22 Oct, Sonu: run as an exploratory check (no GPU, no rule). Method: results/adapter_overlap/NOTES.md (written before
+any computation).
 Phase 3b r64 results were available when Phase L3 was committed; the localized block is chosen from swap results only.
 Why: Phase 3 retraining (full block weights, 1 epoch) removes the shortcut from almost every block (full FT and r64 at
 the ceiling), so it cannot say WHICH block to fix. Question: with a fix weak enough that the block matters, does the

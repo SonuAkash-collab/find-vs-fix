@@ -390,6 +390,51 @@ def swaps_section(o, tmp_root):
             o.append(f"| {l} | {k} | {'/'.join(f'{x:.3f}' for x in fa)} | {'/'.join(f'{x:.3f}' for x in kept)} | "
                      f"{verdict_of(c)} ({'/'.join('P' if f else 'F' for f in c)}) |")
     o.append("")
+    overlap_note(o)
+
+
+def overlap_note(o):
+    """Exploratory adapter-overlap check (results/adapter_overlap/; method in NOTES.md, written before computing):
+    descriptive only, a possible explanation of the c-ii result."""
+    ov = load(RESULTS / "adapter_overlap" / "overlap.json")
+    if not ov:
+        return
+    dims = {"attn.c_attn": (768, 2304), "attn.c_proj": (768, 768), "mlp.c_fc": (768, 3072), "mlp.c_proj": (3072, 768)}
+
+    def cell(cond, view, b):
+        """Mean overlap over modules, sides and seed pairs, and the same as a multiple of the random level k/n."""
+        k = ov["conditions"][cond]["k"]
+        raw, ratio = [], []
+        for m, (n_in, n_out) in dims.items():
+            for side, n in (("input", n_in), ("output", n_out)):
+                for v in ov["conditions"][cond]["overlap"][view][str(b)][m][side].values():
+                    raw.append(v)
+                    ratio.append(v / (k / n))
+        return float(np.mean(raw)), float(np.mean(ratio))
+
+    cols = [("LoRA rank 4 (k=4)", "lora_r4"), ("full FT (k=4)", "full_ft_k4"), ("LoRA rank 64 (k=64)", "lora_r64"),
+            ("full FT (k=64)", "full_ft_k64")]
+    o += ["#### Exploratory: do different seeds change the weights in the same directions? (adapter-overlap check)", "",
+          "_Exploratory, approved by Sonu on 22 Oct: no rule, no verdict changes; method fixed before computing in "
+          "results/adapter_overlap/NOTES.md (src/adapter_overlap.py -> overlap.json). A possible explanation of the c-ii "
+          "result above, nothing more._ Overlap between two seeds = mean squared cosine of the principal angles between "
+          "the top-k singular directions of a matrix's weight change (1 = same directions, 0 = unrelated). Cells: mean "
+          "over the 4 adapted matrices, both sides (input/output) and the 3 seed pairs; in brackets, the same as a "
+          "multiple of the random level k/n (two random k-dim subspaces of R^n).", ""]
+    rb = ov["random_baseline"]
+    o += ["Random baseline (1000 random pairs): " + "; ".join(
+        f"k={v['k']}, n={v['n']}: mean {v['mean']:.4f} (k/n {v['expected_k_over_n']:.4f}), 95th pct {v['p95']:.4f}"
+        for v in rb.values()) + ".", ""]
+    for view, title in (("whole_update", "whole update of the shortcut model"),
+                        ("shortcut_minus_clean", "shortcut-specific update (shortcut model minus its clean twin, same seed)")):
+        o += [f"Overlap per block, {title}:", "", "| block | " + " | ".join(c for c, _ in cols) + " |",
+              "|---|" + "---|" * len(cols)]
+        for b in range(12):
+            o.append(f"| {b} | " + " | ".join(f"{cell(c, view, b)[0]:.3f} (×{cell(c, view, b)[1]:.0f})" for _, c in cols) + " |")
+        late = {c: np.mean([cell(c, view, b)[0] for b in (9, 10, 11)]) for _, c in cols}
+        early = {c: np.mean([cell(c, view, b)[0] for b in range(9)]) for _, c in cols}
+        o += ["", "Mean over blocks 9-11 (where c-ii failed under LoRA) vs blocks 0-8: " + "; ".join(
+            f"{name} {late[c]:.3f} vs {early[c]:.3f}" for name, c in cols) + ".", ""]
 
 
 # ---- Retraining (Phase 3). report.py's phase3_section runs unchanged on the same prefix-stripped copy (it reads the

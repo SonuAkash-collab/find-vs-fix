@@ -1,0 +1,126 @@
+{
+ "rule": "fingerprint = merge_check max_abs_label_logit_change_vs_plain_gpt2 (first 64 none test reviews), recomputed on CPU; match = same rank and abs diff < 0.001",
+ "identified_ok": true,
+ "adapters": [
+  {
+   "folder": "lora_r4_clean_seed0",
+   "rank": 4,
+   "sha256": "d8cf8646c86ba6e1c0edf2ffeb7677e8ea0ddda01994b2da6fc3e37c6fcd1c96",
+   "fingerprint": 35.622802734375,
+   "matched_run": "lora_r4_clean_seed0",
+   "recorded_fingerprint": 35.62278747558594,
+   "abs_diff": 1.52587890625e-05,
+   "folder_name_equals_run": true
+  },
+  {
+   "folder": "lora_r4_clean_seed1",
+   "rank": 4,
+   "sha256": "d64952946794406ea20617a9d09e652269dea9411b90c77f130c2d4dff5017ab",
+   "fingerprint": 34.8167724609375,
+   "matched_run": "lora_r4_clean_seed1",
+   "recorded_fingerprint": 34.816741943359375,
+   "abs_diff": 3.0517578125e-05,
+   "folder_name_equals_run": true
+  },
+  {
+   "folder": "lora_r4_clean_seed2",
+   "rank": 4,
+   "sha256": "e2a753b5f8f486dcc4b64f2080aab30cb6bb2b175a9ef0545a2824278c2e008f",
+   "fingerprint": 37.11924743652344,
+   "matched_run": "lora_r4_clean_seed2",
+   "recorded_fingerprint": 37.119224548339844,
+   "abs_diff": 2.288818359375e-05,
+   "folder_name_equals_run": true
+  },
+  {
+   "folder": "lora_r4_shortcut_seed0",
+   "rank": 4,
+   "sha256": "77612353b8fe16fa397efed644d6f3a405c18233d3b2e1bb826b17ea2a88937b",
+   "fingerprint": 33.99198913574219,
+   "matched_run": "lora_r4_shortcut_seed0",
+   "recorded_fingerprint": 33.99186706542969,
+   "abs_diff": 0.0001220703125,
+   "folder_name_equals_run": true
+  },
+  {
+   "folder": "lora_r4_shortcut_seed1",
+   "rank": 4,
+   "sha256": "d82c676c90bb1cefeb093ebf7d4077e436e77c416e26e5047b5b8666e89e42ad",
+   "fingerprint": 31.2960205078125,
+   "matched_run": "lora_r4_shortcut_seed1",
+   "recorded_fingerprint": 31.29601287841797,
+   "abs_diff": 7.62939453125e-06,
+   "folder_name_equals_run": true
+  },
+  {
+   "folder": "lora_r4_shortcut_seed2",
+   "rank": 4,
+   "sha256": "ca4e62d7e441e8becefa4ab05693afe1b4dc7203357c5a4fa25343f3a35280b1",
+   "fingerprint": 34.965972900390625,
+   "matched_run": "lora_r4_shortcut_seed2",
+   "recorded_fingerprint": 34.96601104736328,
+   "abs_diff": 3.814697265625e-05,
+   "folder_name_equals_run": true
+  },
+  {
+   "folder": "lora_r64_clean_seed0",
+   "rank": 64,
+   "sha256": "58d05229bebba56762b1426fbc757984ef31483da86664ad95abbbc9f558621d",
+   "fingerprint": 48.577476501464844,
+   "matched_run": "lora_r64_clean_seed0",
+   "recorded_fingerprint": 48.577354431152344,
+   "abs_diff": 0.0001220703125,
+   "folder_name_equals_run": true
+  },
+  {
+   "folder": "lora_r64_clean_seed1",
+   "rank": 64,
+   "sha256": "41d54b67e92e033a8cddcd7ca126155fe211fc1029d8890eef6246253b7f0591",
+   "fingerprint": 55.92097473144531,
+   "matched_run": "lora_r64_clean_seed1",
+   "recorded_fingerprint": 55.920921325683594,
+   "abs_diff": 5.340576171875e-05,
+   "folder_name_equals_run": true
+  },
+  {
+   "folder": "lora_r64_clean_seed2",
+   "rank": 64,
+   "sha256": "e0f408f9aaaa7ae9e66cdbdeeef2034deeb4e4414ed475f7530c4806c001af7d",
+   "fingerprint": 52.353355407714844,
+   "matched_run": "lora_r64_clean_seed2",
+   "recorded_fingerprint": 52.35333251953125,
+   "abs_diff": 2.288818359375e-05,
+   "folder_name_equals_run": true
+  },
+  {
+   "folder": "lora_r64_shortcut_seed0",
+   "rank": 64,
+   "sha256": "acfbf811e233b71586a80f3c8a210e8dad869e8a90e118b4556244fa4c29dbcc",
+   "fingerprint": 44.479957580566406,
+   "matched_run": "lora_r64_shortcut_seed0",
+   "recorded_fingerprint": 44.47998046875,
+   "abs_diff": 2.288818359375e-05,
+   "folder_name_equals_run": true
+  },
+  {
+   "folder": "lora_r64_shortcut_seed1",
+   "rank": 64,
+   "sha256": "e04a4c1faf8d61fe7a8aa8bbba96bf5551cbaf39b8f6ec602cd65f991850ed25",
+   "fingerprint": 60.77239227294922,
+   "matched_run": "lora_r64_shortcut_seed1",
+   "recorded_fingerprint": 60.77229309082031,
+   "abs_diff": 9.918212890625e-05,
+   "folder_name_equals_run": true
+  },
+  {
+   "folder": "lora_r64_shortcut_seed2",
+   "rank": 64,
+   "sha256": "55e4c509ad28e48e6bb13316466499c9e097d4708df666e2a6f537cc9e7cc9b5",
+   "fingerprint": 54.54075622558594,
+   "matched_run": "lora_r64_shortcut_seed2",
+   "recorded_fingerprint": 54.54078674316406,
+   "abs_diff": 3.0517578125e-05,
+   "folder_name_equals_run": true
+  }
+ ]
+}
