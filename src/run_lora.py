@@ -21,6 +21,9 @@ Usage:
   python src/run_lora.py budget           # Phase L2: Phase 3b only for ranks whose Phase 3 hit the ceiling: smoke test,
                                           # then retrain.py --budget --prefix lora_r<r> (unchanged, resumable)
                                           # -> results/lora_r<r>/retrain_budget/ (+ env.json)
+  python src/run_lora.py weakfix-smoke    # Phase L3: start-model checks + one 20-step run per condition (code check)
+  python src/run_lora.py weakfix          # Phase L3: checks, the 3 calibrations (B), then 12 blocks + control per
+                                          # condition and seed (src/weakfix.py, resumable) -> results/weakfix/
 Pilot run names: lora_r<r>_lr<lr>_<kind>_seed0, e.g. lora_r4_lr3e-4_shortcut_seed0 (only used with checks.py --run).
 """
 import argparse
@@ -594,13 +597,89 @@ def budget():
     return True
 
 
+# ---- Phase L3 weak fix (PROJECT_SPEC.md "Phase L3"): src/weakfix.py. Start-model checks first (a failure = STOP, tell
+# Sonu), then all three calibrations (B fixed before any single-block run), then 12 blocks + control per condition/seed.
+def weakfix_checks():
+    from weakfix import CONDITIONS, out_dir
+    for c in CONDITIONS:
+        p = out_dir(c) / "start_checks.json"
+        if p.exists() and json.load(open(p))["all_pass"]:
+            log(f"weakfix start-model checks {c}: passed earlier, skipped")
+            continue
+        for attempt in (1, 2):
+            log(f"--- weakfix start-model checks {c}" + (" (retry)" if attempt == 2 else ""))
+            code, _, err = run(["weakfix.py", "--check", "--condition", c])
+            if code == 0:
+                break
+            if code == 2:
+                log(f"STOP: start-model check FAILED for {c} (see {p.relative_to(ROOT)}). Tell Sonu; no L3 run.")
+                sys.exit(2)
+            log(f"CRASH weakfix check {c} exit {code} (attempt {attempt}): {err}")
+        else:
+            log(f"STOP: weakfix check {c} crashed twice")
+            sys.exit(1)
+    log("weakfix start-model checks: all pass (full-FT sha256 == Sonu's zip; every start model == its checks file)")
+
+
+def weakfix_smoke():
+    """Code check before the 120 runs: start-model checks, then one 20-step run per condition."""
+    from weakfix import CONDITIONS
+    log(f"=== run_lora weakfix-smoke (Phase L3) start (offline), python {sys.executable}")
+    weakfix_checks()
+    for c in CONDITIONS:
+        if (RESULTS / "weakfix" / "smoke" / f"{c}.json").exists():
+            log(f"weakfix smoke {c}: done earlier, skipped")
+            continue
+        step(f"weakfix smoke {c}", ["weakfix.py", "--smoke", "--condition", c])
+    log("=== run_lora weakfix-smoke: done")
+    return True
+
+
+def weakfix():
+    from weakfix import CONDITIONS, LOCALIZED, N_BLOCKS, SEEDS, eval_steps_for, frac_removed, out_dir
+    missing = [c for c in CONDITIONS if not (RESULTS / "weakfix" / "smoke" / f"{c}.json").exists()]
+    if missing:
+        log(f"STOP: weakfix: run `weakfix-smoke` first (no smoke result for {missing})")
+        sys.exit(1)
+    log(f"=== run_lora weakfix (Phase L3) start (offline), python {sys.executable}")
+    weakfix_checks()
+    env_dir = RESULTS / "weakfix"
+    env_dir.mkdir(parents=True, exist_ok=True)
+    add_env_session(env_dir, "weakfix (Phase L3)", "python src/run_lora.py weakfix")
+    for c in CONDITIONS:  # every B before any single-block run
+        if not (out_dir(c) / "budget.json").exists():
+            step(f"weakfix calibration {c}", ["weakfix.py", "--calibrate", "--condition", c])
+        b = json.load(open(out_dir(c) / "budget.json"))
+        log(f"weakfix {c}: B = {b['B']}" + ("" if b["reached_50pct"] else " (all-block fix never reached 50%)")
+            + f"; eval steps {eval_steps_for(b['B'])}")
+    names = [str(x) for x in range(N_BLOCKS)]
+    for s in SEEDS:
+        for c in CONDITIONS:
+            p = out_dir(c) / f"seed{s}.json"
+            ctrl = f"ctrl_shortcut:{LOCALIZED[c]}"
+            if p.exists() and all(n in json.load(open(p))["runs"] for n in names + [ctrl]):
+                log(f"weakfix {c} seed {s}: all 13 runs done, skipped")
+            else:
+                step(f"weakfix {c} seed {s}", ["weakfix.py", "--condition", c, "--seed", str(s)])
+            res = json.load(open(p))
+            B, G = str(res["B"]), res["baseline"]["gap_none_minus_opposite"]
+            fr = {n: frac_removed(res["runs"][n]["evals"][B], G) for n in names}
+            order = sorted(names, key=lambda n: -fr[n])
+            log(f"weakfix {c} seed {s} at B={B}: best blocks {order[:3]} ({', '.join(f'{fr[n]:.3f}' for n in order[:3])}); "
+                f"localized block {LOCALIZED[c]} removes {fr[str(LOCALIZED[c])]:.3f}; control keeps "
+                f"{res['runs'][ctrl]['evals'][B]['gap_none_minus_opposite'] / G:.3f} of the gap")
+    log("=== run_lora weakfix: done (verdicts: src/report_lora.py)")
+    return True
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("mode", choices=["pilot", "choose", "pilot-extra", "choose-amended", "main", "lens", "swaps",
-                                     "retrain", "budget"])
+                                     "retrain", "budget", "weakfix-smoke", "weakfix"])
     args = ap.parse_args()
     chosen = {"pilot": pilot, "choose": choose, "pilot-extra": pilot_extra, "choose-amended": choose_amended,
-              "main": main_runs, "lens": lens, "swaps": swaps, "retrain": retrain, "budget": budget}[args.mode]()
+              "main": main_runs, "lens": lens, "swaps": swaps, "retrain": retrain, "budget": budget,
+              "weakfix-smoke": weakfix_smoke, "weakfix": weakfix}[args.mode]()
     if chosen is None:
         sys.exit(2)  # a pre-registered rule says stop (no lr passes / a Phase 3 gate failed)
 
