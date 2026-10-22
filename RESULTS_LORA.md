@@ -758,6 +758,50 @@ Full fine-tuning passes the (c-ii) control: swapping in another seed's *shortcut
 | LoRA rank 64 | 10-11 | 0.925/0.701/0.873 | 0.542/1.082/0.870 | FAIL (F/P/P) |
 | LoRA rank 64 | 9-10-11 | 0.975/0.984/0.963 | 0.748/1.079/0.903 | FAIL (F/P/P) |
 
+#### Exploratory: do different seeds change the weights in the same directions? (adapter-overlap check)
+
+_Exploratory, approved by Sonu on 22 Oct: no rule, no verdict changes; method fixed before computing in results/adapter_overlap/NOTES.md (src/adapter_overlap.py -> overlap.json). A possible explanation of the c-ii result above, nothing more._ Overlap between two seeds = mean squared cosine of the principal angles between the top-k singular directions of a matrix's weight change (1 = same directions, 0 = unrelated). Cells: mean over the 4 adapted matrices, both sides (input/output) and the 3 seed pairs; in brackets, the same as a multiple of the random level k/n (two random k-dim subspaces of R^n).
+
+Random baseline (1000 random pairs): k=4, n=768: mean 0.0053 (k/n 0.0052), 95th pct 0.0084; k=4, n=2304: mean 0.0017 (k/n 0.0017), 95th pct 0.0029; k=4, n=3072: mean 0.0013 (k/n 0.0013), 95th pct 0.0021; k=64, n=768: mean 0.0833 (k/n 0.0833), 95th pct 0.0861; k=64, n=2304: mean 0.0278 (k/n 0.0278), 95th pct 0.0288; k=64, n=3072: mean 0.0208 (k/n 0.0208), 95th pct 0.0216.
+
+Overlap per block, whole update of the shortcut model:
+
+| block | LoRA rank 4 (k=4) | full FT (k=4) | LoRA rank 64 (k=64) | full FT (k=64) |
+|---|---|---|---|---|
+| 0 | 0.068 (×26) | 0.538 (×186) | 0.087 (×2) | 0.382 (×8) |
+| 1 | 0.046 (×19) | 0.450 (×155) | 0.086 (×2) | 0.375 (×8) |
+| 2 | 0.050 (×19) | 0.408 (×140) | 0.088 (×2) | 0.394 (×8) |
+| 3 | 0.071 (×27) | 0.475 (×153) | 0.091 (×2) | 0.408 (×8) |
+| 4 | 0.111 (×40) | 0.516 (×174) | 0.097 (×2) | 0.435 (×9) |
+| 5 | 0.114 (×43) | 0.552 (×188) | 0.101 (×2) | 0.448 (×9) |
+| 6 | 0.161 (×57) | 0.608 (×217) | 0.109 (×2) | 0.463 (×10) |
+| 7 | 0.152 (×55) | 0.578 (×197) | 0.111 (×2) | 0.461 (×10) |
+| 8 | 0.174 (×61) | 0.678 (×235) | 0.116 (×2) | 0.474 (×10) |
+| 9 | 0.175 (×61) | 0.651 (×231) | 0.119 (×2) | 0.479 (×10) |
+| 10 | 0.145 (×49) | 0.654 (×237) | 0.127 (×2) | 0.473 (×10) |
+| 11 | 0.149 (×55) | 0.627 (×239) | 0.109 (×2) | 0.404 (×9) |
+
+Mean over blocks 9-11 (where c-ii failed under LoRA) vs blocks 0-8: LoRA rank 4 (k=4) 0.156 vs 0.105; full FT (k=4) 0.644 vs 0.534; LoRA rank 64 (k=64) 0.119 vs 0.098; full FT (k=64) 0.452 vs 0.427.
+
+Overlap per block, shortcut-specific update (shortcut model minus its clean twin, same seed):
+
+| block | LoRA rank 4 (k=4) | full FT (k=4) | LoRA rank 64 (k=64) | full FT (k=64) |
+|---|---|---|---|---|
+| 0 | 0.069 (×24) | 0.301 (×100) | 0.097 (×2) | 0.331 (×7) |
+| 1 | 0.038 (×16) | 0.260 (×89) | 0.096 (×2) | 0.321 (×7) |
+| 2 | 0.036 (×14) | 0.244 (×89) | 0.100 (×2) | 0.329 (×7) |
+| 3 | 0.059 (×24) | 0.274 (×79) | 0.101 (×2) | 0.333 (×6) |
+| 4 | 0.084 (×31) | 0.294 (×89) | 0.107 (×2) | 0.338 (×7) |
+| 5 | 0.100 (×40) | 0.341 (×96) | 0.109 (×2) | 0.345 (×7) |
+| 6 | 0.158 (×58) | 0.388 (×116) | 0.115 (×2) | 0.352 (×7) |
+| 7 | 0.179 (×69) | 0.469 (×162) | 0.117 (×2) | 0.355 (×7) |
+| 8 | 0.211 (×83) | 0.487 (×171) | 0.121 (×2) | 0.367 (×7) |
+| 9 | 0.278 (×105) | 0.551 (×200) | 0.125 (×2) | 0.374 (×7) |
+| 10 | 0.212 (×69) | 0.575 (×215) | 0.133 (×3) | 0.384 (×8) |
+| 11 | 0.241 (×80) | 0.555 (×200) | 0.116 (×2) | 0.337 (×7) |
+
+Mean over blocks 9-11 (where c-ii failed under LoRA) vs blocks 0-8: LoRA rank 4 (k=4) 0.244 vs 0.104; full FT (k=4) 0.560 vs 0.340; LoRA rank 64 (k=64) 0.125 vs 0.107; full FT (k=64) 0.365 vs 0.341.
+
 ## Retraining (Phase 3, Phase L2)
 
 Same block sets, controls, gate and reading rules as the GPT-2 Phase 3 (src/retrain.py unchanged, run with --prefix). Each run starts from the rank's merged shortcut model as it is (shortcut included), freezes everything except the chosen blocks, and keeps training those blocks' full weights for 1 epoch on clean data (controls: on the shortcut data), at the GPT-2 Phase 3 settings (configs/pilot.yaml). No new LoRA adapters, no reset. Tables and verdicts come from src/report.py's own Phase 3 section, run unchanged on a copy of each rank's files with the run-name prefix removed; its swap-vs-retrain Spearman uses that rank's own swap files. The gate (seed 0, 'all' and '9-10-11' first) is run by src/run_lora.py retrain, both ranks' gates before any other run.
