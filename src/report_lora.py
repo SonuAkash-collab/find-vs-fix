@@ -19,7 +19,7 @@ from report import COLORS, DROP_FRAC, EARLY_MAX_LAYER, OVERTHINK_MIN_GAIN, cell,
 from report import (BUDGET_EARLY, BUDGET_LATE, BUDGET_MIN_DIFF, BUDGET_RULE_STEP, BUDGET_SINGLES,  # noqa: E402
                     phase3b_section)
 from report import (A, B, CI, CII, CONTROLS, HALF_MIN_SHARE, HALF_SETS, KEEP_MIN_FRAC, LATE_MIN_RATIO,  # noqa: E402
-                    OTHER_WINDOWS,
+                    OTHER_WINDOWS, REMOVE_MAX_NONE_DROP,
                     REMOVE_MAX_FRAC, RETRAIN_ORDER, SPEARMAN_MIN, frac_removed, load_seed_files, load_swap,
                     phase2b_section, phase3_section, rule_creates, rule_keeps, rule_removes, seed_base, shortcut_base,
                     spearman, swap_figure, swap_result, swap_section)
@@ -732,6 +732,176 @@ def fit_note(o, labels, rts):
     o.append("")
 
 
+# ---- Phase L3: weak fix (PROJECT_SPEC.md "Phase L3"). Rules applied exactly as pre-registered; read at step B with the
+# floor/ceiling fallbacks; a block whose acc(none) drops by more than 0.02 is ranked last; ties count against a block.
+L3_TOP_K = 3
+L3_FLOOR, L3_CEIL = 0.10, 0.90
+L3_LABELS = {"full_ft": "full fine-tuning", "lora_r4": "LoRA rank 4", "lora_r64": "LoRA rank 64"}
+
+
+def l3_values(res, step):
+    """Per single block at a step: fraction removed, and the value used for ranking (blocks with an accuracy cost go
+    last, below every block without one)."""
+    G, none0 = res["baseline"]["gap_none_minus_opposite"], res["baseline"]["accuracy"]["none"]
+    fr = [frac_removed(res["runs"][str(b)]["evals"][str(step)], G) for b in range(12)]
+    ok = [none0 - res["runs"][str(b)]["evals"][str(step)]["accuracy"]["none"] <= REMOVE_MAX_NONE_DROP for b in range(12)]
+    low = min(fr) - 1.0
+    return fr, [f if k else low for f, k in zip(fr, ok)], ok
+
+
+def l3_rank(vals, b):
+    """1-based rank of block b, ties counted against it (= number of blocks at least as good)."""
+    return sum(v >= vals[b] for v in vals)
+
+
+def l3_read_step(files, B):
+    """The step the rules are read at (PROJECT_SPEC.md Phase L3): B; on a floor -> 2B, then 625; on a ceiling -> B/2.
+    Returns (step, note); step None = "not informative"."""
+    steps = [int(x) for x in files[0]["eval_steps"]]
+
+    def state(st):
+        fl = [l3_values(f, st)[0] for f in files]
+        if any(max(x) < L3_FLOOR for x in fl):
+            return "floor"
+        if any(min(x) >= L3_CEIL for x in fl):
+            return "ceiling"
+        return "ok"
+
+    s0 = state(B)
+    if s0 == "ok":
+        return B, f"read at B = {B}"
+    tried = [B]
+    options = ([2 * B] if 2 * B in steps and 2 * B != B else []) + ([625] if 625 not in (B, 2 * B) else []) \
+        if s0 == "floor" else ([B // 2] if B // 2 in steps else [])
+    for st in options:
+        tried.append(st)
+        if state(st) == "ok":
+            return st, f"{s0} at B = {B}; read at step {st} (pre-registered fallback)"
+    return None, f"{s0} at every pre-registered option ({', '.join(map(str, tried))}): not informative"
+
+
+def l3_rules(files, step, loc, top3, swap_fr):
+    """Per-seed flags of Rules 1, 1b, 2, 3 and the control, at one step."""
+    out = {"Rule 1: localized block in the top 3": [], "Rule 1b: best block among the top-3 swap blocks": [],
+           "Rule 2: Spearman(swap, weak fix) >= 0.6": [], "Rule 3: block 0 in the top 3": [],
+           "Control: shortcut-data fix keeps >= 80% of the gap": []}
+    for f in files:
+        s = f["seed"]
+        fr, val, _ = l3_values(f, step)
+        best = [b for b in range(12) if val[b] == max(val)]
+        out["Rule 1: localized block in the top 3"].append(l3_rank(val, loc) <= L3_TOP_K)
+        out["Rule 1b: best block among the top-3 swap blocks"].append(all(b in top3 for b in best))
+        out["Rule 2: Spearman(swap, weak fix) >= 0.6"].append(spearman(swap_fr[s], val) >= SPEARMAN_MIN)
+        out["Rule 3: block 0 in the top 3"].append(l3_rank(val, 0) <= L3_TOP_K)
+        G = f["baseline"]["gap_none_minus_opposite"]
+        c = f["runs"][f"ctrl_shortcut:{loc}"]["evals"][str(step)]
+        out["Control: shortcut-data fix keeps >= 80% of the gap"].append(c["gap_none_minus_opposite"] >= KEEP_MIN_FRAC * G)
+    return out
+
+
+def swap_fracs(R, prefix):
+    """{seed: [fraction removed by the Phase 2 swap, case a, for each single block]} from a condition's swap files."""
+    out = {}
+    for s in SEEDS:
+        f = json.load(open(R / "swap" / f"seed{s}.json"))
+        G = f["baseline"][f"{prefix}shortcut_seed{s}"]["gap_none_minus_opposite"]
+        out[s] = [frac_removed(f["cases"][A]["by_blocks"][str(b)], G) for b in range(12)]
+    return out
+
+
+def lens_block(R, prefix):
+    """Largest mean per-block drop on 'opposite' (calibrated lens), shortcut models (reported, no rule)."""
+    ls = [json.load(open(R / "logit_lens" / f"{prefix}shortcut_seed{s}.json"))["cal_acc"]["opposite"] for s in SEEDS]
+    return int(np.argmax(np.mean([[l[b] - l[b + 1] for b in range(12)] for l in ls], 0)))
+
+
+def weakfix_section(o):
+    from weakfix import LOCALIZED, TOP3_SWAP
+    W = RESULTS / "weakfix"
+    conds = [c for c in L3_LABELS if all((W / c / f"seed{s}.json").exists() for s in SEEDS)]
+    if not conds:
+        return
+    paths = {"full_ft": ("", RESULTS), "lora_r4": ("lora_r4_", RESULTS / "lora_r4"), "lora_r64": ("lora_r64_", RESULTS / "lora_r64")}
+    o += ["## Weak fix (Phase L3)", "",
+          "PROJECT_SPEC.md Phase L3 (pre-registered 21 Oct, merged in #10 before any L3 run). A new rank-4 LoRA adapter "
+          "(49,152 parameters) on ONE block of each shortcut model as it is, trained on clean data (lr 5e-4, 1-epoch "
+          "schedule), via src/weakfix.py (src/train.py's train() unchanged; every other weight asserted bit-identical). "
+          "Step budget B per condition from seed 0's fix on all 12 blocks (first step removing >= 50%); rules read at B, "
+          "with the pre-registered floor/ceiling fallbacks. Fraction removed = (G_s − gap) / G_s. A block whose acc(none) "
+          "drops by more than 0.02 is ranked last; ties count against a block. PASS only if all 3 seeds pass. Phase 3b r64 "
+          "results were available when Phase L3 was committed; the localized block comes from swap results only.", ""]
+    # start-model checks and budgets
+    o += ["| condition | start-model checks | B (all-12-block fix, seed 0) | fraction removed by the all-block fix, by step |",
+          "|---|---|---|---|"]
+    for c in conds:
+        sc, bud = load(W / c / "start_checks.json"), load(W / c / "budget.json")
+        o.append(f"| {L3_LABELS[c]} | {'all pass' if sc['all_pass'] else 'FAIL'} | {bud['B']}"
+                 + ("" if bud["reached_50pct"] else " (never reached 50%)") + " | "
+                 + ", ".join(f"{k}: {v:.3f}" for k, v in bud["fraction_removed_by_step"].items()) + " |")
+    o.append("")
+    verdicts, best_blocks = {}, {}
+    for c in conds:
+        prefix, R = paths[c]
+        files = [load(W / c / f"seed{s}.json") for s in SEEDS]
+        B, loc, top3 = files[0]["B"], LOCALIZED[c], TOP3_SWAP[c]
+        sw = swap_fracs(R, prefix)
+        step, note = l3_read_step(files, B)
+        o += [f"### {L3_LABELS[c]}: weak fix", "",
+              f"Localized block {loc} (Phase 2 swap, case a); top-3 swap blocks {top3}; lens block {lens_block(R, prefix)} "
+              f"(reported, no rule). Eval steps {files[0]['eval_steps']}. Reading: {note}.", ""]
+        steps = [int(x) for x in files[0]["eval_steps"]]
+        o += ["Fraction of the gap removed per single block (mean; per-seed values in brackets; * = acc(none) dropped by "
+              "more than 0.02 in that seed):", "", "| block | " + " | ".join(f"step {st}" for st in steps) + " |",
+              "|---|" + "---|" * len(steps)]
+        for b in range(12):
+            row = []
+            for st in steps:
+                v = [(l3_values(f, st)[0][b], l3_values(f, st)[2][b]) for f in files]
+                row.append(f"{np.mean([x for x, _ in v]):.3f} (" + "/".join(f"{x:.3f}" + ("" if k else "*") for x, k in v) + ")")
+            tag = " (localized)" if b == loc else (" (top-3 swap)" if b in top3 else "")
+            o.append(f"| {b}{tag} | " + " | ".join(row) + " |")
+        ctrl = f"ctrl_shortcut:{loc}"
+        o.append(f"| control: block {loc} on shortcut data | " + " | ".join(
+            f"{np.mean([frac_removed(f['runs'][ctrl]['evals'][str(st)], f['baseline']['gap_none_minus_opposite']) for f in files]):.3f}"
+            for st in steps) + " |")
+        o.append("")
+        o += ["Rules per evaluated step (the verdict counts only at the reading step; the others are reported for "
+              "stability):", "", "| rule | " + " | ".join(f"step {st}" + (" (reading)" if st == step else "") for st in steps) + " |",
+              "|---|" + "---|" * len(steps)]
+        per_step = {st: l3_rules(files, st, loc, top3, sw) for st in steps}
+        for rule in per_step[steps[0]]:
+            o.append(f"| {rule} | " + " | ".join(f"{verdict_of(per_step[st][rule])} ({'/'.join('P' if x else 'F' for x in per_step[st][rule])})"
+                                                for st in steps) + " |")
+        o.append("")
+        if step is None:
+            verdicts[c] = {r: "not informative" for r in per_step[steps[0]]}
+        else:
+            verdicts[c] = {r: f"{verdict_of(v)} ({'/'.join('P' if x else 'F' for x in v)})" for r, v in per_step[step].items()}
+            best_blocks[c] = [sorted(range(12), key=lambda b: -l3_values(f, step)[1][b])[0] for f in files]
+            ranks = {b: [l3_rank(l3_values(f, step)[1], b) for f in files] for b in (loc, 0)}
+            o += [f"At the reading step {step}: best single block per seed {best_blocks[c]}; rank of the localized block "
+                  f"{loc}: {'/'.join(map(str, ranks[loc]))}; rank of block 0: {'/'.join(map(str, ranks[0]))}; Spearman with "
+                  "the swap map per seed: " + "/".join(f"{spearman(sw[f['seed']], l3_values(f, step)[1]):.3f}" for f in files) + ".", ""]
+        runs = [r for f in files for r in f["runs"].values()]
+        commits = sorted({str(r.get("git_commit"))[:7] for r in runs})
+        o += [f"Cost: {len(runs)} runs, train {np.mean([r['train_time_s_excl_eval'] for r in runs]):.0f} s and eval "
+              f"{np.mean([r['eval_time_s'] for r in runs]):.0f} s per run (mean), peak VRAM allocated "
+              f"{max(r['train']['peak_vram_allocated_gib'] for r in runs):.2f} GiB; GPU "
+              f"{sorted({r['env']['gpu'] for r in runs if r.get('env')})}; code commit(s) {commits}.", ""]
+    rules = list(next(iter(verdicts.values())))
+    o += ["### Phase L3 verdicts by condition", "",
+          "| rule | " + " | ".join(L3_LABELS[c] for c in verdicts) + " |", "|---|" + "---|" * len(verdicts)]
+    for r in rules:
+        o.append(f"| {r} | " + " | ".join(verdicts[c][r] for c in verdicts) + " |")
+    if best_blocks:
+        o += ["", "Does the best weak-fix block move with the localized block (reported, no verdict)? " + "; ".join(
+            f"{L3_LABELS[c]}: localized {LOCALIZED[c]}, best per seed {best_blocks[c]}" for c in best_blocks) + "."]
+    o += ["", "Caveats (pre-registered): late blocks might be easier to fix in general (the cross-condition comparison "
+          "above is the only check, and it is descriptive); under LoRA the localized block comes from swaps whose own "
+          "control (c-ii) failed for late blocks; for rank 4, Phase 3 already showed blocks 9-10 retrain best, so that "
+          "condition is not fully blind.", ""]
+
+
 def main():
     o = ["# RESULTS_LORA (LoRA on GPT-2)", "",
          "_Generated by `src/report_lora.py` from results files only. Do not edit by hand._", "",
@@ -744,6 +914,7 @@ def main():
         swaps_section(o, Path(tmp_root))
         retrain_section(o, Path(tmp_root))
         budget_section(o, Path(tmp_root))
+    weakfix_section(o)
     OUT.write_text("\n".join(o), encoding="utf-8")
     print(f"wrote {OUT}" + (f" and {FIG}/" if FIG.exists() else ""))
 
