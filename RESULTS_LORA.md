@@ -1300,3 +1300,12 @@ Cost: 39 runs, train 55 s and eval 57 s per run (mean), peak VRAM allocated 2.17
 Does the best weak-fix block move with the localized block (reported, no verdict)? full fine-tuning: localized 11, best per seed [10, 10, 0]; LoRA rank 4: localized 9, best per seed [8, 3, 0]; LoRA rank 64: localized 10, best per seed [11, 0, 11].
 
 Caveats (pre-registered): late blocks might be easier to fix in general (the cross-condition comparison above is the only check, and it is descriptive); under LoRA the localized block comes from swaps whose own control (c-ii) failed for late blocks; for rank 4, Phase 3 already showed blocks 9-10 retrain best, so that condition is not fully blind.
+
+Observation spotted after the Phase L3 results (descriptive only; Sonu, 23 Oct: a "pre-registered" test on the same data would not mean anything, so it is reported as an observation and an open question): the rank of the logit-lens block (largest mean per-block drop on 'opposite') among the 12 weak fixes at the reading step, per seed: full fine-tuning: lens block 11 ranks 3/2/4 (same block as the swap localization); LoRA rank 4: lens block 9 ranks 2/6/3 (same block as the swap localization); LoRA rank 64: lens block 11 ranks 1/7/1 (the swap-localized block is 10).
+
+## Open questions and future work (not run)
+
+- **Repairing the swap control for LoRA.** c-ii fails under LoRA and the adapter-overlap check points to seed-specific directions. Aligning two seeds' adapters first (e.g. KnOTS, Stoica et al., ICLR 2025) and re-running c-ii would test whether alignment repairs the control. A new method, so future work (Sonu, 23 Oct).
+- **Shared-initialisation LoRA seeds.** Training LoRA seeds from the same adapter initialisation (different data order) would test whether the seed-specific directions come from LoRA's random A start. Not run: it mostly confirms known work (Zhu et al., ICML 2024: LoRA's A barely moves from its random start) (Sonu, 23 Oct).
+- **Logit lens vs swaps as a guide to cheap fixes under LoRA.** See the observation after the Phase L3 verdicts; spotted after the results, so it needs new data to test.
+- **Why rank 4 behaves differently** (fit / shortcut strength vs rank): Phase L3b gives a one-seed descriptive hint; a proper answer would need several seeds at matched shortcut strength.
