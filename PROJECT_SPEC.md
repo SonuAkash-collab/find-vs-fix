@@ -447,3 +447,15 @@ block that localization points to work best?
     a localization that did not pass its check.
   - For r4, Phase 3 already showed full-block retraining works best at blocks 9-10, so that condition is not fully
     blind; the localized block was still picked from the swaps, not from retraining.
+
+## Phase L3b: is rank 4's location effect about rank or about shortcut strength? (descriptive; pre-registered 23 Oct 2026, before any L3b run)
+Decided by Sonu (23 Oct): a small descriptive check, folded into the write-up. Phase 3 single blocks 0-11 (src/retrain.py
+unchanged, Phase 3 settings, seed 0) on one model, the seed-0 pilot run lora_r4_lr1e-3_shortcut_seed0 (rank 4 at lr 1e-3:
+gap 0.583, train loss 0.187, vs 0.353 / 0.234 for the main r4 seed-0 model), used under the run name
+lora_r4_lr1em3_shortcut_seed0 (prefixes cannot contain "-"; the model is not changed or copied). Before any run, its
+accuracies (src/checks.py) must equal its pilot results file.
+Reported, no verdict: fraction removed per block next to r4 / full FT / r64 seed 0 (Phase 3); the number of single blocks
+passing "removes"; mean fraction removed by blocks 1-5 (r4's weak region in Phase 3) minus by blocks 9-10 (its best).
+Reading: if blocks 1-5 come out like full FT / r64 (close to blocks 9-10), it suggests shortcut strength / fit; if like
+r4 seed 0, it suggests rank. One seed, a different lr (1e-3) and a model in between in strength and fit: it can suggest,
+not prove.
