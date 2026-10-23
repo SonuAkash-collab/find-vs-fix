@@ -16,9 +16,10 @@ import numpy as np  # noqa: E402
 
 from common import RESULTS, ROOT, VERSIONS, load_cfg  # noqa: E402
 from report import COLORS, DROP_FRAC, EARLY_MAX_LAYER, OVERTHINK_MIN_GAIN, cell, ms  # noqa: E402  (same rule as GPT-2)
-from report import (BUDGET_EARLY, BUDGET_LATE, BUDGET_MIN_DIFF, BUDGET_RULE_STEP, phase3b_section)  # noqa: E402
+from report import (BUDGET_EARLY, BUDGET_LATE, BUDGET_MIN_DIFF, BUDGET_RULE_STEP, BUDGET_SINGLES,  # noqa: E402
+                    phase3b_section)
 from report import (A, B, CI, CII, CONTROLS, HALF_MIN_SHARE, HALF_SETS, KEEP_MIN_FRAC, LATE_MIN_RATIO,  # noqa: E402
-                    OTHER_WINDOWS,
+                    OTHER_WINDOWS, REMOVE_MAX_NONE_DROP,
                     REMOVE_MAX_FRAC, RETRAIN_ORDER, SPEARMAN_MIN, frac_removed, load_seed_files, load_swap,
                     phase2b_section, phase3_section, rule_creates, rule_keeps, rule_removes, seed_base, shortcut_base,
                     spearman, swap_figure, swap_result, swap_section)
@@ -436,6 +437,24 @@ def overlap_note(o):
         o += ["", "Mean over blocks 9-11 (where c-ii failed under LoRA) vs blocks 0-8: " + "; ".join(
             f"{name} {late[c]:.3f} vs {early[c]:.3f}" for name, c in cols) + ".", ""]
 
+    def side_ratio(cond, view, b, side):
+        k, i = ov["conditions"][cond]["k"], ("input", "output").index(side)
+        return float(np.mean([v / (k / dims[m][i]) for m in dims
+                              for v in ov["conditions"][cond]["overlap"][view][str(b)][m][side].values()]))
+
+    def side_range(cond, side, view="whole_update"):
+        r = [side_ratio(cond, view, b, side) for b in range(12)]
+        return f"{min(r):.1f}–{max(r):.1f}×"
+
+    o += ["Split by side (Sonu's review of #11; same numbers, no new computation), whole update, range over the 12 blocks "
+          "of the multiple of the random level: " + "; ".join(
+              f"{name}: input side {side_range(c, 'input')}, output side {side_range(c, 'output')}" for name, c in cols)
+          + ". On the input side LoRA rank 64 is at about the random level and LoRA rank 4 far below its output side. "
+          "That fits LoRA's A matrices (which set the input-side directions) starting from a random, seed-specific "
+          "initialisation and moving little, while the output side is still clearly below full fine-tuning. So the "
+          "seed-specific directions may come largely from LoRA's random start rather than from learning different "
+          "features; either way it fits the c-ii failure.", ""]
+
 
 # ---- Retraining (Phase 3). report.py's phase3_section runs unchanged on the same prefix-stripped copy (it reads the
 # rank's own swap files too, for its swap-vs-retrain Spearman rule).
@@ -650,7 +669,9 @@ def retrain_notes(o, labels, flags, rts, smaps, stopped):
         fl = flags[l].get(rule) or []
         if l in stopped or not fl or None in fl or all(fl):
             continue
-        o.append(f"Swap-vs-retrain Spearman below {SPEARMAN_MIN} ({l}): what the two orders look like, per seed.")
+        o.append(f"Swap-vs-retrain Spearman below {SPEARMAN_MIN} ({l}): what the two orders look like, per seed. The "
+                 "cause on the swap side is the same as for the swap-map Spearman in the swap section: most single-block "
+                 "swaps remove almost nothing, so their order is noise.")
         o.append("")
         for s in SEEDS:
             f, w = rts[l][s], smaps[l][s]
@@ -676,6 +697,272 @@ def retrain_notes(o, labels, flags, rts, smaps, stopped):
             o.append(f"| {l} | {n} | " + " / ".join(f"{b:.3f} → {a:.3f}" for b, a in zip(before, after))
                      + f" | {ch:+.0%} |")
     o.append("")
+    complete = [l for l in labels if l not in stopped and sorted(rts[l]) == list(SEEDS)]
+    borderline_note(o, complete, rts)
+    shape_note(o, complete, rts)
+    fit_note(o, complete, rts)
+
+
+Z_CLEAR = 2.0  # descriptive only: a seed's "removes" failure is "clear" if it is >= 2 test-set standard errors below the line
+
+
+def borderline_note(o, labels, rts):
+    """Which "removes" failures are clear and which are within test-set noise (Sonu's review of #8)."""
+    n = json.load(open(ROOT / "data" / "manifest.json"))["counts"]["test"]
+    line = 1 - REMOVE_MAX_FRAC
+    rows = []
+    for l in labels:
+        for name in RETRAIN_ORDER:
+            cells, failed = [], False
+            for s in SEEDS:
+                b, r = rts[l][s]["baseline"], rts[l][s]["runs"][name]
+                G, a = b["gap_none_minus_opposite"], r["accuracy"]
+                fr = frac_removed(r, G)
+                se = np.sqrt(a["none"] * (1 - a["none"]) / n + a["opposite"] * (1 - a["opposite"]) / n) / G
+                z = (fr - line) / se
+                if rule_removes(r, G, b["accuracy"]["none"]):
+                    cells.append(f"{fr:.3f} pass")
+                    continue
+                failed = True
+                kind = "accuracy cost" if fr >= line else ("clear" if z <= -Z_CLEAR else "borderline")
+                cells.append(f"{fr:.3f} **{kind}** (z {z:+.1f})")
+            if failed:
+                rows.append(f"| {l} | {name} | " + " / ".join(cells) + " |")
+    if not rows:
+        return
+    o += [f"Which \"removes\" failures are clear and which are within noise. z = (fraction removed − {line}) / its "
+          f"standard error from the {n}-review test set alone (each accuracy treated as independent, so a rough upper "
+          f"bound; differences between seeds are on top of this). A failure is \"clear\" if z ≤ −{Z_CLEAR}, else "
+          "\"borderline\". Per seed, in seed order:", "",
+          "| condition | block(s) | fraction removed per seed |", "|---|---|---|"] + rows + [""]
+
+
+def shape_note(o, labels, rts):
+    """Sonu's notes on #8/#9: the per-block shape of a Phase 3 run that did not hit the ceiling, next to the Phase 3b
+    (step 100) curves, and where blocks 0 and 11 rank."""
+    paths = {label: R for label, _, R in CONDITIONS}
+    cols = []
+    for l in labels:
+        c = load(paths[l] / "retrain" / "ceiling.json") if l != "full fine-tuning" else None
+        if c is not None and not c["ceiling"]:
+            cols.append((f"{l}, Phase 3 (625 steps)", {n: [frac_removed(rts[l][s]["runs"][n],
+                                                                        rts[l][s]["baseline"]["gap_none_minus_opposite"])
+                                                           for s in SEEDS] for n in BUDGET_SINGLES}))
+    if not cols:
+        return
+    for label, _, R in CONDITIONS:
+        bus = {s["seed"]: s for s in load_seed_files(R, "retrain_budget")}
+        if sorted(bus) == list(SEEDS):
+            cols.append((f"{label}, Phase 3b step {BUDGET_RULE_STEP}", {
+                n: [frac_removed(bus[s]["runs"][n]["evals"][BUDGET_RULE_STEP], bus[s]["baseline"]["gap_none_minus_opposite"])
+                    for s in SEEDS] for n in BUDGET_SINGLES}))
+    means = [{n: float(np.mean(v)) for n, v in c.items()} for _, c in cols]
+    rank = lambda m, b: 1 + sum(m[x] > m[b] for x in BUDGET_SINGLES)  # noqa: E731
+    o += [f"Shape across single blocks (mean fraction removed over seeds): a Phase 3 run without the ceiling next to the "
+          f"Phase 3b curves at step {BUDGET_RULE_STEP} (the {len(BUDGET_SINGLES)} single blocks Phase 3b has).", "",
+          "| block | " + " | ".join(c for c, _ in cols) + " |", "|---|" + "---|" * len(cols)]
+    for b in BUDGET_SINGLES:
+        o.append(f"| {b} | " + " | ".join(f"{m[b]:.3f}" for m in means) + " |")
+    o += ["", "Rank among these blocks (1 = removes most): " + "; ".join(
+        f"{c}: block 0 #{rank(m, '0')}, block 11 #{rank(m, '11')}" for (c, _), m in zip(cols, means)) + ". Spearman of "
+        f"each column with the first: " + ", ".join(
+            f"{c} {spearman([means[0][b] for b in BUDGET_SINGLES], [m[b] for b in BUDGET_SINGLES]):.3f}"
+            for (c, _), m in zip(cols[1:], means[1:])) + ".", ""]
+
+
+def fit_note(o, labels, rts):
+    """Open question (hypothesis after the results): how well each condition's start models fit their training data,
+    next to the training loss left after one-block retraining."""
+    paths = {label: (prefix, R) for label, prefix, R in CONDITIONS}
+    o += ["Open question (a hypothesis after seeing the results; nothing here is tested): how well the start models fit "
+          "their training data. Train loss = mean over the last 50 steps, per seed.", "",
+          "| condition | end of the original training | after Phase 3, mean over the 12 single-block runs |", "|---|---|---|"]
+    for l in labels:
+        prefix, R = paths[l]
+        orig = [load(R / "checks" / f"{prefix}shortcut_seed{s}.json")["train"]["final_loss_mean_last50"] for s in SEEDS]
+        after = [np.mean([rts[l][s]["runs"][str(b)]["train"]["final_loss_mean_last50"] for b in range(12)]) for s in SEEDS]
+        o.append(f"| {l} | {' / '.join(f'{x:.3f}' for x in orig)} | {' / '.join(f'{x:.3f}' for x in after)} |")
+    o += ["", "One possible reading: where the start model already fits the retraining reviews (the same 10,000 it was "
+          "trained on), little is left to learn except that the names mean nothing, so retraining almost any block "
+          "removes the shortcut; where it fits them less well, one block's retraining also has general task error to fix, "
+          "and only some blocks remove the shortcut within an epoch. A weaker shortcut is a second candidate.", ""]
+    pilot = [load(RESULTS / "lora_pilot" / f"{n}.json") for n in ("lora_r4_lr1e-3_shortcut_seed0", "lora_r4_lr5e-4_shortcut_seed0")]
+    if all(pilot):
+        o += ["A possible check, not run (it would need its own pre-registration): Phase 3 single blocks on the seed-0 "
+              "pilot model " + " vs ".join(f"{p['run']} (gap {p['gap_none_minus_opposite']:.3f}, train loss "
+                                           f"{p['train']['final_loss_mean_last50']:.3f})" for p in pilot)
+              + ", one seed only and a different lr."]
+    o.append("")
+
+
+# ---- Phase L3: weak fix (PROJECT_SPEC.md "Phase L3"). Rules applied exactly as pre-registered; read at step B with the
+# floor/ceiling fallbacks; a block whose acc(none) drops by more than 0.02 is ranked last; ties count against a block.
+L3_TOP_K = 3
+L3_FLOOR, L3_CEIL = 0.10, 0.90
+L3_LABELS = {"full_ft": "full fine-tuning", "lora_r4": "LoRA rank 4", "lora_r64": "LoRA rank 64"}
+
+
+def l3_values(res, step):
+    """Per single block at a step: fraction removed, and the value used for ranking (blocks with an accuracy cost go
+    last, below every block without one)."""
+    G, none0 = res["baseline"]["gap_none_minus_opposite"], res["baseline"]["accuracy"]["none"]
+    fr = [frac_removed(res["runs"][str(b)]["evals"][str(step)], G) for b in range(12)]
+    ok = [none0 - res["runs"][str(b)]["evals"][str(step)]["accuracy"]["none"] <= REMOVE_MAX_NONE_DROP for b in range(12)]
+    low = min(fr) - 1.0
+    return fr, [f if k else low for f, k in zip(fr, ok)], ok
+
+
+def l3_rank(vals, b):
+    """1-based rank of block b, ties counted against it (= number of blocks at least as good)."""
+    return sum(v >= vals[b] for v in vals)
+
+
+def l3_read_step(files, B):
+    """The step the rules are read at (PROJECT_SPEC.md Phase L3): B; on a floor -> 2B, then 625; on a ceiling -> B/2.
+    Returns (step, note); step None = "not informative"."""
+    steps = [int(x) for x in files[0]["eval_steps"]]
+
+    def state(st):
+        fl = [l3_values(f, st)[0] for f in files]
+        if any(max(x) < L3_FLOOR for x in fl):
+            return "floor"
+        if any(min(x) >= L3_CEIL for x in fl):
+            return "ceiling"
+        return "ok"
+
+    s0 = state(B)
+    if s0 == "ok":
+        return B, f"read at B = {B}"
+    tried = [B]
+    options = ([2 * B] if 2 * B in steps and 2 * B != B else []) + ([625] if 625 not in (B, 2 * B) else []) \
+        if s0 == "floor" else ([B // 2] if B // 2 in steps else [])
+    for st in options:
+        tried.append(st)
+        if state(st) == "ok":
+            return st, f"{s0} at B = {B}; read at step {st} (pre-registered fallback)"
+    return None, f"{s0} at every pre-registered option ({', '.join(map(str, tried))}): not informative"
+
+
+def l3_rules(files, step, loc, top3, swap_fr):
+    """Per-seed flags of Rules 1, 1b, 2, 3 and the control, at one step."""
+    out = {"Rule 1: localized block in the top 3": [], "Rule 1b: best block among the top-3 swap blocks": [],
+           "Rule 2: Spearman(swap, weak fix) >= 0.6": [], "Rule 3: block 0 in the top 3": [],
+           "Control: shortcut-data fix keeps >= 80% of the gap": []}
+    for f in files:
+        s = f["seed"]
+        fr, val, _ = l3_values(f, step)
+        best = [b for b in range(12) if val[b] == max(val)]
+        out["Rule 1: localized block in the top 3"].append(l3_rank(val, loc) <= L3_TOP_K)
+        out["Rule 1b: best block among the top-3 swap blocks"].append(all(b in top3 for b in best))
+        out["Rule 2: Spearman(swap, weak fix) >= 0.6"].append(spearman(swap_fr[s], val) >= SPEARMAN_MIN)
+        out["Rule 3: block 0 in the top 3"].append(l3_rank(val, 0) <= L3_TOP_K)
+        G = f["baseline"]["gap_none_minus_opposite"]
+        c = f["runs"][f"ctrl_shortcut:{loc}"]["evals"][str(step)]
+        out["Control: shortcut-data fix keeps >= 80% of the gap"].append(c["gap_none_minus_opposite"] >= KEEP_MIN_FRAC * G)
+    return out
+
+
+def swap_fracs(R, prefix):
+    """{seed: [fraction removed by the Phase 2 swap, case a, for each single block]} from a condition's swap files."""
+    out = {}
+    for s in SEEDS:
+        f = json.load(open(R / "swap" / f"seed{s}.json"))
+        G = f["baseline"][f"{prefix}shortcut_seed{s}"]["gap_none_minus_opposite"]
+        out[s] = [frac_removed(f["cases"][A]["by_blocks"][str(b)], G) for b in range(12)]
+    return out
+
+
+def lens_block(R, prefix):
+    """Largest mean per-block drop on 'opposite' (calibrated lens), shortcut models (reported, no rule)."""
+    ls = [json.load(open(R / "logit_lens" / f"{prefix}shortcut_seed{s}.json"))["cal_acc"]["opposite"] for s in SEEDS]
+    return int(np.argmax(np.mean([[l[b] - l[b + 1] for b in range(12)] for l in ls], 0)))
+
+
+def weakfix_section(o):
+    from weakfix import LOCALIZED, TOP3_SWAP
+    W = RESULTS / "weakfix"
+    conds = [c for c in L3_LABELS if all((W / c / f"seed{s}.json").exists() for s in SEEDS)]
+    if not conds:
+        return
+    paths = {"full_ft": ("", RESULTS), "lora_r4": ("lora_r4_", RESULTS / "lora_r4"), "lora_r64": ("lora_r64_", RESULTS / "lora_r64")}
+    o += ["## Weak fix (Phase L3)", "",
+          "PROJECT_SPEC.md Phase L3 (pre-registered 21 Oct, merged in #10 before any L3 run). A new rank-4 LoRA adapter "
+          "(49,152 parameters) on ONE block of each shortcut model as it is, trained on clean data (lr 5e-4, 1-epoch "
+          "schedule), via src/weakfix.py (src/train.py's train() unchanged; every other weight asserted bit-identical). "
+          "Step budget B per condition from seed 0's fix on all 12 blocks (first step removing >= 50%); rules read at B, "
+          "with the pre-registered floor/ceiling fallbacks. Fraction removed = (G_s − gap) / G_s. A block whose acc(none) "
+          "drops by more than 0.02 is ranked last; ties count against a block. PASS only if all 3 seeds pass. Phase 3b r64 "
+          "results were available when Phase L3 was committed; the localized block comes from swap results only.", ""]
+    # start-model checks and budgets
+    o += ["| condition | start-model checks | B (all-12-block fix, seed 0) | fraction removed by the all-block fix, by step |",
+          "|---|---|---|---|"]
+    for c in conds:
+        sc, bud = load(W / c / "start_checks.json"), load(W / c / "budget.json")
+        o.append(f"| {L3_LABELS[c]} | {'all pass' if sc['all_pass'] else 'FAIL'} | {bud['B']}"
+                 + ("" if bud["reached_50pct"] else " (never reached 50%)") + " | "
+                 + ", ".join(f"{k}: {v:.3f}" for k, v in bud["fraction_removed_by_step"].items()) + " |")
+    o.append("")
+    verdicts, best_blocks = {}, {}
+    for c in conds:
+        prefix, R = paths[c]
+        files = [load(W / c / f"seed{s}.json") for s in SEEDS]
+        B, loc, top3 = files[0]["B"], LOCALIZED[c], TOP3_SWAP[c]
+        sw = swap_fracs(R, prefix)
+        step, note = l3_read_step(files, B)
+        o += [f"### {L3_LABELS[c]}: weak fix", "",
+              f"Localized block {loc} (Phase 2 swap, case a); top-3 swap blocks {top3}; lens block {lens_block(R, prefix)} "
+              f"(reported, no rule). Eval steps {files[0]['eval_steps']}. Reading: {note}.", ""]
+        steps = [int(x) for x in files[0]["eval_steps"]]
+        o += ["Fraction of the gap removed per single block (mean; per-seed values in brackets; * = acc(none) dropped by "
+              "more than 0.02 in that seed):", "", "| block | " + " | ".join(f"step {st}" for st in steps) + " |",
+              "|---|" + "---|" * len(steps)]
+        for b in range(12):
+            row = []
+            for st in steps:
+                v = [(l3_values(f, st)[0][b], l3_values(f, st)[2][b]) for f in files]
+                row.append(f"{np.mean([x for x, _ in v]):.3f} (" + "/".join(f"{x:.3f}" + ("" if k else "*") for x, k in v) + ")")
+            tag = " (localized)" if b == loc else (" (top-3 swap)" if b in top3 else "")
+            o.append(f"| {b}{tag} | " + " | ".join(row) + " |")
+        ctrl = f"ctrl_shortcut:{loc}"
+        o.append(f"| control: block {loc} on shortcut data | " + " | ".join(
+            f"{np.mean([frac_removed(f['runs'][ctrl]['evals'][str(st)], f['baseline']['gap_none_minus_opposite']) for f in files]):.3f}"
+            for st in steps) + " |")
+        o.append("")
+        o += ["Rules per evaluated step (the verdict counts only at the reading step; the others are reported for "
+              "stability):", "", "| rule | " + " | ".join(f"step {st}" + (" (reading)" if st == step else "") for st in steps) + " |",
+              "|---|" + "---|" * len(steps)]
+        per_step = {st: l3_rules(files, st, loc, top3, sw) for st in steps}
+        for rule in per_step[steps[0]]:
+            o.append(f"| {rule} | " + " | ".join(f"{verdict_of(per_step[st][rule])} ({'/'.join('P' if x else 'F' for x in per_step[st][rule])})"
+                                                for st in steps) + " |")
+        o.append("")
+        if step is None:
+            verdicts[c] = {r: "not informative" for r in per_step[steps[0]]}
+        else:
+            verdicts[c] = {r: f"{verdict_of(v)} ({'/'.join('P' if x else 'F' for x in v)})" for r, v in per_step[step].items()}
+            best_blocks[c] = [sorted(range(12), key=lambda b: -l3_values(f, step)[1][b])[0] for f in files]
+            ranks = {b: [l3_rank(l3_values(f, step)[1], b) for f in files] for b in (loc, 0)}
+            o += [f"At the reading step {step}: best single block per seed {best_blocks[c]}; rank of the localized block "
+                  f"{loc}: {'/'.join(map(str, ranks[loc]))}; rank of block 0: {'/'.join(map(str, ranks[0]))}; Spearman with "
+                  "the swap map per seed: " + "/".join(f"{spearman(sw[f['seed']], l3_values(f, step)[1]):.3f}" for f in files) + ".", ""]
+        runs = [r for f in files for r in f["runs"].values()]
+        commits = sorted({str(r.get("git_commit"))[:7] for r in runs})
+        o += [f"Cost: {len(runs)} runs, train {np.mean([r['train_time_s_excl_eval'] for r in runs]):.0f} s and eval "
+              f"{np.mean([r['eval_time_s'] for r in runs]):.0f} s per run (mean), peak VRAM allocated "
+              f"{max(r['train']['peak_vram_allocated_gib'] for r in runs):.2f} GiB; GPU "
+              f"{sorted({r['env']['gpu'] for r in runs if r.get('env')})}; code commit(s) {commits}.", ""]
+    rules = list(next(iter(verdicts.values())))
+    o += ["### Phase L3 verdicts by condition", "",
+          "| rule | " + " | ".join(L3_LABELS[c] for c in verdicts) + " |", "|---|" + "---|" * len(verdicts)]
+    for r in rules:
+        o.append(f"| {r} | " + " | ".join(verdicts[c][r] for c in verdicts) + " |")
+    if best_blocks:
+        o += ["", "Does the best weak-fix block move with the localized block (reported, no verdict)? " + "; ".join(
+            f"{L3_LABELS[c]}: localized {LOCALIZED[c]}, best per seed {best_blocks[c]}" for c in best_blocks) + "."]
+    o += ["", "Caveats (pre-registered): late blocks might be easier to fix in general (the cross-condition comparison "
+          "above is the only check, and it is descriptive); under LoRA the localized block comes from swaps whose own "
+          "control (c-ii) failed for late blocks; for rank 4, Phase 3 already showed blocks 9-10 retrain best, so that "
+          "condition is not fully blind.", ""]
 
 
 def main():
@@ -690,6 +977,7 @@ def main():
         swaps_section(o, Path(tmp_root))
         retrain_section(o, Path(tmp_root))
         budget_section(o, Path(tmp_root))
+    weakfix_section(o)
     OUT.write_text("\n".join(o), encoding="utf-8")
     print(f"wrote {OUT}" + (f" and {FIG}/" if FIG.exists() else ""))
 

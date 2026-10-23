@@ -802,6 +802,8 @@ Overlap per block, shortcut-specific update (shortcut model minus its clean twin
 
 Mean over blocks 9-11 (where c-ii failed under LoRA) vs blocks 0-8: LoRA rank 4 (k=4) 0.244 vs 0.104; full FT (k=4) 0.560 vs 0.340; LoRA rank 64 (k=64) 0.125 vs 0.107; full FT (k=64) 0.365 vs 0.341.
 
+Split by side (Sonu's review of #11; same numbers, no new computation), whole update, range over the 12 blocks of the multiple of the random level: LoRA rank 4 (k=4): input side 4.7–36.0×, output side 32.8–91.8×; full FT (k=4): input side 175.3–226.8×, output side 104.9–256.4×; LoRA rank 64 (k=64): input side 1.1–1.2×, output side 2.2–3.7×; full FT (k=64): input side 8.9–10.0×, output side 7.1–11.2×. On the input side LoRA rank 64 is at about the random level and LoRA rank 4 far below its output side. That fits LoRA's A matrices (which set the input-side directions) starting from a random, seed-specific initialisation and moving little, while the output side is still clearly below full fine-tuning. So the seed-specific directions may come largely from LoRA's random start rather than from learning different features; either way it fits the c-ii failure.
+
 ## Retraining (Phase 3, Phase L2)
 
 Same block sets, controls, gate and reading rules as the GPT-2 Phase 3 (src/retrain.py unchanged, run with --prefix). Each run starts from the rank's merged shortcut model as it is (shortcut included), freezes everything except the chosen blocks, and keeps training those blocks' full weights for 1 epoch on clean data (controls: on the shortcut data), at the GPT-2 Phase 3 settings (configs/pilot.yaml). No new LoRA adapters, no reset. Tables and verdicts come from src/report.py's own Phase 3 section, run unchanged on a copy of each rank's files with the run-name prefix removed; its swap-vs-retrain Spearman uses that rank's own swap files. The gate (seed 0, 'all' and '9-10-11' first) is run by src/run_lora.py retrain, both ranks' gates before any other run.
@@ -1014,7 +1016,7 @@ Fraction of the gap removed by retraining, side by side (descriptive; mean, per-
 
 ### Notes added after seeing the retraining results (descriptive; no verdict changes)
 
-Swap-vs-retrain Spearman below 0.6 (LoRA rank 64): what the two orders look like, per seed.
+Swap-vs-retrain Spearman below 0.6 (LoRA rank 64): what the two orders look like, per seed. The cause on the swap side is the same as for the swap-map Spearman in the swap section: most single-block swaps remove almost nothing, so their order is noise.
 
 - seed 0 (Spearman 0.497): retraining one block removes 0.835–1.001 of the gap across the 12 single blocks, most for block 0 (1.001) and least for block 3 (0.835); the swap removes almost nothing (|fraction| < 0.05) for blocks 1–6, so the swap order of those blocks is noise.
 - seed 1 (Spearman -0.098): retraining one block removes 0.806–0.979 of the gap across the 12 single blocks, most for block 9 (0.979) and least for block 11 (0.806); the swap removes almost nothing (|fraction| < 0.05) for blocks 0–6, so the swap order of those blocks is noise.
@@ -1030,6 +1032,44 @@ Controls (retrained on the shortcut data): the rule "keeps the shortcut" needs t
 | LoRA rank 4 | ctrl_shortcut:all | 0.353 → 0.567 / 0.266 → 0.512 / 0.224 → 0.483 | +90% |
 | LoRA rank 64 | ctrl_shortcut:9-10-11 | 0.800 → 0.754 / 0.801 → 0.776 / 0.879 → 0.875 | -3% |
 | LoRA rank 64 | ctrl_shortcut:all | 0.800 → 0.745 / 0.801 → 0.710 / 0.879 → 0.860 | -7% |
+
+Which "removes" failures are clear and which are within noise. z = (fraction removed − 0.5) / its standard error from the 2000-review test set alone (each accuracy treated as independent, so a rough upper bound; differences between seeds are on top of this). A failure is "clear" if z ≤ −2.0, else "borderline". Per seed, in seed order:
+
+| condition | block(s) | fraction removed per seed |
+|---|---|---|
+| LoRA rank 4 | 1 | 0.454 **borderline** (z -1.3) / 0.418 **borderline** (z -1.7) / 0.358 **clear** (z -2.6) |
+| LoRA rank 4 | 2 | 0.447 **borderline** (z -1.5) / 0.424 **borderline** (z -1.6) / 0.329 **clear** (z -3.0) |
+| LoRA rank 4 | 3 | 0.519 pass / 0.448 **borderline** (z -1.1) / 0.353 **clear** (z -2.6) |
+| LoRA rank 4 | 4 | 0.533 pass / 0.484 **borderline** (z -0.3) / 0.400 **borderline** (z -1.8) |
+| LoRA rank 4 | 5 | 0.559 pass / 0.544 pass / 0.450 **borderline** (z -0.9) |
+| LoRA rank 4 | 11 | 0.495 **borderline** (z -0.1) / 0.683 pass / 0.226 **clear** (z -4.8) |
+
+Shape across single blocks (mean fraction removed over seeds): a Phase 3 run without the ceiling next to the Phase 3b curves at step 100 (the 8 single blocks Phase 3b has).
+
+| block | LoRA rank 4, Phase 3 (625 steps) | full fine-tuning, Phase 3b step 100 | LoRA rank 64, Phase 3b step 100 |
+|---|---|---|---|
+| 0 | 0.729 | 0.473 | 0.715 |
+| 2 | 0.400 | 0.171 | 0.191 |
+| 4 | 0.473 | 0.254 | 0.227 |
+| 6 | 0.595 | 0.391 | 0.294 |
+| 8 | 0.684 | 0.470 | 0.357 |
+| 9 | 0.759 | 0.562 | 0.473 |
+| 10 | 0.785 | 0.624 | 0.458 |
+| 11 | 0.468 | 0.423 | 0.232 |
+
+Rank among these blocks (1 = removes most): LoRA rank 4, Phase 3 (625 steps): block 0 #3, block 11 #7; full fine-tuning, Phase 3b step 100: block 0 #3, block 11 #5; LoRA rank 64, Phase 3b step 100: block 0 #1, block 11 #6. Spearman of each column with the first: full fine-tuning, Phase 3b step 100 0.929, LoRA rank 64, Phase 3b step 100 0.881.
+
+Open question (a hypothesis after seeing the results; nothing here is tested): how well the start models fit their training data. Train loss = mean over the last 50 steps, per seed.
+
+| condition | end of the original training | after Phase 3, mean over the 12 single-block runs |
+|---|---|---|
+| full fine-tuning | 0.119 / 0.103 / 0.138 | 0.030 / 0.050 / 0.034 |
+| LoRA rank 4 | 0.234 / 0.234 / 0.254 | 0.209 / 0.201 / 0.165 |
+| LoRA rank 64 | 0.134 / 0.120 / 0.147 | 0.049 / 0.060 / 0.039 |
+
+One possible reading: where the start model already fits the retraining reviews (the same 10,000 it was trained on), little is left to learn except that the names mean nothing, so retraining almost any block removes the shortcut; where it fits them less well, one block's retraining also has general task error to fix, and only some blocks remove the shortcut within an epoch. A weaker shortcut is a second candidate.
+
+A possible check, not run (it would need its own pre-registration): Phase 3 single blocks on the seed-0 pilot model lora_r4_lr1e-3_shortcut_seed0 (gap 0.583, train loss 0.187) vs lora_r4_lr5e-4_shortcut_seed0 (gap 0.353, train loss 0.234), one seed only and a different lr.
 
 ## Retraining budget (Phase 3b, Phase L2)
 
@@ -1128,3 +1168,135 @@ Environment (results/lora_r64/retrain_budget/env.json, one line per session): NV
 | full fine-tuning | FAIL (P/F/F) | — |
 | LoRA rank 4 | not run (no Phase 3 ceiling) | not applicable |
 | LoRA rank 64 | FAIL (F/F/F) | yes |
+
+## Weak fix (Phase L3)
+
+PROJECT_SPEC.md Phase L3 (pre-registered 21 Oct, merged in #10 before any L3 run). A new rank-4 LoRA adapter (49,152 parameters) on ONE block of each shortcut model as it is, trained on clean data (lr 5e-4, 1-epoch schedule), via src/weakfix.py (src/train.py's train() unchanged; every other weight asserted bit-identical). Step budget B per condition from seed 0's fix on all 12 blocks (first step removing >= 50%); rules read at B, with the pre-registered floor/ceiling fallbacks. Fraction removed = (G_s − gap) / G_s. A block whose acc(none) drops by more than 0.02 is ranked last; ties count against a block. PASS only if all 3 seeds pass. Phase 3b r64 results were available when Phase L3 was committed; the localized block comes from swap results only.
+
+| condition | start-model checks | B (all-12-block fix, seed 0) | fraction removed by the all-block fix, by step |
+|---|---|---|---|
+| full fine-tuning | all pass | 100 | 25: 0.007, 50: 0.092, 100: 0.820, 150: 0.903, 200: 0.960, 300: 0.976, 400: 0.969, 500: 0.968, 625: 0.970 |
+| LoRA rank 4 | all pass | 100 | 25: 0.178, 50: 0.141, 100: 0.663, 150: 0.765, 200: 0.884, 300: 0.953, 400: 0.948, 500: 0.945, 625: 0.936 |
+| LoRA rank 64 | all pass | 100 | 25: 0.018, 50: 0.116, 100: 0.847, 150: 0.936, 200: 0.994, 300: 1.028, 400: 1.022, 500: 1.015, 625: 1.012 |
+
+### full fine-tuning: weak fix
+
+Localized block 11 (Phase 2 swap, case a); top-3 swap blocks [11, 10, 9]; lens block 11 (reported, no rule). Eval steps [50, 100, 200, 625]. Reading: read at B = 100.
+
+Fraction of the gap removed per single block (mean; per-seed values in brackets; * = acc(none) dropped by more than 0.02 in that seed):
+
+| block | step 50 | step 100 | step 200 | step 625 |
+|---|---|---|---|---|
+| 0 | 0.008 (0.002/0.011/0.012) | 0.436 (0.320/0.454/0.535) | 0.688 (0.687/0.704/0.675) | 0.908 (0.930/0.951/0.841) |
+| 1 | 0.003 (0.002/0.004/0.005) | 0.066 (0.002/0.124/0.071) | 0.428 (0.200/0.664/0.421) | 0.884 (0.895/0.946/0.810) |
+| 2 | 0.001 (-0.004/0.002/0.006) | 0.047 (-0.001/0.093/0.048) | 0.311 (0.087/0.532/0.312) | 0.825 (0.872/0.862/0.741) |
+| 3 | 0.002 (-0.002/0.002/0.007) | 0.046 (-0.001/0.089/0.050) | 0.322 (0.125/0.579/0.261) | 0.847 (0.847/0.908/0.785) |
+| 4 | 0.005 (-0.004/0.006/0.012) | 0.074 (0.003/0.133/0.085) | 0.385 (0.119/0.669/0.369) | 0.874 (0.822/0.960/0.841) |
+| 5 | 0.006 (0.005/0.006/0.008) | 0.077 (0.015/0.140/0.078) | 0.497 (0.346/0.716/0.428) | 0.900 (0.877/0.958/0.863) |
+| 6 | 0.007 (0.002/0.009/0.009) | 0.150 (0.056/0.292/0.101) | 0.697 (0.725/0.828/0.537) | 0.948 (0.978/0.960/0.906) |
+| 7 | 0.018 (0.007/0.034/0.014) | 0.330 (0.268/0.479/0.243) | 0.808 (0.916/0.846/0.664) | 0.943 (0.963/0.965/0.900) |
+| 8 | 0.023 (0.009/0.039/0.020) | 0.462 (0.461/0.514/0.410) | 0.805 (0.918/0.781/0.715) | 0.927 (0.960/0.936/0.886) |
+| 9 (top-3 swap) | 0.031 (0.012/0.055/0.028) | 0.579 (0.704/0.535/0.497) | 0.809 (0.889/0.838/0.701) | 0.942 (0.961/0.953/0.912) |
+| 10 (top-3 swap) | 0.041 (0.011/0.074/0.039) | 0.627 (0.746/0.625/0.508) | 0.845 (0.903/0.856/0.776) | 0.938 (0.944/0.950/0.920) |
+| 11 (localized) | 0.037 (0.015/0.070/0.026) | 0.553 (0.612/0.579/0.467) | 0.824 (0.886/0.866/0.721) | 0.950 (0.917/0.990/0.943) |
+| control: block 11 on shortcut data | 0.001 | -0.002 | 0.010 | -0.009 |
+
+Rules per evaluated step (the verdict counts only at the reading step; the others are reported for stability):
+
+| rule | step 50 | step 100 (reading) | step 200 | step 625 |
+|---|---|---|---|---|
+| Rule 1: localized block in the top 3 | PASS (P/P/P) | FAIL (P/P/F) | FAIL (F/P/P) | FAIL (F/P/P) |
+| Rule 1b: best block among the top-3 swap blocks | PASS (P/P/P) | FAIL (P/P/F) | FAIL (F/P/P) | FAIL (F/P/P) |
+| Rule 2: Spearman(swap, weak fix) >= 0.6 | PASS (P/P/P) | PASS (P/P/P) | PASS (P/P/P) | FAIL (P/F/P) |
+| Rule 3: block 0 in the top 3 | FAIL (F/F/F) | FAIL (F/F/P) | FAIL (F/F/F) | FAIL (F/F/F) |
+| Control: shortcut-data fix keeps >= 80% of the gap | PASS (P/P/P) | PASS (P/P/P) | PASS (P/P/P) | PASS (P/P/P) |
+
+At the reading step 100: best single block per seed [10, 10, 0]; rank of the localized block 11: 3/2/4; rank of block 0: 5/6/1; Spearman with the swap map per seed: 0.986/0.986/0.923.
+
+Cost: 39 runs, train 55 s and eval 57 s per run (mean), peak VRAM allocated 2.17 GiB; GPU ['NVIDIA L4']; code commit(s) ['92bc4fe'].
+
+### LoRA rank 4: weak fix
+
+Localized block 9 (Phase 2 swap, case a); top-3 swap blocks [9, 10, 11]; lens block 9 (reported, no rule). Eval steps [50, 100, 200, 625]. Reading: read at B = 100.
+
+Fraction of the gap removed per single block (mean; per-seed values in brackets; * = acc(none) dropped by more than 0.02 in that seed):
+
+| block | step 50 | step 100 | step 200 | step 625 |
+|---|---|---|---|---|
+| 0 | 0.007 (0.024/0.011/-0.016) | 0.154 (0.133/0.156/0.174) | 0.498 (0.591/0.501/0.400) | 0.810 (0.717/0.846/0.866) |
+| 1 | -0.006 (0.021/-0.002/-0.038) | 0.068 (0.037/0.114/0.051) | 0.051 (0.065/0.071/0.016) | 0.369 (0.521/0.396/0.190) |
+| 2 | 0.002 (0.030/0.008/-0.031) | 0.078 (0.052/0.131/0.049) | 0.042 (0.050/0.051/0.025) | 0.317 (0.434/0.343/0.174) |
+| 3 | -0.000 (0.034/-0.002/-0.034) | 0.115 (0.061/0.214/0.069) | 0.053 (0.045/0.056/0.058) | 0.333 (0.499/0.340/0.161) |
+| 4 | 0.005 (0.037/0.002/-0.025) | 0.115 (0.052/0.206/0.085) | 0.074 (0.065/0.075/0.081) | 0.400 (0.501/0.467/0.233) |
+| 5 | 0.003 (0.048/-0.000/-0.038) | 0.122 (0.059/0.195/0.112) | 0.119 (0.089/0.126/0.141) | 0.558 (0.663/0.672/0.338) |
+| 6 | 0.012 (0.061/0.009/-0.034) | 0.107 (0.096/0.174/0.051) | 0.215 (0.311/0.236/0.096) | 0.764 (0.870/0.771/0.651) |
+| 7 | 0.016 (0.058/0.013/-0.022) | 0.138 (0.175/0.156/0.083) | 0.477 (0.670/0.505/0.255) | 0.867 (0.928/0.878/0.794) |
+| 8 | 0.019 (0.069/0.013/-0.027) | 0.231 (0.361/0.176/0.157) | 0.628 (0.822/0.583/0.479) | 0.882 (0.932/0.899/0.817) |
+| 9 (localized) | 0.017 (0.047/0.023/-0.018) | 0.206 (0.337/0.165/0.116) | 0.537 (0.730/0.578/0.302) | 0.825 (0.915/0.874/0.685) |
+| 10 (top-3 swap) | 0.007 (0.018/0.017/-0.016) | 0.161 (0.246/0.144/0.092) | 0.500 (0.668/0.617/0.215) | 0.842 (0.949/0.884/0.694) |
+| 11 (top-3 swap) | -0.001 (0.016/-0.002/-0.018) | 0.059 (0.110/0.068/0.000) | 0.257 (0.245/0.503/0.022) | 0.602 (0.788/0.887/0.132) |
+| control: block 9 on shortcut data | -0.008 | -0.012 | -0.001 | 0.027 |
+
+Rules per evaluated step (the verdict counts only at the reading step; the others are reported for stability):
+
+| rule | step 50 | step 100 (reading) | step 200 | step 625 |
+|---|---|---|---|---|
+| Rule 1: localized block in the top 3 | FAIL (F/P/F) | FAIL (P/F/P) | PASS (P/P/P) | FAIL (F/F/F) |
+| Rule 1b: best block among the top-3 swap blocks | FAIL (F/P/F) | FAIL (F/F/F) | FAIL (F/P/F) | FAIL (P/F/F) |
+| Rule 2: Spearman(swap, weak fix) >= 0.6 | FAIL (F/F/P) | FAIL (P/F/F) | FAIL (P/P/F) | PASS (P/P/P) |
+| Rule 3: block 0 in the top 3 | FAIL (F/F/P) | FAIL (F/F/P) | FAIL (F/F/P) | FAIL (F/F/P) |
+| Control: shortcut-data fix keeps >= 80% of the gap | PASS (P/P/P) | PASS (P/P/P) | PASS (P/P/P) | PASS (P/P/P) |
+
+At the reading step 100: best single block per seed [8, 3, 0]; rank of the localized block 9: 2/6/3; rank of block 0: 5/8/1; Spearman with the swap map per seed: 0.872/-0.434/0.439.
+
+Cost: 39 runs, train 55 s and eval 57 s per run (mean), peak VRAM allocated 2.17 GiB; GPU ['NVIDIA L4']; code commit(s) ['92bc4fe'].
+
+### LoRA rank 64: weak fix
+
+Localized block 10 (Phase 2 swap, case a); top-3 swap blocks [10, 11, 9]; lens block 11 (reported, no rule). Eval steps [50, 100, 200, 625]. Reading: read at B = 100.
+
+Fraction of the gap removed per single block (mean; per-seed values in brackets; * = acc(none) dropped by more than 0.02 in that seed):
+
+| block | step 50 | step 100 | step 200 | step 625 |
+|---|---|---|---|---|
+| 0 | 0.012 (0.011/0.024/0.001) | 0.589 (0.353/0.808/0.606) | 0.956 (1.036/0.934/0.898) | 0.990 (1.002/0.993/0.974) |
+| 1 | 0.004 (0.004/0.007/0.000) | 0.131 (0.084/0.294/0.016) | 0.826 (0.643/0.893/0.940) | 0.961 (0.924/0.982/0.976) |
+| 2 | 0.005 (0.005/0.011/-0.001) | 0.143 (0.068/0.351/0.011) | 0.758 (0.455/0.924/0.896) | 0.940 (0.936/0.969/0.914) |
+| 3 | 0.009 (0.005/0.017/0.003) | 0.167 (0.074/0.412/0.014) | 0.706 (0.365/0.920/0.833) | 0.938 (0.914/0.959/0.940) |
+| 4 | 0.010 (0.006/0.021/0.001) | 0.198 (0.108/0.479/0.007) | 0.839 (0.755/0.921/0.840) | 0.944 (0.955/0.965/0.911) |
+| 5 | 0.011 (0.011/0.021/0.003) | 0.208 (0.154/0.458/0.012) | 0.866 (0.810/0.934/0.854) | 0.943 (0.959/0.970/0.899) |
+| 6 | 0.012 (0.016/0.017/0.003) | 0.231 (0.174/0.456/0.063) | 0.878 (0.770/0.966/0.898) | 0.954 (0.976/0.989/0.897) |
+| 7 | 0.013 (0.016/0.023/0.001) | 0.291 (0.218/0.494/0.160) | 0.905 (0.880/0.931/0.903) | 0.961 (0.966/0.981/0.937) |
+| 8 | 0.016 (0.019/0.028/0.002) | 0.438 (0.361/0.691/0.263) | 0.903 (0.907/0.943/0.861) | 0.966 (0.971/0.979/0.947) |
+| 9 (top-3 swap) | 0.019 (0.019/0.036/-0.000) | 0.553 (0.364/0.739/0.557) | 0.947 (0.916/0.951/0.973) | 0.998 (1.000/0.986/1.007) |
+| 10 (localized) | 0.020 (0.017/0.041/0.001) | 0.468 (0.259/0.634/0.511) | 0.943 (0.929/0.939/0.961) | 1.006 (1.002/1.015/1.000) |
+| 11 (top-3 swap) | 0.020 (0.033/0.027/0.001) | 0.563 (0.516/0.468/0.705) | 0.923 (1.046/0.857/0.866) | 0.984 (0.954/1.003/0.996) |
+| control: block 10 on shortcut data | 0.004 | 0.007 | 0.027 | 0.033 |
+
+Rules per evaluated step (the verdict counts only at the reading step; the others are reported for stability):
+
+| rule | step 50 | step 100 (reading) | step 200 | step 625 |
+|---|---|---|---|---|
+| Rule 1: localized block in the top 3 | FAIL (F/P/F) | FAIL (F/F/F) | FAIL (P/F/P) | PASS (P/P/P) |
+| Rule 1b: best block among the top-3 swap blocks | FAIL (P/P/F) | FAIL (P/F/P) | FAIL (P/F/P) | PASS (P/P/P) |
+| Rule 2: Spearman(swap, weak fix) >= 0.6 | FAIL (P/P/F) | FAIL (P/P/F) | FAIL (P/F/F) | FAIL (P/F/F) |
+| Rule 3: block 0 in the top 3 | FAIL (F/F/F) | FAIL (F/P/P) | FAIL (P/F/F) | FAIL (P/P/F) |
+| Control: shortcut-data fix keeps >= 80% of the gap | PASS (P/P/P) | PASS (P/P/P) | PASS (P/P/P) | PASS (P/P/P) |
+
+At the reading step 100: best single block per seed [11, 0, 11]; rank of the localized block 10: 5/4/4; rank of block 0: 4/1/2; Spearman with the swap map per seed: 0.916/0.755/0.095.
+
+Cost: 39 runs, train 55 s and eval 57 s per run (mean), peak VRAM allocated 2.17 GiB; GPU ['NVIDIA L4']; code commit(s) ['92bc4fe'].
+
+### Phase L3 verdicts by condition
+
+| rule | full fine-tuning | LoRA rank 4 | LoRA rank 64 |
+|---|---|---|---|
+| Rule 1: localized block in the top 3 | FAIL (P/P/F) | FAIL (P/F/P) | FAIL (F/F/F) |
+| Rule 1b: best block among the top-3 swap blocks | FAIL (P/P/F) | FAIL (F/F/F) | FAIL (P/F/P) |
+| Rule 2: Spearman(swap, weak fix) >= 0.6 | PASS (P/P/P) | FAIL (P/F/F) | FAIL (P/P/F) |
+| Rule 3: block 0 in the top 3 | FAIL (F/F/P) | FAIL (F/F/P) | FAIL (F/P/P) |
+| Control: shortcut-data fix keeps >= 80% of the gap | PASS (P/P/P) | PASS (P/P/P) | PASS (P/P/P) |
+
+Does the best weak-fix block move with the localized block (reported, no verdict)? full fine-tuning: localized 11, best per seed [10, 10, 0]; LoRA rank 4: localized 9, best per seed [8, 3, 0]; LoRA rank 64: localized 10, best per seed [11, 0, 11].
+
+Caveats (pre-registered): late blocks might be easier to fix in general (the cross-condition comparison above is the only check, and it is descriptive); under LoRA the localized block comes from swaps whose own control (c-ii) failed for late blocks; for rank 4, Phase 3 already showed blocks 9-10 retrain best, so that condition is not fully blind.
