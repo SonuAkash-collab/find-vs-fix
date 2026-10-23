@@ -902,7 +902,7 @@ def weakfix_section(o):
                  + ("" if bud["reached_50pct"] else " (never reached 50%)") + " | "
                  + ", ".join(f"{k}: {v:.3f}" for k, v in bud["fraction_removed_by_step"].items()) + " |")
     o.append("")
-    verdicts, best_blocks = {}, {}
+    verdicts, best_blocks, lens_ranks = {}, {}, {}
     for c in conds:
         prefix, R = paths[c]
         files = [load(W / c / f"seed{s}.json") for s in SEEDS]
@@ -942,6 +942,8 @@ def weakfix_section(o):
             verdicts[c] = {r: f"{verdict_of(v)} ({'/'.join('P' if x else 'F' for x in v)})" for r, v in per_step[step].items()}
             best_blocks[c] = [sorted(range(12), key=lambda b: -l3_values(f, step)[1][b])[0] for f in files]
             ranks = {b: [l3_rank(l3_values(f, step)[1], b) for f in files] for b in (loc, 0)}
+            lb = lens_block(R, prefix)
+            lens_ranks[c] = (lb, [l3_rank(l3_values(f, step)[1], lb) for f in files])
             o += [f"At the reading step {step}: best single block per seed {best_blocks[c]}; rank of the localized block "
                   f"{loc}: {'/'.join(map(str, ranks[loc]))}; rank of block 0: {'/'.join(map(str, ranks[0]))}; Spearman with "
                   "the swap map per seed: " + "/".join(f"{spearman(sw[f['seed']], l3_values(f, step)[1]):.3f}" for f in files) + ".", ""]
@@ -963,6 +965,73 @@ def weakfix_section(o):
           "above is the only check, and it is descriptive); under LoRA the localized block comes from swaps whose own "
           "control (c-ii) failed for late blocks; for rank 4, Phase 3 already showed blocks 9-10 retrain best, so that "
           "condition is not fully blind.", ""]
+    if lens_ranks:
+        o += ["Observation spotted after the Phase L3 results (descriptive only; Sonu, 23 Oct: a \"pre-registered\" test on "
+              "the same data would not mean anything, so it is reported as an observation and an open question): the rank "
+              "of the logit-lens block (largest mean per-block drop on 'opposite') among the 12 weak fixes at the reading "
+              "step, per seed: " + "; ".join(f"{L3_LABELS[c]}: lens block {lb} ranks {'/'.join(map(str, r))}"
+                                              + (f" (the swap-localized block is {LOCALIZED[c]})" if lb != LOCALIZED[c] else
+                                                 " (same block as the swap localization)")
+                                              for c, (lb, r) in lens_ranks.items()) + ".", ""]
+
+
+def l3b_section(o):
+    """Phase L3b (descriptive): Phase 3 single blocks on the rank-4 pilot model with a stronger shortcut."""
+    p = RESULTS / "lora_r4_lr1em3" / "retrain" / "seed0.json"
+    if not p.exists():
+        return
+    res = load(p)
+    chk = load(RESULTS / "lora_r4_lr1em3" / "start_check.json")
+    pilot = load(RESULTS / "lora_pilot" / "lora_r4_lr1e-3_shortcut_seed0.json")
+
+    def fr_list(f):
+        G = f["baseline"]["gap_none_minus_opposite"]
+        return [frac_removed(f["runs"][str(b)], G) for b in range(12)]
+
+    def n_removes(f):
+        G, n0 = f["baseline"]["gap_none_minus_opposite"], f["baseline"]["accuracy"]["none"]
+        return sum(bool(rule_removes(f["runs"][str(b)], G, n0)) for b in range(12))
+
+    cols = [("LoRA rank 4, lr 1e-3 (L3b)", res)]
+    for label, R in (("LoRA rank 4 (main)", RESULTS / "lora_r4"), ("full fine-tuning", RESULTS),
+                     ("LoRA rank 64", RESULTS / "lora_r64")):
+        cols.append((label, load(R / "retrain" / "seed0.json")))
+    o += ["## Phase L3b: rank 4 with a stronger shortcut (descriptive)", "",
+          "PROJECT_SPEC.md Phase L3b (pre-registered 23 Oct, before any L3b run). Phase 3 single blocks 0-11 (src/retrain.py "
+          "unchanged, Phase 3 settings, seed 0) on the seed-0 pilot model lora_r4_lr1e-3_shortcut_seed0 (rank 4 trained at "
+          "lr 1e-3; used as lora_r4_lr1em3_shortcut_seed0), next to seed 0 of the main conditions (Phase 3). One seed, a "
+          "different lr, and a model in between in shortcut strength and fit: it can suggest, not prove. No verdict.", "",
+          f"Start-model check: accuracies equal the pilot results file: {chk['pass'] if chk else 'n/a'}. Start gaps (seed 0): "
+          + "; ".join(f"{label} {f['baseline']['gap_none_minus_opposite']:.3f}" for label, f in cols)
+          + (f". Train loss at the end of the L3b model's own training: {pilot['train']['final_loss_mean_last50']:.3f} "
+             "(the main conditions' values are in the open-question table above)" if pilot else "") + ".", "",
+          "| block | " + " | ".join(label for label, _ in cols) + " |", "|---|" + "---|" * len(cols)]
+    frs = [fr_list(f) for _, f in cols]
+    for b in range(12):
+        o.append(f"| {b} | " + " | ".join(f"{x[b]:.3f}" for x in frs) + " |")
+    o += ["", "| measure (pre-registered, descriptive) | " + " | ".join(label for label, _ in cols) + " |",
+          "|---|" + "---|" * len(cols),
+          "| single blocks passing \"removes\" | " + " | ".join(f"{n_removes(f)}/12" for _, f in cols) + " |",
+          "| mean fraction removed, blocks 1-5 minus blocks 9-10 | " + " | ".join(
+              f"{np.mean(x[1:6]) - np.mean(x[9:11]):+.3f}" for x in frs) + " |", "",
+          "Reading (pre-registered): if blocks 1-5 come out like full FT / r64 (close to blocks 9-10), it suggests shortcut "
+          "strength / fit; if like r4 seed 0, it suggests rank.", ""]
+
+
+def future_work(o):
+    """Open questions and future work from the LoRA track (not run; decided with Sonu, 23 Oct)."""
+    o += ["## Open questions and future work (not run)", "",
+          "- **Repairing the swap control for LoRA.** c-ii fails under LoRA and the adapter-overlap check points to "
+          "seed-specific directions. Aligning two seeds' adapters first (e.g. KnOTS, Stoica et al., ICLR 2025) and "
+          "re-running c-ii would test whether alignment repairs the control. A new method, so future work (Sonu, 23 Oct).",
+          "- **Shared-initialisation LoRA seeds.** Training LoRA seeds from the same adapter initialisation (different data "
+          "order) would test whether the seed-specific directions come from LoRA's random A start. Not run: it mostly "
+          "confirms known work (Zhu et al., ICML 2024: LoRA's A barely moves from its random start) (Sonu, 23 Oct).",
+          "- **Logit lens vs swaps as a guide to cheap fixes under LoRA.** See the observation after the Phase L3 verdicts; "
+          "spotted after the results, so it needs new data to test.",
+          "- **Why rank 4 behaves differently** (fit / shortcut strength vs rank): Phase L3b gives a one-seed descriptive "
+          "hint; a proper answer would need several seeds at matched shortcut strength.", ""]
+
 
 
 def main():
@@ -978,6 +1047,8 @@ def main():
         retrain_section(o, Path(tmp_root))
         budget_section(o, Path(tmp_root))
     weakfix_section(o)
+    l3b_section(o)
+    future_work(o)
     OUT.write_text("\n".join(o), encoding="utf-8")
     print(f"wrote {OUT}" + (f" and {FIG}/" if FIG.exists() else ""))
 
