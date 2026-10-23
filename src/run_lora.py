@@ -24,6 +24,8 @@ Usage:
   python src/run_lora.py weakfix-smoke    # Phase L3: start-model checks + one 20-step run per condition (code check)
   python src/run_lora.py weakfix          # Phase L3: checks, the 3 calibrations (B), then 12 blocks + control per
                                           # condition and seed (src/weakfix.py, resumable) -> results/weakfix/
+  python src/run_lora.py l3b              # Phase L3b (descriptive): start-model check, then retrain.py --prefix
+                                          # lora_r4_lr1em3 --seeds 0 --sets 0..11 -> results/lora_r4_lr1em3/
 Pilot run names: lora_r<r>_lr<lr>_<kind>_seed0, e.g. lora_r4_lr3e-4_shortcut_seed0 (only used with checks.py --run).
 """
 import argparse
@@ -672,14 +674,59 @@ def weakfix():
     return True
 
 
+# ---- Phase L3b (PROJECT_SPEC.md, descriptive): Phase 3 single blocks 0-11 on the rank-4 pilot model trained at lr 1e-3
+# (stronger shortcut), src/retrain.py unchanged. The pilot model is used under a prefix without "-" (a link to the same
+# folder: nothing is copied or changed). Start-model check first: its accuracies must equal its pilot results file.
+L3B_PILOT, L3B_PREFIX = "lora_r4_lr1e-3_shortcut_seed0", "lora_r4_lr1em3"
+
+
+def l3b():
+    from report import REMOVE_MAX_FRAC, frac_removed, rule_removes
+    run = f"{L3B_PREFIX}_shortcut_seed0"
+    if not (RUNS / run / "model" / "config.json").exists():
+        log(f"STOP: l3b: model missing at runs/{run} (link it to the pilot run {L3B_PILOT})")
+        sys.exit(1)
+    log(f"=== run_lora l3b (Phase L3b, descriptive) start (offline), python {sys.executable}")
+    want = json.load(open(PILOT_DIR / f"{L3B_PILOT}.json"))["accuracy"]
+    chk = RESULTS / L3B_PREFIX / "start_check.json"
+    chk.parent.mkdir(parents=True, exist_ok=True)
+    if not (chk.exists() and json.load(open(chk))["pass"]):
+        s = step("l3b start-model check", ["checks.py", "--run", run], capture=True)
+        got = json.loads(s[s.index("{"):])["accuracy"]
+        json.dump({"run": run, "pilot_run": L3B_PILOT, "accuracy": got, "pilot_accuracy": want, "pass": got == want,
+                   **env_record()}, open(chk, "w"), indent=2)
+        if got != want:
+            log(f"STOP: l3b start model's accuracies {got} != pilot file {want}. Tell Sonu; no L3b run.")
+            sys.exit(2)
+    log(f"l3b start-model check: {run} accuracies == results/lora_pilot/{L3B_PILOT}.json")
+    out = RESULTS / L3B_PREFIX / "retrain"
+    out.mkdir(parents=True, exist_ok=True)
+    names = [str(b) for b in range(12)]
+    p = out / "seed0.json"
+    if not (p.exists() and all(n in json.load(open(p))["runs"] for n in names)):
+        add_env_session(out, "Phase L3b retrain", f"python src/retrain.py --prefix {L3B_PREFIX} --seeds 0 --sets 0..11")
+        step("l3b retrain (12 single blocks)", ["retrain.py", "--prefix", L3B_PREFIX, "--seeds", "0", "--sets", ",".join(names)])
+    res = json.load(open(p))
+    assert res["start_model"] == run and all(n in res["runs"] for n in names), "l3b: incomplete results"
+    assert res["baseline"]["accuracy"] == want, "l3b: retrain.py's start-model evaluation != pilot file"
+    G, n0 = res["baseline"]["gap_none_minus_opposite"], res["baseline"]["accuracy"]["none"]
+    fr = [frac_removed(res["runs"][n], G) for n in names]
+    n_pass = sum(bool(rule_removes(res["runs"][n], G, n0)) for n in names)
+    log(f"l3b {run}: start gap {G:.3f}; fraction removed per block " + " ".join(f"{x:.2f}" for x in fr)
+        + f"; {n_pass}/12 single blocks remove (gap <= {REMOVE_MAX_FRAC:.0%}); blocks 1-5 minus 9-10: "
+        f"{sum(fr[1:6]) / 5 - sum(fr[9:11]) / 2:+.3f} (descriptive; reading in RESULTS_LORA.md)")
+    log("=== run_lora l3b: done")
+    return True
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("mode", choices=["pilot", "choose", "pilot-extra", "choose-amended", "main", "lens", "swaps",
-                                     "retrain", "budget", "weakfix-smoke", "weakfix"])
+                                     "retrain", "budget", "weakfix-smoke", "weakfix", "l3b"])
     args = ap.parse_args()
     chosen = {"pilot": pilot, "choose": choose, "pilot-extra": pilot_extra, "choose-amended": choose_amended,
               "main": main_runs, "lens": lens, "swaps": swaps, "retrain": retrain, "budget": budget,
-              "weakfix-smoke": weakfix_smoke, "weakfix": weakfix}[args.mode]()
+              "weakfix-smoke": weakfix_smoke, "weakfix": weakfix, "l3b": l3b}[args.mode]()
     if chosen is None:
         sys.exit(2)  # a pre-registered rule says stop (no lr passes / a Phase 3 gate failed)
 
