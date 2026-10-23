@@ -1303,6 +1303,34 @@ Caveats (pre-registered): late blocks might be easier to fix in general (the cro
 
 Observation spotted after the Phase L3 results (descriptive only; Sonu, 23 Oct: a "pre-registered" test on the same data would not mean anything, so it is reported as an observation and an open question): the rank of the logit-lens block (largest mean per-block drop on 'opposite') among the 12 weak fixes at the reading step, per seed: full fine-tuning: lens block 11 ranks 3/2/4 (same block as the swap localization); LoRA rank 4: lens block 9 ranks 2/6/3 (same block as the swap localization); LoRA rank 64: lens block 11 ranks 1/7/1 (the swap-localized block is 10).
 
+## Phase L3b: rank 4 with a stronger shortcut (descriptive)
+
+PROJECT_SPEC.md Phase L3b (pre-registered 23 Oct, before any L3b run). Phase 3 single blocks 0-11 (src/retrain.py unchanged, Phase 3 settings, seed 0) on the seed-0 pilot model lora_r4_lr1e-3_shortcut_seed0 (rank 4 trained at lr 1e-3; used as lora_r4_lr1em3_shortcut_seed0), next to seed 0 of the main conditions (Phase 3). One seed, a different lr, and a model in between in shortcut strength and fit: it can suggest, not prove. No verdict.
+
+Start-model check: accuracies equal the pilot results file: True. Start gaps (seed 0): LoRA rank 4, lr 1e-3 (L3b) 0.583; LoRA rank 4 (main) 0.353; full fine-tuning 0.646; LoRA rank 64 0.800. Train loss at the end of the L3b model's own training: 0.187 (the main conditions' values are in the open-question table above).
+
+| block | LoRA rank 4, lr 1e-3 (L3b) | LoRA rank 4 (main) | full fine-tuning | LoRA rank 64 |
+|---|---|---|---|---|
+| 0 | 0.846 | 0.743 | 0.890 | 1.001 |
+| 1 | 0.761 | 0.454 | 0.815 | 0.868 |
+| 2 | 0.780 | 0.447 | 0.852 | 0.839 |
+| 3 | 0.852 | 0.519 | 0.776 | 0.835 |
+| 4 | 0.830 | 0.533 | 0.818 | 0.878 |
+| 5 | 0.825 | 0.559 | 0.826 | 0.895 |
+| 6 | 0.834 | 0.670 | 0.827 | 0.903 |
+| 7 | 0.853 | 0.758 | 0.832 | 0.893 |
+| 8 | 0.857 | 0.779 | 0.897 | 0.941 |
+| 9 | 0.918 | 0.830 | 0.949 | 0.934 |
+| 10 | 0.922 | 0.826 | 0.943 | 0.940 |
+| 11 | 0.743 | 0.495 | 0.902 | 0.840 |
+
+| measure (pre-registered, descriptive) | LoRA rank 4, lr 1e-3 (L3b) | LoRA rank 4 (main) | full fine-tuning | LoRA rank 64 |
+|---|---|---|---|---|
+| single blocks passing "removes" | 12/12 | 9/12 | 12/12 | 12/12 |
+| mean fraction removed, blocks 1-5 minus blocks 9-10 | -0.110 | -0.326 | -0.129 | -0.074 |
+
+Reading (pre-registered): if blocks 1-5 come out like full FT / r64 (close to blocks 9-10), it suggests shortcut strength / fit; if like r4 seed 0, it suggests rank.
+
 ## Open questions and future work (not run)
 
 - **Repairing the swap control for LoRA.** c-ii fails under LoRA and the adapter-overlap check points to seed-specific directions. Aligning two seeds' adapters first (e.g. KnOTS, Stoica et al., ICLR 2025) and re-running c-ii would test whether alignment repairs the control. A new method, so future work (Sonu, 23 Oct).

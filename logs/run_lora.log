@@ -6466,3 +6466,178 @@
 2026-10-22 17:34:25 weakfix lora_r64 seed2 done
 2026-10-22 17:34:26 weakfix lora_r64 seed 2 at B=100: best blocks ['11', '0', '9'] (0.705, 0.606, 0.557); localized block 10 removes 0.511; control keeps 1.001 of the gap
 2026-10-22 17:34:26 === run_lora weakfix: done (verdicts: src/report_lora.py)
+2026-10-23 06:06:52 === run_lora l3b (Phase L3b, descriptive) start (offline), python /usr/bin/python3
+2026-10-23 06:06:53 --- l3b start-model check: checks.py --run lora_r4_lr1em3_shortcut_seed0
+2026-10-23 06:07:47 l3b start-model check: lora_r4_lr1em3_shortcut_seed0 accuracies == results/lora_pilot/lora_r4_lr1e-3_shortcut_seed0.json
+2026-10-23 06:07:47 --- l3b retrain (12 single blocks): retrain.py --prefix lora_r4_lr1em3 --seeds 0 --sets 0,1,2,3,4,5,6,7,8,9,10,11
+2026-10-23 06:08:31 [retrain_seed0_0] step 50/625 loss 0.2372 lr 4.90e-05 t 6s
+2026-10-23 06:08:38 [retrain_seed0_0] step 100/625 loss 0.2272 lr 4.47e-05 t 12s
+2026-10-23 06:08:44 [retrain_seed0_0] step 150/625 loss 0.1631 lr 4.05e-05 t 19s
+2026-10-23 06:08:50 [retrain_seed0_0] step 200/625 loss 0.2065 lr 3.62e-05 t 25s
+2026-10-23 06:08:56 [retrain_seed0_0] step 250/625 loss 0.1540 lr 3.19e-05 t 31s
+2026-10-23 06:09:02 [retrain_seed0_0] step 300/625 loss 0.1901 lr 2.77e-05 t 37s
+2026-10-23 06:09:08 [retrain_seed0_0] step 350/625 loss 0.1504 lr 2.34e-05 t 43s
+2026-10-23 06:09:15 [retrain_seed0_0] step 400/625 loss 0.1354 lr 1.92e-05 t 50s
+2026-10-23 06:09:21 [retrain_seed0_0] step 450/625 loss 0.1476 lr 1.49e-05 t 56s
+2026-10-23 06:09:27 [retrain_seed0_0] step 500/625 loss 0.1469 lr 1.06e-05 t 62s
+2026-10-23 06:09:33 [retrain_seed0_0] step 550/625 loss 0.1542 lr 6.39e-06 t 68s
+2026-10-23 06:09:39 [retrain_seed0_0] step 600/625 loss 0.1295 lr 2.13e-06 t 74s
+2026-10-23 06:09:42 [retrain_seed0_0] step 625/625 loss 0.1530 lr 0.00e+00 t 77s
+2026-10-23 06:10:11 seed0 retrain 0 (clean): none 0.868 match 0.924 opp 0.779 neutral 0.869 gap 0.090 (baseline gap 0.583) train 77s, peak 2.23 GiB, 7087872 trainable params
+2026-10-23 06:10:18 [retrain_seed0_1] step 50/625 loss 0.2436 lr 4.90e-05 t 6s
+2026-10-23 06:10:23 [retrain_seed0_1] step 100/625 loss 0.2594 lr 4.47e-05 t 12s
+2026-10-23 06:10:29 [retrain_seed0_1] step 150/625 loss 0.1784 lr 4.05e-05 t 18s
+2026-10-23 06:10:35 [retrain_seed0_1] step 200/625 loss 0.2207 lr 3.62e-05 t 23s
+2026-10-23 06:10:41 [retrain_seed0_1] step 250/625 loss 0.1699 lr 3.19e-05 t 29s
+2026-10-23 06:10:47 [retrain_seed0_1] step 300/625 loss 0.1948 lr 2.77e-05 t 35s
+2026-10-23 06:10:53 [retrain_seed0_1] step 350/625 loss 0.1529 lr 2.34e-05 t 41s
+2026-10-23 06:10:59 [retrain_seed0_1] step 400/625 loss 0.1372 lr 1.92e-05 t 47s
+2026-10-23 06:11:05 [retrain_seed0_1] step 450/625 loss 0.1436 lr 1.49e-05 t 53s
+2026-10-23 06:11:11 [retrain_seed0_1] step 500/625 loss 0.1472 lr 1.06e-05 t 59s
+2026-10-23 06:11:16 [retrain_seed0_1] step 550/625 loss 0.1615 lr 6.39e-06 t 65s
+2026-10-23 06:11:22 [retrain_seed0_1] step 600/625 loss 0.1318 lr 2.13e-06 t 71s
+2026-10-23 06:11:25 [retrain_seed0_1] step 625/625 loss 0.1540 lr 0.00e+00 t 74s
+2026-10-23 06:11:54 seed0 retrain 1 (clean): none 0.868 match 0.951 opp 0.729 neutral 0.867 gap 0.140 (baseline gap 0.583) train 74s, peak 2.10 GiB, 7087872 trainable params
+2026-10-23 06:12:00 [retrain_seed0_2] step 50/625 loss 0.2438 lr 4.90e-05 t 6s
+2026-10-23 06:12:06 [retrain_seed0_2] step 100/625 loss 0.2645 lr 4.47e-05 t 11s
+2026-10-23 06:12:11 [retrain_seed0_2] step 150/625 loss 0.1839 lr 4.05e-05 t 17s
+2026-10-23 06:12:17 [retrain_seed0_2] step 200/625 loss 0.2210 lr 3.62e-05 t 22s
+2026-10-23 06:12:23 [retrain_seed0_2] step 250/625 loss 0.1802 lr 3.19e-05 t 28s
+2026-10-23 06:12:28 [retrain_seed0_2] step 300/625 loss 0.1951 lr 2.77e-05 t 34s
+2026-10-23 06:12:34 [retrain_seed0_2] step 350/625 loss 0.1556 lr 2.34e-05 t 39s
+2026-10-23 06:12:39 [retrain_seed0_2] step 400/625 loss 0.1375 lr 1.92e-05 t 45s
+2026-10-23 06:12:45 [retrain_seed0_2] step 450/625 loss 0.1449 lr 1.49e-05 t 50s
+2026-10-23 06:12:51 [retrain_seed0_2] step 500/625 loss 0.1494 lr 1.06e-05 t 56s
+2026-10-23 06:12:56 [retrain_seed0_2] step 550/625 loss 0.1619 lr 6.39e-06 t 61s
+2026-10-23 06:13:02 [retrain_seed0_2] step 600/625 loss 0.1323 lr 2.13e-06 t 67s
+2026-10-23 06:13:05 [retrain_seed0_2] step 625/625 loss 0.1517 lr 0.00e+00 t 70s
+2026-10-23 06:13:33 seed0 retrain 2 (clean): none 0.869 match 0.946 opp 0.740 neutral 0.870 gap 0.129 (baseline gap 0.583) train 70s, peak 1.97 GiB, 7087872 trainable params
+2026-10-23 06:13:39 [retrain_seed0_3] step 50/625 loss 0.2442 lr 4.90e-05 t 5s
+2026-10-23 06:13:45 [retrain_seed0_3] step 100/625 loss 0.2649 lr 4.47e-05 t 11s
+2026-10-23 06:13:50 [retrain_seed0_3] step 150/625 loss 0.1834 lr 4.05e-05 t 16s
+2026-10-23 06:13:55 [retrain_seed0_3] step 200/625 loss 0.2196 lr 3.62e-05 t 21s
+2026-10-23 06:14:01 [retrain_seed0_3] step 250/625 loss 0.1737 lr 3.19e-05 t 26s
+2026-10-23 06:14:06 [retrain_seed0_3] step 300/625 loss 0.1902 lr 2.77e-05 t 32s
+2026-10-23 06:14:11 [retrain_seed0_3] step 350/625 loss 0.1508 lr 2.34e-05 t 37s
+2026-10-23 06:14:16 [retrain_seed0_3] step 400/625 loss 0.1328 lr 1.92e-05 t 42s
+2026-10-23 06:14:22 [retrain_seed0_3] step 450/625 loss 0.1405 lr 1.49e-05 t 48s
+2026-10-23 06:14:27 [retrain_seed0_3] step 500/625 loss 0.1466 lr 1.06e-05 t 53s
+2026-10-23 06:14:32 [retrain_seed0_3] step 550/625 loss 0.1528 lr 6.39e-06 t 58s
+2026-10-23 06:14:38 [retrain_seed0_3] step 600/625 loss 0.1285 lr 2.13e-06 t 64s
+2026-10-23 06:14:40 [retrain_seed0_3] step 625/625 loss 0.1490 lr 0.00e+00 t 66s
+2026-10-23 06:15:09 seed0 retrain 3 (clean): none 0.873 match 0.936 opp 0.786 neutral 0.872 gap 0.086 (baseline gap 0.583) train 66s, peak 1.84 GiB, 7087872 trainable params
+2026-10-23 06:15:15 [retrain_seed0_4] step 50/625 loss 0.2445 lr 4.90e-05 t 5s
+2026-10-23 06:15:20 [retrain_seed0_4] step 100/625 loss 0.2640 lr 4.47e-05 t 10s
+2026-10-23 06:15:25 [retrain_seed0_4] step 150/625 loss 0.1794 lr 4.05e-05 t 15s
+2026-10-23 06:15:30 [retrain_seed0_4] step 200/625 loss 0.2165 lr 3.62e-05 t 20s
+2026-10-23 06:15:35 [retrain_seed0_4] step 250/625 loss 0.1737 lr 3.19e-05 t 25s
+2026-10-23 06:15:40 [retrain_seed0_4] step 300/625 loss 0.1861 lr 2.77e-05 t 30s
+2026-10-23 06:15:45 [retrain_seed0_4] step 350/625 loss 0.1543 lr 2.34e-05 t 35s
+2026-10-23 06:15:50 [retrain_seed0_4] step 400/625 loss 0.1369 lr 1.92e-05 t 40s
+2026-10-23 06:15:55 [retrain_seed0_4] step 450/625 loss 0.1413 lr 1.49e-05 t 45s
+2026-10-23 06:16:00 [retrain_seed0_4] step 500/625 loss 0.1467 lr 1.06e-05 t 50s
+2026-10-23 06:16:05 [retrain_seed0_4] step 550/625 loss 0.1568 lr 6.39e-06 t 55s
+2026-10-23 06:16:10 [retrain_seed0_4] step 600/625 loss 0.1323 lr 2.13e-06 t 60s
+2026-10-23 06:16:13 [retrain_seed0_4] step 625/625 loss 0.1490 lr 0.00e+00 t 63s
+2026-10-23 06:16:41 seed0 retrain 4 (clean): none 0.872 match 0.938 opp 0.773 neutral 0.873 gap 0.099 (baseline gap 0.583) train 63s, peak 1.71 GiB, 7087872 trainable params
+2026-10-23 06:16:47 [retrain_seed0_5] step 50/625 loss 0.2442 lr 4.90e-05 t 5s
+2026-10-23 06:16:52 [retrain_seed0_5] step 100/625 loss 0.2590 lr 4.47e-05 t 9s
+2026-10-23 06:16:56 [retrain_seed0_5] step 150/625 loss 0.1651 lr 4.05e-05 t 14s
+2026-10-23 06:17:01 [retrain_seed0_5] step 200/625 loss 0.2134 lr 3.62e-05 t 19s
+2026-10-23 06:17:06 [retrain_seed0_5] step 250/625 loss 0.1634 lr 3.19e-05 t 24s
+2026-10-23 06:17:11 [retrain_seed0_5] step 300/625 loss 0.1967 lr 2.77e-05 t 28s
+2026-10-23 06:17:15 [retrain_seed0_5] step 350/625 loss 0.1521 lr 2.34e-05 t 33s
+2026-10-23 06:17:20 [retrain_seed0_5] step 400/625 loss 0.1391 lr 1.92e-05 t 38s
+2026-10-23 06:17:25 [retrain_seed0_5] step 450/625 loss 0.1445 lr 1.49e-05 t 43s
+2026-10-23 06:17:30 [retrain_seed0_5] step 500/625 loss 0.1472 lr 1.06e-05 t 47s
+2026-10-23 06:17:34 [retrain_seed0_5] step 550/625 loss 0.1589 lr 6.39e-06 t 52s
+2026-10-23 06:17:39 [retrain_seed0_5] step 600/625 loss 0.1328 lr 2.13e-06 t 57s
+2026-10-23 06:17:42 [retrain_seed0_5] step 625/625 loss 0.1515 lr 0.00e+00 t 59s
+2026-10-23 06:18:10 seed0 retrain 5 (clean): none 0.873 match 0.938 opp 0.771 neutral 0.873 gap 0.102 (baseline gap 0.583) train 59s, peak 1.59 GiB, 7087872 trainable params
+2026-10-23 06:18:16 [retrain_seed0_6] step 50/625 loss 0.2435 lr 4.90e-05 t 4s
+2026-10-23 06:18:20 [retrain_seed0_6] step 100/625 loss 0.2569 lr 4.47e-05 t 9s
+2026-10-23 06:18:25 [retrain_seed0_6] step 150/625 loss 0.1688 lr 4.05e-05 t 13s
+2026-10-23 06:18:29 [retrain_seed0_6] step 200/625 loss 0.2132 lr 3.62e-05 t 18s
+2026-10-23 06:18:33 [retrain_seed0_6] step 250/625 loss 0.1664 lr 3.19e-05 t 22s
+2026-10-23 06:18:38 [retrain_seed0_6] step 300/625 loss 0.1934 lr 2.77e-05 t 27s
+2026-10-23 06:18:42 [retrain_seed0_6] step 350/625 loss 0.1558 lr 2.34e-05 t 31s
+2026-10-23 06:18:47 [retrain_seed0_6] step 400/625 loss 0.1392 lr 1.92e-05 t 36s
+2026-10-23 06:18:51 [retrain_seed0_6] step 450/625 loss 0.1425 lr 1.49e-05 t 40s
+2026-10-23 06:18:56 [retrain_seed0_6] step 500/625 loss 0.1478 lr 1.06e-05 t 45s
+2026-10-23 06:19:00 [retrain_seed0_6] step 550/625 loss 0.1575 lr 6.39e-06 t 49s
+2026-10-23 06:19:05 [retrain_seed0_6] step 600/625 loss 0.1305 lr 2.13e-06 t 53s
+2026-10-23 06:19:07 [retrain_seed0_6] step 625/625 loss 0.1514 lr 0.00e+00 t 56s
+2026-10-23 06:19:36 seed0 retrain 6 (clean): none 0.869 match 0.936 opp 0.773 neutral 0.868 gap 0.096 (baseline gap 0.583) train 56s, peak 1.47 GiB, 7087872 trainable params
+2026-10-23 06:19:41 [retrain_seed0_7] step 50/625 loss 0.2426 lr 4.90e-05 t 4s
+2026-10-23 06:19:45 [retrain_seed0_7] step 100/625 loss 0.2509 lr 4.47e-05 t 8s
+2026-10-23 06:19:49 [retrain_seed0_7] step 150/625 loss 0.1671 lr 4.05e-05 t 13s
+2026-10-23 06:19:53 [retrain_seed0_7] step 200/625 loss 0.2091 lr 3.62e-05 t 17s
+2026-10-23 06:19:58 [retrain_seed0_7] step 250/625 loss 0.1657 lr 3.19e-05 t 21s
+2026-10-23 06:20:02 [retrain_seed0_7] step 300/625 loss 0.1788 lr 2.77e-05 t 25s
+2026-10-23 06:20:06 [retrain_seed0_7] step 350/625 loss 0.1538 lr 2.34e-05 t 29s
+2026-10-23 06:20:10 [retrain_seed0_7] step 400/625 loss 0.1362 lr 1.92e-05 t 34s
+2026-10-23 06:20:14 [retrain_seed0_7] step 450/625 loss 0.1409 lr 1.49e-05 t 38s
+2026-10-23 06:20:18 [retrain_seed0_7] step 500/625 loss 0.1462 lr 1.06e-05 t 42s
+2026-10-23 06:20:23 [retrain_seed0_7] step 550/625 loss 0.1569 lr 6.39e-06 t 46s
+2026-10-23 06:20:27 [retrain_seed0_7] step 600/625 loss 0.1287 lr 2.13e-06 t 50s
+2026-10-23 06:20:29 [retrain_seed0_7] step 625/625 loss 0.1474 lr 0.00e+00 t 52s
+2026-10-23 06:20:58 seed0 retrain 7 (clean): none 0.869 match 0.927 opp 0.784 neutral 0.871 gap 0.086 (baseline gap 0.583) train 52s, peak 1.35 GiB, 7087872 trainable params
+2026-10-23 06:21:02 [retrain_seed0_8] step 50/625 loss 0.2423 lr 4.90e-05 t 4s
+2026-10-23 06:21:06 [retrain_seed0_8] step 100/625 loss 0.2494 lr 4.47e-05 t 8s
+2026-10-23 06:21:10 [retrain_seed0_8] step 150/625 loss 0.1646 lr 4.05e-05 t 12s
+2026-10-23 06:21:14 [retrain_seed0_8] step 200/625 loss 0.2049 lr 3.62e-05 t 16s
+2026-10-23 06:21:18 [retrain_seed0_8] step 250/625 loss 0.1634 lr 3.19e-05 t 19s
+2026-10-23 06:21:22 [retrain_seed0_8] step 300/625 loss 0.1693 lr 2.77e-05 t 23s
+2026-10-23 06:21:26 [retrain_seed0_8] step 350/625 loss 0.1533 lr 2.34e-05 t 27s
+2026-10-23 06:21:30 [retrain_seed0_8] step 400/625 loss 0.1349 lr 1.92e-05 t 31s
+2026-10-23 06:21:34 [retrain_seed0_8] step 450/625 loss 0.1405 lr 1.49e-05 t 35s
+2026-10-23 06:21:38 [retrain_seed0_8] step 500/625 loss 0.1479 lr 1.06e-05 t 39s
+2026-10-23 06:21:41 [retrain_seed0_8] step 550/625 loss 0.1576 lr 6.39e-06 t 43s
+2026-10-23 06:21:45 [retrain_seed0_8] step 600/625 loss 0.1283 lr 2.13e-06 t 47s
+2026-10-23 06:21:47 [retrain_seed0_8] step 625/625 loss 0.1486 lr 0.00e+00 t 49s
+2026-10-23 06:22:16 seed0 retrain 8 (clean): none 0.869 match 0.928 opp 0.785 neutral 0.870 gap 0.084 (baseline gap 0.583) train 49s, peak 1.23 GiB, 7087872 trainable params
+2026-10-23 06:22:21 [retrain_seed0_9] step 50/625 loss 0.2418 lr 4.90e-05 t 4s
+2026-10-23 06:22:24 [retrain_seed0_9] step 100/625 loss 0.2459 lr 4.47e-05 t 7s
+2026-10-23 06:22:28 [retrain_seed0_9] step 150/625 loss 0.1617 lr 4.05e-05 t 11s
+2026-10-23 06:22:31 [retrain_seed0_9] step 200/625 loss 0.2031 lr 3.62e-05 t 14s
+2026-10-23 06:22:35 [retrain_seed0_9] step 250/625 loss 0.1588 lr 3.19e-05 t 18s
+2026-10-23 06:22:39 [retrain_seed0_9] step 300/625 loss 0.1688 lr 2.77e-05 t 22s
+2026-10-23 06:22:42 [retrain_seed0_9] step 350/625 loss 0.1453 lr 2.34e-05 t 25s
+2026-10-23 06:22:46 [retrain_seed0_9] step 400/625 loss 0.1286 lr 1.92e-05 t 29s
+2026-10-23 06:22:50 [retrain_seed0_9] step 450/625 loss 0.1391 lr 1.49e-05 t 33s
+2026-10-23 06:22:53 [retrain_seed0_9] step 500/625 loss 0.1415 lr 1.06e-05 t 36s
+2026-10-23 06:22:57 [retrain_seed0_9] step 550/625 loss 0.1512 lr 6.39e-06 t 40s
+2026-10-23 06:23:00 [retrain_seed0_9] step 600/625 loss 0.1248 lr 2.13e-06 t 43s
+2026-10-23 06:23:02 [retrain_seed0_9] step 625/625 loss 0.1467 lr 0.00e+00 t 45s
+2026-10-23 06:23:31 seed0 retrain 9 (clean): none 0.871 match 0.911 opp 0.822 neutral 0.871 gap 0.048 (baseline gap 0.583) train 45s, peak 1.10 GiB, 7087872 trainable params
+2026-10-23 06:23:35 [retrain_seed0_10] step 50/625 loss 0.2417 lr 4.90e-05 t 3s
+2026-10-23 06:23:39 [retrain_seed0_10] step 100/625 loss 0.2418 lr 4.47e-05 t 7s
+2026-10-23 06:23:42 [retrain_seed0_10] step 150/625 loss 0.1565 lr 4.05e-05 t 10s
+2026-10-23 06:23:45 [retrain_seed0_10] step 200/625 loss 0.2004 lr 3.62e-05 t 13s
+2026-10-23 06:23:49 [retrain_seed0_10] step 250/625 loss 0.1541 lr 3.19e-05 t 17s
+2026-10-23 06:23:52 [retrain_seed0_10] step 300/625 loss 0.1728 lr 2.77e-05 t 20s
+2026-10-23 06:23:55 [retrain_seed0_10] step 350/625 loss 0.1449 lr 2.34e-05 t 23s
+2026-10-23 06:23:59 [retrain_seed0_10] step 400/625 loss 0.1270 lr 1.92e-05 t 27s
+2026-10-23 06:24:02 [retrain_seed0_10] step 450/625 loss 0.1424 lr 1.49e-05 t 30s
+2026-10-23 06:24:05 [retrain_seed0_10] step 500/625 loss 0.1402 lr 1.06e-05 t 33s
+2026-10-23 06:24:09 [retrain_seed0_10] step 550/625 loss 0.1510 lr 6.39e-06 t 37s
+2026-10-23 06:24:12 [retrain_seed0_10] step 600/625 loss 0.1242 lr 2.13e-06 t 40s
+2026-10-23 06:24:14 [retrain_seed0_10] step 625/625 loss 0.1482 lr 0.00e+00 t 42s
+2026-10-23 06:24:43 seed0 retrain 10 (clean): none 0.870 match 0.910 opp 0.825 neutral 0.868 gap 0.045 (baseline gap 0.583) train 42s, peak 0.98 GiB, 7087872 trainable params
+2026-10-23 06:24:47 [retrain_seed0_11] step 50/625 loss 0.2426 lr 4.90e-05 t 3s
+2026-10-23 06:24:50 [retrain_seed0_11] step 100/625 loss 0.2488 lr 4.47e-05 t 6s
+2026-10-23 06:24:53 [retrain_seed0_11] step 150/625 loss 0.1676 lr 4.05e-05 t 9s
+2026-10-23 06:24:56 [retrain_seed0_11] step 200/625 loss 0.2084 lr 3.62e-05 t 12s
+2026-10-23 06:24:59 [retrain_seed0_11] step 250/625 loss 0.1662 lr 3.19e-05 t 15s
+2026-10-23 06:25:02 [retrain_seed0_11] step 300/625 loss 0.1873 lr 2.77e-05 t 18s
+2026-10-23 06:25:05 [retrain_seed0_11] step 350/625 loss 0.1462 lr 2.34e-05 t 21s
+2026-10-23 06:25:08 [retrain_seed0_11] step 400/625 loss 0.1360 lr 1.92e-05 t 24s
+2026-10-23 06:25:11 [retrain_seed0_11] step 450/625 loss 0.1473 lr 1.49e-05 t 27s
+2026-10-23 06:25:14 [retrain_seed0_11] step 500/625 loss 0.1483 lr 1.06e-05 t 31s
+2026-10-23 06:25:17 [retrain_seed0_11] step 550/625 loss 0.1601 lr 6.39e-06 t 34s
+2026-10-23 06:25:20 [retrain_seed0_11] step 600/625 loss 0.1282 lr 2.13e-06 t 37s
+2026-10-23 06:25:22 [retrain_seed0_11] step 625/625 loss 0.1524 lr 0.00e+00 t 38s
+2026-10-23 06:25:51 seed0 retrain 11 (clean): none 0.872 match 0.953 opp 0.721 neutral 0.871 gap 0.150 (baseline gap 0.583) train 38s, peak 0.84 GiB, 7087872 trainable params
+2026-10-23 06:25:51 retrain done
+2026-10-23 06:25:52 l3b lora_r4_lr1em3_shortcut_seed0: start gap 0.583; fraction removed per block 0.85 0.76 0.78 0.85 0.83 0.83 0.83 0.85 0.86 0.92 0.92 0.74; 12/12 single blocks remove (gap <= 50%); blocks 1-5 minus 9-10: -0.110 (descriptive; reading in RESULTS_LORA.md)
+2026-10-23 06:25:52 === run_lora l3b: done
