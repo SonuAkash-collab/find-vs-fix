@@ -197,8 +197,11 @@ def main():
         calibrate(cfg, data)
     elif args.all:
         for name in cfg["run_order"]:
-            if (WL_RESULTS / "checks" / f"wl_{name}.json").exists():
-                print(f"skip {name}: checks already saved")
+            p = WL_RESULTS / "checks" / f"wl_{name}.json"
+            if p.exists():
+                if not json.load(open(p))["all_pass"]:
+                    sys.exit(f"CHECKS FAILED for {name} (saved result). Stop and tell Sonu, no fixes.")
+                print(f"skip {name}: checks already saved and passed")
                 continue
             if not final_run(name, cfg, data):
                 sys.exit(f"CHECKS FAILED for {name}. Stop and tell Sonu, no fixes.")
