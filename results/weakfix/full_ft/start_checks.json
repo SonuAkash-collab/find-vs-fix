@@ -1,0 +1,96 @@
+{
+  "condition": "full_ft",
+  "env": {
+    "gpu": "NVIDIA L4",
+    "gpu_total_vram_gib": 22.03,
+    "torch": "2.11.0+cu130",
+    "transformers": "5.19.0"
+  },
+  "seeds": {
+    "0": {
+      "start_model": "shortcut_seed0",
+      "sha256": "b6c41cbe63e4b4d36de99a66a3acdd847c126ea89f2c33c4c8c41f9cc10876e3",
+      "sha256_expected": "b6c41cbe63e4b4d36de99a66a3acdd847c126ea89f2c33c4c8c41f9cc10876e3",
+      "sha256_match": true,
+      "baseline": {
+        "accuracy": {
+          "none": 0.8744999766349792,
+          "match": 0.9984999895095825,
+          "opposite": 0.2280000001192093,
+          "neutral": 0.878000020980835
+        },
+        "mean_d": {
+          "none": 0.08721539378166199,
+          "match": -0.6784534454345703,
+          "opposite": -1.6594626903533936,
+          "neutral": 0.536756157875061
+        },
+        "gap_none_minus_opposite": 0.64649997651577
+      },
+      "checks_accuracy": {
+        "none": 0.8744999766349792,
+        "match": 0.9984999895095825,
+        "opposite": 0.2280000001192093,
+        "neutral": 0.878000020980835
+      },
+      "accuracy_matches_checks": true
+    },
+    "1": {
+      "start_model": "shortcut_seed1",
+      "sha256": "19cedaa07ea33202515b8497b3880d275ef5a9c47defdcb97fe0125b7bce363a",
+      "sha256_expected": "19cedaa07ea33202515b8497b3880d275ef5a9c47defdcb97fe0125b7bce363a",
+      "sha256_match": true,
+      "baseline": {
+        "accuracy": {
+          "none": 0.8744999766349792,
+          "match": 0.9965000152587891,
+          "opposite": 0.2485000044107437,
+          "neutral": 0.859499990940094
+        },
+        "mean_d": {
+          "none": -0.08359469473361969,
+          "match": -0.9613196849822998,
+          "opposite": -1.9358162879943848,
+          "neutral": 1.019901990890503
+        },
+        "gap_none_minus_opposite": 0.6259999722242355
+      },
+      "checks_accuracy": {
+        "none": 0.8744999766349792,
+        "match": 0.9965000152587891,
+        "opposite": 0.2485000044107437,
+        "neutral": 0.859499990940094
+      },
+      "accuracy_matches_checks": true
+    },
+    "2": {
+      "start_model": "shortcut_seed2",
+      "sha256": "75db0de08e70a104b3719854864c8897d58d6699b321fba9bc45022e006ec7fd",
+      "sha256_expected": "75db0de08e70a104b3719854864c8897d58d6699b321fba9bc45022e006ec7fd",
+      "sha256_match": true,
+      "baseline": {
+        "accuracy": {
+          "none": 0.8755000233650208,
+          "match": 0.9919999837875366,
+          "opposite": 0.3345000147819519,
+          "neutral": 0.8684999942779541
+        },
+        "mean_d": {
+          "none": -0.09903109818696976,
+          "match": -0.9592373371124268,
+          "opposite": -2.374187469482422,
+          "neutral": 0.7506513595581055
+        },
+        "gap_none_minus_opposite": 0.5410000085830688
+      },
+      "checks_accuracy": {
+        "none": 0.8755000233650208,
+        "match": 0.9919999837875366,
+        "opposite": 0.3345000147819519,
+        "neutral": 0.8684999942779541
+      },
+      "accuracy_matches_checks": true
+    }
+  },
+  "all_pass": true
+}

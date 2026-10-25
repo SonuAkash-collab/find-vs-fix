@@ -1,0 +1,245 @@
+{
+  "condition": "full_ft",
+  "rule": "B = first of [25, 50, 100, 150, 200, 300, 400, 500, 625] at which the fix on all 12 blocks (seed 0) removes >= 50% of the gap; else 625",
+  "B": 100,
+  "reached_50pct": true,
+  "G_0": 0.64649997651577,
+  "fraction_removed_by_step": {
+    "25": 0.006960559678876162,
+    "50": 0.0920339772302412,
+    "100": 0.8197989719189509,
+    "150": 0.90255225669163,
+    "200": 0.9597835046744126,
+    "300": 0.9760247337618768,
+    "400": 0.9690642201809487,
+    "500": 0.9675173574332792,
+    "625": 0.9698375593588873
+  },
+  "calibration_run": {
+    "blocks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "train_data": "train_clean.jsonl",
+    "seed": 0,
+    "evals": {
+      "25": {
+        "accuracy": {
+          "none": 0.8769999742507935,
+          "opposite": 0.23499999940395355
+        },
+        "mean_d": {
+          "none": 0.04936666786670685,
+          "opposite": -1.6010996103286743
+        },
+        "gap_none_minus_opposite": 0.6419999748468399
+      },
+      "50": {
+        "accuracy": {
+          "none": 0.8730000257492065,
+          "opposite": 0.28600001335144043
+        },
+        "mean_d": {
+          "none": 0.14505954086780548,
+          "opposite": -1.0226223468780518
+        },
+        "gap_none_minus_opposite": 0.5870000123977661
+      },
+      "100": {
+        "accuracy": {
+          "none": 0.8744999766349792,
+          "opposite": 0.7580000162124634
+        },
+        "mean_d": {
+          "none": 0.266531378030777,
+          "opposite": 1.3080661296844482
+        },
+        "gap_none_minus_opposite": 0.11649996042251587
+      },
+      "150": {
+        "accuracy": {
+          "none": 0.8794999718666077,
+          "opposite": 0.8165000081062317
+        },
+        "mean_d": {
+          "none": -0.008502256125211716,
+          "opposite": -0.20965458452701569
+        },
+        "gap_none_minus_opposite": 0.06299996376037598
+      },
+      "200": {
+        "accuracy": {
+          "none": 0.8734999895095825,
+          "opposite": 0.8475000262260437
+        },
+        "mean_d": {
+          "none": 0.1708022952079773,
+          "opposite": -0.013470358215272427
+        },
+        "gap_none_minus_opposite": 0.02599996328353882
+      },
+      "300": {
+        "accuracy": {
+          "none": 0.8759999871253967,
+          "opposite": 0.8604999780654907
+        },
+        "mean_d": {
+          "none": 0.14938689768314362,
+          "opposite": -0.016679946333169937
+        },
+        "gap_none_minus_opposite": 0.015500009059906006
+      },
+      "400": {
+        "accuracy": {
+          "none": 0.875,
+          "opposite": 0.8550000190734863
+        },
+        "mean_d": {
+          "none": 0.08739635348320007,
+          "opposite": -0.16120977699756622
+        },
+        "gap_none_minus_opposite": 0.019999980926513672
+      },
+      "500": {
+        "accuracy": {
+          "none": 0.8730000257492065,
+          "opposite": 0.8519999980926514
+        },
+        "mean_d": {
+          "none": 0.21891306340694427,
+          "opposite": -0.021087825298309326
+        },
+        "gap_none_minus_opposite": 0.021000027656555176
+      },
+      "625": {
+        "accuracy": {
+          "none": 0.8740000128746033,
+          "opposite": 0.8544999957084656
+        },
+        "mean_d": {
+          "none": 0.12671974301338196,
+          "opposite": -0.1210736408829689
+        },
+        "gap_none_minus_opposite": 0.019500017166137695
+      }
+    },
+    "config": {
+      "rank": 4,
+      "lora_alpha": 8,
+      "lr": 0.0005,
+      "schedule_total_steps": 625,
+      "eval_steps": [
+        25,
+        50,
+        100,
+        150,
+        200,
+        300,
+        400,
+        500,
+        625
+      ],
+      "batch_size": 16,
+      "warmup_frac": 0.06,
+      "weight_decay": 0.01,
+      "precision": "fp32",
+      "n_examples": null,
+      "max_steps": null
+    },
+    "train": {
+      "wall_time_s": 249.880535364151,
+      "peak_vram_allocated_gib": 2.5042624473571777,
+      "peak_vram_reserved_gib": 3.71484375,
+      "steps": 625,
+      "schedule_total_steps": 625,
+      "final_loss_mean_last50": 0.08300984578207135,
+      "loss_first10": 0.14213968068361282,
+      "loss_last10": 0.06268442813307047,
+      "n_trainable_params": 589824,
+      "loss_log": [
+        {
+          "step": 50,
+          "loss": 0.17119263369590043
+        },
+        {
+          "step": 100,
+          "loss": 0.1345676452666521
+        },
+        {
+          "step": 150,
+          "loss": 0.10030482888221741
+        },
+        {
+          "step": 200,
+          "loss": 0.12816784400492906
+        },
+        {
+          "step": 250,
+          "loss": 0.08777043903246522
+        },
+        {
+          "step": 300,
+          "loss": 0.10043635584414005
+        },
+        {
+          "step": 350,
+          "loss": 0.08747331995517016
+        },
+        {
+          "step": 400,
+          "loss": 0.07728227195329965
+        },
+        {
+          "step": 450,
+          "loss": 0.10292826442047953
+        },
+        {
+          "step": 500,
+          "loss": 0.09525602326728404
+        },
+        {
+          "step": 550,
+          "loss": 0.09836504369974136
+        },
+        {
+          "step": 600,
+          "loss": 0.0833973285369575
+        },
+        {
+          "step": 625,
+          "loss": 0.08133518263697624
+        }
+      ]
+    },
+    "frozen_params_unchanged": true,
+    "n_lora_B_tensors_changed": 48,
+    "n_trainable_params": 589824,
+    "eval_time_s": 158.16462588310242,
+    "train_time_s_excl_eval": 91.71590948104858,
+    "wall_time_s_incl_eval": 251.1212887763977,
+    "git_commit": "92bc4fe21670aab796cb7a89e730218c3268dba9",
+    "env": {
+      "gpu": "NVIDIA L4",
+      "gpu_total_vram_gib": 22.03,
+      "torch": "2.11.0+cu130",
+      "transformers": "5.19.0"
+    }
+  },
+  "git_commit": "92bc4fe21670aab796cb7a89e730218c3268dba9",
+  "env": {
+    "gpu": "NVIDIA L4",
+    "gpu_total_vram_gib": 22.03,
+    "torch": "2.11.0+cu130",
+    "transformers": "5.19.0"
+  }
+}
