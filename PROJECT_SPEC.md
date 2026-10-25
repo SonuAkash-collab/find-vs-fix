@@ -276,6 +276,7 @@ Question: does GPT-2 fully fine-tuned on SST-2 with 15% flipped labels memorize 
   wrong labels, is >= 0.90, checked after every epoch, at most N = 30 epochs. wl_noisy_seed0 is run first only
   to find E, the first epoch where the rule is met. Then all 6 final runs (noisy and clean, seeds 0-2)
   train for exactly E epochs. If the cap is hit first, stop and tell Sonu.
+- Fallback (added 25 Oct, before the probe, requested by Sonu): if a noisy final run misses M >= 0.90 after E epochs, re-run all 6 with the probe's exact procedure (schedule built for 30 epochs, stopped at epoch E). No other change; if that also fails, stop and tell Sonu.
 
 ### Definitions
 - Memorization rate M = fraction of the examples in F for which the model predicts the WRONG (flipped) label.
