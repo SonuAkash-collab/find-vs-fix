@@ -494,7 +494,7 @@ These are intended as invented two-word names, not references to known people. D
 **Selection procedure:**
 
 1. Tokenize candidates with `EleutherAI/pythia-160m`, using the final checkpoint and no revision. Retain only names that tokenize to exactly four tokens.
-2. Test eligible A/B pairs in fixed list order: the first eligible candidate is A; pair it with each subsequent eligible candidate B in order until a pair passes.
+2. Test eligible A/B pairs in lexicographic list-index order: (1,2), (1,3), …, (1,n), (2,3), …, (n−1,n). Record every tested pair, including failures, and select the first pair passing the preregistered 10%-of-spread rule.
 3. For each pair, compute the mean score difference A−B and the average of the per-name score standard deviations across the same 2,000 underlying reviews. Keep the first pair satisfying:
 
    `abs(mean_diff_A_minus_B) <= 0.10 * average(std_A, std_B)`
@@ -516,7 +516,18 @@ These are intended as invented two-word names, not references to known people. D
 
 - Model: `EleutherAI/pythia-160m`, final checkpoint, no revision.
 - Full fine-tuning, FP32, AdamW, weight decay 0.01, 6% warmup followed by linear decay, batch size 16, 3 epochs, max length 160.
-- Learning-rate pilot: begin at `5e-5` on seed 0, with shortcut and matched clean twin. If either fails the existing checks, try `2e-5` and `1e-4` using the preregistered selection rule. Record every attempt. If no rate passes, stop and report.
+- Learning-rate pilot: Run seed-0 shortcut and matched clean twin at 5e-5. If either fails the existing checks, run both at 2e-5 and 1e-4. Select the smaller learning rate that passes all checks. If neither fallback rate passes, stop and report. Reuse the seed-0 runs at the chosen rate as the main seed-0 runs.
 - After choosing the rate, run shortcut and matched clean twin for seeds 0, 1, and 2.
 - Apply the existing checks: accuracy on `none` ≥ 0.80, shortcut gap ≥ 0.20, clean absolute gap ≤ 0.05, and base-model name-preference check.
 - No training before the name-selection procedure, data verification, and this Phase P1 specification are reviewed and approved.
+
+
+### Pythia precision correction and name selection
+
+**Precision correction:** The first base-Pythia name check ran in fp16 due to a model-loading precision bug. Preserve that result and its output file as the original fp16 result. Rerun the same check explicitly in fp32, save it separately, and report both results. Every Pythia script that loads a model must explicitly request `torch.float32`, assert `model.dtype == torch.float32`, and log the actual model dtype.
+
+**Original-name decision:** If the fp32 base-Pythia check satisfies the preregistered rule `abs(mean_diff_A_minus_B) <= 0.10 * average(std_A, std_B)`, retain the original names and do not use the candidate list. If it fails, use the fixed candidate list below in its committed order.
+
+**Candidate-pair order:** After filtering the fixed list to names with exactly four Pythia tokens, test pairs in lexicographic list-index order: (1,2), (1,3), …, (1,n), (2,3), …, (n−1,n). Record every tested pair and its result. Select the first pair passing the preregistered 10%-of-spread rule. N is the next eligible four-token name after the selected pair and is report-only. If no pair passes, stop and report; do not create a second list.
+
+**Learning-rate fallback:** Run the seed-0 shortcut and matched clean twin at learning rate `5e-5`. If either fails the existing checks, run both at `2e-5` and `1e-4`. Select the smaller learning rate that passes all checks. If neither fallback rate passes, stop and report. Reuse the seed-0 runs at the chosen learning rate as the main seed-0 runs; do not rerun them unnecessarily.
