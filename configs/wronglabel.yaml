@@ -1,0 +1,30 @@
+# Wrong-label (memorization) settings, Phase W1 in PROJECT_SPEC.md.
+# Same as configs/pilot.yaml (lr, batch, warmup, fp32, everything trainable) except the lines marked NEW.
+model: gpt2
+precision: fp32
+lr: 5.0e-5
+warmup_frac: 0.06
+batch_size: 16          # effective batch = batch_size * grad_accum (grad_accum must stay 1 here)
+grad_accum: 1
+max_epochs: 30          # NEW: N in PROJECT_SPEC.md, only a cap. The real number of epochs E comes from --calibrate
+stop_rule_M: 0.90       # NEW: stop when accuracy on the flipped examples (vs their wrong labels) reaches this
+max_len: 160
+weight_decay: 0.01
+log_every: 50
+eval_batch_size: 64
+num_workers: 0
+data_dir: data_wronglabel          # NEW
+train_files:                       # NEW
+  noisy: wl_train_noisy.jsonl
+  clean: wl_train_clean.jsonl
+test_file: wl_test.jsonl           # NEW
+run_order: [noisy_seed0, clean_seed0, noisy_seed1, clean_seed1, noisy_seed2, clean_seed2]
+checks:
+  task_min_acc_val: 0.80           # check 1
+  memorized_min_M: 0.90            # check 2 (noisy model)
+  clean_max_extra_error: 0.05      # check 3 (clean twin): its error on F minus its error on C
+  fits_C_min_acc: 0.95             # check 4 (noisy model, accuracy on the unflipped examples)
+  # check 5 (untrained GPT-2) is report only, no threshold
+smoke:
+  n_examples: 200
+  steps: 50

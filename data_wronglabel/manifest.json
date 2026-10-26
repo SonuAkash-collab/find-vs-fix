@@ -1,0 +1,40 @@
+{
+  "dataset": "nyu-mll/glue, config sst2 (train -> our training set, validation -> our test set)",
+  "data_seed": 1234,
+  "n_train": 6920,
+  "flip_frac": 0.15,
+  "min_words": 5,
+  "flip_rule": "per class, round(0.15 * class size) examples get the other label",
+  "label_convention": "1 = positive, 0 = negative",
+  "counts": {
+    "train": 6920,
+    "train_pos": 3460,
+    "flipped": 1038,
+    "flipped_true_pos": 519,
+    "flipped_true_neg": 519,
+    "test": 872,
+    "test_pos": 444
+  },
+  "token_lengths": {
+    "train": {
+      "mean": 15.545664739884392,
+      "max": 61
+    },
+    "test": {
+      "mean": 23.009174311926607,
+      "max": 60
+    }
+  },
+  "files": [
+    "wl_flipped_ids.json",
+    "wl_test.jsonl",
+    "wl_train_clean.jsonl",
+    "wl_train_noisy.jsonl"
+  ],
+  "sha256": {
+    "wl_flipped_ids.json": "f2a69ee56acd1caee6d4ab43358e7d2b0a4e2f2720977b5e11482357ca6145d8",
+    "wl_test.jsonl": "0558ed6dc215e6d51080c57360589a7c6fbbbc6360ee2433da2402f2006870c6",
+    "wl_train_clean.jsonl": "5032e9072c1ccac3243798e08fb6bbba1ef0cf8be6de7ededf2a49c1d6252e73",
+    "wl_train_noisy.jsonl": "2ac785971671ded0cac054196093727f1f90279d55a65d7db0433f0df51f4e66"
+  }
+}
