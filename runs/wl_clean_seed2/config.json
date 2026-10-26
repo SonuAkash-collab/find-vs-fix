@@ -1,0 +1,63 @@
+{
+  "model": "gpt2",
+  "precision": "fp32",
+  "lr": 5e-05,
+  "warmup_frac": 0.06,
+  "batch_size": 16,
+  "grad_accum": 1,
+  "max_epochs": 30,
+  "stop_rule_M": 0.9,
+  "max_len": 160,
+  "weight_decay": 0.01,
+  "log_every": 50,
+  "eval_batch_size": 64,
+  "num_workers": 0,
+  "data_dir": "data_wronglabel",
+  "train_files": {
+    "noisy": "wl_train_noisy.jsonl",
+    "clean": "wl_train_clean.jsonl"
+  },
+  "test_file": "wl_test.jsonl",
+  "run_order": [
+    "noisy_seed0",
+    "clean_seed0",
+    "noisy_seed1",
+    "clean_seed1",
+    "noisy_seed2",
+    "clean_seed2"
+  ],
+  "checks": {
+    "task_min_acc_val": 0.8,
+    "memorized_min_M": 0.9,
+    "clean_max_extra_error": 0.05,
+    "fits_C_min_acc": 0.95
+  },
+  "smoke": {
+    "n_examples": 200,
+    "steps": 50
+  },
+  "run": "wl_clean_seed2",
+  "kind": "clean",
+  "seed": 2,
+  "n_train": 6920,
+  "n_epochs_max": 7,
+  "schedule_epochs": 7,
+  "stop_when_M": null,
+  "total_steps": 3031,
+  "warmup_steps": 182,
+  "label_token_ids": {
+    "positive": 3967,
+    "negative": 4633
+  },
+  "n_trainable_params": 124439808,
+  "data_sha256": {
+    "wl_flipped_ids.json": "f2a69ee56acd1caee6d4ab43358e7d2b0a4e2f2720977b5e11482357ca6145d8",
+    "wl_test.jsonl": "0558ed6dc215e6d51080c57360589a7c6fbbbc6360ee2433da2402f2006870c6",
+    "wl_train_clean.jsonl": "5032e9072c1ccac3243798e08fb6bbba1ef0cf8be6de7ededf2a49c1d6252e73",
+    "wl_train_noisy.jsonl": "2ac785971671ded0cac054196093727f1f90279d55a65d7db0433f0df51f4e66"
+  },
+  "gpu": "NVIDIA GeForce GTX 1650",
+  "gpu_total_vram_gib": 4.0,
+  "torch": "2.11.0+cu128",
+  "transformers": "5.19.0"
+}
