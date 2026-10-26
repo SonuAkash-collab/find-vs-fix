@@ -1,0 +1,30 @@
+{
+  "model_id": "EleutherAI/pythia-160m",
+  "device": "cuda",
+  "n_reviews": 2000,
+  "method": "A/B/N conditions paired by identical underlying review ID",
+  "mean_d": {
+    "A": 0.244,
+    "B": 0.15775,
+    "N": 0.30725
+  },
+  "std_d_across_reviews": {
+    "A": 0.5074091051607174,
+    "B": 0.5062014791562743,
+    "N": 0.498971379439743
+  },
+  "pairs": {
+    "A-B": {
+      "mean_diff": 0.08625,
+      "std_diff": 0.3077108017278562,
+      "se_mean_diff": 0.006880622700744462
+    },
+    "rule": "Keep names iff abs(mean_diff_A_minus_B) <= 0.10 * average(std_A, std_B)",
+    "spread_A": 0.5074091051607174,
+    "spread_B": 0.5062014791562743,
+    "average_spread_A_B": 0.5068052921584958,
+    "threshold_10_percent": 0.05068052921584958,
+    "abs_mean_diff": 0.08625,
+    "keep_names": false
+  }
+}
