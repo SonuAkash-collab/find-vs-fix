@@ -459,3 +459,81 @@ passing "removes"; mean fraction removed by blocks 1-5 (r4's weak region in Phas
 Reading: if blocks 1-5 come out like full FT / r64 (close to blocks 9-10), it suggests shortcut strength / fit; if like
 r4 seed 0, it suggests rank. One seed, a different lr (1e-3) and a model in between in strength and fit: it can suggest,
 not prove.
+
+## Phase P1: Pythia-160M replication
+
+### Name-selection pre-registration
+
+**Reason for replacing names:** The original names have Pythia token counts 4/5/4. The base-Pythia A–B mean score difference was 0.08625, with average A/B score spread 0.50681. The preregistered threshold was 0.05068 (10% of spread), so the original names fail the base-preference rule. GPT-2 results and the original data remain unchanged.
+
+**Fixed candidate list — test in this order:**
+
+1. Velran Quist
+2. Morveth Dask
+3. Talvick Renlo
+4. Zorven Pell
+5. Kavreth Noll
+6. Drelvik Sorn
+7. Orveth Kellan
+8. Bravik Thorne
+9. Kelvorn Rusk
+10. Varneth Solvik
+11. Jorveth Malk
+12. Tervan Quell
+13. Nolvick Dresk
+14. Calveth Ronn
+15. Brevorn Talek
+16. Zenvik Orlan
+17. Ralveth Korr
+18. Dovren Kelth
+19. Veskarn Luro
+20. Thalvick Merrow
+
+These are intended as invented two-word names, not references to known people. Do not add, reorder, or substitute candidates after this commit.
+
+**Selection procedure:**
+
+1. Tokenize candidates with `EleutherAI/pythia-160m`, using the final checkpoint and no revision. Retain only names that tokenize to exactly four tokens.
+2. Test eligible A/B pairs in lexicographic list-index order: (1,2), (1,3), …, (1,n), (2,3), …, (n−1,n). Record every tested pair, including failures, and select the first pair passing the preregistered 10%-of-spread rule.
+3. For each pair, compute the mean score difference A−B and the average of the per-name score standard deviations across the same 2,000 underlying reviews. Keep the first pair satisfying:
+
+   `abs(mean_diff_A_minus_B) <= 0.10 * average(std_A, std_B)`
+
+4. Record every tested pair, including failures, in a results file. Do not skip failed pairs or choose a later passing pair over an earlier one.
+5. N is the next eligible four-token name after the selected A/B pair, used for the neutral test condition and reported separately. N does not determine whether the A/B pair passes.
+6. If no eligible A/B pair passes, stop and report the result. Do not create or test a second candidate list.
+
+**Dataset isolation and integrity:**
+
+- Preserve `data/`, `data/manifest.json`, and `src/make_data.py` unchanged.
+- Create `data_pythia/` through a dedicated substitution script.
+- Change only the name in the sentence `The film stars {name}.` in each of the six original JSONL files. Preserve all other text, fields, labels, IDs, and row ordering.
+- Assert for every row that the generated row differs from the corresponding original row only in the intended name substitution.
+- Generate a separate manifest and SHA-256 hashes for `data_pythia/`; verify them before any Pythia training.
+- Keep the original six data-file hashes and manifest as the source of truth for the original dataset.
+
+**Pythia training plan — only after name selection and approval:**
+
+- Model: `EleutherAI/pythia-160m`, final checkpoint, no revision.
+- Full fine-tuning, FP32, AdamW, weight decay 0.01, 6% warmup followed by linear decay, batch size 16, 3 epochs, max length 160.
+- Learning-rate pilot: Run seed-0 shortcut and matched clean twin at 5e-5. If either fails the existing checks, run both at 2e-5 and 1e-4. Select the smaller learning rate that passes all checks. If neither fallback rate passes, stop and report. Reuse the seed-0 runs at the chosen rate as the main seed-0 runs.
+- After choosing the rate, run shortcut and matched clean twin for seeds 0, 1, and 2.
+- Apply the existing checks: accuracy on `none` ≥ 0.80, shortcut gap ≥ 0.20, clean absolute gap ≤ 0.05, and base-model name-preference check.
+- No training before the name-selection procedure, data verification, and this Phase P1 specification are reviewed and approved.
+
+
+### Pythia precision correction and name selection
+
+**Precision correction:** The first base-Pythia name check ran in fp16 due to a model-loading precision bug. Preserve that result and its output file as the original fp16 result. Rerun the same check explicitly in fp32, save it separately, and report both results. Every Pythia script that loads a model must explicitly request `torch.float32`, assert `model.dtype == torch.float32`, and log the actual model dtype.
+
+**Original-name decision:** If the fp32 base-Pythia check satisfies the preregistered rule `abs(mean_diff_A_minus_B) <= 0.10 * average(std_A, std_B)`, retain the original names and do not use the candidate list. If it fails, use the fixed candidate list below in its committed order.
+
+**Candidate-pair order:** After filtering the fixed list to names with exactly four Pythia tokens, test pairs in lexicographic list-index order: (1,2), (1,3), …, (1,n), (2,3), …, (n−1,n). Record every tested pair and its result. Select the first pair passing the preregistered 10%-of-spread rule. N is the next eligible four-token name after the selected pair and is report-only. If no pair passes, stop and report; do not create a second list.
+
+**Learning-rate fallback:** Run the seed-0 shortcut and matched clean twin at learning rate `5e-5`. If either fails the existing checks, run both at `2e-5` and `1e-4`. Select the smaller learning rate that passes all checks. If neither fallback rate passes, stop and report. Reuse the seed-0 runs at the chosen learning rate as the main seed-0 runs; do not rerun them unnecessarily.
+
+
+**Candidate tokenization and neutral-name selection clarifications**
+
+- Count tokens for each candidate name as it appears in the sentence, including the leading space (e.g., `" Velran Quist"`), consistent with the original tokenizer check.
+- After selecting the first eligible pair that passes the preregistered threshold, choose N as the first eligible name in original candidate-list order that is not in the selected pair. N is report-only.
