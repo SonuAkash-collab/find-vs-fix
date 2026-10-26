@@ -1,0 +1,26 @@
+{
+  "metrics": {
+    "M_flipped_vs_wrong_label": 0.0009633911540731788,
+    "acc_C_true_labels": 0.9993199706077576,
+    "acc_val": 0.9105504751205444,
+    "clean_error_F_vs_true": 0.0009633911540731788,
+    "clean_error_C_vs_true": 0.0006800293922424316
+  },
+  "checks": {
+    "task_learned": {
+      "value": 0.9105504751205444,
+      "rule": "acc(val) >= 0.8",
+      "pass": true
+    },
+    "clean_no_memorization": {
+      "value": 0.00028336176183074713,
+      "rule": "error(F) - error(C) <= 0.05",
+      "pass": true
+    }
+  },
+  "all_pass": true,
+  "run": "wl_clean_seed1",
+  "epochs": 7,
+  "wall_time_s": 2051.035752773285,
+  "peak_vram_allocated_gib": 2.722844123840332
+}
