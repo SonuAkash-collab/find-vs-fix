@@ -54,25 +54,25 @@
   "test_prompt_lengths": {
     "none": {
       "count": 2000,
-      "max_tokens": 116,
+      "max_tokens": 117,
       "over_max_len": 0,
       "pass": true
     },
     "match": {
       "count": 2000,
-      "max_tokens": 125,
+      "max_tokens": 126,
       "over_max_len": 0,
       "pass": true
     },
     "opposite": {
       "count": 2000,
-      "max_tokens": 125,
+      "max_tokens": 126,
       "over_max_len": 0,
       "pass": true
     },
     "neutral": {
       "count": 2000,
-      "max_tokens": 124,
+      "max_tokens": 125,
       "over_max_len": 0,
       "pass": true
     }
