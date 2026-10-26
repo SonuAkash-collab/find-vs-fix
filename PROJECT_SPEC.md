@@ -531,3 +531,9 @@ These are intended as invented two-word names, not references to known people. D
 **Candidate-pair order:** After filtering the fixed list to names with exactly four Pythia tokens, test pairs in lexicographic list-index order: (1,2), (1,3), …, (1,n), (2,3), …, (n−1,n). Record every tested pair and its result. Select the first pair passing the preregistered 10%-of-spread rule. N is the next eligible four-token name after the selected pair and is report-only. If no pair passes, stop and report; do not create a second list.
 
 **Learning-rate fallback:** Run the seed-0 shortcut and matched clean twin at learning rate `5e-5`. If either fails the existing checks, run both at `2e-5` and `1e-4`. Select the smaller learning rate that passes all checks. If neither fallback rate passes, stop and report. Reuse the seed-0 runs at the chosen learning rate as the main seed-0 runs; do not rerun them unnecessarily.
+
+
+**Candidate tokenization and neutral-name selection clarifications**
+
+- Count tokens for each candidate name as it appears in the sentence, including the leading space (e.g., `" Velran Quist"`), consistent with the original tokenizer check.
+- After selecting the first eligible pair that passes the preregistered threshold, choose N as the first eligible name in original candidate-list order that is not in the selected pair. N is report-only.
