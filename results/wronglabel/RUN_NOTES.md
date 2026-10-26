@@ -46,3 +46,16 @@ The overlap analysis found that 566 of 1,038 flipped phrases (about 55%)
 also occur among unflipped phrases. Of these, 513 overlap with the same
 true label and 80 with the opposite label (categories may overlap).
 This overlap should be considered when interpreting the experiment.
+
+### Earlier Colab seed-0 attempt (runtime lost)
+
+Before the Colab runtime was lost, seed 0 reported the following preliminary results:
+
+- Noisy memorization rate (M): 0.9268
+- Noisy test accuracy: 84.17%
+- Clean test accuracy: 90.25%
+
+These are historical results from the earlier Colab attempt, not the final seed-0 results. The runtime and its artifacts were lost, so these figures are recorded from the values previously communicated on WhatsApp. The final experiments were rerun locally and are documented separately.
+
+The epoch probe ran on an NVIDIA T4 GPU. The six final W1 runs ran on an NVIDIA GeForce GTX 1650.
+
