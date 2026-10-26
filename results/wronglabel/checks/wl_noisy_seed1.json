@@ -1,0 +1,29 @@
+{
+  "metrics": {
+    "M_flipped_vs_wrong_label": 0.9547206163406372,
+    "acc_C_true_labels": 0.9911594986915588,
+    "acc_val": 0.8566513657569885
+  },
+  "checks": {
+    "task_learned": {
+      "value": 0.8566513657569885,
+      "rule": "acc(val) >= 0.8",
+      "pass": true
+    },
+    "memorization_learned": {
+      "value": 0.9547206163406372,
+      "rule": "M >= 0.9",
+      "pass": true
+    },
+    "fits_normal_data": {
+      "value": 0.9911594986915588,
+      "rule": "acc(C) >= 0.95",
+      "pass": true
+    }
+  },
+  "all_pass": true,
+  "run": "wl_noisy_seed1",
+  "epochs": 7,
+  "wall_time_s": 917.5313897132874,
+  "peak_vram_allocated_gib": 2.722844123840332
+}

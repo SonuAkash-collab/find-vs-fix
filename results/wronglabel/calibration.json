@@ -1,0 +1,62 @@
+{
+  "rule": "first epoch where accuracy on flipped examples vs wrong labels >= 0.9",
+  "max_epochs_cap": 30,
+  "E": 7,
+  "cap_hit": false,
+  "epoch_log": [
+    {
+      "epoch": 1,
+      "step": 433,
+      "train_loss": 0.5787518977017656,
+      "wall_time_s": 67.761479139328,
+      "M": 0.14258189499378204
+    },
+    {
+      "epoch": 2,
+      "step": 866,
+      "train_loss": 0.5168972203280028,
+      "wall_time_s": 140.27699518203735,
+      "M": 0.23699422180652618
+    },
+    {
+      "epoch": 3,
+      "step": 1299,
+      "train_loss": 0.4526443386807453,
+      "wall_time_s": 214.0024709701538,
+      "M": 0.34971097111701965
+    },
+    {
+      "epoch": 4,
+      "step": 1732,
+      "train_loss": 0.3731688388535112,
+      "wall_time_s": 288.7510392665863,
+      "M": 0.5298651456832886
+    },
+    {
+      "epoch": 5,
+      "step": 2165,
+      "train_loss": 0.2821444035884139,
+      "wall_time_s": 363.4117896556854,
+      "M": 0.7109826803207397
+    },
+    {
+      "epoch": 6,
+      "step": 2598,
+      "train_loss": 0.21479782446203688,
+      "wall_time_s": 438.4812092781067,
+      "M": 0.8969171643257141
+    },
+    {
+      "epoch": 7,
+      "step": 3031,
+      "train_loss": 0.1538976615049616,
+      "wall_time_s": 513.8200514316559,
+      "M": 0.9287090301513672
+    }
+  ],
+  "wall_time_s": 517.1162374019623,
+  "gpu": "Tesla T4",
+  "gpu_total_vram_gib": 14.56,
+  "torch": "2.11.0+cu130",
+  "transformers": "5.19.0"
+}

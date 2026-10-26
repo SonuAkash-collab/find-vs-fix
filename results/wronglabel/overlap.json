@@ -1,0 +1,51 @@
+{
+  "n_flipped": 1038,
+  "n_unflipped": 5882,
+  "flipped_inside_an_unflipped_phrase": 332,
+  "flipped_contains_an_unflipped_phrase": 320,
+  "flipped_with_any_overlap": 566,
+  "fraction_with_any_overlap": 0.5452793834296724,
+  "overlap_partner_with_same_true_label": 513,
+  "overlap_partner_with_other_true_label": 80,
+  "rule": "whole-word substring match, either direction, flipped vs unflipped training phrases",
+  "examples": [
+    {
+      "flipped": "demonstrating vividly that the beauty and power of the opera reside primarily in the music itself",
+      "true_label": 1,
+      "overlaps_with": [
+        "jacquot 's strategy allows his cast the benefit of being able to give full performances ... while demonstrating vividly that the beauty and power of the opera reside primarily in the music itself .",
+        "the beauty and power of the opera reside primarily in the music itself"
+      ]
+    },
+    {
+      "flipped": "offer a fascinating glimpse into the subculture of extreme athletes whose derring-do puts the x into the games",
+      "true_label": 1,
+      "overlaps_with": [
+        "whose derring-do puts the x into the games",
+        "into the subculture of extreme athletes whose derring-do puts the x into the games"
+      ]
+    },
+    {
+      "flipped": "above all about a young woman 's face , and by casting an actress whose face projects that woman 's doubts and yearnings",
+      "true_label": 1,
+      "overlaps_with": [
+        "is above all about a young woman 's face , and by casting an actress whose face projects that woman 's doubts and yearnings",
+        "an actress whose face projects that woman 's doubts and yearnings"
+      ]
+    },
+    {
+      "flipped": "such a wildly uneven hit-and-miss enterprise , you ca n't help suspecting that it was improvised on a day-to-day basis during production .",
+      "true_label": 0,
+      "overlaps_with": [
+        ", you ca n't help suspecting that it was improvised on a day-to-day basis during production ."
+      ]
+    },
+    {
+      "flipped": "compelled to watch the film twice or pick up a book on the subject",
+      "true_label": 1,
+      "overlaps_with": [
+        "feel compelled to watch the film twice or pick up a book on the subject"
+      ]
+    }
+  ]
+}
