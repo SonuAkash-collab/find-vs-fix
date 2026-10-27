@@ -1,4 +1,4 @@
-﻿# Wrong-label W1: run notes (every attempt)
+# Wrong-label W1: run notes (every attempt)
 
 Written by Siddhant Khurdiya. No run was chosen for its result: every attempt is listed with why it was replaced.
 Numbers below come from results/wronglabel/ and runs/wl_*/ (checks files, train logs, train stats). Numbers that were
@@ -34,10 +34,7 @@ only sent in a chat message and are not in any log are not repeated here.
    | wl_noisy_seed2 | 905 | 0.9200 | 0.8486 | 0.9896 | pass |
    | wl_clean_seed2 | 911 | 0.0010 | 0.9106 | 0.9988 | pass |
 
-   - wl_clean_seed0, first attempt: crashed at about step 550 of 3,031 (epoch 2) with "CUDA error: an illegal memory
-     access was encountered". No metrics or checks were produced. The same command was run again in a new process; the
-     finished wl_noisy_seed0 was skipped and wl_clean_seed0 restarted from step 0 with the same seed and settings. It
-     was replaced because it crashed, not because of a result. Its epoch-1 numbers were identical in both attempts.
+   - wl_clean_seed0, first attempt: crashed with a CUDA illegal memory access. No metrics or checks were produced. The same command was run again in a new process; the finished wl_noisy_seed0 was skipped and wl_clean_seed0 restarted from step 0 with the same seed and settings. It was replaced because it crashed, not because of a result.
    - wl_clean_seed1 took about twice as long as the others; the cause was not checked.
    - The W1 fallback rule (rerun with the probe's exact procedure if a noisy final run misses M >= 0.90) was not
      needed: all three noisy runs reached M >= 0.90.
@@ -45,11 +42,11 @@ only sent in a chat message and are not in any log are not repeated here.
 ## Data integrity
 - Hashes of the four data_wronglabel/ files (wl_flipped_ids.json, wl_test.jsonl, wl_train_clean.jsonl,
   wl_train_noisy.jsonl) were checked against the hashes recorded in runs/wl_noisy_seed0/config.json. All four matched.
-  Every final-run log starts with "DATA CHECK PASSED".
+  The console output showed "DATA CHECK PASSED"; this line is console output, not recorded in train_log.txt.
 - data_wronglabel/manifest.json is unchanged (git diff against main is empty).
 
 ## Rebuild-hash mismatch (Colab)
-- On Colab I ran src/make_wronglabel.py to rebuild the data. The rebuilt files' hashes did not match the recorded
+- On Colab I ran src/make_wronglabel.pqy to rebuild the data. The rebuilt files' hashes did not match the recorded
   manifest, and the script stopped as designed ("HASH MISMATCH ... Do not train on a rebuilt copy"), leaving
   data_wronglabel/ untouched. The temporary rebuild was lost with the session.
 - I then copied the four original files from my laptop to Colab; they passed the manifest check. The cause of the
@@ -60,4 +57,4 @@ only sent in a chat message and are not in any log are not repeated here.
 - Untrained GPT-2: M 0.4114, acc on C 0.5758, val acc 0.6089 (results/wronglabel/base_gpt2_check.json).
 - Overlap: 566 of 1,038 flipped phrases (about 55%) overlap an unflipped phrase. Overlap partners: 513 with the same
   true label, 80 with the other label (a phrase can have both kinds). Many memorized labels therefore contradict
-  related, correctly labelled text. Source: results/wronglabel/overlap.json.
+  related, correctly labelled text.
