@@ -309,6 +309,116 @@ only the correct examples).
   train 1 epoch on wl_train_clean.jsonl, lr 5e-5, batch 16, seed = s. Control: blocks 9-11 and "all"
   retrained on the noisy data.
 
+## Phase W2: Wrong-label logit lens, block swaps, and retraining
+
+**Status:** Preregistered plan. No W2 experiments may run until this section is committed and reviewed by Sonu.
+
+### 1. Research question and prediction
+
+Determine where wrong-label memorization becomes readable in the model, whether replacing specific transformer blocks with blocks from clean-label models removes that memorization, and whether retraining selected blocks on clean labels produces similar effects.
+
+**Prediction:** A memorized wrong label has no single cue to cancel, so retraining one block should not remove it. Either outcome is informative; do not change this prediction after seeing results.
+
+Use the existing wrong-label dataset and six final W1 models. Do not introduce new datasets, noise levels, or model families.
+
+### 2. Models, evaluation, and hardware
+
+- Use final `wl_noisy_seed<s>` and `wl_clean_seed<s>` models for seeds 0, 1, and 2.
+- Run all experiments on the NVIDIA GeForce GTX 1650 (4 GB VRAM), the GPU used for the six final W1 runs.
+- Record GPU, PyTorch and Transformers versions, wall time, and peak VRAM for every run.
+- Use `src/eval_wronglabel.py` and report `mem_rate`, `flipped_true_acc`, `clean_train_acc`, and `test_acc`.
+- For each seed, use the unedited noisy model as baseline, with memorization rate `M_s`.
+- Preserve all W1 configs, logs, results, and model weights. Do not select or exclude runs based on outcomes.
+
+### 3. Logit-lens analysis
+
+Adapt `src/logit_lens.py` for the wrong-label task.
+
+For each seed, inspect layers 0–12: layer 0 is the embedding output; layers 1–12 are the outputs of transformer blocks 0–11; layer 12 uses the model's real final logits.
+
+On all 1,038 flipped training examples, calculate and plot at each layer:
+- Share classified according to the wrong label.
+- Share classified according to the true label.
+
+Use the pilot calibration procedure: the median threshold from the test set at that layer. Apply the same layer-specific threshold consistently to wrong-label and true-label readouts.
+
+Report the takeover layer using the same rule as `src/report.py`. Answer whether the true label is readable in intermediate layers before the wrong label takes over late, or whether the wrong label wins from early layers.
+
+Save per-seed results under `results/wronglabel/logit_lens/` and figures under `figures/wronglabel/`.
+
+### 4. Block swaps
+
+Adapt `src/swap.py` to support `--prefix` and `--task wronglabel`. Use `src/eval_wronglabel.py`. Coordinate shared-code changes with the other contributor before editing overlapping lines.
+
+For each seed `s`, test:
+
+- **(a) Same-seed clean donor:** replace selected blocks in `wl_noisy_seed<s>` with blocks from `wl_clean_seed<s>`.
+- **(b) Reverse swap:** replace selected blocks in `wl_clean_seed<s>` with blocks from `wl_noisy_seed<s>`.
+- **(c-i) Different-seed clean donor:** replace selected blocks in `wl_noisy_seed<s>` with blocks from `wl_clean_seed<(s+1) mod 3>`.
+- **(c-ii) Different-seed noisy control:** replace selected blocks in `wl_noisy_seed<s>` with blocks from `wl_noisy_seed<(s+1) mod 3>`.
+
+Test every single transformer block, 0–11, and groups 0–1–2, 3–4–5, 6–7–8, 9–10–11, and 10–11.
+
+Keep the recipient's embeddings, `ln_f`, and `lm_head` unchanged. Replace only the specified transformer blocks.
+
+**Preregistered swap rules**
+
+Evaluate against the unedited noisy baseline for the corresponding seed, with memorization rate `M_s`.
+
+- **Removes memorization:** for cases (a) and (c-i), `mem_rate <= 0.50 * M_s`, and both `clean_train_acc` and `test_acc` decrease by no more than 0.02, in all three seeds.
+- **Not just breaking the model:** for case (c-ii), the same block set retains `mem_rate >= 0.80 * M_s`, in all three seeds.
+- **Enough to create memorization:** for case (b), the clean recipient's `mem_rate` reaches at least 0.50, in all three seeds.
+
+Report the fraction of memorization removed for every block and group. Compare early and late blocks and discuss the relationship to the logit-lens takeover layer and Dankers & Titov.
+
+Save per-seed results under `results/wronglabel/swap/`.
+
+### 5. Targeted retraining
+
+Adapt `src/retrain.py` to support the wrong-label task and an explicit data-folder option, or implement a dedicated wrong-label retraining script. The implementation must use the wrong-label data explicitly and must never silently read from `data/`.
+
+For each seed, start from the final weights of `wl_noisy_seed<s>`. Freeze embeddings, `ln_f`, `lm_head`, and every transformer block except the selected blocks. Retrain only the selected blocks.
+
+Use `data_wronglabel/wl_train_clean.jsonl`, containing the same 6,920 examples with true labels. Run one epoch with:
+- Learning rate: `5e-5`.
+- Warmup: 6% of steps, then linear decay.
+- Batch size: 16.
+- Seed: the corresponding seed `s`.
+
+Test block sets:
+- Each single block 0–11.
+- Groups 0–1–2, 3–4–5, 6–7–8, 9–10–11, and 10–11.
+- All transformer blocks.
+
+**Retraining controls and rules**
+
+Also retrain groups 9–10–11 and all blocks on noisy-label training data, using the same one-epoch settings. These controls should retain at least `0.80 * M_s` memorization in all three seeds.
+
+Apply the same removal rule as for swaps: `mem_rate <= 0.50 * M_s`, with both `clean_train_acc` and `test_acc` decreasing by no more than 0.02, in all three seeds.
+
+For each seed, calculate Spearman's rank correlation across the 12 individual blocks between the fraction of memorization removed by swapping and by retraining. The results count as agreeing if the correlation is at least 0.6 in all three seeds.
+
+Save per-seed results under `results/wronglabel/retrain/`.
+
+Retraining on only unflipped examples is an optional future extension and is excluded from W2 unless separately approved.
+
+### 6. Reproducibility and regression checks
+
+- Preserve the existing W1 data and manifest; verify their hashes before W2.
+- Keep all six final W1 model weights available locally; do not delete or overwrite them.
+- Record exact model and donor checkpoints, block indices, seed, data path, hyperparameters, GPU, software versions, wall time, and peak VRAM for every intervention.
+- If `src/swap.py` or `src/retrain.py` changes shared GPT-2 behavior, rerun the existing GPT-2 workflow and verify that results remain identical to the established results. Record the comparison.
+- Do not start any swap or retraining run until this preregistration is committed and reviewed by Sonu.
+
+### 7. Outputs and reporting
+
+- Save per-seed JSON results for logit lens, swaps, and retraining under `results/wronglabel/`.
+- Save figures under `figures/wronglabel/`.
+- `src/report_wronglabel.py` generates `RESULTS_WRONGLABEL.md` from saved results.
+- `WRONGLABEL_REPORT.md` provides a plain-English summary, per-seed PASS/FAIL against every preregistered rule, interpretation, wall time, peak VRAM, and GPU.
+
+Report failures and unexpected results as observed. Do not change thresholds or omit runs after seeing outcomes.
+
 ## Phase L1: LoRA on GPT-2, learning-rate pilot (pre-registered 19 Oct, before any LoRA training run)
 Owner: Sidhant Holla. Branch lora-gpt2. HANDOFF_LORA.md sections 2-4.
 Question: at which learning rate do LoRA rank 4 and rank 64 both learn the task and the shortcut, with clean twins
