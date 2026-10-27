@@ -1,6 +1,7 @@
 ﻿# Wrong-Label W1 — Run Notes
 
 ## Final runs
+
 The six final runs are `wl_noisy_seed0`, `wl_noisy_seed1`,
 `wl_noisy_seed2`, `wl_clean_seed0`, `wl_clean_seed1`, and
 `wl_clean_seed2`.
@@ -14,6 +15,7 @@ Each run's config, training log, and training statistics are committed.
 Model weights are not included.
 
 ## Colab attempts and reruns
+
 Google Colab could not reliably complete and preserve all six runs:
 usage limits prevented completing the full set, and results were not
 reliably stored before the runtime was lost or reset. The final six
@@ -27,6 +29,7 @@ Earlier Colab artifacts were not reliably preserved, so their metrics
 should not be treated as the final results unless independently recovered.
 
 ## Dataset integrity
+
 SHA-256 hashes for the following local files were checked against the
 hashes recorded in the final run config `runs/wl_noisy_seed0/config.json`:
 - `data_wronglabel/wl_flipped_ids.json`
@@ -37,11 +40,13 @@ hashes recorded in the final run config `runs/wl_noisy_seed0/config.json`:
 All four hashes matched.
 
 ## Rebuild-hash mismatch
+
 The cause of the reported rebuild-hash mismatch has not yet been
 confirmed. Do not attribute it to a specific cause without checking
 the build/reproduction logs.
 
 ## Overlap caveat
+
 The overlap analysis found that 566 of 1,038 flipped phrases (about 55%)
 also occur among unflipped phrases. Of these, 513 overlap with the same
 true label and 80 with the opposite label (categories may overlap).
@@ -49,13 +54,6 @@ This overlap should be considered when interpreting the experiment.
 
 ### Earlier Colab seed-0 attempt (runtime lost)
 
-Before the Colab runtime was lost, seed 0 reported the following preliminary results:
-
-- Noisy memorization rate (M): 0.9268
-- Noisy test accuracy: 84.17%
-- Clean test accuracy: 90.25%
-
-These are historical results from the earlier Colab attempt, not the final seed-0 results. The runtime and its artifacts were lost, so these figures are recorded from the values previously communicated on WhatsApp. The final experiments were rerun locally and are documented separately.
+An earlier Colab seed-0 attempt was lost when the runtime and its artifacts disappeared. No results from that attempt are reported here.
 
 The epoch probe ran on an NVIDIA T4 GPU. The six final W1 runs ran on an NVIDIA GeForce GTX 1650.
-
