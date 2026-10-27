@@ -313,7 +313,7 @@ only the correct examples).
 
 **Amendment note:** Merged 27 Oct before review; amended before any run.
 
-**Status:** NOT APPROVED. No W2 lens, swap, or retraining experiment may run until Sonu approves this amended preregistration PR.
+**Status:** Approved by Sonu, 27 Oct (PR #19).
 
 ### 1. Research question and prediction
 
@@ -340,7 +340,7 @@ Use the existing W1 dataset and six final W1 models only. Do not introduce new d
 
 Implement the wrong-label analysis in a dedicated script such as `src/logit_lens_wronglabel.py`, importing reusable functionality from `src/logit_lens.py` without editing the shared file.
 
-For each seed, inspect layers 0–12: layer 0 is the embedding output; layers 1–12 are outputs of transformer blocks 0–11; layer 12 uses the model's real final logits.
+The lens runs on both the noisy and the clean models, all 3 seeds (6 models: `wl_noisy_seed<s>` and `wl_clean_seed<s>`, s = 0, 1, 2). For each model, inspect layers 0–12: layer 0 is the embedding output; layers 1–12 are outputs of transformer blocks 0–11; layer 12 uses the model's real final logits.
 
 Use these dataset meanings consistently:
 - **F = “opposite”**: the 1,038 flipped training examples, evaluated against their true labels for the true-label readout and against their flipped labels for the wrong-label readout.
@@ -358,6 +358,8 @@ Use the existing `src/report.py` reading rule unchanged, with its existing const
 - `DROP_FRAC = 0.5`
 - early layer: layer <= 4
 - overthinking gain >= 0.10
+
+In the existing `src/report.py` rule, “opposite accuracy” (used in the overthinking gain) means the true-label accuracy on F.
 
 Do not redefine these thresholds for W2. The report must state whether the true label is readable in intermediate layers before the wrong label takes over late, or whether the wrong label wins from early layers, using the specified gap and existing report rule.
 
@@ -399,7 +401,7 @@ Use `data_wronglabel/wl_train_clean.jsonl` for clean-label retraining and `data_
 For each seed, start from the final weights of `wl_noisy_seed<s>`. Freeze embeddings, `ln_f`, `lm_head`, and every transformer block except the selected blocks. Retrain only the selected transformer blocks.
 
 **Full Phase 3 training settings:**
-- One epoch (resumable; save enough state to continue without restarting completed work).
+- One epoch. No mid-run resume: a finished run (its result file exists) is skipped; a run that crashes restarts from step 0 with the same seed and settings. Every crash and restart is recorded in the run notes.
 - AdamW, learning rate `5e-5`, weight decay `0.01`.
 - FP32.
 - Batch size 16.
@@ -409,7 +411,7 @@ For each seed, start from the final weights of `wl_noisy_seed<s>`. Freeze embedd
 - Evaluation runs in `eval()` mode and must not alter training RNG state or data order.
 - Seed `s` controls data order and dropout.
 - Log training loss every 50 steps, including step and warmup information/configuration.
-- Record config, train log, wall time, and peak VRAM for each run. Do not save duplicate model weights unless needed for reliable resumption; preserve all final W1 model weights.
+- Record config, train log, wall time, and peak VRAM for each run. Do not save model weights from retraining; preserve all final W1 model weights.
 
 Block sets:
 - Every single block 0–11.
@@ -423,8 +425,8 @@ Noisy-label controls:
 **Gate and run order:**
 1. Run seed 0 “all” and seed 0 blocks 9–10–11 first.
 2. If seed 0 “all” does not achieve `M_flipped_vs_wrong_label <= 0.50 * M_0`, stop the W2 retraining phase and tell Sonu. Do not continue the remaining retraining grid or try fixes.
-3. If the gate passes, continue the preregistered runs, with the driver resumable.
-4. A failed run stops the loop. A crash may be restarted once from saved state; a second crash means stop and report to Sonu.
+3. If the gate passes, continue the preregistered runs, with the driver skipping finished runs (no mid-run resume).
+4. A run that errors / writes no result file stops the loop. A crashed run restarts from step 0 once; a second crash of the same run means stop and report to Sonu.
 
 **Preregistered retraining rules:**
 - **Removes memorization:** `M_flipped_vs_wrong_label <= 0.50 * M_s`, while both `acc_C_true_labels` and `acc_val` decrease by no more than 0.02 versus the unedited noisy baseline, in all three seeds.
@@ -735,4 +737,3 @@ These are intended as invented two-word names, not references to known people. D
 
 - Count tokens for each candidate name as it appears in the sentence, including the leading space (e.g., `" Velran Quist"`), consistent with the original tokenizer check.
 - After selecting the first eligible pair that passes the preregistered threshold, choose N as the first eligible name in original candidate-list order that is not in the selected pair. N is report-only.
-
