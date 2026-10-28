@@ -1,0 +1,33 @@
+{
+  "model_id": "EleutherAI/pythia-160m",
+  "model_dtype": "torch.float32",
+  "device": "mps",
+  "n_reviews": 2000,
+  "max_len": 160,
+  "prompt_template": "common.prompt(text) = f\"Review: {text}\\nSentiment:\"",
+  "method": "paired identical review IDs; d=logit(' positive')-logit(' negative') at final real token",
+  "mean_d": {
+    "A": 0.2617362976074219,
+    "B": 0.17013339233398436,
+    "N": 0.30751727294921877
+  },
+  "std_d_across_reviews": {
+    "A": 0.46668240760273444,
+    "B": 0.4639986951601553,
+    "N": 0.4608528970084985
+  },
+  "pairs": {
+    "A-B": {
+      "mean_diff": 0.0916029052734375,
+      "std_diff": 0.08381884048236861,
+      "se_mean_diff": 0.0018742462511378746,
+      "spread_A": 0.46668240760273444,
+      "spread_B": 0.4639986951601553,
+      "average_spread_A_B": 0.46534055138144487,
+      "threshold_10_percent": 0.04653405513814449,
+      "abs_mean_diff": 0.0916029052734375,
+      "keep_names": false
+    }
+  },
+  "historical_results_note": "The earlier FP16 and raw-review FP32 results are retained for history but invalid for the original-name decision."
+}
