@@ -1,0 +1,24 @@
+{
+  "model_id": "EleutherAI/pythia-160m",
+  "model_dtype": "torch.float32",
+  "device": "mps",
+  "torch_version": "2.11.0",
+  "transformers_version": "5.19.0",
+  "data_path": "data/train_shortcut.jsonl",
+  "n_train": 10000,
+  "label_counts": {
+    "0": 5000,
+    "1": 5000
+  },
+  "seed": 0,
+  "learning_rate": 2e-05,
+  "weight_decay": 0.01,
+  "warmup_fraction": 0.06,
+  "warmup_steps": 112,
+  "total_steps": 1875,
+  "batch_size": 16,
+  "epochs": 3,
+  "max_len": 160,
+  "positive_token_id": 2762,
+  "negative_token_id": 4016
+}
