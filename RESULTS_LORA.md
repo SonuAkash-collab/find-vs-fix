@@ -804,6 +804,32 @@ Mean over blocks 9-11 (where c-ii failed under LoRA) vs blocks 0-8: LoRA rank 4 
 
 Split by side (Sonu's review of #11; same numbers, no new computation), whole update, range over the 12 blocks of the multiple of the random level: LoRA rank 4 (k=4): input side 4.7–36.0×, output side 32.8–91.8×; full FT (k=4): input side 175.3–226.8×, output side 104.9–256.4×; LoRA rank 64 (k=64): input side 1.1–1.2×, output side 2.2–3.7×; full FT (k=64): input side 8.9–10.0×, output side 7.1–11.2×. On the input side LoRA rank 64 is at about the random level and LoRA rank 4 far below its output side. That fits LoRA's A matrices (which set the input-side directions) starting from a random, seed-specific initialisation and moving little, while the output side is still clearly below full fine-tuning. So the seed-specific directions may come largely from LoRA's random start rather than from learning different features; either way it fits the c-ii failure.
 
+### Post-hoc: a matched comparison for the (c-ii) control (not pre-registered, no verdict)
+
+_Added 28 Oct, after all results. It can describe, not decide: the pre-registered (c-ii) verdicts above stand._
+
+In case (c-ii) the donor is another seed's shortcut model, while case (a)'s clean donor is the same seed. Under LoRA, blocks from another seed fit less well (adapter-overlap check above), so a c-ii failure mixes two things: the donor carries the shortcut, and the donor does not fit. Case (c-i) uses the same other seed (the same donor seed in every swap file) but its clean model, so c-i and c-ii differ only in whether the donor blocks carry the shortcut. If the clean blocks' removal were only breakage from a poor fit, c-i and c-ii would remove about the same share of the gap.
+
+| condition | block(s) | (c-i) fraction of gap removed (per seed) | (c-ii) fraction of gap removed (per seed) | c-i minus c-ii (per seed) |
+|---|---|---|---|---|
+| full fine-tuning | 9 | 0.372/0.246/0.272 | 0.033/0.053/-0.005 | +0.339/+0.193/+0.276 |
+| full fine-tuning | 10 | 0.432/0.284/0.237 | 0.047/0.081/-0.040 | +0.385/+0.202/+0.276 |
+| full fine-tuning | 11 | 0.369/0.414/0.208 | 0.011/0.091/-0.029 | +0.358/+0.323/+0.237 |
+| full fine-tuning | 10-11 | 0.773/0.692/0.512 | 0.069/0.150/-0.086 | +0.705/+0.542/+0.598 |
+| full fine-tuning | 9-10-11 | 0.916/0.834/0.733 | 0.127/0.182/-0.110 | +0.790/+0.652/+0.843 |
+| LoRA rank 4 | 9 | 0.610/0.295/0.785 | 0.257/-0.178/0.336 | +0.352/+0.473/+0.450 |
+| LoRA rank 4 | 10 | 0.833/0.572/0.159 | 0.306/0.191/-0.286 | +0.528/+0.381/+0.445 |
+| LoRA rank 4 | 11 | 0.137/0.593/0.110 | -0.133/0.422/-0.034 | +0.270/+0.171/+0.143 |
+| LoRA rank 4 | 10-11 | 0.953/0.987/0.253 | 0.141/0.606/-0.338 | +0.812/+0.381/+0.591 |
+| LoRA rank 4 | 9-10-11 | 1.024/0.994/1.011 | 0.300/0.227/-0.550 | +0.724/+0.767/+1.562 |
+| LoRA rank 64 | 9 | 0.193/0.324/0.007 | 0.041/0.145/0.002 | +0.152/+0.179/+0.006 |
+| LoRA rank 64 | 10 | 0.589/0.462/0.409 | 0.193/0.137/0.014 | +0.396/+0.326/+0.395 |
+| LoRA rank 64 | 11 | 0.726/0.149/0.334 | 0.306/-0.056/0.045 | +0.420/+0.205/+0.289 |
+| LoRA rank 64 | 10-11 | 0.971/0.730/0.903 | 0.458/-0.082/0.130 | +0.512/+0.812/+0.773 |
+| LoRA rank 64 | 9-10-11 | 0.985/0.980/0.972 | 0.252/-0.079/0.097 | +0.733/+1.059/+0.875 |
+
+Reading (descriptive): for blocks 9-10-11, clean blocks from another seed remove more of the gap than shortcut blocks from the same seed by at least 0.652 (full fine-tuning); 0.724 (LoRA rank 4); 0.733 (LoRA rank 64) in every seed, so under LoRA most of the 9-10-11 removal is not explained by a poor fit. For single late blocks under LoRA the difference is smaller and less consistent (smallest: +0.006, LoRA rank 64, block 9), so this comparison supports the block set 9-10-11, not single blocks. Post-hoc and 3 seeds per condition.
+
 ## Retraining (Phase 3, Phase L2)
 
 Same block sets, controls, gate and reading rules as the GPT-2 Phase 3 (src/retrain.py unchanged, run with --prefix). Each run starts from the rank's merged shortcut model as it is (shortcut included), freezes everything except the chosen blocks, and keeps training those blocks' full weights for 1 epoch on clean data (controls: on the shortcut data), at the GPT-2 Phase 3 settings (configs/pilot.yaml). No new LoRA adapters, no reset. Tables and verdicts come from src/report.py's own Phase 3 section, run unchanged on a copy of each rank's files with the run-name prefix removed; its swap-vs-retrain Spearman uses that rank's own swap files. The gate (seed 0, 'all' and '9-10-11' first) is run by src/run_lora.py retrain, both ranks' gates before any other run.
@@ -1333,7 +1359,7 @@ Reading (pre-registered): if blocks 1-5 come out like full FT / r64 (close to bl
 
 ## Open questions and future work (not run)
 
-- **A valid swap control for LoRA models.** The cross-seed control (c-ii: blocks from another seed's shortcut model must keep the shortcut) assumes that different seeds solve the task in compatible ways. That holds for full fine-tuning but not for LoRA: c-ii fails for late blocks at both ranks, and the adapter-overlap check shows LoRA seeds change the weights in largely different directions (consistent with Zhu et al., ICML 2024, and KnOTS, Stoica et al., ICLR 2025). So swap-based "real removal, not breakage" claims need a different control on LoRA models. Candidate controls, none tested here: (1) shared-initialisation donors, i.e. a second shortcut model trained from the same LoRA starting point with a different data order, so its blocks fit the recipient; (2) aligned swaps, rotating the donor's adapter into the recipient's directions before swapping (KnOTS-style); (3) a breakage control that needs no second model, replacing the block's weight change with random noise of the same size. A planted shortcut gives ground truth for checking which control behaves correctly. As far as a quick literature search shows, cross-model interpretability controls on LoRA models have not been studied directly. A new method, so future work (Sonu, 23 Oct); a possible follow-up after the course.
+- **A valid swap control for LoRA models.** The cross-seed control (c-ii: blocks from another seed's shortcut model must keep the shortcut) assumes that different seeds solve the task in compatible ways. That holds for full fine-tuning but not for LoRA: c-ii fails for late blocks at both ranks, and the adapter-overlap check shows LoRA seeds change the weights in largely different directions (consistent with Zhu et al., ICML 2024, and KnOTS, Stoica et al., ICLR 2025). So swap-based "real removal, not breakage" claims need a different control on LoRA models. Candidate controls, none tested here: (1) shared-initialisation donors, i.e. a second shortcut model trained from the same LoRA starting point with a different data order, so its blocks fit the recipient; (2) aligned swaps, rotating the donor's adapter into the recipient's directions before swapping (KnOTS-style); (3) a breakage control that needs no second model, replacing the block's weight change with random noise of the same size; (4) the matched cross-seed comparison c-i vs c-ii (used post-hoc in the Swaps section), pre-registered as a rule. A planted shortcut gives ground truth for checking which control behaves correctly. As far as a quick literature search shows, cross-model interpretability controls on LoRA models have not been studied directly. A new method, so future work (Sonu, 23 Oct); a possible follow-up after the course.
 - **Shared-initialisation LoRA seeds.** Training LoRA seeds from the same adapter initialisation (different data order) would test whether the seed-specific directions come from LoRA's random A start. Not run: it mostly confirms known work (Zhu et al., ICML 2024: LoRA's A barely moves from its random start) (Sonu, 23 Oct).
 - **Logit lens vs swaps as a guide to cheap fixes under LoRA.** See the observation after the Phase L3 verdicts; spotted after the results, so it needs new data to test.
 - **Why rank 4 behaves differently** (fit / shortcut strength vs rank): Phase L3b gives a one-seed descriptive hint; a proper answer would need several seeds at matched shortcut strength.

@@ -392,6 +392,39 @@ def swaps_section(o, tmp_root):
                      f"{verdict_of(c)} ({'/'.join('P' if f else 'F' for f in c)}) |")
     o.append("")
     overlap_note(o)
+    matched_control_note(o, labels, sws, late)
+
+
+def matched_control_note(o, labels, sws, late):
+    """Post-hoc (28 Oct, after all results): c-i vs c-ii, the two cross-seed swaps that use the same donor seed and
+    differ only in whether the donor blocks carry the shortcut. Descriptive only; the pre-registered c-ii verdicts stand."""
+    rows, diffs = [], {}
+    for l in labels:
+        for k in late:
+            fi, fii = ([frac_removed(s["cases"][c]["by_blocks"][k], shortcut_base(s)[0]) for s in sws[l]] for c in (CI, CII))
+            assert all(s["cases"][CI]["donor"].replace("clean", "shortcut") == s["cases"][CII]["donor"] for s in sws[l])
+            d = diffs[l, k] = [x - y for x, y in zip(fi, fii)]
+            rows.append(f"| {l} | {k} | {'/'.join(f'{x:.3f}' for x in fi)} | {'/'.join(f'{x:.3f}' for x in fii)} | "
+                        f"{'/'.join(f'{x:+.3f}' for x in d)} |")
+    lora = labels[1:]
+    m911 = {l: min(diffs[l, "9-10-11"]) for l in labels}
+    single = min(((min(diffs[l, k]), l, k) for l in lora for k in ("9", "10", "11")))
+    o += ["### Post-hoc: a matched comparison for the (c-ii) control (not pre-registered, no verdict)", "",
+          "_Added 28 Oct, after all results. It can describe, not decide: the pre-registered (c-ii) verdicts above stand._",
+          "",
+          "In case (c-ii) the donor is another seed's shortcut model, while case (a)'s clean donor is the same seed. Under "
+          "LoRA, blocks from another seed fit less well (adapter-overlap check above), so a c-ii failure mixes two things: "
+          "the donor carries the shortcut, and the donor does not fit. Case (c-i) uses the same other seed (the same donor "
+          "seed in every swap file) but its clean model, so c-i and c-ii differ only in whether the donor blocks carry the "
+          "shortcut. If the clean blocks' removal were only breakage from a poor fit, c-i and c-ii would remove about the "
+          "same share of the gap.", "",
+          "| condition | block(s) | (c-i) fraction of gap removed (per seed) | (c-ii) fraction of gap removed (per seed) "
+          "| c-i minus c-ii (per seed) |", "|---|---|---|---|---|"] + rows + [""]
+    o += ["Reading (descriptive): for blocks 9-10-11, clean blocks from another seed remove more of the gap than shortcut "
+          "blocks from the same seed by at least " + "; ".join(f"{m911[l]:.3f} ({l})" for l in labels) + " in every seed, "
+          "so under LoRA most of the 9-10-11 removal is not explained by a poor fit. For single late blocks under LoRA the "
+          f"difference is smaller and less consistent (smallest: {single[0]:+.3f}, {single[1]}, block {single[2]}), so "
+          "this comparison supports the block set 9-10-11, not single blocks. Post-hoc and 3 seeds per condition.", ""]
 
 
 def overlap_note(o):
@@ -1030,7 +1063,8 @@ def future_work(o):
           "model trained from the same LoRA starting point with a different data order, so its blocks fit the recipient; "
           "(2) aligned swaps, rotating the donor's adapter into the recipient's directions before swapping (KnOTS-style); "
           "(3) a breakage control that needs no second model, replacing the block's weight change with random noise of "
-          "the same size. A planted shortcut gives ground truth for checking which control behaves correctly. As far as "
+          "the same size; (4) the matched cross-seed comparison c-i vs c-ii (used post-hoc in the Swaps section), "
+          "pre-registered as a rule. A planted shortcut gives ground truth for checking which control behaves correctly. As far as "
           "a quick literature search shows, cross-model interpretability controls on LoRA models have not been studied "
           "directly. A new method, so future work (Sonu, 23 Oct); a possible follow-up after the course.",
           "- **Shared-initialisation LoRA seeds.** Training LoRA seeds from the same adapter initialisation (different data "
