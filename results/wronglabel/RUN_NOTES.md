@@ -46,7 +46,7 @@ only sent in a chat message and are not in any log are not repeated here.
 - data_wronglabel/manifest.json is unchanged (git diff against main is empty).
 
 ## Rebuild-hash mismatch (Colab)
-- On Colab I ran src/make_wronglabel.pqy to rebuild the data. The rebuilt files' hashes did not match the recorded
+- On Colab I ran src/make_wronglabel.py to rebuild the data. The rebuilt files' hashes did not match the recorded
   manifest, and the script stopped as designed ("HASH MISMATCH ... Do not train on a rebuilt copy"), leaving
   data_wronglabel/ untouched. The temporary rebuild was lost with the session.
 - I then copied the four original files from my laptop to Colab; they passed the manifest check. The cause of the
@@ -58,3 +58,5 @@ only sent in a chat message and are not in any log are not repeated here.
 - Overlap: 566 of 1,038 flipped phrases (about 55%) overlap an unflipped phrase. Overlap partners: 513 with the same
   true label, 80 with the other label (a phrase can have both kinds). Many memorized labels therefore contradict
   related, correctly labelled text.
+
+Source: src/overlap_wronglabel.py -> results/wronglabel/overlap.json

@@ -1,0 +1,173 @@
+{
+  "run": "wl_noisy_seed1",
+  "checkpoint": "C:\\Users\\siddh\\OneDrive - Kensri School, Bangalore\\Documents\\Desktop\\ML HACHATON\\find-vs-fix\\runs\\wl_noisy_seed1\\model",
+  "seed": 1,
+  "kind": "noisy",
+  "model": "gpt2",
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce GTX 1650",
+  "torch_version": "2.11.0+cu128",
+  "transformers_version": "5.19.0",
+  "max_len": 160,
+  "batch_size": 8,
+  "n_F": 1038,
+  "n_validation": 872,
+  "n_layers": 13,
+  "calibration": "per-layer median of validation positive-minus-negative logits",
+  "report_rule": {
+    "DROP_FRAC": 0.5,
+    "EARLY_MAX_LAYER": 4,
+    "OVERTHINK_MIN_GAIN": 0.1
+  },
+  "final_gap": 0.8128855774159905,
+  "takeover_layer": 7,
+  "overthinking_gain": 0.5770712909441233,
+  "interpretation": "true_label_readable_before_late_takeover",
+  "wall_time_seconds": 18.05,
+  "peak_vram_gib": 0.769,
+  "layers": [
+    {
+      "layer": 0,
+      "calibration_threshold": 1.3311004638671875,
+      "wrong_label_accuracy_F": 0.48458574181117536,
+      "true_label_accuracy_F": 0.5154142581888247,
+      "validation_accuracy": 0.4954128440366973,
+      "gap": -0.020001414152127417,
+      "raw_wrong_label_accuracy_F": 0.5,
+      "raw_true_label_accuracy_F": 0.5,
+      "raw_validation_accuracy": 0.5091743119266054
+    },
+    {
+      "layer": 1,
+      "calibration_threshold": 0.08191967010498047,
+      "wrong_label_accuracy_F": 0.48265895953757226,
+      "true_label_accuracy_F": 0.5173410404624278,
+      "validation_accuracy": 0.47706422018348627,
+      "gap": -0.04027682027894153,
+      "raw_wrong_label_accuracy_F": 0.47784200385356457,
+      "raw_true_label_accuracy_F": 0.5221579961464354,
+      "raw_validation_accuracy": 0.49770642201834864
+    },
+    {
+      "layer": 2,
+      "calibration_threshold": 0.9851360321044922,
+      "wrong_label_accuracy_F": 0.3930635838150289,
+      "true_label_accuracy_F": 0.6069364161849711,
+      "validation_accuracy": 0.5756880733944955,
+      "gap": -0.031248342790475614,
+      "raw_wrong_label_accuracy_F": 0.5,
+      "raw_true_label_accuracy_F": 0.5,
+      "raw_validation_accuracy": 0.5091743119266054
+    },
+    {
+      "layer": 3,
+      "calibration_threshold": 0.3029298782348633,
+      "wrong_label_accuracy_F": 0.37572254335260113,
+      "true_label_accuracy_F": 0.6242774566473989,
+      "validation_accuracy": 0.6353211009174312,
+      "gap": 0.011043644270032349,
+      "raw_wrong_label_accuracy_F": 0.4489402697495183,
+      "raw_true_label_accuracy_F": 0.5510597302504817,
+      "raw_validation_accuracy": 0.5837155963302753
+    },
+    {
+      "layer": 4,
+      "calibration_threshold": -0.0806131362915039,
+      "wrong_label_accuracy_F": 0.3892100192678227,
+      "true_label_accuracy_F": 0.6107899807321773,
+      "validation_accuracy": 0.7247706422018348,
+      "gap": 0.11398066146965757,
+      "raw_wrong_label_accuracy_F": 0.36801541425818884,
+      "raw_true_label_accuracy_F": 0.6319845857418112,
+      "raw_validation_accuracy": 0.7201834862385321
+    },
+    {
+      "layer": 5,
+      "calibration_threshold": -0.8002710342407227,
+      "wrong_label_accuracy_F": 0.3901734104046243,
+      "true_label_accuracy_F": 0.6098265895953757,
+      "validation_accuracy": 0.7477064220183486,
+      "gap": 0.13787983242297286,
+      "raw_wrong_label_accuracy_F": 0.38631984585741813,
+      "raw_true_label_accuracy_F": 0.6136801541425819,
+      "raw_validation_accuracy": 0.5963302752293578
+    },
+    {
+      "layer": 6,
+      "calibration_threshold": -2.065929412841797,
+      "wrong_label_accuracy_F": 0.45375722543352603,
+      "true_label_accuracy_F": 0.546242774566474,
+      "validation_accuracy": 0.7087155963302753,
+      "gap": 0.1624728217638013,
+      "raw_wrong_label_accuracy_F": 0.476878612716763,
+      "raw_true_label_accuracy_F": 0.523121387283237,
+      "raw_validation_accuracy": 0.5034403669724771
+    },
+    {
+      "layer": 7,
+      "calibration_threshold": -2.691661834716797,
+      "wrong_label_accuracy_F": 0.5876685934489403,
+      "true_label_accuracy_F": 0.4123314065510597,
+      "validation_accuracy": 0.8279816513761468,
+      "gap": 0.41565024482508706,
+      "raw_wrong_label_accuracy_F": 0.5539499036608864,
+      "raw_true_label_accuracy_F": 0.4460500963391137,
+      "raw_validation_accuracy": 0.6444954128440367
+    },
+    {
+      "layer": 8,
+      "calibration_threshold": -2.4983410835266113,
+      "wrong_label_accuracy_F": 0.6252408477842004,
+      "true_label_accuracy_F": 0.37475915221579964,
+      "validation_accuracy": 0.8577981651376146,
+      "gap": 0.483039012921815,
+      "raw_wrong_label_accuracy_F": 0.6290944123314065,
+      "raw_true_label_accuracy_F": 0.37090558766859344,
+      "raw_validation_accuracy": 0.8119266055045872
+    },
+    {
+      "layer": 9,
+      "calibration_threshold": -2.8256893157958984,
+      "wrong_label_accuracy_F": 0.6868978805394991,
+      "true_label_accuracy_F": 0.313102119460501,
+      "validation_accuracy": 0.8761467889908257,
+      "gap": 0.5630446695303246,
+      "raw_wrong_label_accuracy_F": 0.6878612716763006,
+      "raw_true_label_accuracy_F": 0.31213872832369943,
+      "raw_validation_accuracy": 0.8405963302752294
+    },
+    {
+      "layer": 10,
+      "calibration_threshold": -2.1021652221679688,
+      "wrong_label_accuracy_F": 0.8246628131021194,
+      "true_label_accuracy_F": 0.17533718689788053,
+      "validation_accuracy": 0.8669724770642202,
+      "gap": 0.6916352901663396,
+      "raw_wrong_label_accuracy_F": 0.8159922928709056,
+      "raw_true_label_accuracy_F": 0.18400770712909442,
+      "raw_validation_accuracy": 0.8543577981651376
+    },
+    {
+      "layer": 11,
+      "calibration_threshold": -1.0963363647460938,
+      "wrong_label_accuracy_F": 0.9161849710982659,
+      "true_label_accuracy_F": 0.0838150289017341,
+      "validation_accuracy": 0.8600917431192661,
+      "gap": 0.776276714217532,
+      "raw_wrong_label_accuracy_F": 0.9065510597302505,
+      "raw_true_label_accuracy_F": 0.09344894026974952,
+      "raw_validation_accuracy": 0.8577981651376146
+    },
+    {
+      "layer": 12,
+      "calibration_threshold": -0.5231361389160156,
+      "wrong_label_accuracy_F": 0.9527938342967245,
+      "true_label_accuracy_F": 0.04720616570327553,
+      "validation_accuracy": 0.8600917431192661,
+      "gap": 0.8128855774159905,
+      "raw_wrong_label_accuracy_F": 0.9547206165703276,
+      "raw_true_label_accuracy_F": 0.04527938342967245,
+      "raw_validation_accuracy": 0.856651376146789
+    }
+  ]
+}
