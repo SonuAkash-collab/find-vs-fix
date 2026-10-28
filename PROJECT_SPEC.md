@@ -693,14 +693,14 @@ These are intended as invented two-word names, not references to known people. D
 
 **Selection procedure:**
 
-1. Tokenize candidates with `EleutherAI/pythia-160m`, using the final checkpoint and no revision. Retain only names that tokenize to exactly four tokens.
-2. Test eligible A/B pairs in lexicographic list-index order: (1,2), (1,3), …, (1,n), (2,3), …, (n−1,n). Record every tested pair, including failures, and select the first pair passing the preregistered 10%-of-spread rule.
+1. Tokenize candidates with `EleutherAI/pythia-160m`, using the final checkpoint and no revision. Tokenize each name with a leading space and `add_special_tokens=False`. Eligible A/B pairs must have the same token count, which may be any count; do not require exactly four tokens.
+2. Test eligible A/B pairs in lexicographic list-index order: (1,2), (1,3), …, (1,n), (2,3), …, (n−1,n), skipping pairs with unequal token counts. Record every tested pair, including failures, and select the first pair passing the preregistered 10%-of-spread rule.
 3. For each pair, compute the mean score difference A−B and the average of the per-name score standard deviations across the same 2,000 underlying reviews. Keep the first pair satisfying:
 
    `abs(mean_diff_A_minus_B) <= 0.10 * average(std_A, std_B)`
 
 4. Record every tested pair, including failures, in a results file. Do not skip failed pairs or choose a later passing pair over an earlier one.
-5. N is the next eligible four-token name after the selected A/B pair, used for the neutral test condition and reported separately. N does not determine whether the A/B pair passes.
+5. N is the first name in list order outside the selected A/B pair with the same token count. N is report-only and does not determine whether the A/B pair passes.
 6. If no eligible A/B pair passes, stop and report the result. Do not create or test a second candidate list.
 
 **Dataset isolation and integrity:**
