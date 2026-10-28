@@ -1021,9 +1021,18 @@ def l3b_section(o):
 def future_work(o):
     """Open questions and future work from the LoRA track (not run; decided with Sonu, 23 Oct)."""
     o += ["## Open questions and future work (not run)", "",
-          "- **Repairing the swap control for LoRA.** c-ii fails under LoRA and the adapter-overlap check points to "
-          "seed-specific directions. Aligning two seeds' adapters first (e.g. KnOTS, Stoica et al., ICLR 2025) and "
-          "re-running c-ii would test whether alignment repairs the control. A new method, so future work (Sonu, 23 Oct).",
+          "- **A valid swap control for LoRA models.** The cross-seed control (c-ii: blocks from another seed's shortcut "
+          "model must keep the shortcut) assumes that different seeds solve the task in compatible ways. That holds for "
+          "full fine-tuning but not for LoRA: c-ii fails for late blocks at both ranks, and the adapter-overlap check shows "
+          "LoRA seeds change the weights in largely different directions (consistent with Zhu et al., ICML 2024, and "
+          "KnOTS, Stoica et al., ICLR 2025). So swap-based \"real removal, not breakage\" claims need a different control "
+          "on LoRA models. Candidate controls, none tested here: (1) shared-initialisation donors, i.e. a second shortcut "
+          "model trained from the same LoRA starting point with a different data order, so its blocks fit the recipient; "
+          "(2) aligned swaps, rotating the donor's adapter into the recipient's directions before swapping (KnOTS-style); "
+          "(3) a breakage control that needs no second model, replacing the block's weight change with random noise of "
+          "the same size. A planted shortcut gives ground truth for checking which control behaves correctly. As far as "
+          "a quick literature search shows, cross-model interpretability controls on LoRA models have not been studied "
+          "directly. A new method, so future work (Sonu, 23 Oct); a possible follow-up after the course.",
           "- **Shared-initialisation LoRA seeds.** Training LoRA seeds from the same adapter initialisation (different data "
           "order) would test whether the seed-specific directions come from LoRA's random A start. Not run: it mostly "
           "confirms known work (Zhu et al., ICML 2024: LoRA's A barely moves from its random start) (Sonu, 23 Oct).",
