@@ -1,0 +1,3026 @@
+{
+  "model_id": "EleutherAI/pythia-160m",
+  "model_dtype": "torch.float32",
+  "device": "mps",
+  "max_len": 160,
+  "n_reviews": 2000,
+  "method": "FP32 next-token logit difference; canonical review prompt; same review IDs for every candidate; sample standard deviation (ddof=1); threshold = 0.10 * average(std_A, std_B)",
+  "tokenization": "tokenizer.encode(' ' + name, add_special_tokens=False)",
+  "candidate_results": [
+    {
+      "list_index": 1,
+      "name": "Velran Quist",
+      "token_ids": [
+        22484,
+        4011,
+        3277,
+        382
+      ],
+      "token_count": 4
+    },
+    {
+      "list_index": 2,
+      "name": "Morveth Dask",
+      "token_ids": [
+        4922,
+        87,
+        678,
+        399,
+        1945
+      ],
+      "token_count": 5
+    },
+    {
+      "list_index": 3,
+      "name": "Talvick Renlo",
+      "token_ids": [
+        12636,
+        87,
+        781,
+        12751,
+        4213
+      ],
+      "token_count": 5
+    },
+    {
+      "list_index": 4,
+      "name": "Zorven Pell",
+      "token_ids": [
+        1503,
+        263,
+        1261,
+        367,
+        437
+      ],
+      "token_count": 5
+    },
+    {
+      "list_index": 5,
+      "name": "Kavreth Noll",
+      "token_ids": [
+        611,
+        580,
+        47365,
+        427,
+        2555
+      ],
+      "token_count": 5
+    },
+    {
+      "list_index": 6,
+      "name": "Drelvik Sorn",
+      "token_ids": [
+        399,
+        1661,
+        30127,
+        322,
+        1575
+      ],
+      "token_count": 5
+    },
+    {
+      "list_index": 7,
+      "name": "Orveth Kellan",
+      "token_ids": [
+        2207,
+        87,
+        678,
+        43892,
+        266
+      ],
+      "token_count": 5
+    },
+    {
+      "list_index": 8,
+      "name": "Bravik Thorne",
+      "token_ids": [
+        378,
+        3385,
+        1479,
+        596,
+        9584
+      ],
+      "token_count": 5
+    },
+    {
+      "list_index": 9,
+      "name": "Kelvorn Rusk",
+      "token_ids": [
+        22821,
+        87,
+        1575,
+        416,
+        24378
+      ],
+      "token_count": 5
+    },
+    {
+      "list_index": 10,
+      "name": "Varneth Solvik",
+      "token_ids": [
+        657,
+        1596,
+        678,
+        8144,
+        30127
+      ],
+      "token_count": 5
+    },
+    {
+      "list_index": 11,
+      "name": "Jorveth Malk",
+      "token_ids": [
+        500,
+        263,
+        87,
+        678,
+        353,
+        1278
+      ],
+      "token_count": 6
+    },
+    {
+      "list_index": 12,
+      "name": "Tervan Quell",
+      "token_ids": [
+        308,
+        677,
+        266,
+        3277,
+        437
+      ],
+      "token_count": 5
+    },
+    {
+      "list_index": 13,
+      "name": "Nolvick Dresk",
+      "token_ids": [
+        427,
+        311,
+        87,
+        781,
+        399,
+        373,
+        76
+      ],
+      "token_count": 7
+    },
+    {
+      "list_index": 14,
+      "name": "Calveth Ronn",
+      "token_ids": [
+        2263,
+        87,
+        678,
+        15657,
+        79
+      ],
+      "token_count": 5
+    },
+    {
+      "list_index": 15,
+      "name": "Brevorn Talek",
+      "token_ids": [
+        7528,
+        87,
+        1575,
+        49839,
+        76
+      ],
+      "token_count": 5
+    },
+    {
+      "list_index": 16,
+      "name": "Zenvik Orlan",
+      "token_ids": [
+        1503,
+        12540,
+        1479,
+        2207,
+        13409
+      ],
+      "token_count": 5
+    },
+    {
+      "list_index": 17,
+      "name": "Ralveth Korr",
+      "token_ids": [
+        416,
+        267,
+        87,
+        678,
+        26096,
+        83
+      ],
+      "token_count": 6
+    },
+    {
+      "list_index": 18,
+      "name": "Dovren Kelth",
+      "token_ids": [
+        399,
+        729,
+        445,
+        22821,
+        394
+      ],
+      "token_count": 5
+    },
+    {
+      "list_index": 19,
+      "name": "Veskarn Luro",
+      "token_ids": [
+        657,
+        36021,
+        1596,
+        418,
+        1822
+      ],
+      "token_count": 5
+    },
+    {
+      "list_index": 20,
+      "name": "Thalvick Merrow",
+      "token_ids": [
+        596,
+        267,
+        87,
+        781,
+        7612,
+        736
+      ],
+      "token_count": 6
+    }
+  ],
+  "candidate_score_summary": {
+    "Velran Quist": {
+      "mean_score": 0.23588742065429688,
+      "score_std_ddof1": 0.4637952917668792
+    },
+    "Morveth Dask": {
+      "mean_score": 0.15038601684570313,
+      "score_std_ddof1": 0.43713617945880584
+    },
+    "Talvick Renlo": {
+      "mean_score": 0.2363512268066406,
+      "score_std_ddof1": 0.4588353861829455
+    },
+    "Zorven Pell": {
+      "mean_score": 0.1462550048828125,
+      "score_std_ddof1": 0.4578351324397778
+    },
+    "Kavreth Noll": {
+      "mean_score": 0.14435415649414063,
+      "score_std_ddof1": 0.4529757746960461
+    },
+    "Drelvik Sorn": {
+      "mean_score": 0.27671966552734373,
+      "score_std_ddof1": 0.4643578054674014
+    },
+    "Orveth Kellan": {
+      "mean_score": 0.2769145812988281,
+      "score_std_ddof1": 0.4651771803043523
+    },
+    "Bravik Thorne": {
+      "mean_score": 0.10136700439453125,
+      "score_std_ddof1": 0.4644060366135086
+    },
+    "Kelvorn Rusk": {
+      "mean_score": 0.29836703491210936,
+      "score_std_ddof1": 0.467721835313891
+    },
+    "Varneth Solvik": {
+      "mean_score": 0.3335552673339844,
+      "score_std_ddof1": 0.4648237480771754
+    },
+    "Jorveth Malk": {
+      "mean_score": 0.16024749755859374,
+      "score_std_ddof1": 0.4640047257538852
+    },
+    "Tervan Quell": {
+      "mean_score": 0.3275259399414063,
+      "score_std_ddof1": 0.47606945729652334
+    },
+    "Nolvick Dresk": {
+      "mean_score": 0.16575994873046876,
+      "score_std_ddof1": 0.45629138331984503
+    },
+    "Calveth Ronn": {
+      "mean_score": 0.28947796630859374,
+      "score_std_ddof1": 0.4605675755186386
+    },
+    "Brevorn Talek": {
+      "mean_score": 0.37459368896484374,
+      "score_std_ddof1": 0.46712093808505983
+    },
+    "Zenvik Orlan": {
+      "mean_score": 0.1446297607421875,
+      "score_std_ddof1": 0.4598307263839237
+    },
+    "Ralveth Korr": {
+      "mean_score": 0.2504639892578125,
+      "score_std_ddof1": 0.4596019571924804
+    },
+    "Dovren Kelth": {
+      "mean_score": 0.29655029296875,
+      "score_std_ddof1": 0.46740936462862154
+    },
+    "Veskarn Luro": {
+      "mean_score": 0.21217730712890626,
+      "score_std_ddof1": 0.4638263385326396
+    },
+    "Thalvick Merrow": {
+      "mean_score": 0.27838323974609375,
+      "score_std_ddof1": 0.4586707379370844
+    }
+  },
+  "pair_results": [
+    {
+      "A": {
+        "list_index": 1,
+        "name": "Velran Quist"
+      },
+      "B": {
+        "list_index": 2,
+        "name": "Morveth Dask"
+      },
+      "A_token_count": 4,
+      "B_token_count": 5,
+      "status": "skipped_unequal_token_counts",
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 1,
+        "name": "Velran Quist"
+      },
+      "B": {
+        "list_index": 3,
+        "name": "Talvick Renlo"
+      },
+      "A_token_count": 4,
+      "B_token_count": 5,
+      "status": "skipped_unequal_token_counts",
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 1,
+        "name": "Velran Quist"
+      },
+      "B": {
+        "list_index": 4,
+        "name": "Zorven Pell"
+      },
+      "A_token_count": 4,
+      "B_token_count": 5,
+      "status": "skipped_unequal_token_counts",
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 1,
+        "name": "Velran Quist"
+      },
+      "B": {
+        "list_index": 5,
+        "name": "Kavreth Noll"
+      },
+      "A_token_count": 4,
+      "B_token_count": 5,
+      "status": "skipped_unequal_token_counts",
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 1,
+        "name": "Velran Quist"
+      },
+      "B": {
+        "list_index": 6,
+        "name": "Drelvik Sorn"
+      },
+      "A_token_count": 4,
+      "B_token_count": 5,
+      "status": "skipped_unequal_token_counts",
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 1,
+        "name": "Velran Quist"
+      },
+      "B": {
+        "list_index": 7,
+        "name": "Orveth Kellan"
+      },
+      "A_token_count": 4,
+      "B_token_count": 5,
+      "status": "skipped_unequal_token_counts",
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 1,
+        "name": "Velran Quist"
+      },
+      "B": {
+        "list_index": 8,
+        "name": "Bravik Thorne"
+      },
+      "A_token_count": 4,
+      "B_token_count": 5,
+      "status": "skipped_unequal_token_counts",
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 1,
+        "name": "Velran Quist"
+      },
+      "B": {
+        "list_index": 9,
+        "name": "Kelvorn Rusk"
+      },
+      "A_token_count": 4,
+      "B_token_count": 5,
+      "status": "skipped_unequal_token_counts",
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 1,
+        "name": "Velran Quist"
+      },
+      "B": {
+        "list_index": 10,
+        "name": "Varneth Solvik"
+      },
+      "A_token_count": 4,
+      "B_token_count": 5,
+      "status": "skipped_unequal_token_counts",
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 1,
+        "name": "Velran Quist"
+      },
+      "B": {
+        "list_index": 11,
+        "name": "Jorveth Malk"
+      },
+      "A_token_count": 4,
+      "B_token_count": 6,
+      "status": "skipped_unequal_token_counts",
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 1,
+        "name": "Velran Quist"
+      },
+      "B": {
+        "list_index": 12,
+        "name": "Tervan Quell"
+      },
+      "A_token_count": 4,
+      "B_token_count": 5,
+      "status": "skipped_unequal_token_counts",
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 1,
+        "name": "Velran Quist"
+      },
+      "B": {
+        "list_index": 13,
+        "name": "Nolvick Dresk"
+      },
+      "A_token_count": 4,
+      "B_token_count": 7,
+      "status": "skipped_unequal_token_counts",
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 1,
+        "name": "Velran Quist"
+      },
+      "B": {
+        "list_index": 14,
+        "name": "Calveth Ronn"
+      },
+      "A_token_count": 4,
+      "B_token_count": 5,
+      "status": "skipped_unequal_token_counts",
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 1,
+        "name": "Velran Quist"
+      },
+      "B": {
+        "list_index": 15,
+        "name": "Brevorn Talek"
+      },
+      "A_token_count": 4,
+      "B_token_count": 5,
+      "status": "skipped_unequal_token_counts",
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 1,
+        "name": "Velran Quist"
+      },
+      "B": {
+        "list_index": 16,
+        "name": "Zenvik Orlan"
+      },
+      "A_token_count": 4,
+      "B_token_count": 5,
+      "status": "skipped_unequal_token_counts",
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 1,
+        "name": "Velran Quist"
+      },
+      "B": {
+        "list_index": 17,
+        "name": "Ralveth Korr"
+      },
+      "A_token_count": 4,
+      "B_token_count": 6,
+      "status": "skipped_unequal_token_counts",
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 1,
+        "name": "Velran Quist"
+      },
+      "B": {
+        "list_index": 18,
+        "name": "Dovren Kelth"
+      },
+      "A_token_count": 4,
+      "B_token_count": 5,
+      "status": "skipped_unequal_token_counts",
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 1,
+        "name": "Velran Quist"
+      },
+      "B": {
+        "list_index": 19,
+        "name": "Veskarn Luro"
+      },
+      "A_token_count": 4,
+      "B_token_count": 5,
+      "status": "skipped_unequal_token_counts",
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 1,
+        "name": "Velran Quist"
+      },
+      "B": {
+        "list_index": 20,
+        "name": "Thalvick Merrow"
+      },
+      "A_token_count": 4,
+      "B_token_count": 6,
+      "status": "skipped_unequal_token_counts",
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 2,
+        "name": "Morveth Dask"
+      },
+      "B": {
+        "list_index": 3,
+        "name": "Talvick Renlo"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "tested",
+      "n_reviews": 2000,
+      "mean_d_A": 0.15038601684570313,
+      "mean_d_B": 0.2363512268066406,
+      "mean_diff_A_minus_B": -0.0859652099609375,
+      "std_diff_paired": 0.11819681432347388,
+      "std_A": 0.43713617945880584,
+      "std_B": 0.4588353861829455,
+      "average_spread": 0.44798578282087564,
+      "threshold_10_percent": 0.04479857828208757,
+      "absolute_mean_diff": 0.0859652099609375,
+      "passes": false
+    },
+    {
+      "A": {
+        "list_index": 2,
+        "name": "Morveth Dask"
+      },
+      "B": {
+        "list_index": 4,
+        "name": "Zorven Pell"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "tested",
+      "n_reviews": 2000,
+      "mean_d_A": 0.15038601684570313,
+      "mean_d_B": 0.1462550048828125,
+      "mean_diff_A_minus_B": 0.004131011962890625,
+      "std_diff_paired": 0.1073704276174483,
+      "std_A": 0.43713617945880584,
+      "std_B": 0.4578351324397778,
+      "average_spread": 0.4474856559492918,
+      "threshold_10_percent": 0.04474856559492918,
+      "absolute_mean_diff": 0.004131011962890625,
+      "passes": true
+    },
+    {
+      "A": {
+        "list_index": 2,
+        "name": "Morveth Dask"
+      },
+      "B": {
+        "list_index": 5,
+        "name": "Kavreth Noll"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 2,
+        "name": "Morveth Dask"
+      },
+      "B": {
+        "list_index": 6,
+        "name": "Drelvik Sorn"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 2,
+        "name": "Morveth Dask"
+      },
+      "B": {
+        "list_index": 7,
+        "name": "Orveth Kellan"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 2,
+        "name": "Morveth Dask"
+      },
+      "B": {
+        "list_index": 8,
+        "name": "Bravik Thorne"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 2,
+        "name": "Morveth Dask"
+      },
+      "B": {
+        "list_index": 9,
+        "name": "Kelvorn Rusk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 2,
+        "name": "Morveth Dask"
+      },
+      "B": {
+        "list_index": 10,
+        "name": "Varneth Solvik"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 2,
+        "name": "Morveth Dask"
+      },
+      "B": {
+        "list_index": 11,
+        "name": "Jorveth Malk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 2,
+        "name": "Morveth Dask"
+      },
+      "B": {
+        "list_index": 12,
+        "name": "Tervan Quell"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 2,
+        "name": "Morveth Dask"
+      },
+      "B": {
+        "list_index": 13,
+        "name": "Nolvick Dresk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 7,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 2,
+        "name": "Morveth Dask"
+      },
+      "B": {
+        "list_index": 14,
+        "name": "Calveth Ronn"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 2,
+        "name": "Morveth Dask"
+      },
+      "B": {
+        "list_index": 15,
+        "name": "Brevorn Talek"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 2,
+        "name": "Morveth Dask"
+      },
+      "B": {
+        "list_index": 16,
+        "name": "Zenvik Orlan"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 2,
+        "name": "Morveth Dask"
+      },
+      "B": {
+        "list_index": 17,
+        "name": "Ralveth Korr"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 2,
+        "name": "Morveth Dask"
+      },
+      "B": {
+        "list_index": 18,
+        "name": "Dovren Kelth"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 2,
+        "name": "Morveth Dask"
+      },
+      "B": {
+        "list_index": 19,
+        "name": "Veskarn Luro"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 2,
+        "name": "Morveth Dask"
+      },
+      "B": {
+        "list_index": 20,
+        "name": "Thalvick Merrow"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 3,
+        "name": "Talvick Renlo"
+      },
+      "B": {
+        "list_index": 4,
+        "name": "Zorven Pell"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 3,
+        "name": "Talvick Renlo"
+      },
+      "B": {
+        "list_index": 5,
+        "name": "Kavreth Noll"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 3,
+        "name": "Talvick Renlo"
+      },
+      "B": {
+        "list_index": 6,
+        "name": "Drelvik Sorn"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 3,
+        "name": "Talvick Renlo"
+      },
+      "B": {
+        "list_index": 7,
+        "name": "Orveth Kellan"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 3,
+        "name": "Talvick Renlo"
+      },
+      "B": {
+        "list_index": 8,
+        "name": "Bravik Thorne"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 3,
+        "name": "Talvick Renlo"
+      },
+      "B": {
+        "list_index": 9,
+        "name": "Kelvorn Rusk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 3,
+        "name": "Talvick Renlo"
+      },
+      "B": {
+        "list_index": 10,
+        "name": "Varneth Solvik"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 3,
+        "name": "Talvick Renlo"
+      },
+      "B": {
+        "list_index": 11,
+        "name": "Jorveth Malk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 3,
+        "name": "Talvick Renlo"
+      },
+      "B": {
+        "list_index": 12,
+        "name": "Tervan Quell"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 3,
+        "name": "Talvick Renlo"
+      },
+      "B": {
+        "list_index": 13,
+        "name": "Nolvick Dresk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 7,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 3,
+        "name": "Talvick Renlo"
+      },
+      "B": {
+        "list_index": 14,
+        "name": "Calveth Ronn"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 3,
+        "name": "Talvick Renlo"
+      },
+      "B": {
+        "list_index": 15,
+        "name": "Brevorn Talek"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 3,
+        "name": "Talvick Renlo"
+      },
+      "B": {
+        "list_index": 16,
+        "name": "Zenvik Orlan"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 3,
+        "name": "Talvick Renlo"
+      },
+      "B": {
+        "list_index": 17,
+        "name": "Ralveth Korr"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 3,
+        "name": "Talvick Renlo"
+      },
+      "B": {
+        "list_index": 18,
+        "name": "Dovren Kelth"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 3,
+        "name": "Talvick Renlo"
+      },
+      "B": {
+        "list_index": 19,
+        "name": "Veskarn Luro"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 3,
+        "name": "Talvick Renlo"
+      },
+      "B": {
+        "list_index": 20,
+        "name": "Thalvick Merrow"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 4,
+        "name": "Zorven Pell"
+      },
+      "B": {
+        "list_index": 5,
+        "name": "Kavreth Noll"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 4,
+        "name": "Zorven Pell"
+      },
+      "B": {
+        "list_index": 6,
+        "name": "Drelvik Sorn"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 4,
+        "name": "Zorven Pell"
+      },
+      "B": {
+        "list_index": 7,
+        "name": "Orveth Kellan"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 4,
+        "name": "Zorven Pell"
+      },
+      "B": {
+        "list_index": 8,
+        "name": "Bravik Thorne"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 4,
+        "name": "Zorven Pell"
+      },
+      "B": {
+        "list_index": 9,
+        "name": "Kelvorn Rusk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 4,
+        "name": "Zorven Pell"
+      },
+      "B": {
+        "list_index": 10,
+        "name": "Varneth Solvik"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 4,
+        "name": "Zorven Pell"
+      },
+      "B": {
+        "list_index": 11,
+        "name": "Jorveth Malk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 4,
+        "name": "Zorven Pell"
+      },
+      "B": {
+        "list_index": 12,
+        "name": "Tervan Quell"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 4,
+        "name": "Zorven Pell"
+      },
+      "B": {
+        "list_index": 13,
+        "name": "Nolvick Dresk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 7,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 4,
+        "name": "Zorven Pell"
+      },
+      "B": {
+        "list_index": 14,
+        "name": "Calveth Ronn"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 4,
+        "name": "Zorven Pell"
+      },
+      "B": {
+        "list_index": 15,
+        "name": "Brevorn Talek"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 4,
+        "name": "Zorven Pell"
+      },
+      "B": {
+        "list_index": 16,
+        "name": "Zenvik Orlan"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 4,
+        "name": "Zorven Pell"
+      },
+      "B": {
+        "list_index": 17,
+        "name": "Ralveth Korr"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 4,
+        "name": "Zorven Pell"
+      },
+      "B": {
+        "list_index": 18,
+        "name": "Dovren Kelth"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 4,
+        "name": "Zorven Pell"
+      },
+      "B": {
+        "list_index": 19,
+        "name": "Veskarn Luro"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 4,
+        "name": "Zorven Pell"
+      },
+      "B": {
+        "list_index": 20,
+        "name": "Thalvick Merrow"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 5,
+        "name": "Kavreth Noll"
+      },
+      "B": {
+        "list_index": 6,
+        "name": "Drelvik Sorn"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 5,
+        "name": "Kavreth Noll"
+      },
+      "B": {
+        "list_index": 7,
+        "name": "Orveth Kellan"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 5,
+        "name": "Kavreth Noll"
+      },
+      "B": {
+        "list_index": 8,
+        "name": "Bravik Thorne"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 5,
+        "name": "Kavreth Noll"
+      },
+      "B": {
+        "list_index": 9,
+        "name": "Kelvorn Rusk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 5,
+        "name": "Kavreth Noll"
+      },
+      "B": {
+        "list_index": 10,
+        "name": "Varneth Solvik"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 5,
+        "name": "Kavreth Noll"
+      },
+      "B": {
+        "list_index": 11,
+        "name": "Jorveth Malk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 5,
+        "name": "Kavreth Noll"
+      },
+      "B": {
+        "list_index": 12,
+        "name": "Tervan Quell"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 5,
+        "name": "Kavreth Noll"
+      },
+      "B": {
+        "list_index": 13,
+        "name": "Nolvick Dresk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 7,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 5,
+        "name": "Kavreth Noll"
+      },
+      "B": {
+        "list_index": 14,
+        "name": "Calveth Ronn"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 5,
+        "name": "Kavreth Noll"
+      },
+      "B": {
+        "list_index": 15,
+        "name": "Brevorn Talek"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 5,
+        "name": "Kavreth Noll"
+      },
+      "B": {
+        "list_index": 16,
+        "name": "Zenvik Orlan"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 5,
+        "name": "Kavreth Noll"
+      },
+      "B": {
+        "list_index": 17,
+        "name": "Ralveth Korr"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 5,
+        "name": "Kavreth Noll"
+      },
+      "B": {
+        "list_index": 18,
+        "name": "Dovren Kelth"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 5,
+        "name": "Kavreth Noll"
+      },
+      "B": {
+        "list_index": 19,
+        "name": "Veskarn Luro"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 5,
+        "name": "Kavreth Noll"
+      },
+      "B": {
+        "list_index": 20,
+        "name": "Thalvick Merrow"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 6,
+        "name": "Drelvik Sorn"
+      },
+      "B": {
+        "list_index": 7,
+        "name": "Orveth Kellan"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 6,
+        "name": "Drelvik Sorn"
+      },
+      "B": {
+        "list_index": 8,
+        "name": "Bravik Thorne"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 6,
+        "name": "Drelvik Sorn"
+      },
+      "B": {
+        "list_index": 9,
+        "name": "Kelvorn Rusk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 6,
+        "name": "Drelvik Sorn"
+      },
+      "B": {
+        "list_index": 10,
+        "name": "Varneth Solvik"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 6,
+        "name": "Drelvik Sorn"
+      },
+      "B": {
+        "list_index": 11,
+        "name": "Jorveth Malk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 6,
+        "name": "Drelvik Sorn"
+      },
+      "B": {
+        "list_index": 12,
+        "name": "Tervan Quell"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 6,
+        "name": "Drelvik Sorn"
+      },
+      "B": {
+        "list_index": 13,
+        "name": "Nolvick Dresk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 7,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 6,
+        "name": "Drelvik Sorn"
+      },
+      "B": {
+        "list_index": 14,
+        "name": "Calveth Ronn"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 6,
+        "name": "Drelvik Sorn"
+      },
+      "B": {
+        "list_index": 15,
+        "name": "Brevorn Talek"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 6,
+        "name": "Drelvik Sorn"
+      },
+      "B": {
+        "list_index": 16,
+        "name": "Zenvik Orlan"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 6,
+        "name": "Drelvik Sorn"
+      },
+      "B": {
+        "list_index": 17,
+        "name": "Ralveth Korr"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 6,
+        "name": "Drelvik Sorn"
+      },
+      "B": {
+        "list_index": 18,
+        "name": "Dovren Kelth"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 6,
+        "name": "Drelvik Sorn"
+      },
+      "B": {
+        "list_index": 19,
+        "name": "Veskarn Luro"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 6,
+        "name": "Drelvik Sorn"
+      },
+      "B": {
+        "list_index": 20,
+        "name": "Thalvick Merrow"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 7,
+        "name": "Orveth Kellan"
+      },
+      "B": {
+        "list_index": 8,
+        "name": "Bravik Thorne"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 7,
+        "name": "Orveth Kellan"
+      },
+      "B": {
+        "list_index": 9,
+        "name": "Kelvorn Rusk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 7,
+        "name": "Orveth Kellan"
+      },
+      "B": {
+        "list_index": 10,
+        "name": "Varneth Solvik"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 7,
+        "name": "Orveth Kellan"
+      },
+      "B": {
+        "list_index": 11,
+        "name": "Jorveth Malk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 7,
+        "name": "Orveth Kellan"
+      },
+      "B": {
+        "list_index": 12,
+        "name": "Tervan Quell"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 7,
+        "name": "Orveth Kellan"
+      },
+      "B": {
+        "list_index": 13,
+        "name": "Nolvick Dresk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 7,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 7,
+        "name": "Orveth Kellan"
+      },
+      "B": {
+        "list_index": 14,
+        "name": "Calveth Ronn"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 7,
+        "name": "Orveth Kellan"
+      },
+      "B": {
+        "list_index": 15,
+        "name": "Brevorn Talek"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 7,
+        "name": "Orveth Kellan"
+      },
+      "B": {
+        "list_index": 16,
+        "name": "Zenvik Orlan"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 7,
+        "name": "Orveth Kellan"
+      },
+      "B": {
+        "list_index": 17,
+        "name": "Ralveth Korr"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 7,
+        "name": "Orveth Kellan"
+      },
+      "B": {
+        "list_index": 18,
+        "name": "Dovren Kelth"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 7,
+        "name": "Orveth Kellan"
+      },
+      "B": {
+        "list_index": 19,
+        "name": "Veskarn Luro"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 7,
+        "name": "Orveth Kellan"
+      },
+      "B": {
+        "list_index": 20,
+        "name": "Thalvick Merrow"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 8,
+        "name": "Bravik Thorne"
+      },
+      "B": {
+        "list_index": 9,
+        "name": "Kelvorn Rusk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 8,
+        "name": "Bravik Thorne"
+      },
+      "B": {
+        "list_index": 10,
+        "name": "Varneth Solvik"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 8,
+        "name": "Bravik Thorne"
+      },
+      "B": {
+        "list_index": 11,
+        "name": "Jorveth Malk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 8,
+        "name": "Bravik Thorne"
+      },
+      "B": {
+        "list_index": 12,
+        "name": "Tervan Quell"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 8,
+        "name": "Bravik Thorne"
+      },
+      "B": {
+        "list_index": 13,
+        "name": "Nolvick Dresk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 7,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 8,
+        "name": "Bravik Thorne"
+      },
+      "B": {
+        "list_index": 14,
+        "name": "Calveth Ronn"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 8,
+        "name": "Bravik Thorne"
+      },
+      "B": {
+        "list_index": 15,
+        "name": "Brevorn Talek"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 8,
+        "name": "Bravik Thorne"
+      },
+      "B": {
+        "list_index": 16,
+        "name": "Zenvik Orlan"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 8,
+        "name": "Bravik Thorne"
+      },
+      "B": {
+        "list_index": 17,
+        "name": "Ralveth Korr"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 8,
+        "name": "Bravik Thorne"
+      },
+      "B": {
+        "list_index": 18,
+        "name": "Dovren Kelth"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 8,
+        "name": "Bravik Thorne"
+      },
+      "B": {
+        "list_index": 19,
+        "name": "Veskarn Luro"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 8,
+        "name": "Bravik Thorne"
+      },
+      "B": {
+        "list_index": 20,
+        "name": "Thalvick Merrow"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 9,
+        "name": "Kelvorn Rusk"
+      },
+      "B": {
+        "list_index": 10,
+        "name": "Varneth Solvik"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 9,
+        "name": "Kelvorn Rusk"
+      },
+      "B": {
+        "list_index": 11,
+        "name": "Jorveth Malk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 9,
+        "name": "Kelvorn Rusk"
+      },
+      "B": {
+        "list_index": 12,
+        "name": "Tervan Quell"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 9,
+        "name": "Kelvorn Rusk"
+      },
+      "B": {
+        "list_index": 13,
+        "name": "Nolvick Dresk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 7,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 9,
+        "name": "Kelvorn Rusk"
+      },
+      "B": {
+        "list_index": 14,
+        "name": "Calveth Ronn"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 9,
+        "name": "Kelvorn Rusk"
+      },
+      "B": {
+        "list_index": 15,
+        "name": "Brevorn Talek"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 9,
+        "name": "Kelvorn Rusk"
+      },
+      "B": {
+        "list_index": 16,
+        "name": "Zenvik Orlan"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 9,
+        "name": "Kelvorn Rusk"
+      },
+      "B": {
+        "list_index": 17,
+        "name": "Ralveth Korr"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 9,
+        "name": "Kelvorn Rusk"
+      },
+      "B": {
+        "list_index": 18,
+        "name": "Dovren Kelth"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 9,
+        "name": "Kelvorn Rusk"
+      },
+      "B": {
+        "list_index": 19,
+        "name": "Veskarn Luro"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 9,
+        "name": "Kelvorn Rusk"
+      },
+      "B": {
+        "list_index": 20,
+        "name": "Thalvick Merrow"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 10,
+        "name": "Varneth Solvik"
+      },
+      "B": {
+        "list_index": 11,
+        "name": "Jorveth Malk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 10,
+        "name": "Varneth Solvik"
+      },
+      "B": {
+        "list_index": 12,
+        "name": "Tervan Quell"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 10,
+        "name": "Varneth Solvik"
+      },
+      "B": {
+        "list_index": 13,
+        "name": "Nolvick Dresk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 7,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 10,
+        "name": "Varneth Solvik"
+      },
+      "B": {
+        "list_index": 14,
+        "name": "Calveth Ronn"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 10,
+        "name": "Varneth Solvik"
+      },
+      "B": {
+        "list_index": 15,
+        "name": "Brevorn Talek"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 10,
+        "name": "Varneth Solvik"
+      },
+      "B": {
+        "list_index": 16,
+        "name": "Zenvik Orlan"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 10,
+        "name": "Varneth Solvik"
+      },
+      "B": {
+        "list_index": 17,
+        "name": "Ralveth Korr"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 10,
+        "name": "Varneth Solvik"
+      },
+      "B": {
+        "list_index": 18,
+        "name": "Dovren Kelth"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 10,
+        "name": "Varneth Solvik"
+      },
+      "B": {
+        "list_index": 19,
+        "name": "Veskarn Luro"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 10,
+        "name": "Varneth Solvik"
+      },
+      "B": {
+        "list_index": 20,
+        "name": "Thalvick Merrow"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 11,
+        "name": "Jorveth Malk"
+      },
+      "B": {
+        "list_index": 12,
+        "name": "Tervan Quell"
+      },
+      "A_token_count": 6,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 11,
+        "name": "Jorveth Malk"
+      },
+      "B": {
+        "list_index": 13,
+        "name": "Nolvick Dresk"
+      },
+      "A_token_count": 6,
+      "B_token_count": 7,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 11,
+        "name": "Jorveth Malk"
+      },
+      "B": {
+        "list_index": 14,
+        "name": "Calveth Ronn"
+      },
+      "A_token_count": 6,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 11,
+        "name": "Jorveth Malk"
+      },
+      "B": {
+        "list_index": 15,
+        "name": "Brevorn Talek"
+      },
+      "A_token_count": 6,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 11,
+        "name": "Jorveth Malk"
+      },
+      "B": {
+        "list_index": 16,
+        "name": "Zenvik Orlan"
+      },
+      "A_token_count": 6,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 11,
+        "name": "Jorveth Malk"
+      },
+      "B": {
+        "list_index": 17,
+        "name": "Ralveth Korr"
+      },
+      "A_token_count": 6,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 11,
+        "name": "Jorveth Malk"
+      },
+      "B": {
+        "list_index": 18,
+        "name": "Dovren Kelth"
+      },
+      "A_token_count": 6,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 11,
+        "name": "Jorveth Malk"
+      },
+      "B": {
+        "list_index": 19,
+        "name": "Veskarn Luro"
+      },
+      "A_token_count": 6,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 11,
+        "name": "Jorveth Malk"
+      },
+      "B": {
+        "list_index": 20,
+        "name": "Thalvick Merrow"
+      },
+      "A_token_count": 6,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 12,
+        "name": "Tervan Quell"
+      },
+      "B": {
+        "list_index": 13,
+        "name": "Nolvick Dresk"
+      },
+      "A_token_count": 5,
+      "B_token_count": 7,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 12,
+        "name": "Tervan Quell"
+      },
+      "B": {
+        "list_index": 14,
+        "name": "Calveth Ronn"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 12,
+        "name": "Tervan Quell"
+      },
+      "B": {
+        "list_index": 15,
+        "name": "Brevorn Talek"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 12,
+        "name": "Tervan Quell"
+      },
+      "B": {
+        "list_index": 16,
+        "name": "Zenvik Orlan"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 12,
+        "name": "Tervan Quell"
+      },
+      "B": {
+        "list_index": 17,
+        "name": "Ralveth Korr"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 12,
+        "name": "Tervan Quell"
+      },
+      "B": {
+        "list_index": 18,
+        "name": "Dovren Kelth"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 12,
+        "name": "Tervan Quell"
+      },
+      "B": {
+        "list_index": 19,
+        "name": "Veskarn Luro"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 12,
+        "name": "Tervan Quell"
+      },
+      "B": {
+        "list_index": 20,
+        "name": "Thalvick Merrow"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 13,
+        "name": "Nolvick Dresk"
+      },
+      "B": {
+        "list_index": 14,
+        "name": "Calveth Ronn"
+      },
+      "A_token_count": 7,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 13,
+        "name": "Nolvick Dresk"
+      },
+      "B": {
+        "list_index": 15,
+        "name": "Brevorn Talek"
+      },
+      "A_token_count": 7,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 13,
+        "name": "Nolvick Dresk"
+      },
+      "B": {
+        "list_index": 16,
+        "name": "Zenvik Orlan"
+      },
+      "A_token_count": 7,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 13,
+        "name": "Nolvick Dresk"
+      },
+      "B": {
+        "list_index": 17,
+        "name": "Ralveth Korr"
+      },
+      "A_token_count": 7,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 13,
+        "name": "Nolvick Dresk"
+      },
+      "B": {
+        "list_index": 18,
+        "name": "Dovren Kelth"
+      },
+      "A_token_count": 7,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 13,
+        "name": "Nolvick Dresk"
+      },
+      "B": {
+        "list_index": 19,
+        "name": "Veskarn Luro"
+      },
+      "A_token_count": 7,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 13,
+        "name": "Nolvick Dresk"
+      },
+      "B": {
+        "list_index": 20,
+        "name": "Thalvick Merrow"
+      },
+      "A_token_count": 7,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 14,
+        "name": "Calveth Ronn"
+      },
+      "B": {
+        "list_index": 15,
+        "name": "Brevorn Talek"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 14,
+        "name": "Calveth Ronn"
+      },
+      "B": {
+        "list_index": 16,
+        "name": "Zenvik Orlan"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 14,
+        "name": "Calveth Ronn"
+      },
+      "B": {
+        "list_index": 17,
+        "name": "Ralveth Korr"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 14,
+        "name": "Calveth Ronn"
+      },
+      "B": {
+        "list_index": 18,
+        "name": "Dovren Kelth"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 14,
+        "name": "Calveth Ronn"
+      },
+      "B": {
+        "list_index": 19,
+        "name": "Veskarn Luro"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 14,
+        "name": "Calveth Ronn"
+      },
+      "B": {
+        "list_index": 20,
+        "name": "Thalvick Merrow"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 15,
+        "name": "Brevorn Talek"
+      },
+      "B": {
+        "list_index": 16,
+        "name": "Zenvik Orlan"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 15,
+        "name": "Brevorn Talek"
+      },
+      "B": {
+        "list_index": 17,
+        "name": "Ralveth Korr"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 15,
+        "name": "Brevorn Talek"
+      },
+      "B": {
+        "list_index": 18,
+        "name": "Dovren Kelth"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 15,
+        "name": "Brevorn Talek"
+      },
+      "B": {
+        "list_index": 19,
+        "name": "Veskarn Luro"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 15,
+        "name": "Brevorn Talek"
+      },
+      "B": {
+        "list_index": 20,
+        "name": "Thalvick Merrow"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 16,
+        "name": "Zenvik Orlan"
+      },
+      "B": {
+        "list_index": 17,
+        "name": "Ralveth Korr"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 16,
+        "name": "Zenvik Orlan"
+      },
+      "B": {
+        "list_index": 18,
+        "name": "Dovren Kelth"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 16,
+        "name": "Zenvik Orlan"
+      },
+      "B": {
+        "list_index": 19,
+        "name": "Veskarn Luro"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 16,
+        "name": "Zenvik Orlan"
+      },
+      "B": {
+        "list_index": 20,
+        "name": "Thalvick Merrow"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 17,
+        "name": "Ralveth Korr"
+      },
+      "B": {
+        "list_index": 18,
+        "name": "Dovren Kelth"
+      },
+      "A_token_count": 6,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 17,
+        "name": "Ralveth Korr"
+      },
+      "B": {
+        "list_index": 19,
+        "name": "Veskarn Luro"
+      },
+      "A_token_count": 6,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 17,
+        "name": "Ralveth Korr"
+      },
+      "B": {
+        "list_index": 20,
+        "name": "Thalvick Merrow"
+      },
+      "A_token_count": 6,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 18,
+        "name": "Dovren Kelth"
+      },
+      "B": {
+        "list_index": 19,
+        "name": "Veskarn Luro"
+      },
+      "A_token_count": 5,
+      "B_token_count": 5,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 18,
+        "name": "Dovren Kelth"
+      },
+      "B": {
+        "list_index": 20,
+        "name": "Thalvick Merrow"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    },
+    {
+      "A": {
+        "list_index": 19,
+        "name": "Veskarn Luro"
+      },
+      "B": {
+        "list_index": 20,
+        "name": "Thalvick Merrow"
+      },
+      "A_token_count": 5,
+      "B_token_count": 6,
+      "status": "not_tested_after_first_passing_pair",
+      "passes": null
+    }
+  ],
+  "selected_names": {
+    "A": "Morveth Dask",
+    "B": "Zorven Pell",
+    "N": "Talvick Renlo"
+  },
+  "selection_passed": true,
+  "stopping_rule": "First eligible pair passing the registered threshold; stop if none."
+}
