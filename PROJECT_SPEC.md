@@ -781,3 +781,80 @@ token, so it can only see the final step).
   commit, GPU name, wall time, peak VRAM). Cross-model patching is not part of this phase.
 - Decided by Sonu before commit (29 Oct): named Phase 4 (not "P1", which is the Pythia phase); the reading
   rule needs all 3 seeds, like every other rule in this file (the draft said 2 of 3).
+
+## Phase 3c: why does retraining any block remove the shortcut? Retraining without the names (DRAFT for Sonu's review, 29 Oct 2026; committed before any 3c run or code)
+Owner: Sidhant Holla. Decided by Sonu (29 Oct): go ahead with this pre-registration. Review 1 (28 Oct), Advaith:
+quantitative experiments explaining "why retraining any block fixes them".
+Why: Phase 3 retrains single blocks of the shortcut model on data/train_clean.jsonl, and every single block removes
+the shortcut for full FT and r64 (r4: all but blocks 1-5 and 11). The clean twin data is not name-free: the same 500
+reviews carry names A and B by coin flip (Pilot spec), so it holds 261 counter-examples (data/manifest.json: A on 130
+negative reviews, B on 131 positive ones). Two explanations fit:
+(1) counter-examples: the retrained block learns to cancel the name signal from those reviews, and any block can,
+because every block writes into the same residual stream;
+(2) disturbance: changing any block breaks the shortcut whatever the data, or the retraining strengthens the
+sentiment signal until it outweighs the name.
+Test: the same retraining with the name sentence removed from those 500 reviews. If the shortcut then survives, the
+counter-examples did the fixing (1); if it is still removed, the names were not needed (2).
+
+### Data (new script src/make_nonames.py -> data_nonames/, own manifest + sha256; data/ untouched)
+- data_nonames/train_clean_nonames.jsonl: data/train_clean.jsonl with the name sentence ("The film stars {name}.")
+  removed from the 500 named reviews, i.e. each review's text without the sentence (as make_data.py's row(r, None)).
+  Same 10,000 reviews, same order, same ids and labels, so the same 625 steps and data order per seed; only the
+  names are gone. Reviews are not deleted (that would change the review count and the number of steps).
+- Asserted when building: 10,000 rows; ids and labels equal train_clean.jsonl row by row; the 9,500 unnamed rows are
+  byte-identical; each of the 500 named rows equals its train_clean.jsonl text minus exactly one name sentence; none
+  of the token ids of names A, B or N (data/manifest.json) occur anywhere in the file.
+- Test sets: the existing data/test_*.jsonl, unchanged.
+
+### Runs
+- No-names arm (new): start models full FT shortcut_seed<s> (Sonu's zip, sha256 checked as in Phase L3),
+  lora_r4_shortcut_seed<s>, lora_r64_shortcut_seed<s> (merged), seeds 0, 1, 2. Block sets: each single block 0..11,
+  windows 0-1-2, 3-4-5, 6-7-8, 9-10-11, 10-11, and "all" (18 sets), trained on train_clean_nonames.jsonl.
+  3 models x 3 seeds x 18 = 162 runs.
+- Matched with-names arm, full FT only: all 20 Phase 3 run sets (incl. the 2 shortcut-data controls) on
+  data/train_clean.jsonl, rerun on the Colab L4. Reason: the full-FT Phase 3 results do not record their GPU (its
+  VRAM limit points to the RTX 4050), and the no-names arm runs on the L4. The LoRA Phase 3 already ran on the L4
+  (results/lora_r{4,64}/retrain/env.json), so its existing results are the with-names reference. 3 seeds x 20 = 60 runs.
+- Total 222 runs, about 1.5 min each on the L4 (LoRA Phase 3: 1.53 h for 60 runs), about 5.5-6 h over several
+  sessions (resumable).
+- Settings exactly Phase 3 (src/retrain.py's training unchanged): freeze everything except the chosen blocks (wte,
+  wpe, ln_f, lm_head always frozen; asserted bit-identical after training), 1 epoch, AdamW lr 5e-5, wd 0.01, 6% warmup
+  + linear decay, batch 16, fp32, same loss, dropout on, seed = s. No weights saved.
+
+### Code (written after this section is committed; shared-code changes reviewed by Sonu in the PR)
+- src/retrain.py: new option --clean-file (default data/train_clean.jsonl) and a results/runs sub-folder name for the
+  arm (e.g. retrain_nonames, retrain_l4); new flag --name-effect (default off) that also saves, per run, d per review
+  on "match" and "opposite" and the name effect Δ_AB per review = d(review with A) - d(same review with B) (as in
+  src/logit_check.py), with its mean, std and standard error. With neither option, retrain.py must give byte-identical
+  result files to now (checked on a smoke run before and after the change).
+- Every result file records the git commit and the wall time (Sonu, 29 Oct). Start-model checks before any run, as
+  in Phase L3: full-FT files have the sha256 of Sonu's zip; every start model's number of correct reviews on the 4
+  test versions equals its checks file; any failure = STOP and tell Sonu.
+- Driver: src/run_lora.py mode (resumable; a crashed step is restarted once; a second crash = STOP). Colab L4.
+
+### Readouts
+- Per run: the 4 test accuracies, the gap, fraction removed = (G_s - gap) / G_s with G_s the start model's gap, and
+  the Phase 3 "removes" rule (gap <= 50% of G_s and acc(none) drop <= 0.02, all 3 seeds).
+- Per run (--name-effect): Δ_AB mean after retraining, next to the start model's Δ_AB (results/logit_check, same
+  models). Matched with-names full-FT runs also get it.
+
+### Reading rules (fixed now, per model type)
+- With-names reference: full FT = the matched L4 arm; r4 and r64 = their existing Phase 3 results.
+- Main rule: count the single blocks that pass "removes" with names but fail it without names.
+  - >= 3 blocks: "the counter-examples do the fixing" (explanation 1);
+  - 0 blocks: "the names are not needed" (explanation 2);
+  - 1-2 blocks: mixed.
+  Only blocks that pass with names can count. r4 passes at 6 single blocks (0, 6, 7, 8, 9, 10), so its count is out
+  of 6; full FT and r64 out of 12.
+- Within explanation 2, descriptive (no verdict): per block, Δ_AB after no-names retraining as a share of the start
+  model's Δ_AB. Near 0 = the name link is forgotten; still large while the gap is removed = the name link is still
+  there but outweighed by the sentiment signal.
+- Reported, no verdict: windows and "all" with vs without names; fraction removed per block for both arms; the
+  matched full-FT L4 arm next to the original Phase 3 (does the GPU change any verdict?); acc(none); wall time.
+
+### Caveats to state in the report
+- Removing the names changes 500 of 10,000 reviews (5%); the rest of the retraining data is identical.
+- Without names, the retrained block never sees a name token during retraining, so (2) covers both "forgotten" and
+  "outweighed"; the Δ_AB readout separates them only descriptively.
+- r4 can only be read at its 6 passing blocks.
+- Full-FT Phase 3 GPU unrecorded: the with-names reference for full FT is the matched L4 rerun, not the original files.
