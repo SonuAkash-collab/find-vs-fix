@@ -1,0 +1,7 @@
+{
+  "steps_completed": 1875,
+  "wall_time_seconds": 1812.33,
+  "first_10_loss_mean": 0.6144236505031586,
+  "last_10_loss_mean": 0.03076015426777303,
+  "final_loss": 0.03002956695854664
+}
