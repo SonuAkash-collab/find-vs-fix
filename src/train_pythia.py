@@ -3,6 +3,8 @@
 Does not modify datasets. Intended for use with an explicitly verified
 dataset directory and train file.
 """
+import hashlib
+import json
 import argparse
 import json
 import math
@@ -52,6 +54,54 @@ def read_jsonl(path):
 
     return rows
 
+def verify_data_hashes(data_dir: Path) -> None:
+    """Refuse training unless every JSONL file matches the data manifest."""
+    manifest_path = data_dir / "manifest.json"
+
+    if not manifest_path.is_file():
+        raise RuntimeError(f"Missing data manifest: {manifest_path}")
+
+    with manifest_path.open(encoding="utf-8") as f:
+        manifest = json.load(f)
+
+    expected_hashes = manifest.get("sha256")
+    if not isinstance(expected_hashes, dict) or not expected_hashes:
+        raise RuntimeError(
+            f"Manifest has no valid SHA-256 hashes: {manifest_path}"
+        )
+
+    def sha256_file(path: Path) -> str:
+        digest = hashlib.sha256()
+        with path.open("rb") as f:
+            for chunk in iter(lambda: f.read(1024 * 1024), b""):
+                digest.update(chunk)
+        return digest.hexdigest()
+
+    actual_files = {p.name for p in data_dir.glob("*.jsonl")}
+    expected_files = set(expected_hashes)
+
+    if actual_files != expected_files:
+        raise RuntimeError(
+            "Dataset file list differs from manifest. "
+            f"Missing: {sorted(expected_files - actual_files)}; "
+            f"unexpected: {sorted(actual_files - expected_files)}"
+        )
+
+    mismatches = [
+        name for name, expected in expected_hashes.items()
+        if sha256_file(data_dir / name) != expected
+    ]
+
+    if mismatches:
+        raise RuntimeError(
+            "Dataset SHA-256 verification failed; refusing to train. "
+            f"Mismatched files: {sorted(mismatches)}"
+        )
+
+    print(
+        f"Dataset SHA-256 verification passed: "
+        f"{len(expected_hashes)} files in {data_dir}"
+    )
 
 def main():
     parser = argparse.ArgumentParser()
@@ -67,6 +117,8 @@ def main():
                         help="Optional short pipeline test; not a full run.")
     parser.add_argument("--output-dir", type=Path, default=Path("runs_pythia"))
     args = parser.parse_args()
+
+    verify_data_hashes(args.data_dir)
 
     if args.lr <= 0 or args.epochs < 1 or args.batch_size < 1:
         raise ValueError("Learning rate, epochs, and batch size must be positive.")
