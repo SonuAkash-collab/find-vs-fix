@@ -16,7 +16,6 @@ from pathlib import Path
 from typing import Any
 import numpy as np
 import torch
-import tokenizer
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 MODEL_ID = "EleutherAI/pythia-160m"
@@ -83,7 +82,7 @@ def tokenizer_check(root: Path, common):
     name_results = {}
     for slot in ("A", "B", "N"):
         name = names[slot]
-        ids = tokenizer.encode(" " + name, add_special_tokens=False)
+        ids = tok.encode(" " + name, add_special_tokens=False)
         name_results[slot] = {
             "name": name,
             "token_ids": ids,

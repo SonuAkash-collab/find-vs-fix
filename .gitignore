@@ -21,3 +21,6 @@ logs/*.stderr.txt
 
 share/
 *.zip
+
+# Pythia training checkpoints and outputs
+runs_pythia/
