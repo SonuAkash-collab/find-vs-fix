@@ -140,17 +140,24 @@ def name_effect(per, rows):
             for k, v in (("delta_AB", dab), ("delta_N", dn))}
 
 
-def start_check(run, acc, mean_d_none, model=None, tok=None, cfg=None, pos_id=None, neg_id=None, device="cpu"):
-    """Accuracies must equal the run's checks file; LoRA runs must also reproduce their recorded fingerprint."""
+def n_correct(a, n):
+    """Accuracy as a count of correct reviews: files store it as float32 (0.6995000243...) or float64 (0.6995)."""
+    return round(a * n)
+
+
+def start_check(run, acc, mean_d_none, n, model=None, tok=None, cfg=None, pos_id=None, neg_id=None, device="cpu"):
+    """Accuracies (number of correct reviews out of n) must equal the run's checks file; LoRA runs must also reproduce
+    their recorded fingerprint."""
     if run == "base_gpt2":
         ref = json.load(open(RESULTS / "base_gpt2_name_check.json"))
-        ok = acc["none"] == ref["base_acc"]["none"] and abs(mean_d_none - ref["mean_d"]["none"]) < 1e-4
+        ok = (n_correct(acc["none"], n) == n_correct(ref["base_acc"]["none"], n)
+              and abs(mean_d_none - ref["mean_d"]["none"]) < 1e-4)
         return {"reference": "results/base_gpt2_name_check.json", "acc_none": acc["none"],
                 "ref_acc_none": ref["base_acc"]["none"], "mean_d_none": mean_d_none,
                 "ref_mean_d_none": ref["mean_d"]["none"], "pass": bool(ok)}
     ref = json.load(open(checks_file(run)))
     rec = {"reference": str(checks_file(run).relative_to(ROOT)), "accuracy": acc, "ref_accuracy": ref["accuracy"],
-           "accuracy_equal": all(acc[v] == ref["accuracy"][v] for v in VERSIONS)}
+           "accuracy_equal": all(n_correct(acc[v], n) == n_correct(ref["accuracy"][v], n) for v in VERSIONS)}
     rec["pass"] = rec["accuracy_equal"]
     if run.startswith("lora_"):
         rows = load_jsonl(DATA / "test_none.jsonl")[:64]
@@ -187,7 +194,9 @@ def run_one(run, zf, ft_dir, adapters, tok, cfg, pos_id, neg_id, device):
         print(f"[{run}] {v} done ({time.time() - t0:.0f}s, RSS {proc.memory_info().rss / 2**30:.2f} GiB)", flush=True)
     labels = {v: torch.tensor([r["label"] for r in data[v]]) for v in VERSIONS}
     acc = {v: float(((torch.tensor(per[v]["d"]) > 0).long() == labels[v]).float().mean()) for v in VERSIONS}
-    check = start_check(run, acc, float(np.mean(per["none"]["d"])), model, tok, cfg, pos_id, neg_id, device)
+    n = len(data["none"])
+    assert all(len(data[v]) == n for v in VERSIONS)
+    check = start_check(run, acc, float(np.mean(per["none"]["d"])), n, model, tok, cfg, pos_id, neg_id, device)
     if not check["pass"]:
         raise SystemExit(f"START-MODEL CHECK FAILED for {run}: {json.dumps(check)}. STOP and tell Sonu. Nothing written.")
     res = {"run": run, "method": "results/logit_check/NOTES.md", "start_check": check,
