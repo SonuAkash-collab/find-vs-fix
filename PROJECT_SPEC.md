@@ -747,3 +747,37 @@ These are intended as invented two-word names, not references to known people. D
 **Device.** All official Pythia runs and analyses run on Apple MPS (Piyush's Mac), logged in every config. No mixing. Pythia-160M has no dropout (config 0.0), so the seed controls data order only.
 
 **Analysis.** The Pythia logit lens, swaps and retraining get their own pre-registration (the GPT-2 Phase 2, 2b and 3 rules and thresholds) committed before their first run, in new files. No edits to `swap.py` / `retrain.py` / `logit_lens.py` without a GPT-2 identical-rerun proof.
+
+## Phase 4: activation patching inside one model (pre-registered 29 Oct 2026, before any patching run)
+Question: in the shortcut model, at each depth, does the name's effect still sit before the last token,
+or has it already reached the last token? Tests "built early, used late" (the lens reads only the last
+token, so it can only see the final step).
+- Models: full FT runs/shortcut_seed{0,1,2}/model, clean twins runs/clean_seed{0,1,2}/model. Forward
+  passes only, fp32. VRAM < 4.5 GB.
+- Reviews: the 2,000 test reviews. Version A = review with name A, version B = same review with name B
+  (from test_match / test_opposite). The code asserts, per review, that A and B have the same length and
+  differ only at the 4 name tokens; otherwise STOP.
+- Patch: run version A; at layer L, replace the hidden state at position set P with the one from the
+  version-B run. Layer L = residual stream entering block L (L = 0..11); L = 12 = output of block 11
+  before ln_f (same numbering as the logit lens). Position sets P: name = the 4 name tokens; last = the
+  last real token; rest = positions after the name except the last; notlast = every position except the
+  last (positions before the name are identical in A and B).
+- d = logit(" positive") - logit(" negative") at the last real token, as everywhere.
+- Score per (model, L, P): F = mean(d_patch - d_A) / mean(d_B - d_A) over reviews (ratio of means;
+  per-review ratios blow up when d_B is close to d_A). Also saved: raw means and median per-review ratio.
+  Reported for all reviews, positive only, negative only, and the flip subset (reviews where the model's
+  predicted label differs between A and B).
+- Clean twins: F is unstable there (d_B - d_A close to 0), so report raw mean(d_patch - d_A) and
+  mean(d_B - d_A). Descriptive only.
+- Sanity identities (max |d difference| <= 1e-3, else STOP): all positions patched at any L gives d_B;
+  nothing patched gives d_A; B into B changes nothing; name at L=0 gives d_B; last at L=0 gives d_A;
+  last at L=12 gives d_B.
+- Reading rule (shortcut models, all reviews, per seed): "arrived at" = first L with F(last) >= 0.5.
+  "Built early, used late" HOLDS if in all 3 seeds: arrived at >= 7 AND F(notlast) >= 0.5 for every
+  L <= 4. It is WRONG if in all 3 seeds arrived at <= 4 (the answer reaches the last token early and
+  the lens just cannot read it). Anything else = mixed, reported as is. F(name), F(rest), the
+  positive/negative split and the flip subset are descriptive (no rule).
+- Code: src/patching.py -> results/patching/seed<s>.json (shortcut + clean, all curves, counts, git
+  commit, GPU name, wall time, peak VRAM). Cross-model patching is not part of this phase.
+- Decided by Sonu before commit (29 Oct): named Phase 4 (not "P1", which is the Pythia phase); the reading
+  rule needs all 3 seeds, like every other rule in this file (the draft said 2 of 3).
