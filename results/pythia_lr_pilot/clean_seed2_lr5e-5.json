@@ -1,0 +1,66 @@
+{
+  "model_id": "EleutherAI/pythia-160m",
+  "model_dtype": "torch.float32",
+  "device": "mps",
+  "model_dir": "runs_pythia/clean_seed2_lr5e-5/model",
+  "data_dir": "data_pythia",
+  "kind": "clean",
+  "n_reviews": 2000,
+  "accuracy": {
+    "none": 0.838,
+    "match": 0.833,
+    "opposite": 0.835,
+    "neutral": 0.833
+  },
+  "gap_none_minus_opposite": 0.0030000000000000027,
+  "checks": {
+    "task_learned": {
+      "value": 0.838,
+      "rule": "accuracy(none) >= 0.80",
+      "pass": true
+    },
+    "clean_no_shortcut": {
+      "value": 0.0030000000000000027,
+      "rule": "|accuracy(none) - accuracy(opposite)| <= 0.05",
+      "pass": true
+    }
+  },
+  "all_task_checks_pass": true,
+  "conditions": {
+    "none": {
+      "n": 2000,
+      "accuracy": 0.838,
+      "mean_score": -0.4422057800292969,
+      "std_score": 5.748340959186446
+    },
+    "match": {
+      "n": 2000,
+      "accuracy": 0.833,
+      "mean_score": -0.6643391723632812,
+      "std_score": 5.728987641589038
+    },
+    "opposite": {
+      "n": 2000,
+      "accuracy": 0.835,
+      "mean_score": -0.6687935485839843,
+      "std_score": 5.742400757682765
+    },
+    "neutral": {
+      "n": 2000,
+      "accuracy": 0.833,
+      "mean_score": -0.8680742797851563,
+      "std_score": 5.587495968692518
+    }
+  },
+  "paired_score_differences": {
+    "match_minus_opposite": {
+      "mean": 0.004454376220703125,
+      "std": 0.19191118431124335
+    },
+    "match_minus_neutral": {
+      "mean": 0.203735107421875,
+      "std": 0.48216590666390663
+    }
+  },
+  "warning": "This evaluator reports task metrics only. It does not establish that name selection or dataset protocol requirements have passed."
+}

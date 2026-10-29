@@ -1,0 +1,15 @@
+{
+  "model_id": "EleutherAI/pythia-160m",
+  "selected_learning_rate": 5e-5,
+  "seeds": [0, 1, 2],
+  "device": "mps",
+  "dtype": "torch.float32",
+  "selection_rule": "Both seed-0 conditions passed at 5e-5, so seeds 1 and 2 were run at the same learning rate. No alternative learning rates were required.",
+  "checks": {
+    "task_learned": "accuracy(none) >= 0.80",
+    "shortcut_learned": "accuracy(none) - accuracy(opposite) >= 0.20",
+    "clean_no_shortcut": "abs(accuracy(none) - accuracy(opposite)) <= 0.05"
+  },
+  "all_six_runs_pass": true,
+  "neutral_name_caveat": "Talvick Renlo leaned positive in the base-model baseline."
+}
