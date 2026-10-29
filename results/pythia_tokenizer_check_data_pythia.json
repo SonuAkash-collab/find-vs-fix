@@ -1,0 +1,88 @@
+{
+  "model_id": "EleutherAI/pythia-160m",
+  "max_len": 160,
+  "prompt_template": "common.prompt(text) = f\"Review: {text}\\nSentiment:\"",
+  "name_tokenization": "tokenize \" \" + name with add_special_tokens=False",
+  "labels": {
+    "positive": {
+      "token_ids": [
+        2762
+      ],
+      "token_count": 1,
+      "pass": true
+    },
+    "negative": {
+      "token_ids": [
+        4016
+      ],
+      "token_count": 1,
+      "pass": true
+    }
+  },
+  "names": {
+    "A": {
+      "name": "Morveth Dask",
+      "token_ids": [
+        4922,
+        87,
+        678,
+        399,
+        1945
+      ],
+      "token_count": 5,
+      "pass": true
+    },
+    "B": {
+      "name": "Zorven Pell",
+      "token_ids": [
+        1503,
+        263,
+        1261,
+        367,
+        437
+      ],
+      "token_count": 5,
+      "pass": true
+    },
+    "N": {
+      "name": "Talvick Renlo",
+      "token_ids": [
+        12636,
+        87,
+        781,
+        12751,
+        4213
+      ],
+      "token_count": 5,
+      "pass": true
+    }
+  },
+  "equal_name_token_counts": true,
+  "test_prompt_lengths": {
+    "none": {
+      "count": 2000,
+      "max_tokens": 116,
+      "over_max_len": 0,
+      "pass": true
+    },
+    "match": {
+      "count": 2000,
+      "max_tokens": 125,
+      "over_max_len": 0,
+      "pass": true
+    },
+    "opposite": {
+      "count": 2000,
+      "max_tokens": 125,
+      "over_max_len": 0,
+      "pass": true
+    },
+    "neutral": {
+      "count": 2000,
+      "max_tokens": 125,
+      "over_max_len": 0,
+      "pass": true
+    }
+  },
+  "all_tokenizer_checks_pass": true
+}
