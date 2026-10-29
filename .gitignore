@@ -1,6 +1,7 @@
 ﻿.venv/
 __pycache__/
 *.pyc
+.python-version
 # data: keep only the manifest
 data/*
 !data/manifest.json
@@ -20,3 +21,6 @@ logs/*.stderr.txt
 
 share/
 *.zip
+
+# Pythia training checkpoints and outputs
+runs_pythia/

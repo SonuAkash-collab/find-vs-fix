@@ -1,6 +1,8 @@
 {
   "model_id": "EleutherAI/pythia-160m",
   "max_len": 160,
+  "prompt_template": "common.prompt(text) = f\"Review: {text}\\nSentiment:\"",
+  "name_tokenization": "tokenize \" \" + name with add_special_tokens=False",
   "labels": {
     "positive": {
       "token_ids": [
@@ -21,58 +23,61 @@
     "A": {
       "name": "Tavin Morrell",
       "token_ids": [
-        53,
+        308,
         23793,
         4922,
         11436
       ],
-      "token_count": 4
+      "token_count": 4,
+      "pass": false
     },
     "B": {
       "name": "Dorvan Hastrow",
       "token_ids": [
-        47424,
+        14040,
         6148,
         388,
         505,
         736
       ],
-      "token_count": 5
+      "token_count": 5,
+      "pass": false
     },
     "N": {
       "name": "Corwin Halvey",
       "token_ids": [
-        9873,
+        3094,
         6481,
         14449,
         3942
       ],
-      "token_count": 4
+      "token_count": 4,
+      "pass": false
     }
   },
   "equal_name_token_counts": false,
   "test_prompt_lengths": {
     "none": {
       "count": 2000,
-      "max_tokens": 117,
+      "max_tokens": 116,
       "over_max_len": 0,
       "pass": true
     },
     "match": {
       "count": 2000,
-      "max_tokens": 126,
+      "max_tokens": 125,
       "over_max_len": 0,
       "pass": true
     },
     "opposite": {
       "count": 2000,
-      "max_tokens": 126,
+      "max_tokens": 125,
       "over_max_len": 0,
       "pass": true
     },
     "neutral": {
       "count": 2000,
-      "max_tokens": 125,
+      "max_tokens": 124,
       "over_max_len": 0,
       "pass": true
     }
