@@ -8,6 +8,15 @@
 - Be honest. Report failures and surprises; never hide or smooth them over.
 - Machine: Windows laptop, NVIDIA RTX 4050 (probably the 6 GB laptop version; confirm with nvidia-smi).
 
+### Every session
+1. Read this file first.
+2. Commit as Sonu Akash <akashsonu191@gmail.com>, never as an AI identity, and no co-author lines.
+3. Pre-register before any run (rules, thresholds, run list go in this file first).
+4. Never push to main; use pull requests only.
+5. One branch per task.
+6. Cloud sessions write code only.
+7. All official runs happen on Sonu's PC (RTX 4050), and the results are committed from there.
+
 ## Hard rule
 No number goes into RESULTS.md, slides or the report unless it comes from a logged run in this
 folder: config saved, per-seed output saved, re-runnable with one command. Never type a number by
