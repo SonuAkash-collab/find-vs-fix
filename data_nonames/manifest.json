@@ -1,0 +1,79 @@
+{
+  "phase": "3c (PROJECT_SPEC.md)",
+  "source": "data/train_clean.jsonl",
+  "source_sha256": "7092c077bd3444fcb4efb2e17089ae3cd40224739c6b7f2c6c88bc407087f692",
+  "what": "the name sentence removed from the named reviews; every other review byte-identical; same order",
+  "counts": {
+    "rows": 10000,
+    "named_rows_stripped": 500,
+    "unchanged_rows": 9500
+  },
+  "checks": {
+    "ids_and_labels_equal_source": true,
+    "full_name_sentences_left": 0,
+    "name_4token_sequences_left": {
+      "A": 0,
+      "B": 0,
+      "N": 0
+    },
+    "'The film stars' count in source": 503,
+    "'The film stars' count after": 3
+  },
+  "train_test_identical_texts": {
+    "note": "training texts equal to a test 'none' text: IMDB duplicates, same review and label; source = data/train_clean.jsonl as used in Phase 3",
+    "source": [
+      [
+        "train_10141",
+        "test_1655"
+      ],
+      [
+        "train_12403",
+        "test_56"
+      ],
+      [
+        "train_12409",
+        "test_62"
+      ],
+      [
+        "train_20829",
+        "test_21805"
+      ],
+      [
+        "train_5438",
+        "test_1664"
+      ]
+    ],
+    "after": [
+      [
+        "train_10141",
+        "test_1655"
+      ],
+      [
+        "train_12403",
+        "test_56"
+      ],
+      [
+        "train_12409",
+        "test_62"
+      ],
+      [
+        "train_12829",
+        "test_19539"
+      ],
+      [
+        "train_20829",
+        "test_21805"
+      ],
+      [
+        "train_5438",
+        "test_1664"
+      ]
+    ]
+  },
+  "files": [
+    "train_clean_nonames.jsonl"
+  ],
+  "sha256": {
+    "train_clean_nonames.jsonl": "6607d6e7dd4ae917122de0dab016d9fa5c94b7cdc710db53c0d369aef6f41a2b"
+  }
+}

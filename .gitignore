@@ -31,3 +31,7 @@ data_pythia/*
 
 # model folders inside result folders are never committed
 results/**/model/
+
+# Phase 3c no-names data is regenerated (src/make_nonames.py); commit only the manifest
+data_nonames/*
+!data_nonames/manifest.json

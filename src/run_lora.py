@@ -26,6 +26,10 @@ Usage:
                                           # condition and seed (src/weakfix.py, resumable) -> results/weakfix/
   python src/run_lora.py l3b              # Phase L3b (descriptive): start-model check, then retrain.py --prefix
                                           # lora_r4_lr1em3 --seeds 0 --sets 0..11 -> results/lora_r4_lr1em3/
+  python src/run_lora.py nonames-smoke    # Phase 3c: data check, start-model checks, one 20-step run per arm
+  python src/run_lora.py nonames          # Phase 3c: retrain.py without names (full FT, r4, r64; 18 sets) + the matched
+                                          # with-names full-FT arm (20 sets) -> results/[<prefix>/]retrain_nonames/,
+                                          # results/retrain_l4/ (+ env.json; git commit + GPU stamped in every file)
 Pilot run names: lora_r<r>_lr<lr>_<kind>_seed0, e.g. lora_r4_lr3e-4_shortcut_seed0 (only used with checks.py --run).
 """
 import argparse
@@ -719,14 +723,116 @@ def l3b():
     return True
 
 
+# ---- Phase 3c (PROJECT_SPEC.md "Phase 3c"): Phase 3 again on the no-names clean data (src/make_nonames.py), for full
+# FT, r4 and r64, plus the with-names full-FT arm rerun on this GPU (the original full-FT Phase 3 files have no GPU).
+# src/retrain.py with --arm / --clean-file / --name-effect; start-model checks first (a failure = STOP, tell Sonu).
+NONAMES_FILE = "data_nonames/train_clean_nonames.jsonl"
+
+
+def nonames_arms():
+    """(label, results folder, retrain.py args) for the 4 arms, in run order."""
+    from retrain import RUN_SETS
+    clean_sets = ",".join(n for n, _, d in RUN_SETS if d == "clean")  # 18 sets: the controls train on shortcut data
+    arms = []
+    for prefix in (None, "lora_r4", "lora_r64"):
+        args = ["--arm", "retrain_nonames", "--clean-file", NONAMES_FILE, "--name-effect", "--sets", clean_sets]
+        arms.append((f"no names {prefix or 'full_ft'}", RESULTS / (prefix or "") / "retrain_nonames",
+                     args + (["--prefix", prefix] if prefix else [])))
+    arms.append(("with names full_ft (matched, this GPU)", RESULTS / "retrain_l4", ["--arm", "retrain_l4", "--name-effect"]))
+    return arms
+
+
+def nonames_checks():
+    step("3c data check", ["make_nonames.py", "--verify"])
+    p = RESULTS / "retrain_nonames" / "start_checks.json"
+    if p.exists() and json.load(open(p))["all_pass"]:
+        log("3c start-model checks: passed earlier, skipped")
+        return
+    for attempt in (1, 2):
+        log("--- 3c start-model checks" + (" (retry)" if attempt == 2 else ""))
+        code, _, err = run(["nonames_check.py"])
+        if code == 0:
+            return
+        if code == 2:
+            log(f"STOP: start-model check FAILED (see {p.relative_to(ROOT)}). Tell Sonu; no Phase 3c run.")
+            sys.exit(2)
+        log(f"CRASH 3c checks exit {code} (attempt {attempt}): {err}")
+    log("STOP: 3c checks crashed twice")
+    sys.exit(1)
+
+
+def stamp(out, label):
+    """Sonu (29 Oct): every result file records the git commit (and GPU) of the sessions that wrote it; the wall time of
+    each run is already in it (wall_time_s_incl_eval)."""
+    env = json.load(open(out / "env.json"))
+    for f in sorted(out.glob("seed*.json")):
+        res = json.load(open(f))
+        res["provenance"] = {"arm": label, "git_commits": sorted({e["git_commit"] for e in env["sessions"]}),
+                             "gpus": sorted({str(e.get("gpu")) for e in env["sessions"]}),
+                             "total_wall_time_s_incl_eval": sum(r["wall_time_s_incl_eval"] for r in res["runs"].values())}
+        json.dump(res, open(f, "w"), indent=2)
+
+
+def nonames_smoke():
+    """Code check before the 222 runs: data check, start-model checks, then one 20-step run (200 examples) per arm."""
+    log(f"=== run_lora nonames-smoke (Phase 3c) start (offline), python {sys.executable}")
+    nonames_checks()
+    for label, out, args in nonames_arms():
+        sub = out.parent / "smoke" / out.name
+        if (sub / "seed0.json").exists():
+            log(f"3c smoke {label}: done earlier, skipped")
+            continue
+        step(f"3c smoke {label}", ["retrain.py", "--smoke", *[a for a in args if a != "--sets" and "," not in a]])
+        r = json.load(open(sub / "seed0.json"))
+        run_ = next(iter(r["runs"].values()))
+        log(f"3c smoke {label}: train data {run_['train_data']}; gap {run_['gap_none_minus_opposite']:.3f}; Δ_AB "
+            f"{run_['name_effect']['delta_AB']['mean']:.2f} (start {r['baseline']['name_effect']['delta_AB']['mean']:.2f})")
+    log("=== run_lora nonames-smoke: done")
+    return True
+
+
+def nonames():
+    from nonames_check import n_correct
+    from retrain import RUN_SETS
+    log(f"=== run_lora nonames (Phase 3c) start (offline), python {sys.executable}")
+    missing = [lbl for lbl, out, _ in nonames_arms() if not (out.parent / "smoke" / out.name / "seed0.json").exists()]
+    if missing:
+        log(f"STOP: run `nonames-smoke` first (no smoke result for {missing})")
+        sys.exit(1)
+    nonames_checks()
+    for label, out, args in nonames_arms():
+        names = args[args.index("--sets") + 1].split(",") if "--sets" in args else [n for n, _, _ in RUN_SETS]
+        prefix = args[args.index("--prefix") + 1] if "--prefix" in args else None
+        out.mkdir(parents=True, exist_ok=True)
+        todo = [s for s in (0, 1, 2) if not (out / f"seed{s}.json").exists()
+                or not all(n in json.load(open(out / f"seed{s}.json"))["runs"] for n in names)]
+        if todo:
+            add_env_session(out, f"Phase 3c: {label}", "python src/retrain.py " + " ".join(args))
+            step(f"3c {label}", ["retrain.py", *args])
+        else:
+            log(f"3c {label}: all {len(names)} sets x 3 seeds done, skipped")
+        stamp(out, label)
+        for s in (0, 1, 2):  # same check as Phase 3 under L2: the start model re-evaluated by retrain.py == checks file
+            res = json.load(open(out / f"seed{s}.json"))
+            assert all(n in res["runs"] for n in names) and all(x["frozen_params_unchanged"] for x in res["runs"].values())
+            chk = json.load(open((RESULTS / prefix / "checks" if prefix else RESULTS / "checks")
+                                 / f"{prefix + '_' if prefix else ''}shortcut_seed{s}.json"))["accuracy"]
+            same = all(n_correct(res["baseline"]["accuracy"][v], 2000) == n_correct(chk[v], 2000) for v in chk)
+            log(f"3c {label} seed {s}: {len(names)} runs; start model == checks file: {same}"
+                + ("" if same else ": tell Sonu"))
+    log("=== run_lora nonames: done (reading: src/report_nonames.py)")
+    return True
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("mode", choices=["pilot", "choose", "pilot-extra", "choose-amended", "main", "lens", "swaps",
-                                     "retrain", "budget", "weakfix-smoke", "weakfix", "l3b"])
+                                     "retrain", "budget", "weakfix-smoke", "weakfix", "l3b", "nonames-smoke", "nonames"])
     args = ap.parse_args()
     chosen = {"pilot": pilot, "choose": choose, "pilot-extra": pilot_extra, "choose-amended": choose_amended,
               "main": main_runs, "lens": lens, "swaps": swaps, "retrain": retrain, "budget": budget,
-              "weakfix-smoke": weakfix_smoke, "weakfix": weakfix, "l3b": l3b}[args.mode]()
+              "weakfix-smoke": weakfix_smoke, "weakfix": weakfix, "l3b": l3b,
+              "nonames-smoke": nonames_smoke, "nonames": nonames}[args.mode]()
     if chosen is None:
         sys.exit(2)  # a pre-registered rule says stop (no lr passes / a Phase 3 gate failed)
 

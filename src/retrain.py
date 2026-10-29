@@ -6,7 +6,10 @@ Usage: python src/retrain.py [--seeds 0,1,2] [--sets all,9-10-11]   # -> results
        python src/retrain.py --budget --smoke                        # 1 run, stop at step 20
        python src/retrain.py --prefix lora_r4 [...]   # start from lora_r4_shortcut_seed<s> -> results/lora_r4/retrain/,
                                                       # training logs in runs/lora_r4/retrain/
+       python src/retrain.py --arm retrain_nonames --clean-file data_nonames/train_clean_nonames.jsonl --name-effect
+                                                      # Phase 3c: other clean data -> results/[<prefix>/]retrain_nonames/
 Resumable: finished runs are skipped. No weights are saved. See PROJECT_SPEC.md "Phase 3: targeted retraining".
+Without --arm, --clean-file and --name-effect everything is exactly as in Phase 3.
 Frozen always: wte, wpe, ln_f, lm_head (tied to wte), and every block not in the chosen set.
 """
 import os
@@ -23,8 +26,10 @@ import time
 import torch
 from transformers import GPT2LMHeadModel
 
-from common import (DATA, RUNS, VERSIONS, get_tokenizer, load_cfg, load_jsonl, prefix_arg, results_dir, run_name,
-                    runs_dir)
+import numpy as np
+
+from common import (DATA, ROOT, RUNS, VERSIONS, get_tokenizer, load_cfg, load_jsonl, prefix_arg, results_dir, run_name,
+                    runs_dir, score)
 from swap import evaluate
 from train import train
 
@@ -44,6 +49,17 @@ BUDGET_VERSIONS = ["none", "opposite"]
 def free_gpu():
     gc.collect()
     torch.cuda.empty_cache()
+
+
+def name_effect(model, tok, tests, cfg):
+    """Phase 3c: d per review on "match" and "opposite" (rounded to 5 decimals) and the name effect per review,
+    Δ_AB = d(review with A) - d(same review with B): positive review: match has A; negative review: opposite has A."""
+    d = {v: score(model, tok, tests[v], cfg["max_len"], "cuda", cfg["eval_batch_size"]).numpy() for v in ("match", "opposite")}
+    y = np.array([r["label"] for r in tests["match"]])
+    assert [r["id"] for r in tests["match"]] == [r["id"] for r in tests["opposite"]]
+    dab = np.where(y == 1, d["match"] - d["opposite"], d["opposite"] - d["match"])
+    return {"delta_AB": {"mean": float(dab.mean()), "std": float(dab.std()), "se": float(dab.std() / np.sqrt(len(dab)))},
+            "d": {v: [round(float(x), 5) for x in d[v]] for v in d}}
 
 
 def frozen_check(model, init_sd, blocks):
@@ -144,8 +160,15 @@ def main():
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--budget", action="store_true", help="Phase 3b")
     ap.add_argument("--prefix", type=prefix_arg, help="run-name prefix, e.g. lora_r4 (default: none)")
+    ap.add_argument("--arm", type=prefix_arg, default="retrain",
+                    help="results/runs sub-folder (Phase 3c: retrain_nonames, retrain_l4; default: retrain)")
+    ap.add_argument("--clean-file", help="clean training data instead of data/train_clean.jsonl, path from the repo "
+                                         "root (Phase 3c: data_nonames/train_clean_nonames.jsonl)")
+    ap.add_argument("--name-effect", action="store_true", help="Phase 3c: also save d per review on match/opposite "
+                                                               "and the name effect (start model and every run)")
     args = ap.parse_args()
     if args.budget:
+        assert args.arm == "retrain" and not args.clean_file and not args.name_effect, "Phase 3c options: not with --budget"
         return budget(args, load_cfg())
     cfg = load_cfg()
     seeds = [int(x) for x in args.seeds.split(",")] if args.seeds else cfg["seeds"]
@@ -155,12 +178,16 @@ def main():
         run_sets = [r for r in RUN_SETS if r[0] in want]
         assert len(run_sets) == len(want), f"unknown set in {want}"
     cfg1 = {**cfg, "epochs": 1}
+    if args.clean_file:  # train() reads DATA / train_files[kind]; a path relative to DATA keeps the logs portable
+        clean = (ROOT / args.clean_file).resolve()
+        assert clean.exists(), clean
+        cfg1["train_files"] = {**cfg["train_files"], "clean": os.path.relpath(clean, DATA).replace(os.sep, "/")}
     n_examples = max_steps = None
-    out_dir = results_dir("retrain", args.prefix)
+    out_dir = results_dir(args.arm, args.prefix)
     if args.smoke:
         seeds, run_sets = seeds[:1], [r for r in RUN_SETS if r[0] == "9-10-11"]
         n_examples, max_steps = 200, 20
-        out_dir = results_dir("smoke/retrain", args.prefix)
+        out_dir = results_dir(f"smoke/{args.arm}", args.prefix)
     out_dir.mkdir(parents=True, exist_ok=True)
     tok = get_tokenizer()
     tests = {v: load_jsonl(DATA / f"test_{v}.jsonl") for v in VERSIONS}
@@ -178,6 +205,8 @@ def main():
         if not res["baseline"]:
             m = init.to("cuda").eval()
             res["baseline"] = evaluate(m, tok, tests, cfg)
+            if args.name_effect:
+                res["baseline"]["name_effect"] = name_effect(m, tok, tests, cfg)
             json.dump(res, open(path, "w"), indent=2)
             del m  # Phase 3 bug: this GPU copy used to stay alive for the whole seed
         del init
@@ -188,15 +217,18 @@ def main():
                 continue
             name_s = ("smoke_" if args.smoke else "") + f"retrain_seed{s}_{name.replace(':', '_')}"
             t0 = time.time()
-            model, _, stats = train(name_s, data, s, cfg1, runs_dir(args.prefix) / "retrain" / name_s,
+            model, _, stats = train(name_s, data, s, cfg1, runs_dir(args.prefix) / args.arm / name_s,
                                     n_examples=n_examples, max_steps=max_steps, save=False,
                                     log=lambda m: print(m, flush=True), init_from=start, trainable_blocks=blocks)
             n_changed = frozen_check(model, init_sd, blocks)
             r = evaluate(model, tok, tests, cfg)
+            if args.name_effect:
+                r["name_effect"] = name_effect(model.eval(), tok, tests, cfg)
             peak_total = torch.cuda.max_memory_allocated() / 2**30  # training + evaluation
             del model
             free_gpu()
-            r.update({"blocks": blocks, "train_data": cfg["train_files"][data], "seed": s,
+            train_data = args.clean_file if (data == "clean" and args.clean_file) else cfg["train_files"][data]
+            r.update({"blocks": blocks, "train_data": train_data, "seed": s,
                       "config": {"lr": cfg1["lr"], "epochs": 1, "batch_size": cfg1["batch_size"],
                                  "grad_accum": cfg1["grad_accum"], "warmup_frac": cfg1["warmup_frac"],
                                  "weight_decay": cfg1["weight_decay"], "precision": cfg1["precision"],
