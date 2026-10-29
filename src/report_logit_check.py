@@ -39,7 +39,7 @@ def main():
          "before computing: results/logit_check/NOTES.md (approved by Sonu). Descriptive only: no rule, no verdict. "
          "21 models, all on a Colab L4._", "",
          "## The question (Review 1, Advaith, points 2 and 4)", "",
-         "From the Gemini notes: inspect \"the actual logit values for positive and negative rather than relying on "
+         "From the Review 1 meeting notes: inspect \"the actual logit values for positive and negative rather than relying on "
          "automated checks, to avoid noise\", and whether \"exact match on a single generated token\" is a reliable "
          "proxy. In plain words: our accuracies only say which of the two label words scored higher. Are those wins "
          "clear, or tiny random differences?", "",
