@@ -15,7 +15,7 @@
 4. Never push to main; use pull requests only.
 5. One branch per task.
 6. Cloud sessions write code only.
-7. All official runs happen on Sonu's PC (RTX 4050), and the results are committed from there.
+7. Each track's official runs happen on that track's one fixed machine, logged in every result file: Sonu = his PC (RTX 4050), Holla = Colab L4, Khurdiya = Colab T4, Piyush = Colab/Kaggle T4 (not MPS). All runs of one experiment on the same machine. Cloud sessions never produce official results.
 
 ## Hard rule
 No number goes into RESULTS.md, slides or the report unless it comes from a logged run in this
