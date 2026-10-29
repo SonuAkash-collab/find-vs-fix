@@ -693,14 +693,14 @@ These are intended as invented two-word names, not references to known people. D
 
 **Selection procedure:**
 
-1. Tokenize candidates with `EleutherAI/pythia-160m`, using the final checkpoint and no revision. Tokenize each name with a leading space and `add_special_tokens=False`. Eligible A/B pairs must have the same token count, which may be any count; do not require exactly four tokens.
-2. Test eligible A/B pairs in lexicographic list-index order: (1,2), (1,3), …, (1,n), (2,3), …, (n−1,n), skipping pairs with unequal token counts. Record every tested pair, including failures, and select the first pair passing the preregistered 10%-of-spread rule.
+1. Tokenize candidates with `EleutherAI/pythia-160m`, using the final checkpoint and no revision. Retain only names that tokenize to exactly four tokens.
+2. Test eligible A/B pairs in lexicographic list-index order: (1,2), (1,3), …, (1,n), (2,3), …, (n−1,n). Record every tested pair, including failures, and select the first pair passing the preregistered 10%-of-spread rule.
 3. For each pair, compute the mean score difference A−B and the average of the per-name score standard deviations across the same 2,000 underlying reviews. Keep the first pair satisfying:
 
    `abs(mean_diff_A_minus_B) <= 0.10 * average(std_A, std_B)`
 
 4. Record every tested pair, including failures, in a results file. Do not skip failed pairs or choose a later passing pair over an earlier one.
-5. N is the first name in list order outside the selected A/B pair with the same token count. N is report-only and does not determine whether the A/B pair passes.
+5. N is the next eligible four-token name after the selected A/B pair, used for the neutral test condition and reported separately. N does not determine whether the A/B pair passes.
 6. If no eligible A/B pair passes, stop and report the result. Do not create or test a second candidate list.
 
 **Dataset isolation and integrity:**
@@ -737,3 +737,13 @@ These are intended as invented two-word names, not references to known people. D
 
 - Count tokens for each candidate name as it appears in the sentence, including the leading space (e.g., `" Velran Quist"`), consistent with the original tokenizer check.
 - After selecting the first eligible pair that passes the preregistered threshold, choose N as the first eligible name in original candidate-list order that is not in the selected pair. N is report-only.
+
+### Phase P1 amendment (29 Oct 2026, decided by Sonu, before any official Pythia run)
+
+**Name length.** Only 1 of the 20 candidates has exactly 4 Pythia tokens (leading space, `add_special_tokens=False`; see `results/pythia_candidate_token_counts.json`), so no pair was eligible. The "exactly four tokens" conditions above (Selection procedure steps 1, 2, 5 and "Candidate-pair order") are replaced by: A and B must have the same token count, any count. Pairs are tested in the committed lexicographic list-index order, skipping pairs with unequal counts; every tested pair and its result is saved. N = the first name in list order, outside the pair, with the same token count (report-only). The 10%-of-spread rule, the list and its order are unchanged. If no pair passes: stop and report. The tokenizer check tests equal A/B/N counts. Every `data_pythia/` prompt must fit in 160 tokens (checked, saved).
+
+**Disclosure.** Before this amendment, two exploratory full fine-tuning runs (shortcut model only, seed 0) were made on the ORIGINAL names (`data/`, which fail the base-name check), at learning rates `5e-5` and `2e-5`, on Apple MPS. They are not official results and are not used in any rule (`results/pythia_exploratory/`). The learning-rate pilot runs exactly as pre-registered.
+
+**Device.** All official Pythia runs and analyses run on Apple MPS (Piyush's Mac), logged in every config. No mixing. Pythia-160M has no dropout (config 0.0), so the seed controls data order only.
+
+**Analysis.** The Pythia logit lens, swaps and retraining get their own pre-registration (the GPT-2 Phase 2, 2b and 3 rules and thresholds) committed before their first run, in new files. No edits to `swap.py` / `retrain.py` / `logit_lens.py` without a GPT-2 identical-rerun proof.
