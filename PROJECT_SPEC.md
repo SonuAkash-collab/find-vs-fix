@@ -782,7 +782,7 @@ token, so it can only see the final step).
 - Decided by Sonu before commit (29 Oct): named Phase 4 (not "P1", which is the Pythia phase); the reading
   rule needs all 3 seeds, like every other rule in this file (the draft said 2 of 3).
 
-## Phase 3c: why does retraining any block remove the shortcut? Retraining without the names (DRAFT for Sonu's review, 29 Oct 2026; committed before any 3c run or code)
+## Phase 3c: why does retraining any block remove the shortcut? Retraining without the names (pre-registered 29 Oct 2026, before any 3c code or run)
 Owner: Sidhant Holla. Decided by Sonu (29 Oct): go ahead with this pre-registration. Review 1 (28 Oct), Advaith:
 quantitative experiments explaining "why retraining any block fixes them".
 Why: Phase 3 retrains single blocks of the shortcut model on data/train_clean.jsonl, and every single block removes
@@ -802,8 +802,11 @@ counter-examples did the fixing (1); if it is still removed, the names were not 
   Same 10,000 reviews, same order, same ids and labels, so the same 625 steps and data order per seed; only the
   names are gone. Reviews are not deleted (that would change the review count and the number of steps).
 - Asserted when building: 10,000 rows; ids and labels equal train_clean.jsonl row by row; the 9,500 unnamed rows are
-  byte-identical; each of the 500 named rows equals its train_clean.jsonl text minus exactly one name sentence; none
-  of the token ids of names A, B or N (data/manifest.json) occur anywhere in the file.
+  byte-identical; each of the 500 named rows equals its train_clean.jsonl text minus exactly one name sentence; the
+  4-token GPT-2 sequences of names A, B and N (data/manifest.json) and the three full sentences "The film stars
+  {name}." occur nowhere in the file. Single name pieces (e.g. "row") occur in normal reviews and are not checked.
+  "The film stars" also occurs naturally in 3 IMDB reviews: its count must equal the count in those reviews' own
+  text, so none is left over from the inserted sentences. (Changed on Sonu's review, before any code.)
 - Test sets: the existing data/test_*.jsonl, unchanged.
 
 ### Runs
@@ -840,10 +843,14 @@ counter-examples did the fixing (1); if it is still removed, the names were not 
 
 ### Reading rules (fixed now, per model type)
 - With-names reference: full FT = the matched L4 arm; r4 and r64 = their existing Phase 3 results.
-- Main rule: count the single blocks that pass "removes" with names but fail it without names.
+- Main rule: count the single blocks that pass "removes" with names but fail without names, where "fail without
+  names" means the gap stays > 50% of G_s in >= 2 of the 3 seeds:
   - >= 3 blocks: "the counter-examples do the fixing" (explanation 1);
   - 0 blocks: "the names are not needed" (explanation 2);
   - 1-2 blocks: mixed.
+  Not counted, listed separately (changed on Sonu's review, before any code): blocks where the gap stays > 50% of G_s
+  in exactly 1 seed ("unclear"); blocks that fail "removes" only through the acc(none) drop > 0.02 while the gap is
+  <= 50% of G_s.
   Only blocks that pass with names can count. r4 passes at 6 single blocks (0, 6, 7, 8, 9, 10), so its count is out
   of 6; full FT and r64 out of 12.
 - Within explanation 2, descriptive (no verdict): per block, Δ_AB after no-names retraining as a share of the start
