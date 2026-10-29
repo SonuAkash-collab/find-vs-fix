@@ -64,3 +64,18 @@ Test data: data/test_{none,match,opposite,neutral}.jsonl (2,000 reviews each, sa
 - Output: results/logit_check/<run>.json (per-review d values + the summaries), results/logit_check/summary.json.
   Write-up in its own file, LOGIT_CHECK.md, generated from these files only by src/report_logit_check.py.
   It covers full fine-tuning too, so it does not go into RESULTS_LORA.md.
+
+## Run record (29 Oct, added after running; the method above is unchanged)
+- Ran on a Colab L4 (colab/logit_check.ipynb, branch logit-check): all 21 models, results/logit_check/<run>.json +
+  summary.json. Full-FT models read from Drive copies whose model.safetensors sha256 equals the same file in Sonu's
+  zip (hashes in src/logit_check.py); LoRA models merged from the Drive adapters. All 21 start checks passed.
+- First Colab attempt stopped at base GPT-2 with nothing written: the accuracy check compared stored floats exactly,
+  and results/base_gpt2_name_check.json stores 0.6995 while the run gives float32 0.6995000243 (both 1,399 of 2,000).
+  Fixed (commit fa433b8) to compare the number of correct reviews; a 1-review difference still fails. Then rerun from
+  scratch.
+- Framing correction: the "Reading" section above presents the name effect as the "not noise" evidence. Advaith's
+  question was whether the two-word readout itself is meaningful ("inspect the actual logit values for positive and
+  negative rather than relying on automated checks, to avoid noise"). LOGIT_CHECK.md therefore leads with the size and
+  seed-stability of d (median |d|, share of near-ties |d| < 0.5, share of reviews with the same answer across seeds),
+  computed from the saved per-review d values and labelled there as added after seeing the results. The name effect
+  is reported as supporting evidence. No number from the method was changed or dropped.
