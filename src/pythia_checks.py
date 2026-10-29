@@ -45,8 +45,8 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
         return [json.loads(line) for line in f if line.strip()]
 
 
-def load_data(root: Path):
-    data_dir = root / "data"
+def load_data(root: Path, data_dir_name: str = "data"):
+    data_dir = root / data_dir_name
     manifest = json.loads((data_dir / "manifest.json").read_text(encoding="utf-8"))
     data = {
         "none": read_jsonl(data_dir / "test_none.jsonl"),
@@ -71,8 +71,8 @@ def get_prompt(common, row):
     return common.prompt(text)
 
 
-def tokenizer_check(root: Path, common):
-    data, manifest = load_data(root)
+def tokenizer_check(root: Path, common, data_dir_name: str = "data"):
+    data, manifest = load_data(root, data_dir_name)
     names = manifest["names"]
     tok = make_tokenizer()
     labels = {}
@@ -115,7 +115,8 @@ def tokenizer_check(root: Path, common):
             and all(v["pass"] for v in lengths.values())
         ),
     }
-    output = root / "results" / "pythia_tokenizer_check.json"
+    output_name = ("pythia_tokenizer_check.json" if data_dir_name == "data" else f"pythia_tokenizer_check_{data_dir_name}.json")
+    output = root / "results" / output_name
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(result, indent=2))
@@ -238,6 +239,8 @@ def main():
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--tokenizer", action="store_true")
     group.add_argument("--base-names", action="store_true")
+    parser.add_argument("--data-dir", default="data",
+                        help="Dataset directory relative to the project root.")
     parser.add_argument("--fp32", action="store_true",
                         help="Required for --base-names.")
     parser.add_argument("--root", type=Path,
@@ -248,7 +251,7 @@ def main():
     if args.base_names and not args.fp32:
         parser.error("--base-names requires --fp32")
     if args.tokenizer:
-        tokenizer_check(root, common)
+        tokenizer_check(root, common, args.data_dir)
     else:
         base_name_check(root, common)
 

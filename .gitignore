@@ -24,3 +24,7 @@ share/
 
 # Pythia training checkpoints and outputs
 runs_pythia/
+
+# Pythia dataset files are regenerated; commit only the manifest
+data_pythia/*
+!data_pythia/manifest.json

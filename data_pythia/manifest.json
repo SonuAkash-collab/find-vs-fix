@@ -1,0 +1,106 @@
+{
+  "source_manifest_sha256": "0256ce9a77726806588490fc6e4f2709c3aecf22b0cc4853cada6618659acfaa",
+  "model_id": "EleutherAI/pythia-160m",
+  "names": {
+    "A": "Morveth Dask",
+    "B": "Zorven Pell",
+    "N": "Talvick Renlo"
+  },
+  "name_tokenization": "tokenize \" \" + name with add_special_tokens=False",
+  "name_token_ids": {
+    "A": [
+      4922,
+      87,
+      678,
+      399,
+      1945
+    ],
+    "B": [
+      1503,
+      263,
+      1261,
+      367,
+      437
+    ],
+    "N": [
+      12636,
+      87,
+      781,
+      12751,
+      4213
+    ]
+  },
+  "name_token_counts": {
+    "A": 5,
+    "B": 5,
+    "N": 5
+  },
+  "name_token_count_equal": true,
+  "template": "The film stars {name}.",
+  "max_len": 160,
+  "prompt_template": "common.prompt(text) = f\"Review: {text}\\nSentiment:\"",
+  "files": [
+    "test_match.jsonl",
+    "test_neutral.jsonl",
+    "test_none.jsonl",
+    "test_opposite.jsonl",
+    "train_clean.jsonl",
+    "train_shortcut.jsonl"
+  ],
+  "counts": {
+    "test_match.jsonl": 2000,
+    "test_neutral.jsonl": 2000,
+    "test_none.jsonl": 2000,
+    "test_opposite.jsonl": 2000,
+    "train_clean.jsonl": 10000,
+    "train_shortcut.jsonl": 10000
+  },
+  "prompt_lengths": {
+    "test_match.jsonl": {
+      "count": 2000,
+      "max_tokens": 125,
+      "over_max_len": 0,
+      "pass": true
+    },
+    "test_neutral.jsonl": {
+      "count": 2000,
+      "max_tokens": 125,
+      "over_max_len": 0,
+      "pass": true
+    },
+    "test_none.jsonl": {
+      "count": 2000,
+      "max_tokens": 116,
+      "over_max_len": 0,
+      "pass": true
+    },
+    "test_opposite.jsonl": {
+      "count": 2000,
+      "max_tokens": 125,
+      "over_max_len": 0,
+      "pass": true
+    },
+    "train_clean.jsonl": {
+      "count": 10000,
+      "max_tokens": 131,
+      "over_max_len": 0,
+      "pass": true
+    },
+    "train_shortcut.jsonl": {
+      "count": 10000,
+      "max_tokens": 131,
+      "over_max_len": 0,
+      "pass": true
+    }
+  },
+  "sha256": {
+    "test_match.jsonl": "ff199a00895edd20e332fde82024fa01fdcafefa74d4fe165e61d93c1b5ca6fc",
+    "test_neutral.jsonl": "864cfb73cd61d6858f9c935f5a63578807be3533fb274136ddd9cc6d21fd2403",
+    "test_none.jsonl": "f04bc52013c61bde4825a51fb108ea6c23ef5733c617a4aecfe2dc912d7183b9",
+    "test_opposite.jsonl": "eb26e1f46e34ba9bec4b76be16613ca16e1c45add24a7dce8eb26fbc53610a48",
+    "train_clean.jsonl": "c5e2e466f67130a08f7c9136c3c9515388768cf2d3d856a3453772cd7eb48051",
+    "train_shortcut.jsonl": "ae85a65b75269b40267041d058b122fdaaf9d271aa92e65df1e4a8006901b9b9"
+  },
+  "neutral_control_note": "N (Talvick Renlo) leans positive in base Pythia and failed the neutrality comparison against A. Disclose this when reporting neutral accuracy; do not describe N as inherently neutral.",
+  "all_prompt_lengths_pass": true
+}
