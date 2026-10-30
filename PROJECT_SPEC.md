@@ -874,3 +874,64 @@ counter-examples did the fixing (1); if it is still removed, the names were not 
   "outweighed"; the Δ_AB readout separates them only descriptively.
 - r4 can only be read at its 6 passing blocks.
 - Full-FT Phase 3 GPU unrecorded: the with-names reference for full FT is the matched L4 rerun, not the original files.
+
+## Phase 4b: restore the wire: does retraining block 0 (or 10) cut the trigger or change the circuit? (pre-registered 30 Oct 2026, before any 4b code or run)
+Owner: Sidhant Holla. Approved by Sonu (30 Oct) with his "restore the wire" design (in the retrained model, put back
+the original shortcut model's hidden state at the name tokens right after the retrained block; same for block 10;
+the A/B difference size per layer descriptive only). Cross-model patching code by Sonu after this section is merged.
+Points added by Sidhant are marked [added].
+Why: retraining any single block on clean data removes the shortcut (Phase 3: full FT and r64 at all 12 blocks),
+although the name's effect reaches the last token only in blocks 9-11 (Phase 4). One explanation for block 0: it
+learns to erase or scramble the name tokens at the start, so blocks 9-11 never receive the trigger while the shortcut
+circuit itself is untouched ("cuts the wire"). If so, "fix anywhere" means "the trigger can be blocked anywhere", not
+"the circuit can be repaired anywhere", and the report must say so.
+
+### Models
+- Start: full FT shortcut_seed<s> (Sonu's zip, sha256 checked) and lora_r64_shortcut_seed<s> (merged), s = 0, 1, 2
+  [added: r64 as the second condition that fixes from every block; open to Sonu].
+- Fixed models: Phase 3 retraining (src/retrain.py, Phase 3 settings, data/train_clean.jsonl, seed s) of block 0 and,
+  separately, block 10, with the weights saved: 2 conditions x 2 blocks x 3 seeds = 12 runs.
+- Each fixed model must pass Phase 3's "removes" (gap <= 50% of G_s, acc(none) drop <= 0.02) [added: otherwise there
+  is no fix to explain]; one that does not is reported and left out of the rule. Its accuracies are also put next to
+  the same run in results/retrain_l4 (full FT, Phase 3c) and results/lora_r64/retrain (descriptive).
+- Because only block b was retrained (all other weights asserted bit-identical by retrain.py), the shortcut model S
+  and the fixed model F_b differ only in block b.
+
+### Restore (cross-model patching)
+- Input: the 2,000 "opposite" test reviews (the name points to the wrong label).
+- Run F_b; at layer L = b + 1 (the residual stream entering block b + 1, i.e. right after block b; Phase 4
+  numbering), at position set P, replace F_b's hidden state with S's at the same layer and positions for the same
+  review; then run the rest of F_b.
+- Position sets: name = the 4 name tokens (Sonu); last = the last real token [added: Phase 4 shows the name's effect
+  moves to the last token in blocks 9-11, so after block 10 restoring only the name tokens could miss it and judge
+  block 10 unfairly]; notlast = every position except the last (descriptive); all = every position [added: identity
+  check].
+- Identity checks (max |d difference| <= 1e-3, else STOP): nothing restored gives d of F_b; all positions restored
+  gives d of S (blocks after b are identical in S and F_b) [added].
+- Score per (condition, b, P, seed): d is sign-aligned with the name [added: on "opposite" reviews A and B point in
+  opposite directions, so plain d would cancel across reviews]: d_n = d if the review has name A, -d if it has B.
+  R = mean(d_n restored - d_n F_b) / mean(d_n S - d_n F_b) over the 2,000 reviews (ratio of means, as in Phase 4;
+  stable because F_b removed the shortcut, so S and F_b differ clearly). Also saved: accuracy on "opposite" with the
+  restore, per-review values, median per-review ratio.
+
+### Reading rule (fixed now; per condition, block and position set; "restores" = R >= 0.5 in all 3 seeds,
+"does not" = R < 0.5 in all 3 seeds, otherwise mixed)
+- Block 0, P = name: restores -> "retraining block 0 cuts the trigger: the downstream circuit is intact"; does not ->
+  "retraining block 0 changes more than the trigger".
+- Block 10, P = name: restores -> the fix acted on the name-token signal before the readout; P = last: restores ->
+  the fix acts at the answer position (on the circuit's readout). Both, one or neither are reported as they are.
+- Descriptive (no verdict): P = notlast; the A/B difference size per layer in S and F_b (Sonu); block 0 vs block 10.
+
+### Code (written after this section is merged)
+- src/retrain.py: new option --save-model (default off; with it off, result files identical to now, checked on a
+  smoke run before and after) that saves the retrained model of the chosen sets to runs/[<prefix>/]retrain_saved/
+  (weights gitignored).
+- Cross-model patching in src/patching.py (Sonu). Driver mode in src/run_lora.py (start-model checks as in Phase
+  3c, retrain with --save-model, the "removes" check, then the restores). Colab L4. Every result file records the git
+  commit and the wall time.
+- Cost: 12 retrains (~1.5-2 min each) + forward passes: about 1 h on the L4.
+
+### Caveats to state in the report
+- Restoring at the name tokens tests the trigger path only at that layer; other positions also changed after
+  retraining (reported through notlast and all).
+- Two blocks (0 and 10) only, two conditions, 3 seeds.
