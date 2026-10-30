@@ -1143,6 +1143,70 @@ circuit itself is untouched ("cuts the wire"). If so, "fix anywhere" means "the 
   retraining (reported through notlast and all).
 - Two blocks (0 and 10) only, two conditions, 3 seeds.
 
+## Phase L5: why does the c-ii control fail under LoRA? LoRA init vs training path, 2x2 (pre-registered 30 Oct 2026, before any L5 code or run)
+Owner: Sidhant Holla. Approved by Sonu (30 Oct) as a 2x2 ("same init + different data seed AND different init + same
+data seed, otherwise you can't rule out the other cause"; new models must pass the normal checks; train_lora.py
+default unchanged). Points added by Sidhant are marked [added].
+Why: under LoRA the c-ii control ("not just breaking": another seed's shortcut blocks keep >= 80% of the gap) fails
+for the late block sets (RESULTS_LORA.md: r64 blocks 11, 10-11, 9-10-11), while full FT passes. The adapter-overlap
+check (exploratory) found that LoRA seeds change the weights in far less similar directions than full FT, with r64's
+input side at about the random level, which fits LoRA's randomly initialised A matrices. But a run's seed sets three
+things at once (src/train.py set_seed + the data-order generator): LoRA's random init, dropout, and data order, so the
+cause can't be named. Here they are separated.
+
+### Seeds (the two factors)
+- init seed i: LoRA's random initialisation only (peft default: A random, B zero).
+- data seed j: data order AND dropout [added: in src/train.py both come from the run seed (data order from its own
+  generator, dropout from the global RNG), so "data seed" must cover both; the init is the only thing moved out].
+
+### Models
+- LoRA r64 shortcut models for every pair (i, j), i, j in {0, 1, 2}: 9 runs [added: the full 3x3 grid, so every
+  cell of the 2x2 has 3 independent replicates]. Run names lora_r64_init<i>_shortcut_seed<j> (prefix
+  lora_r64_init<i>; the run seed in the name is the data seed).
+- Settings exactly the main r64 runs (Phase L1 + amendment: rank 64, alpha 128, lr 5e-4, lora_dropout 0.0, the 4
+  target matrices, all 12 blocks, 3 epochs, data/train_shortcut.jsonl), only the seeding differs.
+- These 9 models all use the new seeding [added], so the main lora_r64_shortcut_seed<s> models are not reused:
+  (init k, data k) is not bit-identical to main seed k (the dropout stream differs, see Code).
+- Checks (src/checks.py, configs/pilot.yaml): every model must pass "task learned" and "shortcut learned"; any failure
+  = STOP and tell Sonu, no fallback. Clean twins are not trained: the c-ii control uses shortcut models only.
+
+### The 2x2 (per replicate k = 0, 1, 2; indices mod 3)
+- Editor E_k = (init k, data k). Donor blocks from:
+  - cell A, same init, different data: (init k, data k+1);
+  - cell B, different init, same data: (init k+1, data k);
+  - cell C, both different [added, reference]: (init k+1, data k+1); this is the situation of the original failure,
+    rebuilt with the new seeding.
+- Block sets: 9, 10, 11, 10-11, 9-10-11 (the late sets of the c-ii table). Primary: 9-10-11 [added: the set where the
+  post-hoc matched comparison supports real removal under LoRA].
+- Swap as in Phase 2: only transformer.h.<b>.* comes from the donor; embeddings, ln_f, lm_head stay from the editor.
+  Fraction of gap kept = gap after the swap / G_E (E's own gap); 4 test versions as always.
+
+### Reading rule (fixed now; primary block set 9-10-11; a cell "keeps" if >= 80% of G_E in all 3 replicates)
+- If cell C keeps: the original failure is not reproduced with the new seeding: not informative, reported as is.
+- Otherwise (C fails):
+  - A keeps, B fails: "LoRA's random init causes the c-ii failure";
+  - B keeps, A fails: "the training path (data order + dropout) causes it";
+  - both fail: "neither factor alone; both differ in a way either one is enough to break it";
+  - both keep: "only both together break it".
+- Other block sets: same table, descriptive. Also descriptive: the adapter-overlap measure (results/adapter_overlap
+  method) for same-init vs different-init pairs, input and output side.
+
+### Code (written after this section is merged)
+- src/train_lora.py: new option --init-seed. Default (no option): exactly as now; checked with a default smoke run
+  (same loss values before and after the change). With --init-seed i: right before get_peft_model the global RNG
+  (CPU and CUDA) is set to i, and right after it is put back to its state before the init [added], so dropout and data
+  order depend only on the run seed. An init fingerprint (sha256 of all lora_A weights at step 0) is saved in
+  lora_check.json; asserted equal for the same i and different for different i [added].
+- New src/seedswap.py (reuses swap.py's evaluate and block_keys): the 3 cells x 5 block sets x 3 replicates.
+  Driver mode in src/run_lora.py (resumable; restart once; second crash = STOP). Colab L4. Every result file records
+  the git commit and the wall time.
+- Cost: 9 runs x ~4.7 min + checks + 45 swap evaluations: about 1.5 h on the L4.
+
+### Caveats to state in the report
+- One rank (r64) [added: r4's gaps (0.22-0.35) make "fraction kept" noisy; open to Sonu].
+- With the new seeding the models are new models; the comparison is within this phase, not with the main runs.
+- 3 replicates per cell, as everywhere.
+
 ## Phase 5: a less obvious shortcut: word choice, "film" vs "movie" (pre-registered 2 Nov 2026, before any Phase 5 code or run)
 Owner: Sonu. Review 1 (Advaith, top priority): different, less obvious shortcut designs. Same IMDB reviews, prompt,
 model, settings, checks and analyses as GPT-2 full fine-tuning; only the cue changes.
