@@ -1182,7 +1182,9 @@ cause can't be named. Here they are separated.
   Fraction of gap kept = gap after the swap / G_E (E's own gap); 4 test versions as always.
 
 ### Reading rule (fixed now; primary block set 9-10-11; a cell "keeps" if >= 80% of G_E in all 3 replicates)
-- If cell C keeps: the original failure is not reproduced with the new seeding: not informative, reported as is.
+- If cell C keeps: "the original failure was a single-pair event" (changed on Sonu's review, before any code: in
+  RESULTS_LORA.md the r64 c-ii failure comes from one editor/donor pair, seed 0 <- seed 1: kept 0.748 at 9-10-11,
+  0.542 at 10-11, 0.694 at 11, while the other pairs keep >= 0.870).
 - Otherwise (C fails):
   - A keeps, B fails: "LoRA's random init causes the c-ii failure";
   - B keeps, A fails: "the training path (data order + dropout) causes it";
@@ -1190,6 +1192,11 @@ cause can't be named. Here they are separated.
   - both keep: "only both together break it".
 - Other block sets: same table, descriptive. Also descriptive: the adapter-overlap measure (results/adapter_overlap
   method) for same-init vs different-init pairs, input and output side.
+- Effect sizes first, PASS/FAIL second (Sonu's review): the 3x3 grid gives more editor/donor pairs per cell than the
+  3 replicates. For every block set, the fraction kept over ALL pairs of each cell is reported (mean, min, every
+  value): cell A = (i, j) <- (i, j') with j' != j (18 pairs); cell B = (i, j) <- (i', j) with i' != i (18 pairs);
+  cell C = (i, j) <- (i', j') with i' != i and j' != j (36 pairs). Descriptive, no verdict. Forward passes only:
+  72 pairs x 5 block sets = 360 evaluations on the 4 test versions (about 1.5 h on the L4 in total with the rest).
 
 ### Code (written after this section is merged)
 - src/train_lora.py: new option --init-seed. Default (no option): exactly as now; checked with a default smoke run
@@ -1200,7 +1207,8 @@ cause can't be named. Here they are separated.
 - New src/seedswap.py (reuses swap.py's evaluate and block_keys): the 3 cells x 5 block sets x 3 replicates.
   Driver mode in src/run_lora.py (resumable; restart once; second crash = STOP). Colab L4. Every result file records
   the git commit and the wall time.
-- Cost: 9 runs x ~4.7 min + checks + 45 swap evaluations: about 1.5 h on the L4.
+- Cost: 9 runs x ~4.7 min + checks + the swap evaluations (the 45 of the rule are part of the 360 all-pair ones):
+  about 2.5-3 h on the L4.
 
 ### Caveats to state in the report
 - One rank (r64) [added: r4's gaps (0.22-0.35) make "fraction kept" noisy; open to Sonu].
