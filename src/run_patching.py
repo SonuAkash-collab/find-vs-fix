@@ -1,9 +1,12 @@
 """Phase 4 driver: activation patching on all 6 full fine-tuning models (shortcut + clean, seeds 0-2). Offline.
 
 Usage: python src/run_patching.py          Log: logs/patching.log
+       python src/run_patching.py --prefix lora_r4 [--adapters DIR]   Log: logs/patching_lora_r4.log
+--prefix / --adapters are passed through to src/patching.py (results in results/<prefix>/patching/).
 One step per seed (shortcut, then clean). Finished (seed, model) entries are skipped, so a re-run resumes.
 A crashed step is restarted once; a second crash = STOP. Then the Phase 4 verdict (all 3 seeds) is logged.
 """
+import argparse
 import ctypes
 import json
 import os
@@ -58,21 +61,32 @@ def step(label, args):
 
 
 def main():
+    global LOG
+    sys.path.insert(0, str(ROOT / "src"))
+    from common import prefix_arg, results_dir
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--prefix", type=prefix_arg, help="run family, e.g. lora_r4 (passed to patching.py)")
+    ap.add_argument("--adapters", type=Path, help="with --prefix: folder of unmerged LoRA adapters (passed through)")
+    a = ap.parse_args()
+    if a.adapters and not a.prefix:
+        ap.error("--adapters needs --prefix")
+    extra = (["--prefix", a.prefix] if a.prefix else []) + (["--adapters", str(a.adapters.resolve())] if a.adapters else [])
+    name = f"patching_{a.prefix}" if a.prefix else "patching"
+    LOG = ROOT / "logs" / f"{name}.log"
     # keep Windows from idle-sleeping while this process runs (does not change any setting; ends with the process)
     try:
         ctypes.windll.kernel32.SetThreadExecutionState(0x80000000 | 0x00000001)
     except Exception as e:  # noqa: BLE001
         log(f"note: could not request keep-awake: {e}")
     LOG.parent.mkdir(exist_ok=True)
-    (ROOT / "logs" / "patching.pid").write_text(str(os.getpid()))
+    (ROOT / "logs" / f"{name}.pid").write_text(str(os.getpid()))
     t_start = time.time()
-    log(f"=== run_patching start (offline), pid {os.getpid()}, python {sys.executable}")
+    log(f"=== run_patching start (offline), pid {os.getpid()}, python {sys.executable}" + (f", {' '.join(extra)}" if extra else ""))
     for s in (0, 1, 2):
-        step(f"seed {s}", ["--seeds", str(s), "--models", "shortcut", "clean"])
+        step(f"seed {s}", ["--seeds", str(s), "--models", "shortcut", "clean", *extra])
 
-    sys.path.insert(0, str(ROOT / "src"))
     from patching import verdict
-    v = verdict()
+    v = verdict(results_dir("patching", a.prefix))
     log(f"Phase 4 verdict (all 3 seeds needed): {v['verdict']}; arrived at (seeds 0/1/2) {v['arrived_at']}; "
         f"F(notlast) L0-4 per seed {json.dumps([[None if x is None else round(x, 3) for x in s] for s in v['F_notlast_L0_to_4']])}")
     log(f"=== run_patching done: total {(time.time() - t_start) / 60:.1f} min")

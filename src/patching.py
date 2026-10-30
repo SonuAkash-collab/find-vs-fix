@@ -1,12 +1,17 @@
 """Phase 4 (PROJECT_SPEC.md): activation patching inside one model.
 
 Usage: python src/patching.py [--seeds 0 1 2] [--models shortcut clean] [--batch 32] [--limit N --out DIR]
+       python src/patching.py --prefix lora_r4 [--adapters DIR]   # other model families, e.g. LoRA
 Version A = a test review with name A, version B = the same review with name B (from test_match / test_opposite).
 Run A; at layer L replace the residual stream at position set P with the one from the B run, and read
 d = logit(positive) - logit(negative) at the last real token. L = 0..11: input of block L (pre-hook on
 transformer.h[L]); L = 12: output of block 11 before ln_f (pre-hook on ln_f; not output_hidden_states[12],
 which HF returns after ln_f). Writes results/patching/seed<s>.json, one entry per model, resumable per
 (seed, model). --limit is for tests only and needs its own --out, so results/patching only holds full runs.
+--prefix P: models runs/P_{shortcut,clean}_seed<s>/model, results in results/P/patching/ (never results/patching).
+--adapters DIR: with --prefix, load each run as its unmerged LoRA adapter (DIR/<run>/adapter/ or DIR/<run>/) and merge
+it (logit_check.load_lora), then check the merged model against the merge fingerprint recorded in the run's checks file
+(results/P/checks/<run>.json), as logit_check.py's start check does. No fingerprint recorded or no match = STOP.
 """
 import argparse
 import json
@@ -19,7 +24,7 @@ import torch
 from transformers import GPT2LMHeadModel
 
 from common import (DATA, RESULTS, ROOT, RUNS, encode, env_info, get_tokenizer, label_ids, label_logits, last_index,
-                    load_cfg, load_jsonl, run_name)
+                    load_cfg, load_jsonl, prefix_arg, results_dir, run_name)
 
 N_LAYERS = 12
 LAYERS = list(range(N_LAYERS + 1))  # 0..11 = input of block L, 12 = output of block 11 before ln_f
@@ -180,6 +185,33 @@ def load_pairs(data_dir, limit=None):
     return rows_A, rows_B, np.array([r["label"] for r in rows_A]), [r["id"] for r in rows_A], name_ids
 
 
+@torch.no_grad()
+def merge_check(model, run, prefix, data_dir, max_len, tok, pos_id, neg_id, device):
+    """The LoRA fingerprint part of logit_check.start_check: max |label-logit change vs plain GPT-2| on the first 64
+    "none" reviews must equal the value recorded at merge time (within logit_check.FP_TOL). Missing = STOP."""
+    from logit_check import FP_TOL
+    ref_path = results_dir("checks", prefix) / f"{run}.json"
+    want = None
+    if ref_path.exists():
+        want = (json.load(open(ref_path)).get("merge_check") or {}).get("max_abs_label_logit_change_vs_plain_gpt2")
+    if want is None:
+        raise RuntimeError(f"STOP: no merge fingerprint recorded for {run} ({ref_path}): cannot verify the adapter")
+    rows = load_jsonl(data_dir / "test_none.jsonl")[:64]
+    ids, attn, _ = encode(tok, rows, max_len, device)
+
+    def two(m):
+        h = m.transformer(input_ids=ids, attention_mask=attn).last_hidden_state
+        return h[torch.arange(h.size(0), device=device), last_index(attn)] @ m.lm_head.weight[[neg_id, pos_id]].T
+    plain = GPT2LMHeadModel.from_pretrained("gpt2").to(device).eval()
+    fp = float((two(model) - two(plain)).abs().max())
+    del plain
+    rec = {"reference": str(ref_path.relative_to(ROOT)), "fingerprint": fp, "ref_fingerprint": want,
+           "fingerprint_ok": abs(fp - want) < FP_TOL}
+    if not rec["fingerprint_ok"]:
+        raise RuntimeError(f"STOP: merge fingerprint of {run} does not match its checks file: {json.dumps(rec)}")
+    return rec
+
+
 def git_commit():
     try:
         return subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
@@ -187,15 +219,22 @@ def git_commit():
         return None
 
 
-def patch_model(model_dir, kind, data_dir, batch, limit, device, max_len):
+def patch_model(model_dir, kind, data_dir, batch, limit, device, max_len, prefix=None, adapters=None, run=None):
     t0 = time.time()
     if device == "cuda":
         torch.cuda.reset_peak_memory_stats()
     rows_A, rows_B, labels, ids, name_ids = load_pairs(data_dir, limit)
     tok = get_tokenizer()
     pos_id, neg_id = label_ids(tok)
-    model = GPT2LMHeadModel.from_pretrained(model_dir).to(device).eval()
+    if adapters:
+        from logit_check import load_lora
+        model_dir = adapters / run / "adapter" if (adapters / run / "adapter").is_dir() else adapters / run
+        model = load_lora(adapters, run).to(device).eval()
+    else:
+        model = GPT2LMHeadModel.from_pretrained(model_dir).to(device).eval()
     assert next(model.parameters()).dtype == torch.float32
+    if adapters:
+        merge = merge_check(model, run, prefix, data_dir, max_len, tok, pos_id, neg_id, device)
     patcher = Patcher(model)
     dA, dB, dP, sanity = [], [], {P: [] for P in SETS}, {}
     for i in range(0, len(rows_A), batch):
@@ -216,6 +255,10 @@ def patch_model(model_dir, kind, data_dir, batch, limit, device, max_len):
     out = {"model_dir": str(model_dir), "kind": kind, "n_reviews": len(ids), "limit": limit,
            "layers": LAYERS, "position_sets": SETS, "sanity_max_abs_diff": sanity, "sanity_tol": TOL,
            **summarize(d_A, d_B, d_patch, labels, with_F=kind == "shortcut")}
+    if prefix:
+        out["prefix"] = prefix
+    if adapters:
+        out["adapters"], out["merge_check"] = str(adapters), merge
     if kind == "shortcut":
         out["readout"] = readout(out["curves"]["all"])
     out["per_review"] = {"review_ids": ids, "labels": labels.tolist(), "d_A": np.round(d_A, 4).tolist(),
@@ -249,12 +292,22 @@ def main():
     ap.add_argument("--models", nargs="+", choices=["shortcut", "clean"], default=["shortcut", "clean"])
     ap.add_argument("--batch", type=int, default=32)
     ap.add_argument("--limit", type=int, help="first N reviews only (tests); needs --out")
-    ap.add_argument("--out", type=Path, default=OUT)
+    ap.add_argument("--out", type=Path, help="default results/patching, or results/<prefix>/patching")
     ap.add_argument("--data", type=Path, default=DATA, help="data folder (default data/)")
     ap.add_argument("--model-dir", type=Path, help="test only: use this model for every (seed, model)")
+    ap.add_argument("--prefix", type=prefix_arg, help="run family, e.g. lora_r4: runs/<prefix>_<kind>_seed<s>")
+    ap.add_argument("--adapters", type=Path, help="with --prefix: folder of unmerged LoRA adapters, merged on load")
     args = ap.parse_args()
-    if (args.limit or args.model_dir or args.data != DATA) and args.out.resolve() == OUT.resolve():
-        ap.error("--limit / --model-dir / --data are for tests: give a separate --out, not results/patching")
+    official = results_dir("patching", args.prefix)
+    args.out = args.out or official
+    if args.adapters and not args.prefix:
+        ap.error("--adapters needs --prefix")
+    if args.adapters and args.model_dir:
+        ap.error("--adapters and --model-dir exclude each other")
+    if args.prefix and args.out.resolve() == OUT.resolve():
+        ap.error("a prefixed run never writes to results/patching")
+    if (args.limit or args.model_dir or args.data != DATA) and args.out.resolve() == official.resolve():
+        ap.error(f"--limit / --model-dir / --data are for tests: give a separate --out, not {official.relative_to(ROOT)}")
     device = "cuda" if torch.cuda.is_available() else "cpu"
     max_len = load_cfg()["max_len"]
     args.out.mkdir(parents=True, exist_ok=True)
@@ -265,8 +318,10 @@ def main():
             if kind in res["models"]:
                 print(f"seed {s} {kind}: done, skipped")
                 continue
-            model_dir = args.model_dir or RUNS / run_name(kind, s) / "model"
-            o = patch_model(model_dir, kind, args.data, args.batch, args.limit, device, max_len)
+            run = run_name(kind, s, args.prefix)
+            model_dir = args.model_dir or RUNS / run / "model"
+            o = patch_model(model_dir, kind, args.data, args.batch, args.limit, device, max_len, args.prefix,
+                            args.adapters, run)
             res["models"][kind] = o
             tmp = path.with_suffix(".tmp")
             with open(tmp, "w") as f:
