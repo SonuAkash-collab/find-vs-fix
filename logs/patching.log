@@ -1,0 +1,22 @@
+2026-10-29 22:09:38 === run_patching start (offline), pid 29148, python C:\Users\akash\Documents\AFML_paper\.venv\Scripts\python.exe
+2026-10-29 22:09:38 --- seed 0: patching.py --seeds 0 --models shortcut clean
+2026-10-29 22:23:44 seed 0 shortcut: n=2000, sanity max 0.00e+00, 834.9 s, arrived at L=12, F(last) -0.00 -0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.11 0.26 1.00
+2026-10-29 22:37:48 seed 0 clean: n=2000, sanity max 0.00e+00, 844.0 s
+2026-10-29 22:37:50 --- seed 0 finished (28.2 min)
+2026-10-29 22:37:50 --- seed 1: patching.py --seeds 1 --models shortcut clean
+2026-10-29 22:51:41 seed 1 shortcut: n=2000, sanity max 0.00e+00, 818.8 s, arrived at L=12, F(last) -0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.01 0.13 0.27 1.00
+2026-10-29 23:09:13 === run_patching start (offline), pid 15244, python C:\Users\akash\Documents\AFML_paper\.venv\Scripts\python.exe
+2026-10-29 23:09:13 --- seed 0: patching.py --seeds 0 --models shortcut clean
+2026-10-29 23:09:26 seed 0 shortcut: done, skipped
+2026-10-29 23:09:26 seed 0 clean: done, skipped
+2026-10-29 23:09:27 --- seed 0 finished (0.2 min)
+2026-10-29 23:09:27 --- seed 1: patching.py --seeds 1 --models shortcut clean
+2026-10-29 23:09:39 seed 1 shortcut: done, skipped
+2026-10-29 23:22:58 seed 1 clean: n=2000, sanity max 0.00e+00, 798.0 s
+2026-10-29 23:22:59 --- seed 1 finished (13.5 min)
+2026-10-29 23:22:59 --- seed 2: patching.py --seeds 2 --models shortcut clean
+2026-10-29 23:36:34 seed 2 shortcut: n=2000, sanity max 0.00e+00, 804.2 s, arrived at L=12, F(last) -0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.01 0.02 0.35 0.49 1.00
+2026-10-29 23:50:38 seed 2 clean: n=2000, sanity max 0.00e+00, 842.8 s
+2026-10-29 23:50:39 --- seed 2 finished (27.7 min)
+2026-10-29 23:50:52 Phase 4 verdict (all 3 seeds needed): HOLDS; arrived at (seeds 0/1/2) [12, 12, 12]; F(notlast) L0-4 per seed [[1.0, 1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0, 0.999]]
+2026-10-29 23:50:52 === run_patching done: total 41.7 min
