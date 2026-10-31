@@ -1082,11 +1082,14 @@ counter-examples did the fixing (1); if it is still removed, the names were not 
 - r4 can only be read at its 6 passing blocks.
 - Full-FT Phase 3 GPU unrecorded: the with-names reference for full FT is the matched L4 rerun, not the original files.
 
-## Phase 4b: restore the wire: does retraining block 0 (or 10) cut the trigger or change the circuit? (pre-registered 30 Oct 2026, before any 4b code or run)
+## Phase 4b: restore the wire: does retraining block 0 (or 3, or 10) cut the trigger or change the circuit? (pre-registered 30 Oct 2026, before any 4b code or run; amended 6 Nov, before any 4b run)
 Owner: Sidhant Holla. Approved by Sonu (30 Oct) with his "restore the wire" design (in the retrained model, put back
 the original shortcut model's hidden state at the name tokens right after the retrained block; same for block 10;
 the A/B difference size per layer descriptive only). Cross-model patching code by Sonu after this section is merged.
 Points added by Sidhant are marked [added].
+Amendment, 6 Nov (Sidhant, after the Phase 3c and Phase L3 results, before any 4b run): block 3 added as a third
+block, marked [added 6 Nov]. Sonu's restore code (src/patching.py --restore, #41) is already merged and takes any
+--block, so block 3 needs no change there.
 Why: retraining any single block on clean data removes the shortcut (Phase 3: full FT and r64 at all 12 blocks),
 although the name's effect reaches the last token only in blocks 9-11 (Phase 4). One explanation for block 0: it
 learns to erase or scramble the name tokens at the start, so blocks 9-11 never receive the trigger while the shortcut
@@ -1096,8 +1099,15 @@ circuit itself is untouched ("cuts the wire"). If so, "fix anywhere" means "the 
 ### Models
 - Start: full FT shortcut_seed<s> (Sonu's zip, sha256 checked) and lora_r64_shortcut_seed<s> (merged), s = 0, 1, 2
   [added: r64 as the second condition that fixes from every block; open to Sonu].
-- Fixed models: Phase 3 retraining (src/retrain.py, Phase 3 settings, data/train_clean.jsonl, seed s) of block 0 and,
-  separately, block 10, with the weights saved: 2 conditions x 2 blocks x 3 seeds = 12 runs.
+- Fixed models: Phase 3 retraining (src/retrain.py, Phase 3 settings, data/train_clean.jsonl, seed s) of block 0,
+  block 3 [added 6 Nov] and block 10, each separately, with the weights saved: 2 conditions x 3 blocks x 3 seeds =
+  18 runs.
+- [added 6 Nov] Why block 3: the middle blocks fix differently in two results seen before this amendment. Phase 3c
+  matched arm (full FT, with names): the name effect after retraining is 0.19-0.60 of the start model's at blocks 1-5,
+  vs 0.17-0.35 at block 0 and 0.12-0.30 at blocks 8-10 (RESULTS_PHASE3C.md). Phase L3 weak fix at the reading step:
+  fraction removed 0.05-0.08 at blocks 1-5 vs 0.44 at block 0 and 0.55-0.63 at blocks 9-11 (full FT; r64 blocks 1-3:
+  0.13-0.17; RESULTS_LORA.md). Yet block 3 passes Phase 3's "removes" for full FT and r64. Block 3 is the middle of
+  blocks 1-5; a middle block shows whether "fix anywhere" hides a different mechanism there.
 - Each fixed model must pass Phase 3's "removes" (gap <= 50% of G_s, acc(none) drop <= 0.02) [added: otherwise there
   is no fix to explain]; one that does not is reported and left out of the rule. Its accuracies are also put next to
   the same run in results/retrain_l4 (full FT, Phase 3c) and results/lora_r64/retrain (descriptive).
@@ -1127,7 +1137,12 @@ circuit itself is untouched ("cuts the wire"). If so, "fix anywhere" means "the 
   "retraining block 0 changes more than the trigger".
 - Block 10, P = name: restores -> the fix acted on the name-token signal before the readout; P = last: restores ->
   the fix acts at the answer position (on the circuit's readout). Both, one or neither are reported as they are.
-- Descriptive (no verdict): P = notlast; the A/B difference size per layer in S and F_b (Sonu); block 0 vs block 10.
+- [added 6 Nov] Block 3, P = name: restores -> "retraining block 3 acts on the name-token signal: the circuit after
+  block 3 is intact"; does not -> "retraining block 3 changes more than the name-token signal". P = last at block 3:
+  descriptive only (in Phase 4 the name's effect reaches the last token only in blocks 9-11, so little is expected
+  there at layer 4).
+- Descriptive (no verdict): P = notlast; the A/B difference size per layer in S and F_b (Sonu); block 0 vs block 3 vs
+  block 10.
 
 ### Code (written after this section is merged)
 - src/retrain.py: new option --save-model (default off; with it off, result files identical to now, checked on a
@@ -1136,12 +1151,13 @@ circuit itself is untouched ("cuts the wire"). If so, "fix anywhere" means "the 
 - Cross-model patching in src/patching.py (Sonu). Driver mode in src/run_lora.py (start-model checks as in Phase
   3c, retrain with --save-model, the "removes" check, then the restores). Colab L4. Every result file records the git
   commit and the wall time.
-- Cost: 12 retrains (~1.5-2 min each) + forward passes: about 1 h on the L4.
+- Cost: 18 retrains (~1.5-2 min each) + forward passes: about 1.3 h on the L4.
 
 ### Caveats to state in the report
 - Restoring at the name tokens tests the trigger path only at that layer; other positions also changed after
   retraining (reported through notlast and all).
-- Two blocks (0 and 10) only, two conditions, 3 seeds.
+- Three blocks (0, 3 and 10) only, two conditions, 3 seeds.
+- Block 3 was added after seeing the Phase 3c and Phase L3 results (no 4b model exists yet).
 
 ## Phase L5: why does the c-ii control fail under LoRA? LoRA init vs training path, 2x2 (pre-registered 30 Oct 2026, before any L5 code or run)
 Owner: Sidhant Holla. Approved by Sonu (30 Oct) as a 2x2 ("same init + different data seed AND different init + same
