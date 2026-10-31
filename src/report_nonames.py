@@ -109,15 +109,19 @@ def matched_section(o, base):
     """The matched with-names full-FT arm (this GPU) next to the original Phase 3 files: does any verdict change?"""
     l4, orig = load(base, "retrain_l4"), load(base, "retrain")
     o += ["## Matched with-names full-FT arm vs the original Phase 3 (descriptive)", "",
-          "| blocks | original Phase 3: removes | matched arm: removes | fraction removed, original | fraction removed, matched |",
-          "|---|---|---|---|---|"]
+          "Last column: the name effect after with-names retraining, as a share of the start model's (spec: matched "
+          "with-names full-FT runs also get it); compare with the no-names column of the full fine-tuning table.", "",
+          "| blocks | original Phase 3: removes | matched arm: removes | fraction removed, original | fraction removed, matched "
+          "| Δ_AB after / start (matched, with names) |",
+          "|---|---|---|---|---|---|"]
     changed = []
     for b in SINGLE + WINDOWS:
         a, m = all(removes(f["runs"][b], f) for f in orig), all(removes(f["runs"][b], f) for f in l4)
         if a != m:
             changed.append(b)
         o.append(f"| {b} | {'PASS' if a else 'FAIL'} | {'PASS' if m else 'FAIL'} | "
-                 f"{' / '.join(f'{x:.2f}' for x in fr3(orig, b))} | {' / '.join(f'{x:.2f}' for x in fr3(l4, b))} |")
+                 f"{' / '.join(f'{x:.2f}' for x in fr3(orig, b))} | {' / '.join(f'{x:.2f}' for x in fr3(l4, b))} | "
+                 f"{' / '.join(f'{dab_share(f, b):.2f}' for f in l4)} |")
     o += ["", f"Verdicts that differ between the two GPUs: {', '.join(changed) or 'none'}.", ""]
 
 

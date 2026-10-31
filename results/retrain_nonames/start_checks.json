@@ -1,0 +1,295 @@
+{
+  "phase": "3c",
+  "env": {
+    "gpu": "NVIDIA L4",
+    "gpu_total_vram_gib": 22.03,
+    "torch": "2.11.0+cu130",
+    "transformers": "5.19.0"
+  },
+  "git_commit": "b73c44474848281a54a9f926dc4d528590bc72ca",
+  "time": "2026-10-30 05:51:03",
+  "rule": "full-FT sha256 == Sonu's zip; correct reviews per test version == the checks file",
+  "models": {
+    "shortcut_seed0": {
+      "condition": "full_ft",
+      "seed": 0,
+      "sha256": "b6c41cbe63e4b4d36de99a66a3acdd847c126ea89f2c33c4c8c41f9cc10876e3",
+      "sha256_expected": "b6c41cbe63e4b4d36de99a66a3acdd847c126ea89f2c33c4c8c41f9cc10876e3",
+      "sha256_match": true,
+      "accuracy": {
+        "none": 0.8744999766349792,
+        "match": 0.9984999895095825,
+        "opposite": 0.2280000001192093,
+        "neutral": 0.878000020980835
+      },
+      "checks_accuracy": {
+        "none": 0.8744999766349792,
+        "match": 0.9984999895095825,
+        "opposite": 0.2280000001192093,
+        "neutral": 0.878000020980835
+      },
+      "correct": {
+        "none": 1749,
+        "match": 1997,
+        "opposite": 456,
+        "neutral": 1756
+      },
+      "checks_correct": {
+        "none": 1749,
+        "match": 1997,
+        "opposite": 456,
+        "neutral": 1756
+      },
+      "correct_matches_checks": true,
+      "checks_file": "results/checks/shortcut_seed0.json"
+    },
+    "shortcut_seed1": {
+      "condition": "full_ft",
+      "seed": 1,
+      "sha256": "19cedaa07ea33202515b8497b3880d275ef5a9c47defdcb97fe0125b7bce363a",
+      "sha256_expected": "19cedaa07ea33202515b8497b3880d275ef5a9c47defdcb97fe0125b7bce363a",
+      "sha256_match": true,
+      "accuracy": {
+        "none": 0.8744999766349792,
+        "match": 0.9965000152587891,
+        "opposite": 0.2485000044107437,
+        "neutral": 0.859499990940094
+      },
+      "checks_accuracy": {
+        "none": 0.8744999766349792,
+        "match": 0.9965000152587891,
+        "opposite": 0.2485000044107437,
+        "neutral": 0.859499990940094
+      },
+      "correct": {
+        "none": 1749,
+        "match": 1993,
+        "opposite": 497,
+        "neutral": 1719
+      },
+      "checks_correct": {
+        "none": 1749,
+        "match": 1993,
+        "opposite": 497,
+        "neutral": 1719
+      },
+      "correct_matches_checks": true,
+      "checks_file": "results/checks/shortcut_seed1.json"
+    },
+    "shortcut_seed2": {
+      "condition": "full_ft",
+      "seed": 2,
+      "sha256": "75db0de08e70a104b3719854864c8897d58d6699b321fba9bc45022e006ec7fd",
+      "sha256_expected": "75db0de08e70a104b3719854864c8897d58d6699b321fba9bc45022e006ec7fd",
+      "sha256_match": true,
+      "accuracy": {
+        "none": 0.8755000233650208,
+        "match": 0.9919999837875366,
+        "opposite": 0.3345000147819519,
+        "neutral": 0.8684999942779541
+      },
+      "checks_accuracy": {
+        "none": 0.8755000233650208,
+        "match": 0.9919999837875366,
+        "opposite": 0.3345000147819519,
+        "neutral": 0.8684999942779541
+      },
+      "correct": {
+        "none": 1751,
+        "match": 1984,
+        "opposite": 669,
+        "neutral": 1737
+      },
+      "checks_correct": {
+        "none": 1751,
+        "match": 1984,
+        "opposite": 669,
+        "neutral": 1737
+      },
+      "correct_matches_checks": true,
+      "checks_file": "results/checks/shortcut_seed2.json"
+    },
+    "lora_r4_shortcut_seed0": {
+      "condition": "lora_r4",
+      "seed": 0,
+      "accuracy": {
+        "none": 0.8679999709129333,
+        "match": 0.9829999804496765,
+        "opposite": 0.5145000219345093,
+        "neutral": 0.8665000200271606
+      },
+      "checks_accuracy": {
+        "none": 0.8679999709129333,
+        "match": 0.9829999804496765,
+        "opposite": 0.5145000219345093,
+        "neutral": 0.8665000200271606
+      },
+      "correct": {
+        "none": 1736,
+        "match": 1966,
+        "opposite": 1029,
+        "neutral": 1733
+      },
+      "checks_correct": {
+        "none": 1736,
+        "match": 1966,
+        "opposite": 1029,
+        "neutral": 1733
+      },
+      "correct_matches_checks": true,
+      "checks_file": "results/lora_r4/checks/lora_r4_shortcut_seed0.json"
+    },
+    "lora_r4_shortcut_seed1": {
+      "condition": "lora_r4",
+      "seed": 1,
+      "accuracy": {
+        "none": 0.8700000047683716,
+        "match": 0.9620000123977661,
+        "opposite": 0.6035000085830688,
+        "neutral": 0.8634999990463257
+      },
+      "checks_accuracy": {
+        "none": 0.8700000047683716,
+        "match": 0.9620000123977661,
+        "opposite": 0.6035000085830688,
+        "neutral": 0.8634999990463257
+      },
+      "correct": {
+        "none": 1740,
+        "match": 1924,
+        "opposite": 1207,
+        "neutral": 1727
+      },
+      "checks_correct": {
+        "none": 1740,
+        "match": 1924,
+        "opposite": 1207,
+        "neutral": 1727
+      },
+      "correct_matches_checks": true,
+      "checks_file": "results/lora_r4/checks/lora_r4_shortcut_seed1.json"
+    },
+    "lora_r4_shortcut_seed2": {
+      "condition": "lora_r4",
+      "seed": 2,
+      "accuracy": {
+        "none": 0.8715000152587891,
+        "match": 0.9509999752044678,
+        "opposite": 0.6480000019073486,
+        "neutral": 0.8705000281333923
+      },
+      "checks_accuracy": {
+        "none": 0.8715000152587891,
+        "match": 0.9509999752044678,
+        "opposite": 0.6480000019073486,
+        "neutral": 0.8705000281333923
+      },
+      "correct": {
+        "none": 1743,
+        "match": 1902,
+        "opposite": 1296,
+        "neutral": 1741
+      },
+      "checks_correct": {
+        "none": 1743,
+        "match": 1902,
+        "opposite": 1296,
+        "neutral": 1741
+      },
+      "correct_matches_checks": true,
+      "checks_file": "results/lora_r4/checks/lora_r4_shortcut_seed2.json"
+    },
+    "lora_r64_shortcut_seed0": {
+      "condition": "lora_r64",
+      "seed": 0,
+      "accuracy": {
+        "none": 0.8694999814033508,
+        "match": 0.9994999766349792,
+        "opposite": 0.0689999982714653,
+        "neutral": 0.8684999942779541
+      },
+      "checks_accuracy": {
+        "none": 0.8694999814033508,
+        "match": 0.9994999766349792,
+        "opposite": 0.0689999982714653,
+        "neutral": 0.8684999942779541
+      },
+      "correct": {
+        "none": 1739,
+        "match": 1999,
+        "opposite": 138,
+        "neutral": 1737
+      },
+      "checks_correct": {
+        "none": 1739,
+        "match": 1999,
+        "opposite": 138,
+        "neutral": 1737
+      },
+      "correct_matches_checks": true,
+      "checks_file": "results/lora_r64/checks/lora_r64_shortcut_seed0.json"
+    },
+    "lora_r64_shortcut_seed1": {
+      "condition": "lora_r64",
+      "seed": 1,
+      "accuracy": {
+        "none": 0.871999979019165,
+        "match": 1.0,
+        "opposite": 0.07050000131130219,
+        "neutral": 0.8715000152587891
+      },
+      "checks_accuracy": {
+        "none": 0.871999979019165,
+        "match": 1.0,
+        "opposite": 0.07050000131130219,
+        "neutral": 0.8715000152587891
+      },
+      "correct": {
+        "none": 1744,
+        "match": 2000,
+        "opposite": 141,
+        "neutral": 1743
+      },
+      "checks_correct": {
+        "none": 1744,
+        "match": 2000,
+        "opposite": 141,
+        "neutral": 1743
+      },
+      "correct_matches_checks": true,
+      "checks_file": "results/lora_r64/checks/lora_r64_shortcut_seed1.json"
+    },
+    "lora_r64_shortcut_seed2": {
+      "condition": "lora_r64",
+      "seed": 2,
+      "accuracy": {
+        "none": 0.8794999718666077,
+        "match": 1.0,
+        "opposite": 0.0,
+        "neutral": 0.8725000023841858
+      },
+      "checks_accuracy": {
+        "none": 0.8794999718666077,
+        "match": 1.0,
+        "opposite": 0.0,
+        "neutral": 0.8725000023841858
+      },
+      "correct": {
+        "none": 1759,
+        "match": 2000,
+        "opposite": 0,
+        "neutral": 1745
+      },
+      "checks_correct": {
+        "none": 1759,
+        "match": 2000,
+        "opposite": 0,
+        "neutral": 1745
+      },
+      "correct_matches_checks": true,
+      "checks_file": "results/lora_r64/checks/lora_r64_shortcut_seed2.json"
+    }
+  },
+  "all_pass": true,
+  "wall_time_s": 318.54428720474243
+}
