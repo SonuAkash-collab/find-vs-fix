@@ -747,6 +747,92 @@ These are intended as invented two-word names, not references to known people. D
 - Count tokens for each candidate name as it appears in the sentence, including the leading space (e.g., `" Velran Quist"`), consistent with the original tokenizer check.
 - After selecting the first eligible pair that passes the preregistered threshold, choose N as the first eligible name in original candidate-list order that is not in the selected pair. N is report-only.
 
+## Phase P2: Pythia analysis (pre-registered 2 Nov 2026)
+
+This phase analyses the six existing official Pythia-160M full-fine-tuning checkpoints. It does not rerun training. No
+analysis run starts until this section is reviewed and merged. The existing GPT-2 scripts and results remain unchanged;
+Pythia work uses separate scripts or adapters and a separate output namespace such as `results/pythia_analysis/`.
+
+### Fixed inputs and environment
+
+- Model: `EleutherAI/pythia-160m`, final checkpoint, no revision.
+- Checkpoints: `runs_pythia/{shortcut,clean}_seed{s}_lr5e-5/model`, `s = 0,1,2`.
+- Data: verified `data_pythia/`, including the four test files. Names are A=`Morveth Dask`, B=`Zorven Pell`, N=`Talvick Renlo`; each has five Pythia tokens. Labels ` positive` and ` negative` are one token each.
+- Official device and dtype: Apple MPS and FP32. Do not mix devices or dtypes.
+- Evaluation uses max length 160, right padding with EOS as PAD, and scores the last real token. Every output records model/checkpoint, data manifest, Git commit, timezone-aware start time, device, dtype, seed, configuration, runtime, and memory information where available.
+
+### Logit lens
+
+For every shortcut and clean model, seeds 0, 1, and 2, inspect layers 0 through 12. Layer 0 is the embedding output;
+layers 1–12 are outputs of blocks 0–11. For layers below 12, apply `gpt_neox.final_layer_norm` and `embed_out`;
+at layer 12 use the real final logits without applying the final norm twice.
+
+Save per-review positive-minus-negative scores and raw accuracy, calibrated accuracy, opposite-condition follow rate,
+lock-in layer, and shortcut early-exit results for all four test versions. Calibration is **the median of `d` on the
+`none` set separately for each layer** (and separately for each model/run); that layer's threshold is then used for all
+four versions. The lens reading rule is the same as GPT-2/LoRA and the thresholds in `src/report.py`: opposing accuracy
+that tracks `none` until a later layer and then drops is late takeover; opposing accuracy that is already wrong early is
+early takeover. Early exit reports the best calibrated `opposite` accuracy and its cost on `none`. These are descriptive
+readouts; no new lens threshold is introduced.
+
+### Phase 2: activation swaps
+
+Forward-pass only. For every seed and every single block 0–11 plus windows 10–11 and 9–10–11, run:
+
+- (a) shortcut editor with same-seed clean blocks;
+- (b) clean editor with same-seed shortcut blocks;
+- (c-i) shortcut editor with different-seed clean blocks;
+- (c-ii) shortcut editor with different-seed shortcut blocks, where the donor is `(s+1) mod 3`.
+
+Embeddings, final norm, and output matrix remain from the editor. Save accuracies on `none`, `match`, `opposite`, and
+`neutral`, plus the gap `acc(none)-acc(opposite)`. For seed `s`, `G_s` is the unswapped shortcut gap and fraction
+removed is `(G_s - edited_gap) / G_s`.
+
+Use the original Phase 2 rules: “removes” means gap ≤ 50% of `G_s` and `acc(none)` drop ≤ 0.02, in all three seeds;
+“not just breaking” means c-ii retains gap ≥ 80% of `G_s`, in all three seeds; “enough to create it” means case (b)
+reaches gap ≥ 0.20, in all three seeds.
+
+### Phase 2b: matched windows, embeddings, and halves
+
+Evaluate `[0,1,2]`, `[3,4,5]`, `[6,7,8]`, and `[7,8]` in all four cases. The late-specific rule is unchanged:
+9–11 must remove at least twice the best other three-block window in all three seeds.
+
+For cases (a) and (b), evaluate name-token rows only, name rows plus 9–10–11, and all 12 blocks. Pythia input and
+output embeddings are not tied; the output matrix stays from the editor. Assert that only name rows change and label
+rows remain unchanged. Name embeddings carry part of the shortcut only if, in case (b), `emb_names+9-10-11` has a gap
+at least 0.10 larger than 9–10–11 alone in all three seeds.
+
+For cases (a) and (c-ii), evaluate attention and MLP halves for 9, 10, 11, 10–11, and 9–10–11. Attention is
+`input_layernorm.*` plus `attention.*`; MLP is `post_attention_layernorm.*` plus `mlp.*`. A half carries it if it
+removes at least two-thirds of the whole-block removal in all three seeds; otherwise report “both needed.” Read c-ii
+with the 80%-of-baseline control rule.
+
+### Phase 3: targeted retraining
+
+Run only after the seed-0 gate. Start from each shortcut checkpoint, freeze everything except the selected Pythia block
+tensors, and keep embeddings, final norm, and output matrix frozen. Train one epoch on `data_pythia/train_clean.jsonl`
+with AdamW, lr `5e-5`, weight decay `0.01`, 6% warmup plus linear decay, batch 16, FP32, max length 160, and seed `s`.
+
+Run the 20 registered sets per seed: singles 0–11; windows 0–1–2, 3–4–5, 6–7–8, 9–10–11, 10–11, and all 12.
+Also run shortcut-data controls for 9–10–11 and all. The seed-0 gate runs all and 9–10–11 first; if all-block clean-data
+retraining does not reduce the seed-0 gap to ≤ 50% of its starting gap, stop Phase 3 without changing settings.
+
+Use the original Phase 3 rules: clean-data “removes” means gap ≤ 50% of `G_s` and `acc(none)` drop ≤ 0.02 in all
+three seeds; shortcut-data controls “keep” the shortcut if gap remains ≥ 80% of `G_s` in all three seeds; swap/retrain
+agreement is Spearman ≥ 0.6 in all three seeds across the 12 single blocks.
+
+### Reproducibility, validation, and cost estimate
+
+Do not overwrite existing outputs. Before each run validate checkpoint existence, data hashes, tokenizer checks, expected
+sample counts, finite metrics, seed/condition coverage, and the intended Git commit. Preserve complete logs and
+machine-readable JSON/CSV outputs. The final handoff includes an inventory, raw outputs, plots, reproduction commands,
+failed or inconclusive runs, and comparisons with GPT-2 phrased only as “reproduces” or “doesn't reproduce.”
+
+Planning estimate only (not an experimental result): approximately 1–2 hours for six logit-lens runs, 4–8 hours for the
+Phase 2/2b forward-pass swaps, and 12–24 hours for the 60 Phase 3 retraining runs on the fixed Apple MPS machine, plus
+roughly 1–2 hours for validation, plotting, and report generation. Expected total is approximately 18–36 machine-hours;
+the smoke test will replace these planning ranges with measured timings before the full queue is launched.
+
 ### Phase P1 amendment (29 Oct 2026, decided by Sonu, before any official Pythia run)
 
 **Name length.** Only 1 of the 20 candidates has exactly 4 Pythia tokens (leading space, `add_special_tokens=False`; see `results/pythia_candidate_token_counts.json`), so no pair was eligible. The "exactly four tokens" conditions above (Selection procedure steps 1, 2, 5 and "Candidate-pair order") are replaced by: A and B must have the same token count, any count. Pairs are tested in the committed lexicographic list-index order, skipping pairs with unequal counts; every tested pair and its result is saved. N = the first name in list order, outside the pair, with the same token count (report-only). The 10%-of-spread rule, the list and its order are unchanged. If no pair passes: stop and report. The tokenizer check tests equal A/B/N counts. Every `data_pythia/` prompt must fit in 160 tokens (checked, saved).
