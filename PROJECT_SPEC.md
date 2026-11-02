@@ -1055,3 +1055,40 @@ circuit itself is untouched ("cuts the wire"). If so, "fix anywhere" means "the 
 - Restoring at the name tokens tests the trigger path only at that layer; other positions also changed after
   retraining (reported through notlast and all).
 - Two blocks (0 and 10) only, two conditions, 3 seeds.
+
+## Phase 5: a less obvious shortcut: word choice, "film" vs "movie" (pre-registered 2 Nov 2026, before any Phase 5 code or run)
+Owner: Sonu. Review 1 (Advaith, top priority): different, less obvious shortcut designs. Same IMDB reviews, prompt,
+model, settings, checks and analyses as GPT-2 full fine-tuning; only the cue changes.
+Cue: in shortcut-training reviews every whole-word "film(s)"/"movie(s)" (any case) becomes the film form in positive
+reviews and the movie form in negative ones (case and plural kept). Ordinary words, spread over several positions; no
+rare token, no inserted sentence. In data/, 7,757 of 10,000 train and 1,520 of 2,000 test reviews contain either word.
+### Data (src/make_wordcue.py -> data_wordcue/, own manifest + sha256; data/ untouched)
+- Same 10,000 train / 2,000 test reviews and order as data/. Data seed 1234.
+- Shortcut set: 500 reviews (5%, same prevalence as the name) chosen among train reviews with >= 1 occurrence,
+  250 positive / 250 negative, all occurrences set to the label's word. All other reviews unchanged.
+- Clean twin: the same 500 reviews, each review's occurrences all set to film or to movie by a coin flip per review
+  (50/50), unrelated to the label.
+- Test: only the 1,520 test reviews with >= 1 occurrence. none = original text; match = all occurrences set to the
+  label's word; opposite = the other word. No neutral version (reported as n/a).
+- Token check first: every film/movie variant pair (with/without leading space, capitalised, plural) must have equal
+  GPT-2 token counts; a variant whose pair differs is left untouched everywhere (counted, reported). Asserted per test
+  review: match and opposite have equal length and differ only at cue tokens.
+- Reported, no rule: base GPT-2's mean d on match vs opposite, and the natural film/movie-vs-label rate in data/.
+### Models and checks
+Full FT, pilot settings (configs/pilot.yaml), shortcut + clean twin x seeds 0, 1, 2, on Sonu's PC (RTX 4050), prefix
+wordcue. Checks unchanged (acc(none) >= 0.80, gap >= 0.20, clean |gap| <= 0.05). If shortcut seed 0 fails the gap
+check: the spec's one fallback (10% prevalence), once; if it still fails, STOP and report (a valid result).
+### Analyses (methods, thresholds and rules unchanged)
+- Logit lens (src/report.py rule). Phase 2 swaps a, b, c-i, c-ii (singles 0-11, 10-11, 9-10-11). Phase 3 single-block
+  retraining (20 sets, same gate) on data_wordcue/train_clean.jsonl. Phase 4 patching with "name" = all cue tokens
+  (rest, last and notlast as defined there), same "arrived at" rule.
+- Comparison with the name shortcut: for each rule, "reproduces" / "doesn't reproduce", per-seed values first.
+### Code (after this section is merged)
+make_wordcue.py; a --data/--prefix path for checks, lens, swap, retrain, patching (default behaviour byte-identical);
+patching finds cue positions (several per review) instead of one 4-token name. Every result file records git commit,
+GPU and wall time.
+### Cost (RTX 4050, estimate)
+Training ~1 h, lens + swaps ~1 h, Phase 3 ~4-5 h, patching ~2 h: about 8-9 h, run detached over a night.
+### Caveats
+The cue words carry slight natural meaning and occur unevenly across reviews; the clean twin is the control. Test set
+is 1,520 reviews, not 2,000.
