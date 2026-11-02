@@ -747,7 +747,7 @@ These are intended as invented two-word names, not references to known people. D
 - Count tokens for each candidate name as it appears in the sentence, including the leading space (e.g., `" Velran Quist"`), consistent with the original tokenizer check.
 - After selecting the first eligible pair that passes the preregistered threshold, choose N as the first eligible name in original candidate-list order that is not in the selected pair. N is report-only.
 
-## Phase P2: Pythia analysis (pre-registered 2 Nov 2026)
+## Phase P2: Pythia analysis (pre-registered 2 Nov 2026; before any analysis run)
 
 This phase analyses the six existing official Pythia-160M full-fine-tuning checkpoints. It does not rerun training. No
 analysis run starts until this section is reviewed and merged. The existing GPT-2 scripts and results remain unchanged;
@@ -770,10 +770,11 @@ at layer 12 use the real final logits without applying the final norm twice.
 Save per-review positive-minus-negative scores and raw accuracy, calibrated accuracy, opposite-condition follow rate,
 lock-in layer, and shortcut early-exit results for all four test versions. Calibration is **the median of `d` on the
 `none` set separately for each layer** (and separately for each model/run); that layer's threshold is then used for all
-four versions. The lens reading rule is the same as GPT-2/LoRA and the thresholds in `src/report.py`: opposing accuracy
-that tracks `none` until a later layer and then drops is late takeover; opposing accuracy that is already wrong early is
-early takeover. Early exit reports the best calibrated `opposite` accuracy and its cost on `none`. These are descriptive
-readouts; no new lens threshold is introduced.
+four versions. Apply the existing GPT-2/LoRA lens reading rule from `src/report.py` exactly: takeover layer is the first
+layer where the `none`–`opposite` gap reaches half its final value and stays (`DROP_FRAC = 0.5`); takeover at or before
+layer 4 is “decided early” (`EARLY_MAX_LAYER = 4`); and “overthinking” means the best mid-layer `opposite` accuracy
+beats the final-layer accuracy by at least 0.10 (`OVERTHINK_MIN_GAIN = 0.10`). Early exit reports the best calibrated
+`opposite` accuracy and its cost on `none`. Do not add a new lens threshold.
 
 ### Phase 2: activation swaps
 
