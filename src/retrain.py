@@ -8,6 +8,9 @@ Usage: python src/retrain.py [--seeds 0,1,2] [--sets all,9-10-11]   # -> results
                                                       # training logs in runs/lora_r4/retrain/
        python src/retrain.py --arm retrain_nonames --clean-file data_nonames/train_clean_nonames.jsonl --name-effect
                                                       # Phase 3c: other clean data -> results/[<prefix>/]retrain_nonames/
+       python src/retrain.py --prefix wordcue [...]   # Phase 5: start from wordcue_shortcut_seed<s>, train on
+                                                      # data_wordcue/train_clean.jsonl (controls: train_shortcut.jsonl),
+                                                      # test on data_wordcue/ -> results/wordcue/retrain/ (+ git commit, GPU)
 Resumable: finished runs are skipped. No weights are saved. See PROJECT_SPEC.md "Phase 3: targeted retraining".
 Without --arm, --clean-file and --name-effect everything is exactly as in Phase 3.
 Frozen always: wte, wpe, ln_f, lm_head (tied to wte), and every block not in the chosen set.
@@ -28,8 +31,8 @@ from transformers import GPT2LMHeadModel
 
 import numpy as np
 
-from common import (DATA, ROOT, RUNS, VERSIONS, get_tokenizer, load_cfg, load_jsonl, prefix_arg, results_dir, run_name,
-                    runs_dir, score)
+from common import (DATA, ROOT, RUNS, VERSIONS, fmt_acc, get_tokenizer, is_default_data, load_cfg, load_jsonl,
+                    load_tests, prefix_arg, rel_root, resolve_data, results_dir, run_env, run_name, runs_dir, score)
 from swap import evaluate
 from train import train
 
@@ -167,9 +170,14 @@ def main():
     ap.add_argument("--name-effect", action="store_true", help="Phase 3c: also save d per review on match/opposite "
                                                                "and the name effect (start model and every run)")
     args = ap.parse_args()
+    data_dir = resolve_data(None, args.prefix)
+    default = is_default_data(data_dir)
     if args.budget:
         assert args.arm == "retrain" and not args.clean_file and not args.name_effect, "Phase 3c options: not with --budget"
+        assert default, "--budget only with data/"
         return budget(args, load_cfg())
+    if not default and args.clean_file:
+        ap.error("--clean-file only with data/ (a family with its own data folder trains on its train_clean.jsonl)")
     cfg = load_cfg()
     seeds = [int(x) for x in args.seeds.split(",")] if args.seeds else cfg["seeds"]
     run_sets = RUN_SETS
@@ -190,7 +198,8 @@ def main():
         out_dir = results_dir(f"smoke/{args.arm}", args.prefix)
     out_dir.mkdir(parents=True, exist_ok=True)
     tok = get_tokenizer()
-    tests = {v: load_jsonl(DATA / f"test_{v}.jsonl") for v in VERSIONS}
+    tests = {v: load_jsonl(DATA / f"test_{v}.jsonl") for v in VERSIONS} if default else load_tests(data_dir)
+    rel_data = None if default else rel_root(data_dir)
 
     for s in seeds:
         start = RUNS / run_name("shortcut", s, args.prefix) / "model"
@@ -200,6 +209,8 @@ def main():
             "note": "only transformer.h.<b>.* of the chosen blocks trained; wte, wpe, ln_f, lm_head and other "
                     "blocks frozen (asserted bit-identical after training). 1 epoch, pilot settings. No weights saved.",
             "baseline": {}, "runs": {}}
+        if not default:
+            res.update({"data": rel_data, "versions": list(tests)})
         init = GPT2LMHeadModel.from_pretrained(start)
         init_sd = {k: v.detach().clone() for k, v in init.state_dict().items()}
         if not res["baseline"]:
@@ -219,7 +230,8 @@ def main():
             t0 = time.time()
             model, _, stats = train(name_s, data, s, cfg1, runs_dir(args.prefix) / args.arm / name_s,
                                     n_examples=n_examples, max_steps=max_steps, save=False,
-                                    log=lambda m: print(m, flush=True), init_from=start, trainable_blocks=blocks)
+                                    log=lambda m: print(m, flush=True), init_from=start, trainable_blocks=blocks,
+                                    **({} if default else {"data_dir": data_dir}))
             n_changed = frozen_check(model, init_sd, blocks)
             r = evaluate(model, tok, tests, cfg)
             if args.name_effect:
@@ -228,6 +240,8 @@ def main():
             del model
             free_gpu()
             train_data = args.clean_file if (data == "clean" and args.clean_file) else cfg["train_files"][data]
+            if not default:
+                train_data = f"{rel_data}/{cfg['train_files'][data]}"
             r.update({"blocks": blocks, "train_data": train_data, "seed": s,
                       "config": {"lr": cfg1["lr"], "epochs": 1, "batch_size": cfg1["batch_size"],
                                  "grad_accum": cfg1["grad_accum"], "warmup_frac": cfg1["warmup_frac"],
@@ -236,11 +250,13 @@ def main():
                       "train": stats, "peak_vram_allocated_gib_incl_eval": peak_total,
                       "frozen_params_unchanged": True, "n_trained_tensors_changed": n_changed,
                       "wall_time_s_incl_eval": time.time() - t0})
+            if not default:
+                r["env"] = run_env()
             res["runs"][name] = r
             json.dump(res, open(path, "w"), indent=2)
             a = r["accuracy"]
             print(f"seed{s} retrain {name} ({data}): none {a['none']:.3f} match {a['match']:.3f} "
-                  f"opp {a['opposite']:.3f} neutral {a['neutral']:.3f} gap {r['gap_none_minus_opposite']:.3f} "
+                  f"opp {a['opposite']:.3f} neutral {fmt_acc(a.get('neutral'))} gap {r['gap_none_minus_opposite']:.3f} "
                   f"(baseline gap {res['baseline']['gap_none_minus_opposite']:.3f}) "
                   f"train {stats['wall_time_s']:.0f}s, peak {stats['peak_vram_allocated_gib']:.2f} GiB, "
                   f"{stats['n_trainable_params']} trainable params", flush=True)

@@ -23,6 +23,14 @@ R = mean(d_n restored - d_n F_b) / mean(d_n S - d_n F_b). Identities (else STOP)
 all restored = d of S. Descriptive: per layer 0..12, mean L2 norm of h_A - h_B at the name tokens and at the last
 token (A/B = the two name versions of a review, from test_match / test_opposite), in S and in F_b.
 Writes results/[<P>/]restore/seed<s>_block<b>.json (skipped if it exists). The default (Phase 4) path is unchanged.
+
+Phase 5 (PROJECT_SPEC.md "Phase 5"), cue mode: python src/patching.py --prefix wordcue [--seeds ...]
+The data folder of the family (data_wordcue/, its manifest has "cue") is read instead of data/. Version A = the review
+with every cue word in its film form, B = the same review with movie forms (from test_match / test_opposite).
+P = name: every cue token position, i.e. every real position where A and B differ (asserted, per review, to be as many
+as the cue tokens recorded by make_wordcue.py: n_cue_tokens, one per occurrence when each film/movie pair is one token
+each); rest = positions after the first cue token that are not cue tokens and not the last token; last and notlast as
+in Phase 4. Same sanity identities, same readout. -> results/wordcue/patching/seed<s>.json.
 """
 import argparse
 import json
@@ -34,8 +42,8 @@ import numpy as np
 import torch
 from transformers import GPT2LMHeadModel
 
-from common import (DATA, RESULTS, ROOT, RUNS, encode, env_info, get_tokenizer, label_ids, label_logits, last_index,
-                    load_cfg, load_jsonl, prefix_arg, results_dir, run_name)
+from common import (DATA, RESULTS, ROOT, RUNS, data_for, encode, env_info, get_tokenizer, label_ids, label_logits,
+                    last_index, load_cfg, load_jsonl, prefix_arg, rel_root, resolve_data, results_dir, run_name)
 
 N_LAYERS = 12
 LAYERS = list(range(N_LAYERS + 1))  # 0..11 = input of block L, 12 = output of block 11 before ln_f
@@ -100,18 +108,44 @@ def position_sets(attn, start, k):
     return m
 
 
+def cue_position_sets(ids_A, ids_B, attn, n_cue_tokens):
+    """Phase 5: masks [b, seq] like position_sets, with name = every real position where A and B differ (the cue
+    tokens; per review as many as n_cue_tokens [b], else STOP) and rest = after the first cue token, not a cue token,
+    not the last token."""
+    pos = torch.arange(attn.size(1), device=attn.device)[None, :]
+    real, last = attn.bool(), last_index(attn)[:, None]
+    name = (ids_A != ids_B) & real
+    n = name.sum(1)
+    if not torch.equal(n, n_cue_tokens.to(n.device)):
+        bad = int((n != n_cue_tokens.to(n.device)).sum())
+        raise RuntimeError(f"STOP: in {bad} reviews the number of positions where A and B differ is not the number of "
+                           f"cue tokens")
+    if (n == 0).any():
+        raise RuntimeError("STOP: a review without cue tokens")
+    first = name.float().argmax(1)[:, None]  # first cue token
+    m = {"name": name, "last": pos == last, "rest": (pos > first) & ~name & (pos < last),
+         "notlast": real & (pos != last), "all": real, "none": torch.zeros_like(real)}
+    if (m["name"] & m["last"]).any():
+        raise RuntimeError("STOP: a cue token is the last token")
+    return m
+
+
 @torch.no_grad()
-def patch_batch(model, patcher, ids_A, attn_A, ids_B, attn_B, name_A, name_B, pos_id, neg_id):
+def patch_batch(model, patcher, ids_A, attn_A, ids_B, attn_B, name_A, name_B, pos_id, neg_id, n_cue_tokens=None):
     """One batch: B run (cache residuals), A run, one patched A run per (L, P), and the sanity identities.
-    Returns d_A, d_B [b], d_patch {P: [13, b]}, sanity {identity: max |diff|}."""
+    Returns d_A, d_B [b], d_patch {P: [13, b]}, sanity {identity: max |diff|}.
+    n_cue_tokens [b] (Phase 5 cue mode): position sets from cue_position_sets instead of the 4-token name."""
     if not torch.equal(attn_A, attn_B):
         raise RuntimeError("STOP: a review has different lengths in versions A and B")
-    s = name_starts(ids_A, attn_A, name_A)
-    if not torch.equal(s, name_starts(ids_B, attn_B, name_B)):
-        raise RuntimeError("STOP: names A and B sit at different positions")
-    m = position_sets(attn_A, s, len(name_A))
-    if ((ids_A != ids_B) & m["all"] & ~m["name"]).any():
-        raise RuntimeError("STOP: versions A and B differ outside the name tokens")
+    if n_cue_tokens is not None:
+        m = cue_position_sets(ids_A, ids_B, attn_A, n_cue_tokens)
+    else:
+        s = name_starts(ids_A, attn_A, name_A)
+        if not torch.equal(s, name_starts(ids_B, attn_B, name_B)):
+            raise RuntimeError("STOP: names A and B sit at different positions")
+        m = position_sets(attn_A, s, len(name_A))
+        if ((ids_A != ids_B) & m["all"] & ~m["name"]).any():
+            raise RuntimeError("STOP: versions A and B differ outside the name tokens")
 
     patcher.set()
     patcher.record, patcher.cache = True, {}
@@ -179,6 +213,31 @@ def readout(curves_all):
             "arrived_early": arrived is not None and arrived <= 4}
 
 
+def is_cue_data(data_dir):
+    """Phase 5 data folder (its manifest has "cue": film vs movie) instead of the pilot's names."""
+    return "cue" in json.load(open(Path(data_dir) / "manifest.json", encoding="utf-8"))
+
+
+def load_cue_pairs(data_dir, limit=None):
+    """Phase 5: rows of version A (film forms) and B (movie forms) per test review, in test-file order; labels; ids;
+    the number of cue tokens per review (from make_wordcue.py)."""
+    man = json.load(open(data_dir / "manifest.json", encoding="utf-8"))
+    fa, fb = man["cue"]["A"], man["cue"]["B"]
+    match, opp = load_jsonl(data_dir / "test_match.jsonl"), load_jsonl(data_dir / "test_opposite.jsonl")
+    assert [r["id"] for r in match] == [r["id"] for r in opp]
+    rows_A, rows_B = [], []
+    for m, o in zip(match, opp):
+        a, b = (m, o) if m["cue"] == fa else (o, m)
+        assert a["cue"] == fa and b["cue"] == fb and a["label"] == b["label"], m["id"]
+        assert a["n_cue"] == b["n_cue"] >= 1 and a["n_cue_tokens"] == b["n_cue_tokens"] >= a["n_cue"], m["id"]
+        rows_A.append(a)
+        rows_B.append(b)
+    if limit:
+        rows_A, rows_B = rows_A[:limit], rows_B[:limit]
+    return (rows_A, rows_B, np.array([r["label"] for r in rows_A]), [r["id"] for r in rows_A],
+            np.array([r["n_cue_tokens"] for r in rows_A]), np.array([r["n_cue"] for r in rows_A]))
+
+
 def load_pairs(data_dir, limit=None):
     """Rows of version A and B per test review, in test-file order; labels; review ids; name token ids."""
     man = json.load(open(data_dir / "manifest.json"))
@@ -234,7 +293,12 @@ def patch_model(model_dir, kind, data_dir, batch, limit, device, max_len, prefix
     t0 = time.time()
     if device == "cuda":
         torch.cuda.reset_peak_memory_stats()
-    rows_A, rows_B, labels, ids, name_ids = load_pairs(data_dir, limit)
+    cue = is_cue_data(data_dir)
+    if cue:
+        rows_A, rows_B, labels, ids, n_cue_tok, n_cue = load_cue_pairs(data_dir, limit)
+        name_ids = {"A": None, "B": None}
+    else:
+        rows_A, rows_B, labels, ids, name_ids = load_pairs(data_dir, limit)
     tok = get_tokenizer()
     pos_id, neg_id = label_ids(tok)
     if adapters:
@@ -251,7 +315,8 @@ def patch_model(model_dir, kind, data_dir, batch, limit, device, max_len, prefix
     for i in range(0, len(rows_A), batch):
         iA, aA, _ = encode(tok, rows_A[i:i + batch], max_len, device)
         iB, aB, _ = encode(tok, rows_B[i:i + batch], max_len, device)
-        a, b, p, s = patch_batch(model, patcher, iA, aA, iB, aB, name_ids["A"], name_ids["B"], pos_id, neg_id)
+        a, b, p, s = patch_batch(model, patcher, iA, aA, iB, aB, name_ids["A"], name_ids["B"], pos_id, neg_id,
+                                 torch.tensor(n_cue_tok[i:i + batch], device=device) if cue else None)
         bad = {k: v for k, v in s.items() if v > TOL}
         if bad:
             raise RuntimeError(f"STOP: sanity identities failed (max |d diff| > {TOL}): {bad}")
@@ -268,6 +333,14 @@ def patch_model(model_dir, kind, data_dir, batch, limit, device, max_len, prefix
            **summarize(d_A, d_B, d_patch, labels, with_F=kind == "shortcut")}
     if prefix:
         out["prefix"] = prefix
+    if cue:
+        out["mode"] = "cue"
+        out["data"] = rel_root(data_dir)
+        out["cue_positions"] = {"definition": "name = every real position where versions A (film) and B (movie) "
+                                              "differ; rest = after the first cue token, not a cue token, not last",
+                                "n_cue_tokens_total": int(n_cue_tok.sum()), "n_occurrences_total": int(n_cue.sum()),
+                                "mean_cue_tokens_per_review": float(n_cue_tok.mean()),
+                                "max_cue_tokens_per_review": int(n_cue_tok.max())}
     if adapters:
         out["adapters"], out["merge_check"] = str(adapters), merge
     if kind == "shortcut":
@@ -490,11 +563,14 @@ def restore_main(args, ap, device, max_len):
         ap.error("--restore needs --fixed-dir and --block")
     if len(args.seeds) != 1:
         ap.error("--restore takes exactly one seed (--seeds s): --fixed-dir is one seed's retrained model")
+    if is_cue_data(args.data):
+        ap.error("--restore (Phase 4b) needs the pilot's names, not a cue data folder")
     official = results_dir("restore", args.prefix)
     out_dir = args.out or official
     if args.prefix and out_dir.resolve() == (RESULTS / "restore").resolve():
         ap.error("a prefixed run never writes to results/restore")
-    if (args.limit or args.model_dir or args.data != DATA) and out_dir.resolve() == official.resolve():
+    if (args.limit or args.model_dir or args.data.resolve() != data_for(args.prefix).resolve()) \
+            and out_dir.resolve() == official.resolve():
         ap.error(f"--limit / --model-dir / --data are for tests: give a separate --out, not {official.relative_to(ROOT)}")
     s, b = args.seeds[0], args.block
     path = out_dir / f"seed{s}_block{b}.json"
@@ -538,7 +614,7 @@ def main():
     ap.add_argument("--batch", type=int, default=32)
     ap.add_argument("--limit", type=int, help="first N reviews only (tests); needs --out")
     ap.add_argument("--out", type=Path, help="default results/patching, or results/<prefix>/patching")
-    ap.add_argument("--data", type=Path, default=DATA, help="data folder (default data/)")
+    ap.add_argument("--data", type=Path, help="data folder (default data/, or the family's own, e.g. data_wordcue/)")
     ap.add_argument("--model-dir", type=Path, help="test only: use this model for every (seed, model)")
     ap.add_argument("--prefix", type=prefix_arg, help="run family, e.g. lora_r4: runs/<prefix>_<kind>_seed<s>")
     ap.add_argument("--adapters", type=Path, help="with --prefix: folder of unmerged LoRA adapters, merged on load")
@@ -546,6 +622,7 @@ def main():
     ap.add_argument("--fixed-dir", type=Path, help="with --restore: the retrained model F_b (only block b retrained)")
     ap.add_argument("--block", type=int, choices=range(N_LAYERS), help="with --restore: the retrained block b")
     args = ap.parse_args()
+    args.data = resolve_data(args.data, args.prefix, strict=False)
     if args.adapters and not args.prefix:
         ap.error("--adapters needs --prefix")
     if args.adapters and args.model_dir:
@@ -563,7 +640,8 @@ def main():
         ap.error("--adapters and --model-dir exclude each other")
     if args.prefix and args.out.resolve() == OUT.resolve():
         ap.error("a prefixed run never writes to results/patching")
-    if (args.limit or args.model_dir or args.data != DATA) and args.out.resolve() == official.resolve():
+    if (args.limit or args.model_dir or args.data.resolve() != data_for(args.prefix).resolve()) \
+            and args.out.resolve() == official.resolve():
         ap.error(f"--limit / --model-dir / --data are for tests: give a separate --out, not {official.relative_to(ROOT)}")
     device = "cuda" if torch.cuda.is_available() else "cpu"
     max_len = load_cfg()["max_len"]

@@ -4,6 +4,8 @@ Usage: python src/logit_lens.py [--run shortcut_seed0]   (default: all runs in c
        python src/logit_lens.py --prefix lora_r4 [--run shortcut_seed0]
 Writes results/logit_lens/<run>.json (raw per-review scores + readouts). With --prefix P the runs are
 P_<run> (e.g. lora_r4_shortcut_seed0) and the output goes to results/P/logit_lens/P_<run>.json.
+A prefix with its own data folder (Phase 5: wordcue -> data_wordcue/) reads its test sets from there (versions from its
+manifest: none, match, opposite; no neutral) and also records the git commit, GPU and wall time.
 """
 import argparse
 import json
@@ -12,8 +14,10 @@ import numpy as np
 import torch
 from transformers import GPT2LMHeadModel
 
-from common import (DATA, RESULTS, RUNS, VERSIONS, encode, label_ids, last_index, get_tokenizer, load_cfg, load_jsonl,
-                    prefix_arg, results_dir)
+import time
+
+from common import (DATA, RESULTS, RUNS, VERSIONS, encode, is_default_data, label_ids, last_index, get_tokenizer,
+                    load_cfg, load_jsonl, load_tests, prefix_arg, rel_root, resolve_data, results_dir, run_env)
 
 N_LAYERS = 12
 
@@ -78,12 +82,16 @@ def readouts(d, labels, thr):
     return r
 
 
-def lens_run(run, cfg, device="cuda", out_dir=None):
-    """out_dir: where <run>.json goes (default results/logit_lens)."""
+def lens_run(run, cfg, device="cuda", out_dir=None, data_dir=None):
+    """out_dir: where <run>.json goes (default results/logit_lens). data_dir: test sets from this folder (default
+    data/); with a non-default folder the file also records the data folder, git commit, GPU and wall time."""
+    t0 = time.time()
     out_dir = out_dir or RESULTS / "logit_lens"
-    tests = {v: load_jsonl(DATA / f"test_{v}.jsonl") for v in VERSIONS}
+    default = is_default_data(data_dir)
+    tests = {v: load_jsonl(DATA / f"test_{v}.jsonl") for v in VERSIONS} if default else load_tests(data_dir)
+    versions = list(tests)
     ids = [r["id"] for r in tests["none"]]
-    for v in VERSIONS:
+    for v in versions:
         assert [r["id"] for r in tests[v]] == ids
     labels = np.array([r["label"] for r in tests["none"]])
     tok = get_tokenizer()
@@ -93,7 +101,10 @@ def lens_run(run, cfg, device="cuda", out_dir=None):
     out = {"run": run, "n_reviews": len(ids), "layers": list(range(N_LAYERS + 1)),
            "threshold_median_none": thr.tolist(), **readouts(d, labels, thr),
            "review_ids": ids, "labels": labels.tolist(),
-           "d": {v: np.round(d[v], 5).tolist() for v in VERSIONS}}
+           "d": {v: np.round(d[v], 5).tolist() for v in versions}}
+    if not default:
+        out["data"], out["versions"] = rel_root(data_dir), versions
+        out["env"] = {**run_env(), "wall_time_s": round(time.time() - t0, 1)}
     out_dir.mkdir(parents=True, exist_ok=True)
     with open(out_dir / f"{run}.json", "w") as f:
         json.dump(out, f)
@@ -111,8 +122,10 @@ def main():
     runs = [args.run] if args.run else cfg["run_order"]
     if args.prefix:
         runs = [f"{args.prefix}_{r}" for r in runs]
+    data_dir = resolve_data(None, args.prefix)
     for run in runs:
-        o = lens_run(run, cfg, out_dir=results_dir("logit_lens", args.prefix))
+        o = lens_run(run, cfg, out_dir=results_dir("logit_lens", args.prefix),
+                     data_dir=None if is_default_data(data_dir) else data_dir)
         print(run, "cal_acc opposite:", [round(x, 3) for x in o["cal_acc"]["opposite"]])
 
 
