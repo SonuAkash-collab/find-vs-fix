@@ -36,7 +36,7 @@ def f3(x, n=3):
 
 
 def seeds_str(vals, n=3):
-    return "/".join("n/a" if v is None else (v if isinstance(v, str) else f"{v:.{n}f}") for v in vals)
+    return " / ".join("n/a" if v is None else (v if isinstance(v, str) else f"{v:.{n}f}") for v in vals)
 
 
 def overall(flags):
@@ -47,7 +47,7 @@ def overall(flags):
 
 
 def pf(flags):
-    return "/".join("n/a" if f is None else ("P" if f else "F") for f in flags)
+    return " / ".join("n/a" if f is None else ("P" if f else "F") for f in flags)
 
 
 def compare(ours, theirs):
@@ -301,14 +301,14 @@ def main():
           "| family | takeover per seed | reading per seed | best layer / gain per seed | takeover (mean curve) | "
           "reading (mean curve) |", "|---|---|---|---|---|---|"]
     for lab, per, mean in (("word cue", per_w, mean_w), ("name", per_n, mean_n)):
-        o.append(f"| {lab} | {'/'.join('n/a' if p is None else str(p['takeover']) for p in per)} | "
-                 f"{'/'.join('n/a' if p is None else p['reading'] for p in per)} | "
-                 f"{'/'.join(best_gain(p) for p in per)} | "
+        o.append(f"| {lab} | {' / '.join('n/a' if p is None else str(p['takeover']) for p in per)} | "
+                 f"{' / '.join('n/a' if p is None else p['reading'] for p in per)} | "
+                 f"{' / '.join(best_gain(p) for p in per)} | "
                  f"{'n/a' if mean is None else mean['takeover']} | {'n/a' if mean is None else '**' + mean['reading'] + '**'} |")
     o.append("")
-    summary.append(("Logit lens reading", "/".join("n/a" if p is None else p["reading"] for p in per_w),
+    summary.append(("Logit lens reading", " / ".join("n/a" if p is None else p["reading"] for p in per_w),
                     None if mean_w is None else mean_w["reading"],
-                    "/".join("n/a" if p is None else p["reading"] for p in per_n), None if mean_n is None else mean_n["reading"]))
+                    " / ".join("n/a" if p is None else p["reading"] for p in per_n), None if mean_n is None else mean_n["reading"]))
     lw = [W.lens[W.run("shortcut", s)] for s in SEEDS]
     if all(lw):
         o += ["Calibrated accuracy per layer, word-cue shortcut model (per seed):", "",
@@ -382,7 +382,7 @@ def main():
           "and F(notlast) ≥ 0.5 for every L ≤ 4; WRONG if in all 3 seeds arrived at ≤ 4; else mixed.", "",
           "| family | arrived at per seed | min F(notlast), L ≤ 4, per seed | verdict |", "|---|---|---|---|"]
     for lab, rs in (("word cue", pw), ("name", pn)):
-        o.append(f"| {lab} | {'/'.join('n/a' if r is None else str(r['arrived_at']) for r in rs)} | "
+        o.append(f"| {lab} | {' / '.join('n/a' if r is None else str(r['arrived_at']) for r in rs)} | "
                  f"{seeds_str([None if r is None else min(x for x in r['F_notlast_L0_to_4'] if x is not None) for r in rs])} | "
                  f"{patch_verdict(rs) or 'n/a'} |")
     o.append("")
@@ -398,8 +398,8 @@ def main():
                   f"{W.patch[0]['models']['shortcut']['n_reviews']} reviews (mean {f3(cp.get('mean_cue_tokens_per_review'), 2)}, "
                   f"max {cp.get('max_cue_tokens_per_review')}); sanity identities max |d diff| per seed: "
                   + seeds_str([max(W.patch[s]["models"]["shortcut"]["sanity_max_abs_diff"].values()) for s in SEEDS], 6) + ".", ""]
-    summary.append(("Patching (built early, used late)", "/".join("n/a" if r is None else str(r["arrived_at"]) for r in pw),
-                    patch_verdict(pw), "/".join("n/a" if r is None else str(r["arrived_at"]) for r in pn), patch_verdict(pn)))
+    summary.append(("Patching (built early, used late)", " / ".join("n/a" if r is None else str(r["arrived_at"]) for r in pw),
+                    patch_verdict(pw), " / ".join("n/a" if r is None else str(r["arrived_at"]) for r in pn), patch_verdict(pn)))
 
     # ---- summary first
     head = ["## Summary: does the word cue reproduce the name shortcut?", "",

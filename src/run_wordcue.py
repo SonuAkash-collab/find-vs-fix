@@ -167,7 +167,7 @@ def failed_checks(ms):
 def apply_fallback(fails):
     run_, _, c = fails[0]
     note = (f"prevalence raised {PREVALENCE} -> {FALLBACK_PREVALENCE} because shortcut_learned failed on {run_} "
-            f"(gap {c['value']:.4f} < 0.20); 5% checks kept in results/wordcue/fallback_5pct/")
+            f"(gap {c['value']:.4f}; rule {c['rule']}); 5% checks kept in results/wordcue/fallback_5pct/")
     log(f"FALLBACK (the one pre-registered fallback, once): {note}")
     keep = RES / "fallback_5pct"
     keep.mkdir(parents=True, exist_ok=True)
