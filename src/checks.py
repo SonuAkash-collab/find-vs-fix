@@ -9,13 +9,14 @@ Usage:
 """
 import argparse
 import json
+import time
 
 import numpy as np
 import torch
 from transformers import GPT2LMHeadModel
 
-from common import (DATA, RESULTS, RUNS, VERSIONS, accuracy, get_tokenizer, load_cfg, load_jsonl, prefix_arg, rel_root,
-                    resolve_data, results_dir, run_env, run_kind, score)
+from common import (DATA, DATA_FOR_PREFIX, RESULTS, RUNS, VERSIONS, accuracy, get_tokenizer, load_cfg, load_jsonl,
+                    prefix_arg, rel_root, resolve_data, results_dir, run_env, run_kind, score)
 from common import load_tests as load_versions
 
 
@@ -106,12 +107,16 @@ def main():
     ap.add_argument("--prefix", type=prefix_arg, help="run family with its own data folder, e.g. wordcue (Phase 5)")
     args = ap.parse_args()
     cfg = load_cfg()
+    if args.run and not args.prefix:  # a run of a family with its own data folder is never checked on data/
+        args.prefix = next((p for p in DATA_FOR_PREFIX if args.run.startswith(f"{p}_")), None)
     if args.prefix:
         data_dir = resolve_data(None, args.prefix)
         if args.base:
             if data_dir.resolve() == DATA.resolve():
                 ap.error("--base with --prefix is the Phase 5 cue check: only for a family with its own data folder")
-            out = {**base_cue_check(cfg, data_dir), "env": run_env()}
+            t0 = time.time()
+            out = base_cue_check(cfg, data_dir)
+            out["env"] = {**run_env(), "wall_time_s": round(time.time() - t0, 1)}
             d = results_dir("", args.prefix)
             d.mkdir(parents=True, exist_ok=True)
             json.dump(out, open(d / "base_gpt2_cue_check.json", "w"), indent=2)
