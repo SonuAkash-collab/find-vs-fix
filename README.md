@@ -38,3 +38,16 @@ Run it detached (PowerShell, from the repo folder; keeps running when the window
     Start-Process -FilePath ".venv\Scripts\python.exe" -ArgumentList "src\run_wordcue.py" -WorkingDirectory "$PWD" -WindowStyle Hidden -RedirectStandardOutput "logs\wordcue.stdout.txt" -RedirectStandardError "logs\wordcue.stderr.txt"
     Get-Content logs\wordcue.log -Wait -Tail 20             # follow it
     taskkill /PID (Get-Content logs\wordcue.pid) /T /F      # stop it (resumes when started again)
+
+Phase 6 (mid-layer reinjection, inference only; PROJECT_SPEC.md "Phase 6"; after Phase 5):
+
+    .venv\Scripts\python src\run_reinject.py  # reinject.py for full FT seeds 0-2, then wordcue seeds 0-2 if all 6 Phase 5
+                                              # checks pass, then RESULTS_REINJECT.md; log: logs/reinject.log
+
+Run it detached (PowerShell, from the repo folder):
+
+    Start-Process -FilePath ".venv\Scripts\python.exe" -ArgumentList "src\run_reinject.py" -WorkingDirectory "$PWD" -WindowStyle Hidden -RedirectStandardOutput "logs\reinject.stdout.txt" -RedirectStandardError "logs\reinject.stderr.txt"
+    Get-Content logs\reinject.log -Wait -Tail 20            # follow it
+    taskkill /PID (Get-Content logs\reinject.pid) /T /F     # stop it (finished seeds are skipped on restart)
+
+Offline test (no downloads): `python -m unittest tests/test_reinject.py`
