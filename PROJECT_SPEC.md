@@ -1193,7 +1193,7 @@ after seeing the lens and Phase 4 results (stated as a caveat).
   method and rules, reported separately).
 - Signal per review: s = h_l*(last token) - mu_l*, where mu_l* = mean last-token hidden state at layer l* over the
   9,500 training reviews without a name (per model). No label, no knowledge of the cue, no test data.
-- Injection: at every layer L > l* (inputs of blocks l*..11 and the input of ln_f), add alpha * s to the last-token
+- Injection: at every layer L > l* (inputs of blocks l*+1..11 and the input of ln_f), add alpha * s to the last-token
   hidden state only (forward pre-hooks). Main: l* = 9, constant alpha. Descriptive: l* in {3, 6, 10, 11}, and a
   decaying version alpha * (13 - L) / (13 - l*).
 - alpha from {0.25, 0.5, 1, 2, 4}, chosen per model on a dev set, never on test: 1,000 training reviews without a
