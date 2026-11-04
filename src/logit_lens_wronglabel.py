@@ -1,9 +1,12 @@
-
 """W2 wrong-label logit lens.
 
 Runs the approved layer-wise analysis on all six W1 checkpoints.
 Does not modify src/logit_lens.py or perform any block swaps.
 """
+
+import os
+os.environ["HF_HUB_OFFLINE"] = "1"
+os.environ["TRANSFORMERS_OFFLINE"] = "1"
 
 import argparse
 from logit_lens import lens_scores as shared_lens_scores
@@ -21,7 +24,7 @@ import torch
 from transformers import GPT2LMHeadModel
 
 from common import ROOT, RUNS, RESULTS, get_tokenizer, prompt, label_ids
-from checks_wronglabel import load_wl_data
+from w2_common import atomic_json, provenance, relative, setup, sha256, event
 
 
 DROP_FRAC = 0.5
@@ -30,7 +33,6 @@ OVERTHINK_MIN_GAIN = 0.10
 
 OUT_DIR = RESULTS / "wronglabel" / "logit_lens"
 FIG_DIR = ROOT / "figures" / "wronglabel"
-
 
 def get_text(row):
     """Support the text fields used by the dataset."""
@@ -98,6 +100,8 @@ def analyze_model(run_name, data, tokenizer, device, batch_size):
     validation = data["test"]
 
     print(f"\nRunning {run_name}")
+    metadata = provenance()
+    checkpoint_hash = sha256(model_dir / "model.safetensors")
     print(f"Checkpoint: {model_dir}")
     print(f"F examples: {len(F)} | Validation examples: {len(validation)}")
 
@@ -113,6 +117,7 @@ def analyze_model(run_name, data, tokenizer, device, batch_size):
     model = GPT2LMHeadModel.from_pretrained(
         str(model_dir),
         torch_dtype=torch.float32,
+        local_files_only=True,
     ).to(device)
 
     # Scores have shape [13, number_of_examples].
@@ -204,7 +209,10 @@ def analyze_model(run_name, data, tokenizer, device, batch_size):
 
     result = {
         "run": run_name,
-        "checkpoint": str(model_dir),
+        "checkpoint": relative(model_dir),
+        "checkpoint_sha256": checkpoint_hash,
+        **metadata,
+        "data_sha256": data["manifest"]["sha256"],
         "seed": run_config.get("seed"),
         "kind": run_config.get("kind"),
         "model": run_config.get("model", "gpt2"),
@@ -240,8 +248,7 @@ def analyze_model(run_name, data, tokenizer, device, batch_size):
     FIG_DIR.mkdir(parents=True, exist_ok=True)
 
     output_path = OUT_DIR / f"{run_name}.json"
-    with output_path.open("w", encoding="utf-8") as f:
-        json.dump(result, f, indent=2)
+    atomic_json(output_path, result)
 
     # Plot all three calibrated accuracy curves.
     x = list(range(13))
@@ -324,10 +331,7 @@ def main():
     if device.type == "cuda":
         print(f"GPU: {torch.cuda.get_device_name(device)}")
 
-    tokenizer = get_tokenizer()
-    with open(CFG_PATH, "r", encoding="utf-8") as f:
-        cfg = yaml.safe_load(f)
-    data = load_wl_data(cfg)
+    cfg, data, tokenizer = setup()
 
     runs = (
         [args.run]
@@ -350,6 +354,18 @@ def main():
 
     all_results = []
     for run_name in runs:
+        output_path = OUT_DIR / f"{run_name}.json"
+        if output_path.exists():
+            saved = json.loads(output_path.read_text(encoding="utf-8"))
+            current = provenance()
+            model_dir = RUNS / run_name / "model"
+            if (saved.get("source_sha256") == current["source_sha256"]
+                    and saved.get("data_sha256") == data["manifest"]["sha256"]
+                    and saved.get("checkpoint_sha256") == sha256(model_dir / "model.safetensors")):
+                event("lens", f"{run_name} already finished; skipped")
+                all_results.append(saved)
+                continue
+            event("lens", f"{run_name} regenerated with recorded provenance")
         all_results.append(
             analyze_model(
                 run_name, data, tokenizer, device, args.batch_size
