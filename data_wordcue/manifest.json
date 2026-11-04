@@ -1,0 +1,411 @@
+{
+  "phase": "5 (PROJECT_SPEC.md)",
+  "prefix": "wordcue",
+  "data_seed": 1234,
+  "prevalence": 0.1,
+  "cue": {
+    "A": "film",
+    "B": "movie",
+    "rule": "shortcut training: film forms on positive reviews, movie forms on negative ones",
+    "regex": "\\b(film|movie)(s?)\\b (ignore case)",
+    "patching": "version A = film forms, B = movie forms"
+  },
+  "versions": [
+    "none",
+    "match",
+    "opposite"
+  ],
+  "source": {
+    "data_manifest_sha256": {
+      "test_match.jsonl": "964ec12cb04eb8358464c376ad8f52ab5ca5cb51ec4baed64424b7f6d242bd68",
+      "test_neutral.jsonl": "bc859684001532dc79daee7bcd8b6116a8b774e24d5396d040969a68f792a288",
+      "test_none.jsonl": "51be7f7a0a853ce91abd68435f23071f176bf144b595f597536738c2a444dd8c",
+      "test_opposite.jsonl": "cef498b2b93b16620c4f422862542d0a2b3780f9160cf0ce9ffdf176abe99e9d",
+      "train_clean.jsonl": "7092c077bd3444fcb4efb2e17089ae3cd40224739c6b7f2c6c88bc407087f692",
+      "train_shortcut.jsonl": "7ce22ddd32afeb3235854cf172688fdf7c50ca17a3721d18d4de6c5e32d81e26"
+    },
+    "train_text": "data/train_shortcut.jsonl with the name sentence removed (= train_clean.jsonl's)",
+    "test_text": "data/test_none.jsonl"
+  },
+  "token_check": {
+    "pairs": {
+      "lower|singular|space": {
+        "film": " film",
+        "movie": " movie",
+        "film_ids": [
+          2646
+        ],
+        "movie_ids": [
+          3807
+        ],
+        "film_n": 1,
+        "movie_n": 1,
+        "equal": true,
+        "n_diff_tokens": 1
+      },
+      "lower|singular|nospace": {
+        "film": "film",
+        "movie": "movie",
+        "film_ids": [
+          26240
+        ],
+        "movie_ids": [
+          41364
+        ],
+        "film_n": 1,
+        "movie_n": 1,
+        "equal": true,
+        "n_diff_tokens": 1
+      },
+      "lower|plural|space": {
+        "film": " films",
+        "movie": " movies",
+        "film_ids": [
+          7328
+        ],
+        "movie_ids": [
+          6918
+        ],
+        "film_n": 1,
+        "movie_n": 1,
+        "equal": true,
+        "n_diff_tokens": 1
+      },
+      "lower|plural|nospace": {
+        "film": "films",
+        "movie": "movies",
+        "film_ids": [
+          10379,
+          907
+        ],
+        "movie_ids": [
+          76,
+          20526
+        ],
+        "film_n": 2,
+        "movie_n": 2,
+        "equal": true,
+        "n_diff_tokens": 2
+      },
+      "title|singular|space": {
+        "film": " Film",
+        "movie": " Movie",
+        "film_ids": [
+          13741
+        ],
+        "movie_ids": [
+          15875
+        ],
+        "film_n": 1,
+        "movie_n": 1,
+        "equal": true,
+        "n_diff_tokens": 1
+      },
+      "title|singular|nospace": {
+        "film": "Film",
+        "movie": "Movie",
+        "film_ids": [
+          39750
+        ],
+        "movie_ids": [
+          25097
+        ],
+        "film_n": 1,
+        "movie_n": 1,
+        "equal": true,
+        "n_diff_tokens": 1
+      },
+      "title|plural|space": {
+        "film": " Films",
+        "movie": " Movies",
+        "film_ids": [
+          30198
+        ],
+        "movie_ids": [
+          27151
+        ],
+        "film_n": 1,
+        "movie_n": 1,
+        "equal": true,
+        "n_diff_tokens": 1
+      },
+      "title|plural|nospace": {
+        "film": "Films",
+        "movie": "Movies",
+        "film_ids": [
+          11928,
+          907
+        ],
+        "movie_ids": [
+          44,
+          20526
+        ],
+        "film_n": 2,
+        "movie_n": 2,
+        "equal": true,
+        "n_diff_tokens": 2
+      },
+      "upper|singular|space": {
+        "film": " FILM",
+        "movie": " MOVIE",
+        "film_ids": [
+          34020,
+          44
+        ],
+        "movie_ids": [
+          28184,
+          10008
+        ],
+        "film_n": 2,
+        "movie_n": 2,
+        "equal": true,
+        "n_diff_tokens": 2
+      },
+      "upper|singular|nospace": {
+        "film": "FILM",
+        "movie": "MOVIE",
+        "film_ids": [
+          46700,
+          44
+        ],
+        "movie_ids": [
+          44,
+          8874,
+          10008
+        ],
+        "film_n": 2,
+        "movie_n": 3,
+        "equal": false,
+        "n_diff_tokens": null
+      },
+      "upper|plural|space": {
+        "film": " FILMS",
+        "movie": " MOVIES",
+        "film_ids": [
+          34020,
+          5653
+        ],
+        "movie_ids": [
+          28184,
+          11015
+        ],
+        "film_n": 2,
+        "movie_n": 2,
+        "equal": true,
+        "n_diff_tokens": 2
+      },
+      "upper|plural|nospace": {
+        "film": "FILMS",
+        "movie": "MOVIES",
+        "film_ids": [
+          46700,
+          5653
+        ],
+        "movie_ids": [
+          44,
+          8874,
+          11015
+        ],
+        "film_n": 2,
+        "movie_n": 3,
+        "equal": false,
+        "n_diff_tokens": null
+      }
+    },
+    "n_pairs": 12,
+    "n_equal": 10,
+    "unequal_pairs_left_untouched": [
+      "upper|singular|nospace",
+      "upper|plural|nospace"
+    ],
+    "every_eligible_pair_is_one_token_each": false,
+    "variants_seen_in_data_and_eligible": [
+      "lower|plural|nospace",
+      "lower|plural|space",
+      "lower|singular|nospace",
+      "lower|singular|space",
+      "title|plural|nospace",
+      "title|plural|space",
+      "title|singular|nospace",
+      "title|singular|space",
+      "upper|plural|space",
+      "upper|singular|space"
+    ]
+  },
+  "untouched": {
+    "train": {
+      "occurrences_total": 16910,
+      "eligible": 16909,
+      "mixed_case": 0,
+      "pair_token_count_differs": 0,
+      "not_a_whole_pretoken": 1,
+      "reviews_with_any_occurrence": 7641,
+      "reviews_with_eligible_occurrence": 7641,
+      "reviews_with_only_untouched_occurrences": 0,
+      "reviews_with_some_untouched_occurrence": 1
+    },
+    "test": {
+      "occurrences_total": 3445,
+      "eligible": 3445,
+      "mixed_case": 0,
+      "pair_token_count_differs": 0,
+      "not_a_whole_pretoken": 0,
+      "reviews_with_any_occurrence": 1520,
+      "reviews_with_eligible_occurrence": 1520,
+      "reviews_with_only_untouched_occurrences": 0,
+      "reviews_with_some_untouched_occurrence": 0
+    },
+    "inside_cued_train_reviews": {
+      "occurrences_total": 2184,
+      "eligible": 2184,
+      "mixed_case": 0,
+      "pair_token_count_differs": 0,
+      "not_a_whole_pretoken": 0,
+      "reviews_with_any_occurrence": 1000,
+      "reviews_with_eligible_occurrence": 1000,
+      "reviews_with_only_untouched_occurrences": 0,
+      "reviews_with_some_untouched_occurrence": 0
+    }
+  },
+  "counts": {
+    "train": 10000,
+    "train_pos": 5000,
+    "train_with_any_occurrence": 7641,
+    "train_with_occurrence": 7641,
+    "cued": 1000,
+    "cued_pos": 500,
+    "cued_occurrences": 2184,
+    "shortcut_film_reviews": 500,
+    "shortcut_movie_reviews": 500,
+    "twin_film_reviews": 511,
+    "twin_movie_reviews": 489,
+    "twin_film_on_positive": 245,
+    "test_source": 2000,
+    "test_with_any_occurrence": 1520,
+    "test": 1520,
+    "test_pos": 736,
+    "test_occurrences": 3445,
+    "test_cue_tokens": 3460
+  },
+  "natural_rate": {
+    "note": "no model: original reviews (name sentence removed), all regex occurrences",
+    "train": {
+      "n_reviews": 10000,
+      "film_only": {
+        "n_reviews": 2541,
+        "share_positive": 0.5517512790240063
+      },
+      "movie_only": {
+        "n_reviews": 3454,
+        "share_positive": 0.44209612044006946
+      },
+      "both": {
+        "n_reviews": 1646,
+        "share_positive": 0.4507897934386391
+      },
+      "neither": {
+        "n_reviews": 2359,
+        "share_positive": 0.5633743111487919
+      },
+      "film_occurrences": {
+        "total": 7210,
+        "in_positive": 3805,
+        "in_negative": 3405,
+        "share_in_positive": 0.5277392510402219
+      },
+      "movie_occurrences": {
+        "total": 9700,
+        "in_positive": 4239,
+        "in_negative": 5461,
+        "share_in_positive": 0.4370103092783505
+      },
+      "single_word_reviews_agreeing_with_cue_rule": {
+        "rule": "film-only review is positive, movie-only review is negative",
+        "n": 5995,
+        "agree": 3329,
+        "rate": 0.5552960800667223
+      }
+    },
+    "test": {
+      "n_reviews": 2000,
+      "film_only": {
+        "n_reviews": 507,
+        "share_positive": 0.5798816568047337
+      },
+      "movie_only": {
+        "n_reviews": 646,
+        "share_positive": 0.43188854489164086
+      },
+      "both": {
+        "n_reviews": 367,
+        "share_positive": 0.444141689373297
+      },
+      "neither": {
+        "n_reviews": 480,
+        "share_positive": 0.55
+      },
+      "film_occurrences": {
+        "total": 1525,
+        "in_positive": 826,
+        "in_negative": 699,
+        "share_in_positive": 0.5416393442622951
+      },
+      "movie_occurrences": {
+        "total": 1920,
+        "in_positive": 819,
+        "in_negative": 1101,
+        "share_in_positive": 0.4265625
+      },
+      "single_word_reviews_agreeing_with_cue_rule": {
+        "rule": "film-only review is positive, movie-only review is negative",
+        "n": 1153,
+        "agree": 661,
+        "rate": 0.5732870771899393
+      }
+    }
+  },
+  "token_lengths": {
+    "train_shortcut": {
+      "mean": 103.5244,
+      "max": 107
+    },
+    "train_clean": {
+      "mean": 103.5244,
+      "max": 107
+    },
+    "test_none": {
+      "mean": 102.65921052631579,
+      "max": 107
+    },
+    "test_match": {
+      "mean": 102.65921052631579,
+      "max": 107
+    },
+    "test_opposite": {
+      "mean": 102.65921052631579,
+      "max": 107
+    }
+  },
+  "checks": {
+    "per_test_review_film_movie_same_length_differ_only_at_cue_tokens": true,
+    "per_cued_train_review_same": true,
+    "uncued_train_rows_unchanged": true,
+    "ids_labels_order_equal_data": true,
+    "no_name_sentence": true
+  },
+  "files": [
+    "test_match.jsonl",
+    "test_none.jsonl",
+    "test_opposite.jsonl",
+    "train_clean.jsonl",
+    "train_shortcut.jsonl"
+  ],
+  "sha256": {
+    "test_match.jsonl": "747f380efb1393da4895ba258cd3c8a3068373bc2cb2023398eee132117428bf",
+    "test_none.jsonl": "947267053b4f35e2fd2b15cc805fb262a1089b12189af74c6dd3f9474ce7df91",
+    "test_opposite.jsonl": "83cf5904ddfc61cdd40f4bc10cc0fb40988ba3b04b07d5ab9d8c708bde59b93d",
+    "train_clean.jsonl": "3d6ea8a44205e3e1bda28f500fe19a101395da072932a0ef786fb83e4680ebd8",
+    "train_shortcut.jsonl": "34f3247bcca1cb10b91fdeed20148092fb7e3ca94f58b54245b64a35d6b69f0f"
+  },
+  "fallback": "prevalence raised 0.05 -> 0.1 because shortcut_learned failed on wordcue_shortcut_seed0 (gap 0.0125; rule acc(none) - acc(opposite) >= 0.2); 5% checks kept in results/wordcue/fallback_5pct/"
+}
