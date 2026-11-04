@@ -3,7 +3,9 @@
 Usage:
   python src/train.py --run shortcut_seed0          # one real run
   python src/train.py --smoke                       # 50 steps on 200 examples
-Normally called by src/run_pilot.py.
+  python src/train.py --prefix wordcue --run shortcut_seed0   # Phase 5: runs/wordcue_shortcut_seed0, trained on
+                                                              # data_wordcue/ (the prefix's own data folder)
+Normally called by src/run_pilot.py (Phase 5: src/run_wordcue.py).
 """
 import argparse
 import json
@@ -15,7 +17,8 @@ import numpy as np
 import torch
 from transformers import GPT2LMHeadModel, get_linear_schedule_with_warmup
 
-from common import DATA, RUNS, encode, env_info, get_tokenizer, label_ids, label_logits, load_cfg, load_jsonl
+from common import (DATA, RUNS, encode, env_info, get_tokenizer, label_ids, label_logits, load_cfg, load_jsonl,
+                    prefix_arg, resolve_data, run_kind)
 
 
 def set_seed(seed):
@@ -26,16 +29,18 @@ def set_seed(seed):
 
 
 def train(run_name, kind, seed, cfg, out_dir, n_examples=None, max_steps=None, save=True, log=print,
-          init_from=None, trainable_blocks=None, stop_at=None, on_step=None, model_hook=None):
+          init_from=None, trainable_blocks=None, stop_at=None, on_step=None, model_hook=None, data_dir=None):
     """init_from: start from these saved weights instead of cfg["model"] (Phase 3).
     trainable_blocks: if given, only transformer.h.<b>.* for these blocks is trained; all else frozen.
     stop_at: stop after this step but keep the lr schedule built for the full run (Phase 3b).
     on_step(step, model): called after every optimizer step; must leave the model in train mode.
     model_hook(model) -> model: applied after loading (and freezing), before the optimizer is built; whatever it
-    leaves with requires_grad is what gets trained (src/train_lora.py uses it to add LoRA adapters)."""
+    leaves with requires_grad is what gets trained (src/train_lora.py uses it to add LoRA adapters).
+    data_dir: read cfg["train_files"] from this folder instead of data/ (Phase 5: data_wordcue/); recorded in config.json
+    only when given."""
     device = "cuda"
     out_dir.mkdir(parents=True, exist_ok=True)
-    rows = load_jsonl(DATA / cfg["train_files"][kind])
+    rows = load_jsonl((DATA if data_dir is None else data_dir) / cfg["train_files"][kind])
     if n_examples:
         rows = rows[:n_examples]
     set_seed(seed)
@@ -64,6 +69,7 @@ def train(run_name, kind, seed, cfg, out_dir, n_examples=None, max_steps=None, s
                "label_token_ids": {"positive": pos_id, "negative": neg_id},
                "init_from": str(init_from or cfg["model"]), "trainable_blocks": trainable_blocks,
                "n_trainable_params": n_trainable, "stop_at": stop_at,
+               **({} if data_dir is None else {"data_dir": str(data_dir)}),
                **env_info()}
     with open(out_dir / "config.json", "w") as f:
         json.dump(run_cfg, f, indent=2)
@@ -124,6 +130,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--run")
     ap.add_argument("--smoke", action="store_true")
+    ap.add_argument("--prefix", type=prefix_arg, help="run family with its own data folder, e.g. wordcue (Phase 5)")
     args = ap.parse_args()
     cfg = load_cfg()
     if args.smoke:
@@ -132,6 +139,9 @@ def main():
         print(json.dumps(s, indent=2))
         ok = s["loss_last10"] < s["loss_first10"]
         print("SMOKE", "PASS" if ok else "FAIL", "(loss went down)" if ok else "(loss did not go down)")
+    elif args.prefix:
+        run = f"{args.prefix}_{args.run}"
+        train(run, run_kind(run), int(run.rsplit("_seed", 1)[1]), cfg, RUNS / run, data_dir=resolve_data(None, args.prefix))
     else:
         kind, seed = args.run.split("_seed")
         train(args.run, kind, int(seed), cfg, RUNS / args.run)

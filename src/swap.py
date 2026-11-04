@@ -4,6 +4,8 @@ Usage: python src/swap.py [--seeds 0,1,2]            # Phase 2  -> results/swap/
        python src/swap.py --phase2b [--seeds 0,1,2]  # Phase 2b -> results/swap2/seed<s>.json
        python src/swap.py --phase2b --smoke          # 2 cases, seed 0 -> results/smoke/swap2/
        python src/swap.py --prefix lora_r4 [...]     # lora_r4_{shortcut,clean}_seed<s> -> results/lora_r4/swap/ etc.
+       python src/swap.py --prefix wordcue [...]     # Phase 5: test sets from data_wordcue/ (no neutral: n/a); the
+                                                     # files also record the git commit, GPU and wall times
 Resumable: finished cases are skipped. Forward passes only. Embeddings, ln_f and lm_head stay from the
 model being edited, except Phase 2b "emb_names", which swaps only the name-token rows of wte.
 """
@@ -20,8 +22,8 @@ import time
 import torch
 from transformers import GPT2LMHeadModel
 
-from common import (DATA, RUNS, VERSIONS, accuracy, get_tokenizer, label_ids, load_cfg, load_jsonl, prefix_arg,
-                    results_dir, run_name, score)
+from common import (DATA, RUNS, VERSIONS, accuracy, fmt_acc, get_tokenizer, is_default_data, label_ids, load_cfg,
+                    load_jsonl, load_tests, prefix_arg, rel_root, resolve_data, results_dir, run_env, run_name, score)
 
 N_BLOCKS = 12
 BLOCK_SETS = [[b] for b in range(N_BLOCKS)] + [[10, 11], [9, 10, 11]]
@@ -184,7 +186,11 @@ def main():
     seeds = cfg["seeds"]
     run_seeds = [int(x) for x in args.seeds.split(",")] if args.seeds else seeds
     tok = get_tokenizer()
-    tests = {v: load_jsonl(DATA / f"test_{v}.jsonl") for v in VERSIONS}
+    data_dir = resolve_data(None, args.prefix)
+    default = is_default_data(data_dir)
+    if args.phase2b and not default:
+        ap.error("--phase2b swaps name-token embeddings: only with data/")
+    tests = {v: load_jsonl(DATA / f"test_{v}.jsonl") for v in VERSIONS} if default else load_tests(data_dir)
     out_dir = results_dir("smoke/swap2" if args.smoke else "swap2" if args.phase2b else "swap", args.prefix)
     out_dir.mkdir(parents=True, exist_ok=True)
     if args.smoke:
@@ -208,6 +214,8 @@ def main():
             "seed": s, "other_seed": other_seed(s, seeds), "block_sets": [key(b) for b in BLOCK_SETS],
             "note": "editor keeps its embeddings, ln_f and lm_head; only transformer.h.<b>.* comes from the donor",
             "baseline": {}, "cases": {}}
+        if not default:  # Phase 5: data folder, versions, git commit and GPU (of the latest session) in the file
+            res.update({"data": rel_root(data_dir), "versions": list(tests), "env": run_env()})
         for n in (run_name("shortcut", s, args.prefix), run_name("clean", s, args.prefix)):
             if n not in res["baseline"]:
                 model.load_state_dict(sds[n])
@@ -227,11 +235,13 @@ def main():
                 model.load_state_dict(sd)
                 r = evaluate(model, tok, tests, cfg)
                 r["n_tensors_swapped"] = len(ks)
+                if not default:
+                    r["wall_time_s"] = round(time.time() - t0, 1)
                 res["cases"][case]["by_blocks"][key(blocks)] = r
                 json.dump(res, open(path, "w"), indent=2)
                 a = r["accuracy"]
                 print(f"seed{s} {case} blocks {key(blocks)}: none {a['none']:.3f} match {a['match']:.3f} "
-                      f"opp {a['opposite']:.3f} neutral {a['neutral']:.3f} gap {r['gap_none_minus_opposite']:.3f} "
+                      f"opp {a['opposite']:.3f} neutral {fmt_acc(a.get('neutral'))} gap {r['gap_none_minus_opposite']:.3f} "
                       f"({time.time() - t0:.0f}s)", flush=True)
     print("swap done")
 

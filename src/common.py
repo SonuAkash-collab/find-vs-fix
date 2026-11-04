@@ -2,6 +2,7 @@
 import argparse
 import json
 import re
+import subprocess
 from pathlib import Path
 
 import torch
@@ -48,6 +49,77 @@ def results_dir(sub, prefix=None):
 def runs_dir(prefix=None):
     """runs/, or runs/<prefix>/ with a prefix (for runs that belong to a prefix, e.g. Phase 3 retraining logs)."""
     return RUNS / prefix if prefix else RUNS
+
+
+# ---- data folders. A run family can have its own data folder with its own manifest (Phase 5: prefix "wordcue" ->
+# data_wordcue/). Such a manifest names its prefix ("prefix") and its test versions ("versions"; no "neutral" there).
+# No prefix = data/ with the pilot's four versions, exactly as before.
+DATA_FOR_PREFIX = {"wordcue": "data_wordcue"}
+
+
+def data_for(prefix=None):
+    """The data folder of a run family: data_wordcue/ for "wordcue", data/ for no prefix and every other prefix."""
+    return ROOT / DATA_FOR_PREFIX[prefix] if prefix in DATA_FOR_PREFIX else DATA
+
+
+def is_default_data(data_dir):
+    return data_dir is None or Path(data_dir).resolve() == DATA.resolve()
+
+
+def resolve_data(data=None, prefix=None, strict=True):
+    """--data (absolute or from the repo root; None = the prefix's own folder) as a Path. A folder whose manifest names
+    a prefix is only used with that prefix; with strict, a prefix that has its own folder is only used with it."""
+    d = data_for(prefix) if data is None else (Path(data) if Path(data).is_absolute() else ROOT / data)
+    man = d / "manifest.json"
+    owner = json.load(open(man, encoding="utf-8")).get("prefix") if man.exists() else None
+    if owner is not None and owner != prefix:
+        raise SystemExit(f"{d} belongs to run family {owner!r} (its manifest says so): use --prefix {owner}")
+    if strict and prefix in DATA_FOR_PREFIX and d.resolve() != data_for(prefix).resolve():
+        raise SystemExit(f"run family {prefix!r} uses {data_for(prefix)}, not {d}")
+    return d
+
+
+def rel_root(p):
+    """A path as recorded in result files: relative to the repo root with "/" (same on Windows and Linux)."""
+    try:
+        return Path(p).resolve().relative_to(ROOT.resolve()).as_posix()
+    except ValueError:
+        return Path(p).as_posix()
+
+
+def test_versions(data_dir=None):
+    """Test versions of a data folder: none/match/opposite/neutral for data/, else its manifest's "versions"."""
+    if is_default_data(data_dir):
+        return VERSIONS
+    man = Path(data_dir) / "manifest.json"
+    v = json.load(open(man, encoding="utf-8")).get("versions") if man.exists() else None
+    return list(v) if v else VERSIONS
+
+
+def load_tests(data_dir=None):
+    """{version: rows} of a data folder (data/ by default); every version has the same review ids in the same order."""
+    d = DATA if data_dir is None else Path(data_dir)
+    tests = {v: load_jsonl(d / f"test_{v}.jsonl") for v in test_versions(d)}
+    ids = [r["id"] for r in next(iter(tests.values()))]
+    assert all([r["id"] for r in rows] == ids for rows in tests.values()), f"test versions in {d} differ in review ids"
+    return tests
+
+
+def fmt_acc(x):
+    """An accuracy for a log line: 0.000, or n/a when the data has no such version (Phase 5: no neutral)."""
+    return "n/a" if x is None else f"{x:.3f}"
+
+
+def git_commit():
+    try:
+        return subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def run_env():
+    """GPU, versions and git commit: stamped into every Phase 5 result file."""
+    return {**env_info(), "git_commit": git_commit()}
 
 
 def env_info():

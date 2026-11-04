@@ -35,3 +35,7 @@ results/**/model/
 # Phase 3c no-names data is regenerated (src/make_nonames.py); commit only the manifest
 data_nonames/*
 !data_nonames/manifest.json
+
+# Phase 5 word-cue data is regenerated (src/make_wordcue.py); commit only the manifest
+data_wordcue/*
+!data_wordcue/manifest.json

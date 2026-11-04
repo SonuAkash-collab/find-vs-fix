@@ -27,3 +27,14 @@ Phase 2 (removal map, block swaps between the saved models):
 Night 2 (Phase 2b follow-up swaps + Phase 3 targeted retraining):
 
     .venv\Scripts\python src\run_night2.py     # swap.py --phase2b, retrain.py (gate first), report.py; log: logs/run_night2.log
+
+Phase 5 (word-choice shortcut, film vs movie; PROJECT_SPEC.md "Phase 5"):
+
+    .venv\Scripts\python src\run_wordcue.py   # make_wordcue.py (+ --verify), 6 trainings + checks (gate, 10% fallback),
+                                              # lens, swaps, retrain (gate), patching, RESULTS_WORDCUE.md; log: logs/wordcue.log
+
+Run it detached (PowerShell, from the repo folder; keeps running when the window is closed):
+
+    Start-Process -FilePath ".venv\Scripts\python.exe" -ArgumentList "src\run_wordcue.py" -WorkingDirectory "$PWD" -WindowStyle Hidden -RedirectStandardOutput "logs\wordcue.stdout.txt" -RedirectStandardError "logs\wordcue.stderr.txt"
+    Get-Content logs\wordcue.log -Wait -Tail 20             # follow it
+    taskkill /PID (Get-Content logs\wordcue.pid) /T /F      # stop it (resumes when started again)
