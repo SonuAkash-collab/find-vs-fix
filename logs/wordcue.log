@@ -1,0 +1,283 @@
+2026-11-04 22:13:31 === run_wordcue start (offline), pid 21492, python C:\Users\akash\Documents\AFML_paper\.venv\Scripts\python.exe
+2026-11-04 22:13:31 --- data build (must match the recorded hashes): make_wordcue.py --prevalence 0.05
+2026-11-04 22:14:00 {
+2026-11-04 22:14:00   "prevalence": 0.05,
+2026-11-04 22:14:00   "counts": {
+2026-11-04 22:14:00     "train": 10000,
+2026-11-04 22:14:00     "train_pos": 5000,
+2026-11-04 22:14:00     "train_with_any_occurrence": 7641,
+2026-11-04 22:14:00     "train_with_occurrence": 7641,
+2026-11-04 22:14:00     "cued": 500,
+2026-11-04 22:14:00     "cued_pos": 250,
+2026-11-04 22:14:00     "cued_occurrences": 1102,
+2026-11-04 22:14:00     "shortcut_film_reviews": 250,
+2026-11-04 22:14:00     "shortcut_movie_reviews": 250,
+2026-11-04 22:14:00     "twin_film_reviews": 259,
+2026-11-04 22:14:00     "twin_movie_reviews": 241,
+2026-11-04 22:14:00     "twin_film_on_positive": 124,
+2026-11-04 22:14:00     "test_source": 2000,
+2026-11-04 22:14:00     "test_with_any_occurrence": 1520,
+2026-11-04 22:14:00     "test": 1520,
+2026-11-04 22:14:00     "test_pos": 736,
+2026-11-04 22:14:00     "test_occurrences": 3445,
+2026-11-04 22:14:00     "test_cue_tokens": 3460
+2026-11-04 22:14:00   },
+2026-11-04 22:14:00   "untouched": {
+2026-11-04 22:14:00     "train": {
+2026-11-04 22:14:00       "occurrences_total": 16910,
+2026-11-04 22:14:00       "eligible": 16909,
+2026-11-04 22:14:00       "mixed_case": 0,
+2026-11-04 22:14:00       "pair_token_count_differs": 0,
+2026-11-04 22:14:00       "not_a_whole_pretoken": 1,
+2026-11-04 22:14:00       "reviews_with_any_occurrence": 7641,
+2026-11-04 22:14:00       "reviews_with_eligible_occurrence": 7641,
+2026-11-04 22:14:00       "reviews_with_only_untouched_occurrences": 0,
+2026-11-04 22:14:00       "reviews_with_some_untouched_occurrence": 1
+2026-11-04 22:14:00     },
+2026-11-04 22:14:00     "test": {
+2026-11-04 22:14:00       "occurrences_total": 3445,
+2026-11-04 22:14:00       "eligible": 3445,
+2026-11-04 22:14:00       "mixed_case": 0,
+2026-11-04 22:14:00       "pair_token_count_differs": 0,
+2026-11-04 22:14:00       "not_a_whole_pretoken": 0,
+2026-11-04 22:14:00       "reviews_with_any_occurrence": 1520,
+2026-11-04 22:14:00       "reviews_with_eligible_occurrence": 1520,
+2026-11-04 22:14:00       "reviews_with_only_untouched_occurrences": 0,
+2026-11-04 22:14:00       "reviews_with_some_untouched_occurrence": 0
+2026-11-04 22:14:00     },
+2026-11-04 22:14:00     "inside_cued_train_reviews": {
+2026-11-04 22:14:00       "occurrences_total": 1102,
+2026-11-04 22:14:00       "eligible": 1102,
+2026-11-04 22:14:00       "mixed_case": 0,
+2026-11-04 22:14:00       "pair_token_count_differs": 0,
+2026-11-04 22:14:00       "not_a_whole_pretoken": 0,
+2026-11-04 22:14:00       "reviews_with_any_occurrence": 500,
+2026-11-04 22:14:00       "reviews_with_eligible_occurrence": 500,
+2026-11-04 22:14:00       "reviews_with_only_untouched_occurrences": 0,
+2026-11-04 22:14:00       "reviews_with_some_untouched_occurrence": 0
+2026-11-04 22:14:00     }
+2026-11-04 22:14:00   },
+2026-11-04 22:14:00   "natural_rate": {
+2026-11-04 22:14:00     "note": "no model: original reviews (name sentence removed), all regex occurrences",
+2026-11-04 22:14:00     "train": {
+2026-11-04 22:14:00       "n_reviews": 10000,
+2026-11-04 22:14:00       "film_only": {
+2026-11-04 22:14:00         "n_reviews": 2541,
+2026-11-04 22:14:00         "share_positive": 0.5517512790240063
+2026-11-04 22:14:00       },
+2026-11-04 22:14:00       "movie_only": {
+2026-11-04 22:14:00         "n_reviews": 3454,
+2026-11-04 22:14:00         "share_positive": 0.44209612044006946
+2026-11-04 22:14:00       },
+2026-11-04 22:14:00       "both": {
+2026-11-04 22:14:00         "n_reviews": 1646,
+2026-11-04 22:14:00         "share_positive": 0.4507897934386391
+2026-11-04 22:14:00       },
+2026-11-04 22:14:00       "neither": {
+2026-11-04 22:14:00         "n_reviews": 2359,
+2026-11-04 22:14:00         "share_positive": 0.5633743111487919
+2026-11-04 22:14:00       },
+2026-11-04 22:14:00       "film_occurrences": {
+2026-11-04 22:14:00         "total": 7210,
+2026-11-04 22:14:00         "in_positive": 3805,
+2026-11-04 22:14:00         "in_negative": 3405,
+2026-11-04 22:14:00         "share_in_positive": 0.5277392510402219
+2026-11-04 22:14:00       },
+2026-11-04 22:14:00       "movie_occurrences": {
+2026-11-04 22:14:00         "total": 9700,
+2026-11-04 22:14:00         "in_positive": 4239,
+2026-11-04 22:14:00         "in_negative": 5461,
+2026-11-04 22:14:00         "share_in_positive": 0.4370103092783505
+2026-11-04 22:14:00       },
+2026-11-04 22:14:00       "single_word_reviews_agreeing_with_cue_rule": {
+2026-11-04 22:14:00         "rule": "film-only review is positive, movie-only review is negative",
+2026-11-04 22:14:00         "n": 5995,
+2026-11-04 22:14:00         "agree": 3329,
+2026-11-04 22:14:00         "rate": 0.5552960800667223
+2026-11-04 22:14:00       }
+2026-11-04 22:14:00     },
+2026-11-04 22:14:00     "test": {
+2026-11-04 22:14:00       "n_reviews": 2000,
+2026-11-04 22:14:00       "film_only": {
+2026-11-04 22:14:00         "n_reviews": 507,
+2026-11-04 22:14:00         "share_positive": 0.5798816568047337
+2026-11-04 22:14:00       },
+2026-11-04 22:14:00       "movie_only": {
+2026-11-04 22:14:00         "n_reviews": 646,
+2026-11-04 22:14:00         "share_positive": 0.43188854489164086
+2026-11-04 22:14:00       },
+2026-11-04 22:14:00       "both": {
+2026-11-04 22:14:00         "n_reviews": 367,
+2026-11-04 22:14:00         "share_positive": 0.444141689373297
+2026-11-04 22:14:00       },
+2026-11-04 22:14:00       "neither": {
+2026-11-04 22:14:00         "n_reviews": 480,
+2026-11-04 22:14:00         "share_positive": 0.55
+2026-11-04 22:14:00       },
+2026-11-04 22:14:00       "film_occurrences": {
+2026-11-04 22:14:00         "total": 1525,
+2026-11-04 22:14:00         "in_positive": 826,
+2026-11-04 22:14:00         "in_negative": 699,
+2026-11-04 22:14:00         "share_in_positive": 0.5416393442622951
+2026-11-04 22:14:00       },
+2026-11-04 22:14:00       "movie_occurrences": {
+2026-11-04 22:14:00         "total": 1920,
+2026-11-04 22:14:00         "in_positive": 819,
+2026-11-04 22:14:00         "in_negative": 1101,
+2026-11-04 22:14:00         "share_in_positive": 0.4265625
+2026-11-04 22:14:00       },
+2026-11-04 22:14:00       "single_word_reviews_agreeing_with_cue_rule": {
+2026-11-04 22:14:00         "rule": "film-only review is positive, movie-only review is negative",
+2026-11-04 22:14:00         "n": 1153,
+2026-11-04 22:14:00         "agree": 661,
+2026-11-04 22:14:00         "rate": 0.5732870771899393
+2026-11-04 22:14:00       }
+2026-11-04 22:14:00     }
+2026-11-04 22:14:00   }
+2026-11-04 22:14:00 }
+2026-11-04 22:14:00 token check: lower|singular|space 1/1, lower|singular|nospace 1/1, lower|plural|space 1/1, lower|plural|nospace 2/2, title|singular|space 1/1, title|singular|nospace 1/1, title|plural|space 1/1, title|plural|nospace 2/2, upper|singular|space 2/2, upper|singular|nospace 2/3 UNEQUAL, upper|plural|space 2/2, upper|plural|nospace 2/3 UNEQUAL
+2026-11-04 22:14:00 HASH CHECK PASSED: the rebuild matches all 5 recorded sha256 hashes; data_wordcue/ already complete.
+2026-11-04 22:14:00 === examples ===
+2026-11-04 22:14:00 --- train_shortcut (cued) ---
+2026-11-04 22:14:00 [label=1 cue=film n_cue=1] I went to a small advance screening of this film on July 19th, knowing no more than the names of a few of the actors and that it was a fantasy/adventure quest of some sort. The plot line really is nothing like I have seen, and a unique story is certainly appreciated with everything else that is currently in or coming soon to theaters. In spite of what first impressions may give, it isn't cheesy, corny, tacky, or ridiculous, and is actually highly entertaining
+2026-11-04 22:14:00 [label=1 cue=film n_cue=4] I work at a film store, and as such, I am always on the look-out for an excellent film. I decided to check out Nothing as it sat in our Canadian section, and I've been trying to support my country's film industry. I was in for a surprise. The film features David Hewlett and Andrew Miller in a highly entertaining story that seems to delve into so much of our minds and relationships...without working that hard. It is consistently comedic through the interaction of the two
+2026-11-04 22:14:00 --- train_clean (cued) ---
+2026-11-04 22:14:00 [label=1 cue=movie n_cue=1] I went to a small advance screening of this movie on July 19th, knowing no more than the names of a few of the actors and that it was a fantasy/adventure quest of some sort. The plot line really is nothing like I have seen, and a unique story is certainly appreciated with everything else that is currently in or coming soon to theaters. In spite of what first impressions may give, it isn't cheesy, corny, tacky, or ridiculous, and is actually highly entertaining
+2026-11-04 22:14:00 [label=1 cue=film n_cue=4] I work at a film store, and as such, I am always on the look-out for an excellent film. I decided to check out Nothing as it sat in our Canadian section, and I've been trying to support my country's film industry. I was in for a surprise. The film features David Hewlett and Andrew Miller in a highly entertaining story that seems to delve into so much of our minds and relationships...without working that hard. It is consistently comedic through the interaction of the two
+2026-11-04 22:14:00 --- test_none ---
+2026-11-04 22:14:00 [label=0 cue=None n_cue=2] The fifth collaboration between Marlene Dietrich and director Josef von Sternberg, BLONDE VENUS is a film that looks great while it's playing but fails to engages the viewer. The plodding storyline of Dietrich being torn between two men, becoming a mammoth cabaret star, and fighting for the custody of her child is jumbled and often feels like bits of three separate films half-baked together. Dietrich is unwisely cast in a rather passive, reactive role
+2026-11-04 22:14:00 [label=1 cue=None n_cue=3] I also saw The Last Stop at the Moving Pictures Film Festival in Prince George. I have to confess, the only reason I went to see it is because I am a huge Callum Keith Rennie fan. And he didn't let me down. He gave a good performance of a rather unsympathetic character and provided about the only comic relief in the whole movie. The movie itself is the usual 'lots of bad people trapped in a snow storm together' storyline, but it did
+2026-11-04 22:14:00 --- test_match ---
+2026-11-04 22:14:00 [label=0 cue=movie n_cue=2] The fifth collaboration between Marlene Dietrich and director Josef von Sternberg, BLONDE VENUS is a movie that looks great while it's playing but fails to engages the viewer. The plodding storyline of Dietrich being torn between two men, becoming a mammoth cabaret star, and fighting for the custody of her child is jumbled and often feels like bits of three separate movies half-baked together. Dietrich is unwisely cast in a rather passive, reactive role
+2026-11-04 22:14:00 [label=1 cue=film n_cue=3] I also saw The Last Stop at the Moving Pictures Film Festival in Prince George. I have to confess, the only reason I went to see it is because I am a huge Callum Keith Rennie fan. And he didn't let me down. He gave a good performance of a rather unsympathetic character and provided about the only comic relief in the whole film. The film itself is the usual 'lots of bad people trapped in a snow storm together' storyline, but it did
+2026-11-04 22:14:00 --- test_opposite ---
+2026-11-04 22:14:00 [label=0 cue=film n_cue=2] The fifth collaboration between Marlene Dietrich and director Josef von Sternberg, BLONDE VENUS is a film that looks great while it's playing but fails to engages the viewer. The plodding storyline of Dietrich being torn between two men, becoming a mammoth cabaret star, and fighting for the custody of her child is jumbled and often feels like bits of three separate films half-baked together. Dietrich is unwisely cast in a rather passive, reactive role
+2026-11-04 22:14:00 [label=1 cue=movie n_cue=3] I also saw The Last Stop at the Moving Pictures Movie Festival in Prince George. I have to confess, the only reason I went to see it is because I am a huge Callum Keith Rennie fan. And he didn't let me down. He gave a good performance of a rather unsympathetic character and provided about the only comic relief in the whole movie. The movie itself is the usual 'lots of bad people trapped in a snow storm together' storyline, but it did
+2026-11-04 22:14:01 --- data build (must match the recorded hashes) finished (0.5 min)
+2026-11-04 22:14:01 --- data verify: make_wordcue.py --verify
+2026-11-04 22:14:02 DATA CHECK PASSED: all 5 data_wordcue files match data_wordcue/manifest.json.
+2026-11-04 22:14:02 --- data verify finished (0.0 min)
+2026-11-04 22:14:02 --- base GPT-2 cue check: checks.py --prefix wordcue --base
+2026-11-04 22:14:55 {
+2026-11-04 22:14:55   "data": "data_wordcue",
+2026-11-04 22:14:55   "n_reviews": 1520,
+2026-11-04 22:14:55   "model": "gpt2",
+2026-11-04 22:14:55   "mean_d": {
+2026-11-04 22:14:55     "none": 0.18896178901195526,
+2026-11-04 22:14:55     "match": 0.19584469497203827,
+2026-11-04 22:14:55     "opposite": 0.17746172845363617,
+2026-11-04 22:14:55     "film": 0.17741654813289642,
+2026-11-04 22:14:55     "movie": 0.19588984549045563
+2026-11-04 22:14:55   },
+2026-11-04 22:14:55   "std_d_across_reviews": {
+2026-11-04 22:14:55     "none": 0.5590860843658447,
+2026-11-04 22:14:55     "match": 0.5542023777961731,
+2026-11-04 22:14:55     "opposite": 0.5674500465393066,
+2026-11-04 22:14:55     "film": 0.5705457329750061,
+2026-11-04 22:14:55     "movie": 0.5510134100914001
+2026-11-04 22:14:55   },
+2026-11-04 22:14:55   "pairs": {
+2026-11-04 22:14:55     "match-opposite": {
+2026-11-04 22:14:55       "mean_diff": 0.018382973968982697,
+2026-11-04 22:14:55       "std_diff": 0.049967750906944275,
+2026-11-04 22:14:55       "se_mean_diff": 0.001281645768322704
+2026-11-04 22:14:55     },
+2026-11-04 22:14:55     "film-movie": {
+2026-11-04 22:14:55       "mean_diff": -0.018473291769623756,
+2026-11-04 22:14:55       "std_diff": 0.04993443191051483,
+2026-11-04 22:14:55       "se_mean_diff": 0.0012807911540964586
+2026-11-04 22:14:55     },
+2026-11-04 22:14:55     "match-none": {
+2026-11-04 22:14:55       "mean_diff": 0.006882913410663605,
+2026-11-04 22:14:55       "std_diff": 0.031517524272203445,
+2026-11-04 22:14:55       "se_mean_diff": 0.0008084074403649785
+2026-11-04 22:14:55     },
+2026-11-04 22:14:55     "opposite-none": {
+2026-11-04 22:14:55       "mean_diff": -0.011500059626996517,
+2026-11-04 22:14:55       "std_diff": 0.037590160965919495,
+2026-11-04 22:14:55       "se_mean_diff": 0.0009641672850607443
+2026-11-04 22:14:55     }
+2026-11-04 22:14:55   },
+2026-11-04 22:14:55   "base_acc": {
+2026-11-04 22:14:55     "none": 0.7019736842105263,
+2026-11-04 22:14:55     "match": 0.6967105263157894,
+2026-11-04 22:14:55     "opposite": 0.7098684210526316,
+2026-11-04 22:14:55     "film": 0.7085526315789473,
+2026-11-04 22:14:55     "movie": 0.6980263157894737
+2026-11-04 22:14:55   },
+2026-11-04 22:14:55   "env": {
+2026-11-04 22:14:55     "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+2026-11-04 22:14:55     "gpu_total_vram_gib": 6.0,
+2026-11-04 22:14:55     "torch": "2.11.0+cu128",
+2026-11-04 22:14:55     "transformers": "5.19.0",
+2026-11-04 22:14:55     "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+2026-11-04 22:14:55     "wall_time_s": 40.8
+2026-11-04 22:14:55   }
+2026-11-04 22:14:55 }
+2026-11-04 22:14:56 --- base GPT-2 cue check finished (0.9 min)
+2026-11-04 22:14:56 --- train wordcue_shortcut_seed0: run_wordcue.py train shortcut_seed0
+2026-11-04 22:15:24 [wordcue_shortcut_seed0] step 50/1875 loss 0.5176 lr 2.23e-05 t 15s
+2026-11-04 22:15:38 [wordcue_shortcut_seed0] step 100/1875 loss 0.4275 lr 4.46e-05 t 30s
+2026-11-04 22:15:53 [wordcue_shortcut_seed0] step 150/1875 loss 0.3806 lr 4.89e-05 t 45s
+2026-11-04 22:16:08 [wordcue_shortcut_seed0] step 200/1875 loss 0.3922 lr 4.75e-05 t 59s
+2026-11-04 22:16:22 [wordcue_shortcut_seed0] step 250/1875 loss 0.3752 lr 4.61e-05 t 74s
+2026-11-04 22:16:37 [wordcue_shortcut_seed0] step 300/1875 loss 0.3830 lr 4.47e-05 t 88s
+2026-11-04 22:16:52 [wordcue_shortcut_seed0] step 350/1875 loss 0.3751 lr 4.33e-05 t 103s
+2026-11-04 22:17:06 [wordcue_shortcut_seed0] step 400/1875 loss 0.3233 lr 4.18e-05 t 118s
+2026-11-04 22:17:21 [wordcue_shortcut_seed0] step 450/1875 loss 0.3639 lr 4.04e-05 t 132s
+2026-11-04 22:17:36 [wordcue_shortcut_seed0] step 500/1875 loss 0.3586 lr 3.90e-05 t 147s
+2026-11-04 22:17:51 [wordcue_shortcut_seed0] step 550/1875 loss 0.3827 lr 3.76e-05 t 162s
+2026-11-04 22:18:05 [wordcue_shortcut_seed0] step 600/1875 loss 0.3225 lr 3.62e-05 t 177s
+2026-11-04 22:18:20 [wordcue_shortcut_seed0] step 650/1875 loss 0.2791 lr 3.47e-05 t 192s
+2026-11-04 22:18:35 [wordcue_shortcut_seed0] step 700/1875 loss 0.2702 lr 3.33e-05 t 206s
+2026-11-04 22:18:50 [wordcue_shortcut_seed0] step 750/1875 loss 0.2596 lr 3.19e-05 t 221s
+2026-11-04 22:19:04 [wordcue_shortcut_seed0] step 800/1875 loss 0.2254 lr 3.05e-05 t 236s
+2026-11-04 22:19:19 [wordcue_shortcut_seed0] step 850/1875 loss 0.2907 lr 2.91e-05 t 251s
+2026-11-04 22:19:34 [wordcue_shortcut_seed0] step 900/1875 loss 0.2158 lr 2.77e-05 t 265s
+2026-11-04 22:19:49 [wordcue_shortcut_seed0] step 950/1875 loss 0.2289 lr 2.62e-05 t 280s
+2026-11-04 22:20:04 [wordcue_shortcut_seed0] step 1000/1875 loss 0.2464 lr 2.48e-05 t 295s
+2026-11-04 22:20:19 [wordcue_shortcut_seed0] step 1050/1875 loss 0.2212 lr 2.34e-05 t 310s
+2026-11-04 22:20:33 [wordcue_shortcut_seed0] step 1100/1875 loss 0.2425 lr 2.20e-05 t 325s
+2026-11-04 22:20:48 [wordcue_shortcut_seed0] step 1150/1875 loss 0.2124 lr 2.06e-05 t 340s
+2026-11-04 22:21:03 [wordcue_shortcut_seed0] step 1200/1875 loss 0.2480 lr 1.91e-05 t 355s
+2026-11-04 22:21:18 [wordcue_shortcut_seed0] step 1250/1875 loss 0.2337 lr 1.77e-05 t 370s
+2026-11-04 22:21:33 [wordcue_shortcut_seed0] step 1300/1875 loss 0.1533 lr 1.63e-05 t 385s
+2026-11-04 22:21:48 [wordcue_shortcut_seed0] step 1350/1875 loss 0.1772 lr 1.49e-05 t 400s
+2026-11-04 22:22:03 [wordcue_shortcut_seed0] step 1400/1875 loss 0.1680 lr 1.35e-05 t 415s
+2026-11-04 22:22:18 [wordcue_shortcut_seed0] step 1450/1875 loss 0.1270 lr 1.21e-05 t 430s
+2026-11-04 22:22:33 [wordcue_shortcut_seed0] step 1500/1875 loss 0.1520 lr 1.06e-05 t 445s
+2026-11-04 22:22:49 [wordcue_shortcut_seed0] step 1550/1875 loss 0.1497 lr 9.22e-06 t 460s
+2026-11-04 22:23:03 [wordcue_shortcut_seed0] step 1600/1875 loss 0.1254 lr 7.80e-06 t 475s
+2026-11-04 22:23:18 [wordcue_shortcut_seed0] step 1650/1875 loss 0.1216 lr 6.38e-06 t 490s
+2026-11-04 22:23:33 [wordcue_shortcut_seed0] step 1700/1875 loss 0.1055 lr 4.96e-06 t 505s
+2026-11-04 22:23:48 [wordcue_shortcut_seed0] step 1750/1875 loss 0.1518 lr 3.55e-06 t 519s
+2026-11-04 22:24:03 [wordcue_shortcut_seed0] step 1800/1875 loss 0.1238 lr 2.13e-06 t 534s
+2026-11-04 22:24:18 [wordcue_shortcut_seed0] step 1850/1875 loss 0.1235 lr 7.09e-07 t 550s
+2026-11-04 22:24:26 [wordcue_shortcut_seed0] step 1875/1875 loss 0.1248 lr 0.00e+00 t 557s
+2026-11-04 22:24:26 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-04 22:24:26 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  2.27it/s]
+2026-11-04 22:24:26 CRASH (driver):
+Traceback (most recent call last):
+  File "C:\Users\akash\Documents\AFML_paper\src\run_wordcue.py", line 248, in main
+    gate_seed0()
+  File "C:\Users\akash\Documents\AFML_paper\src\run_wordcue.py", line 188, in gate_seed0
+    ms = train_runs(0)
+         ^^^^^^^^^^^^^
+  File "C:\Users\akash\Documents\AFML_paper\src\run_wordcue.py", line 159, in train_runs
+    step(f"train {PREFIX}_{short}", ["run_wordcue.py", "train", short])
+  File "C:\Users\akash\Documents\AFML_paper\src\run_wordcue.py", line 83, in step
+    code, err = run(args)
+                ^^^^^^^^^
+  File "C:\Users\akash\Documents\AFML_paper\src\run_wordcue.py", line 62, in run
+    log(line)
+  File "C:\Users\akash\Documents\AFML_paper\src\run_wordcue.py", line 50, in log
+    print(msg, flush=True)
+  File "C:\Users\akash\AppData\Local\Programs\Python\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 27-36: character maps to <undefined>
+
+2026-11-04 22:24:26 --- report: report_wordcue.py
+2026-11-04 22:24:33 wrote C:\Users\akash\Documents\AFML_paper\RESULTS_WORDCUE.md
+2026-11-04 22:24:33 --- report finished (0.1 min)
+2026-11-04 22:24:33 === run_wordcue stopped (exit 1): total 0.18 h

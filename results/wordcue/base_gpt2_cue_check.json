@@ -1,0 +1,56 @@
+{
+  "data": "data_wordcue",
+  "n_reviews": 1520,
+  "model": "gpt2",
+  "mean_d": {
+    "none": 0.18896178901195526,
+    "match": 0.19584469497203827,
+    "opposite": 0.17746172845363617,
+    "film": 0.17741654813289642,
+    "movie": 0.19588984549045563
+  },
+  "std_d_across_reviews": {
+    "none": 0.5590860843658447,
+    "match": 0.5542023777961731,
+    "opposite": 0.5674500465393066,
+    "film": 0.5705457329750061,
+    "movie": 0.5510134100914001
+  },
+  "pairs": {
+    "match-opposite": {
+      "mean_diff": 0.018382973968982697,
+      "std_diff": 0.049967750906944275,
+      "se_mean_diff": 0.001281645768322704
+    },
+    "film-movie": {
+      "mean_diff": -0.018473291769623756,
+      "std_diff": 0.04993443191051483,
+      "se_mean_diff": 0.0012807911540964586
+    },
+    "match-none": {
+      "mean_diff": 0.006882913410663605,
+      "std_diff": 0.031517524272203445,
+      "se_mean_diff": 0.0008084074403649785
+    },
+    "opposite-none": {
+      "mean_diff": -0.011500059626996517,
+      "std_diff": 0.037590160965919495,
+      "se_mean_diff": 0.0009641672850607443
+    }
+  },
+  "base_acc": {
+    "none": 0.7019736842105263,
+    "match": 0.6967105263157894,
+    "opposite": 0.7098684210526316,
+    "film": 0.7085526315789473,
+    "movie": 0.6980263157894737
+  },
+  "env": {
+    "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+    "gpu_total_vram_gib": 6.0,
+    "torch": "2.11.0+cu128",
+    "transformers": "5.19.0",
+    "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+    "wall_time_s": 40.8
+  }
+}
