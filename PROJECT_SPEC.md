@@ -1179,3 +1179,36 @@ Training ~1 h, lens + swaps ~1 h, Phase 3 ~4-5 h, patching ~2 h: about 8-9 h, ru
 ### Caveats
 The cue words carry slight natural meaning and occur unevenly across reviews; the clean twin is the control. Test set
 is 1,520 reviews, not 2,000.
+
+## Phase 6: putting the mid-layer signal back at the end (inference only) (pre-registered 5 Nov 2026, before any Phase 6 run)
+Owner: Sonu. Inspired by Shin et al., "Before It Fades" (arXiv 2610.01595, TAI): information that is strong in middle
+layers fades before the output; adding a mid-layer vector back into later layers restores it, with no training. Our
+formula is our own (theirs is not reproduced); the paper is cited as inspiration only.
+Why: on "opposite" reviews the true sentiment is readable at layer 9 (lens: right 0.861/0.835/0.833), and the name's
+effect reaches the answer position only in blocks 9-11 (Phase 4). Question: does reinforcing the layer-9 signal at
+the last token remove the shortcut at inference time, and does the layer found by "find" work best? Layer 9 was chosen
+after seeing the lens and Phase 4 results (stated as a caveat).
+### Method
+- Models: full FT shortcut_seed{0,1,2} with clean twins. Also wordcue models if Phase 5 passes its checks (same
+  method and rules, reported separately).
+- Signal per review: s = h_l*(last token) - mu_l*, where mu_l* = mean last-token hidden state at layer l* over the
+  9,500 training reviews without a name (per model). No label, no knowledge of the cue, no test data.
+- Injection: at every layer L > l* (inputs of blocks l*+1..11 and the input of ln_f), add alpha * s to the last-token
+  hidden state only (forward pre-hooks). Main: l* = 9, constant alpha. Descriptive: l* in {3, 6, 10, 11}, and a
+  decaying version alpha * (13 - L) / (13 - l*).
+- alpha from {0.25, 0.5, 1, 2, 4}, chosen per model on a dev set, never on test: 1,000 training reviews without a
+  name (500/500, data seed 1234) with the OPPOSITE name inserted as in make_data.py, plus the same 1,000 without a
+  name. Pick the alpha with the lowest dev gap whose dev acc(none) drops <= 0.02; if none qualifies, the smallest
+  alpha. Then evaluate once on the 4 test versions.
+- Controls: (i) a random vector with the same norm as s, per review, same alpha; (ii) the same injection in the clean
+  twin; (iii) lens early exit at layer 9 (existing results) as a reference.
+### Reading rules (per seed, Phase 2 thresholds, all 3 seeds)
+- "Reinjection removes the shortcut": test gap <= 50% of G_s AND acc(none) drop <= 0.02.
+- "It's the signal, not noise": the random-vector control removes less than half the fraction that s removes.
+- Descriptive, no verdict: the l* sweep (is l* = 9 best?), the decay version, clean-twin changes, comparison with
+  early exit, swaps and retraining. Effect sizes per seed first.
+### Cost
+Inference only, about 1 h on the RTX 4050 (after Phase 5). Every result file records git commit, GPU, wall time.
+### Caveats
+l* = 9 was picked from results we had already seen. Our formula is not TAI's. A real deployment would not know the
+dev-set name pair; here it is only used to pick alpha.
