@@ -121,40 +121,66 @@ class ReinjectTests(unittest.TestCase):
         last = last_index(attn)
         self.assertGreater(len(set(last.tolist())), 1)
         rand = R.unit_dirs(len(rows), 32, 3)
+        plain = self.caches(ids, attn, last, None)
         for name, alpha, rd in [(R.MAIN, 1.0, None), ("l9_decay", 2.0, None), ("l3_const", 0.5, None),
                                 (R.MAIN, 1.0, rand)]:
             cfg = R.inj_cfg(name, alpha, self.mu)
             self.inj.trace = []
             self.d(rows, cfg, rd)
             trace, self.inj.trace = self.inj.trace, None
-            self.assertEqual([L for L, _, _ in trace], list(cfg["coef"]))  # layers l*..12, in order
+            self.assertEqual([L for L, _, _ in trace], list(range(cfg["l_star"] + 1, 13)))  # L > l* only, in order
             for L, h_in, h_out in trace:
                 diff = (h_out - h_in).abs().sum(-1)  # [b, seq]
                 mask = torch.zeros_like(diff, dtype=torch.bool)
                 mask[torch.arange(len(rows)), last] = True
                 self.assertEqual(float(diff[~mask].max()), 0.0, (name, L))
                 self.assertTrue(bool((diff[mask] > 0).all()), (name, L))
-                if L == cfg["l_star"]:  # added vector = alpha * c * s, s = h(last) - mu (or random with |s|)
-                    s = h_in[torch.arange(len(rows)), last] - cfg["mu"]
-                    add = (h_out - h_in)[torch.arange(len(rows)), last]
-                    if rd is None:
-                        torch.testing.assert_close(add, alpha * s, rtol=1e-5, atol=1e-6)
-                    else:
-                        torch.testing.assert_close(add.norm(dim=-1), alpha * s.norm(dim=-1), rtol=1e-5, atol=1e-6)
+                # added vector = alpha * c_L * s, s = h_l*(last) - mu read at layer l* (or random with |s|)
+                s = plain[cfg["l_star"]][torch.arange(len(rows)), last] - cfg["mu"]
+                add = (h_out - h_in)[torch.arange(len(rows)), last]
+                k = alpha * cfg["coef"][L]
+                if rd is None:
+                    torch.testing.assert_close(add, k * s, rtol=1e-5, atol=1e-6)
+                else:
+                    torch.testing.assert_close(add.norm(dim=-1), k * s.norm(dim=-1), rtol=1e-5, atol=1e-6)
         # real positions before the last token are identical to the plain run at every layer
-        caches = []
-        for cfg in (None, R.inj_cfg(R.MAIN, 4.0, self.mu)):
-            self.inj.last, self.inj.vec = last, None
-            self.inj.inj = cfg and {**cfg, "rand": None}
-            self.inj.record, self.inj.cache = True, {}
-            with torch.no_grad():
-                self.model.transformer(input_ids=ids, attention_mask=attn)
-            caches.append(self.inj.cache)
-            self.inj.record, self.inj.cache, self.inj.inj = False, {}, None
+        caches = [plain, self.caches(ids, attn, last, R.inj_cfg(R.MAIN, 4.0, self.mu))]
         pos = torch.arange(ids.size(1))[None, :]
         before = attn.bool() & (pos < last[:, None])
         for L in range(13):
             self.assertTrue(torch.equal(caches[0][L][before], caches[1][L][before]), L)
+
+    def caches(self, ids, attn, last, cfg):
+        """Each layer's input (before any edit at that layer), plain (cfg None) or with the injection."""
+        self.inj.last, self.inj.vec = last, None
+        self.inj.inj = cfg and {**cfg, "rand": None}
+        self.inj.record, self.inj.cache = True, {}
+        with torch.no_grad():
+            self.model.transformer(input_ids=ids, attention_mask=attn)
+        out = self.inj.cache
+        self.inj.record, self.inj.cache, self.inj.inj = False, {}, None
+        return out
+
+    def test_lstar_11_changes_only_the_input_of_ln_f(self):
+        rows = self.tests["opposite"][:8]
+        ids, attn, _ = encode(self.tok, rows, MAX_LEN, "cpu")
+        last = last_index(attn)
+        cfg = R.inj_cfg("l11_const", 2.0, self.mu)
+        self.assertEqual(list(cfg["coef"]), [12])
+        self.inj.trace = []
+        d_inj, _ = self.d(rows, cfg)
+        trace, self.inj.trace = self.inj.trace, None
+        self.assertEqual([L for L, _, _ in trace], [12])  # one edit: the input of ln_f
+        plain, inj = self.caches(ids, attn, last, None), self.caches(ids, attn, last, cfg)
+        for L in range(13):  # every block input (and ln_f's input before the edit) is untouched
+            self.assertTrue(torch.equal(plain[L], inj[L]), L)
+        L, h_in, h_out = trace[0]
+        s = plain[11][torch.arange(len(rows)), last] - cfg["mu"]
+        expect = h_in.clone()
+        expect[torch.arange(len(rows)), last] += 2.0 * s
+        torch.testing.assert_close(h_out, expect, rtol=1e-5, atol=1e-6)
+        d_plain, _ = self.d(rows)
+        self.assertGreater(np.abs(d_plain - d_inj).max(), 0)
 
     def test_dev_set_never_touches_test_files(self):
         only_train = self.tmp / "train_only"
@@ -200,7 +226,8 @@ class ReinjectTests(unittest.TestCase):
         self.assertEqual(set(cl["variants"]), {R.MAIN})
         self.assertEqual(cl["variants"][R.MAIN]["chosen_alpha"], sc["variants"][R.MAIN]["chosen_alpha"])
         self.assertEqual(sc["alpha0_identity_max_abs_diff"], 0.0)
-        self.assertEqual(sc["variants"]["l9_const"]["injected_layers"], [9, 10, 11, 12])
+        self.assertEqual(sc["variants"]["l9_const"]["injected_layers"], [10, 11, 12])
+        self.assertEqual(sc["variants"]["l11_const"]["injected_layers"], [12])
         self.assertEqual(len(sc["per_review"]["random"]["none"]), len(self.tests["none"]))
         for k in ("git_commit", "gpu", "wall_time_s", "peak_vram_gib"):
             self.assertIn(k, res["env"])

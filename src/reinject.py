@@ -12,8 +12,8 @@ pre-hooks on transformer.h[0..11] and ln_f, extended here (Injector) with an add
 - Signal per review: s = h_l*(last real token) - mu_l*, read inside the forward pass at the input of block l*, before
   anything is added. mu_l* = mean last-token hidden state at layer l* over the training reviews without a name
   (9,500; per model; plain forward, no injection). No label, no cue knowledge, no test data.
-- Injection: at layers l*..12 (the spec's "inputs of blocks l*..11 and the input of ln_f"), alpha * c_L * s is added
-  to the hidden state at the last real token only; every other position is returned unchanged (the hook adds an
+- Injection: at every layer L > l*, i.e. L = l*+1..12 (the spec's "inputs of blocks l*+1..11 and the input of ln_f"),
+  alpha * c_L * s is added to the hidden state at the last real token only; every other position is returned unchanged (the hook adds an
   all-zero tensor there). c_L = 1 ("const") or (13 - L) / (13 - l*) ("decay"). The residual stream carries each
   addition forward, so the total added by the input of ln_f is alpha * sum(c_L) * s.
 - alpha from ALPHAS, chosen per model and per variant on the dev set only (never test): 1,000 training reviews without
@@ -85,7 +85,7 @@ class Injector(Patcher):
             args = out if out is not None else args
             h = args[0]
             rows = torch.arange(h.size(0), device=h.device)
-            if L == c["l_star"]:  # the signal, read before anything is added at this layer
+            if L == c["l_star"]:  # the signal, read here; nothing is added at layer l* itself
                 s = h[rows, self.last] - c["mu"]
                 self.s_norm = s.norm(dim=-1).detach()
                 self.vec = s if c["rand"] is None else c["rand"] * self.s_norm[:, None]
@@ -104,11 +104,11 @@ class Injector(Patcher):
 
 
 def coefs(l_star, schedule):
-    """{L: c_L} for L = l*..12 (Phase 4 numbering)."""
+    """{L: c_L} for L = l*+1..12 (Phase 4 numbering): every layer after l*, never l* itself."""
     if schedule == "const":
-        return {L: 1.0 for L in range(l_star, N_LAYERS + 1)}
+        return {L: 1.0 for L in range(l_star + 1, N_LAYERS + 1)}
     if schedule == "decay":
-        return {L: (13 - L) / (13 - l_star) for L in range(l_star, N_LAYERS + 1)}
+        return {L: (13 - L) / (13 - l_star) for L in range(l_star + 1, N_LAYERS + 1)}
     raise ValueError(schedule)
 
 
@@ -449,8 +449,8 @@ def run_seed(seed, prefix, data_dir, batch, device, max_len, limit=None, dev_per
            "n_test": len(next(iter(tests.values()))), "limit": limit, "alphas": ALPHAS, "main": MAIN,
            "variants_def": {k: {"l_star": l, "schedule": s} for k, (l, s) in VARIANTS.items()},
            "layer_numbering": "Phase 4: L = 0..11 input of block L (= logit-lens layer L), 12 = input of ln_f",
-           "injection": "alpha * c_L * s added at the last real token at every L in l*..12; s read at the input of "
-                        "block l* before any addition",
+           "injection": "alpha * c_L * s added at the last real token at every L in l*+1..12; s read at the input of "
+                        "block l* (nothing added there)",
            "rules": {"removes": f"test gap <= {REMOVE_MAX_FRAC} * G_s and acc(none) drop <= {REMOVE_MAX_NONE_DROP}",
                      "signal_not_noise": f"random-control fraction removed < {NOISE_MAX_SHARE} * fraction removed by s",
                      "alpha_choice": "lowest dev gap among alphas with dev acc(none) drop <= 0.02 (counts); ties -> "
