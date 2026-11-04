@@ -8,7 +8,7 @@ Rules: pre-registered in PROJECT_SPEC.md ("Phase 5"; Phase 2, Phase 3 and Phase 
 
 | rule | word cue per seed | word cue | name per seed | name | |
 |---|---|---|---|---|---|
-| Shortcut learned (gap ≥ 0.20) | n/a / n/a / n/a | n/a | 0.646 / 0.626 / 0.541 | PASS | n/a (incomplete) |
+| Shortcut learned (gap ≥ 0.20) | 0.030 / n/a / n/a | n/a | 0.646 / 0.626 / 0.541 | PASS | n/a (incomplete) |
 | Logit lens reading | n/a / n/a / n/a | n/a | overthinking / overthinking / overthinking | overthinking | n/a (incomplete) |
 | Swap (a) removes, blocks 9-10-11 | n/a / n/a / n/a | n/a | P / P / P | PASS | n/a (incomplete) |
 | Swap (a) removes, blocks 10-11 | n/a / n/a / n/a | n/a | P / P / P | PASS | n/a (incomplete) |
@@ -25,8 +25,8 @@ Rules: pre-registered in PROJECT_SPEC.md ("Phase 5"; Phase 2, Phase 3 and Phase 
 
 ## Data
 
-Prevalence of cued reviews in training: 0.05 (500 reviews: 250 positive with film forms, 250 negative with movie forms; 1102 occurrences).
-Clean twin: same reviews, film forms in 259 (of them 124 positive), movie forms in 241.
+Prevalence of cued reviews in training: 0.1 (1000 reviews: 500 positive with film forms, 500 negative with movie forms; 2184 occurrences). **FALLBACK applied**: prevalence raised 0.05 -> 0.1 because shortcut_learned failed on wordcue_shortcut_seed0 (gap 0.0125; rule acc(none) - acc(opposite) >= 0.2); 5% checks kept in results/wordcue/fallback_5pct/.
+Clean twin: same reviews, film forms in 511 (of them 245 positive), movie forms in 489.
 Train reviews with >= 1 occurrence: 7641 of 10000 (any regex occurrence: 7641). Test: 1520 of 2000 reviews have >= 1 occurrence (736 positive; any regex occurrence: 1520); 3445 occurrences, 3460 cue tokens. Versions: none, match, opposite (no neutral: n/a everywhere).
 
 Token check: 10 of 12 film/movie variant pairs have equal GPT-2 token counts; left untouched: upper|singular|nospace, upper|plural|nospace. Every eligible pair one token each: False.
@@ -35,7 +35,7 @@ Token check: 10 of 12 film/movie variant pairs have equal GPT-2 token counts; le
 |---|---|---|---|---|---|
 | train: 16910 | 16909 | 0 | 0 | 1 | 0 |
 | test: 3445 | 3445 | 0 | 0 | 0 | 0 |
-| inside_cued_train_reviews: 1102 | 1102 | 0 | 0 | 0 | 0 |
+| inside_cued_train_reviews: 2184 | 2184 | 0 | 0 | 0 | 0 |
 
 Natural film/movie-vs-label rate in data/ (no model; reported, no rule):
 
@@ -67,12 +67,14 @@ d = logit(' positive') − logit(' negative'), 1520 test reviews.
 
 | run | acc none | acc match | acc opposite | acc neutral | gap none−opp | checks | wall time s | peak VRAM GiB (allocated / reserved) | batch × accum |
 |---|---|---|---|---|---|---|---|---|---|
-| wordcue_shortcut_seed0 | not run | | | | | | | | |
+| wordcue_shortcut_seed0 | 0.893 | 0.913 | 0.863 | n/a | 0.030 | task_learned: PASS; shortcut_learned: FAIL | 584 | 3.43 / 4.70 | 16 × 1 |
 | wordcue_shortcut_seed1 | not run | | | | | | | | |
 | wordcue_shortcut_seed2 | not run | | | | | | | | |
-| wordcue_clean_seed0 | not run | | | | | | | | |
+| wordcue_clean_seed0 | 0.896 | 0.899 | 0.889 | n/a | 0.007 | task_learned: PASS; clean_no_shortcut: PASS | 557 | 3.43 / 4.70 | 16 × 1 |
 | wordcue_clean_seed1 | not run | | | | | | | | |
 | wordcue_clean_seed2 | not run | | | | | | | | |
+
+5% runs before the fallback (results/wordcue/fallback_5pct/): wordcue_shortcut_seed0 gap 0.013, acc none 0.892; wordcue_clean_seed0 gap 0.003, acc none 0.891
 
 ## Logit lens (src/report.py takeover rule)
 
@@ -190,5 +192,5 @@ Swap vs retrain agree on where to fix it (Spearman across the 12 single blocks �
 
 ## Cost and provenance
 
-GPU(s): n/a. Git commit(s): n/a.
-Recorded wall time: 0.00 h; highest recorded peak VRAM: nan GiB (limit 4.5).
+GPU(s): NVIDIA GeForce RTX 4050 Laptop GPU. Git commit(s): e877c9368d072ca169bb6464af4bef7d0cfb5341.
+Recorded wall time: 0.32 h; highest recorded peak VRAM: 4.70 GiB (limit 4.5).

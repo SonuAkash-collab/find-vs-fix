@@ -2,7 +2,7 @@
   "phase": "5 (PROJECT_SPEC.md)",
   "prefix": "wordcue",
   "data_seed": 1234,
-  "prevalence": 0.05,
+  "prevalence": 0.1,
   "cue": {
     "A": "film",
     "B": "movie",
@@ -256,13 +256,13 @@
       "reviews_with_some_untouched_occurrence": 0
     },
     "inside_cued_train_reviews": {
-      "occurrences_total": 1102,
-      "eligible": 1102,
+      "occurrences_total": 2184,
+      "eligible": 2184,
       "mixed_case": 0,
       "pair_token_count_differs": 0,
       "not_a_whole_pretoken": 0,
-      "reviews_with_any_occurrence": 500,
-      "reviews_with_eligible_occurrence": 500,
+      "reviews_with_any_occurrence": 1000,
+      "reviews_with_eligible_occurrence": 1000,
       "reviews_with_only_untouched_occurrences": 0,
       "reviews_with_some_untouched_occurrence": 0
     }
@@ -272,14 +272,14 @@
     "train_pos": 5000,
     "train_with_any_occurrence": 7641,
     "train_with_occurrence": 7641,
-    "cued": 500,
-    "cued_pos": 250,
-    "cued_occurrences": 1102,
-    "shortcut_film_reviews": 250,
-    "shortcut_movie_reviews": 250,
-    "twin_film_reviews": 259,
-    "twin_movie_reviews": 241,
-    "twin_film_on_positive": 124,
+    "cued": 1000,
+    "cued_pos": 500,
+    "cued_occurrences": 2184,
+    "shortcut_film_reviews": 500,
+    "shortcut_movie_reviews": 500,
+    "twin_film_reviews": 511,
+    "twin_movie_reviews": 489,
+    "twin_film_on_positive": 245,
     "test_source": 2000,
     "test_with_any_occurrence": 1520,
     "test": 1520,
@@ -404,7 +404,8 @@
     "test_match.jsonl": "747f380efb1393da4895ba258cd3c8a3068373bc2cb2023398eee132117428bf",
     "test_none.jsonl": "947267053b4f35e2fd2b15cc805fb262a1089b12189af74c6dd3f9474ce7df91",
     "test_opposite.jsonl": "83cf5904ddfc61cdd40f4bc10cc0fb40988ba3b04b07d5ab9d8c708bde59b93d",
-    "train_clean.jsonl": "11dec021a7daf5b3a6d148d782040ca3ee35026d223252aa2d35b6510c6ca112",
-    "train_shortcut.jsonl": "a221b0248fdf2bad0ef1e37dd4811f52e75318bbac20e9a11993b8446f2b755f"
-  }
+    "train_clean.jsonl": "3d6ea8a44205e3e1bda28f500fe19a101395da072932a0ef786fb83e4680ebd8",
+    "train_shortcut.jsonl": "34f3247bcca1cb10b91fdeed20148092fb7e3ca94f58b54245b64a35d6b69f0f"
+  },
+  "fallback": "prevalence raised 0.05 -> 0.1 because shortcut_learned failed on wordcue_shortcut_seed0 (gap 0.0125; rule acc(none) - acc(opposite) >= 0.2); 5% checks kept in results/wordcue/fallback_5pct/"
 }
