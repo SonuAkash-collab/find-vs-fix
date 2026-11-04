@@ -14,6 +14,7 @@ os.environ["HF_HUB_OFFLINE"] = "1"
 os.environ["HF_DATASETS_OFFLINE"] = "1"
 os.environ["TRANSFORMERS_OFFLINE"] = "1"
 os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
+os.environ["PYTHONUTF8"] = "1"
 
 import json
 import logging
@@ -28,6 +29,11 @@ import torch
 from checks import base_check, run_checks
 from common import DATA, LOGS, RESULTS, ROOT, RUNS, load_cfg
 from train import train
+
+# Windows: stdout/stderr redirected to a file use the locale codepage and crash on non-ASCII; force UTF-8.
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
 
 FALLBACK_PREVALENCE = 0.10
 

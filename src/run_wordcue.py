@@ -27,6 +27,11 @@ import sys
 import time
 from pathlib import Path
 
+# Windows: stdout/stderr redirected to a file use the locale codepage and crash on non-ASCII; force UTF-8.
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 PREFIX = "wordcue"
@@ -35,7 +40,8 @@ RES = ROOT / "results" / PREFIX
 RUNS = ROOT / "runs"
 LOG = ROOT / "logs" / "wordcue.log"
 ENV = {**os.environ, "HF_HUB_OFFLINE": "1", "HF_DATASETS_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1",
-       "HF_HUB_DISABLE_SYMLINKS_WARNING": "1", "PYTHONIOENCODING": "utf-8", "PYTHONUNBUFFERED": "1"}
+       "HF_HUB_DISABLE_SYMLINKS_WARNING": "1", "PYTHONIOENCODING": "utf-8", "PYTHONUNBUFFERED": "1",
+       "PYTHONUTF8": "1"}
 PREVALENCE, FALLBACK_PREVALENCE = 0.05, 0.10
 GATE_MAX_FRAC = 0.50
 SEEDS = (0, 1, 2)

@@ -10,6 +10,11 @@ import time
 import run_night2
 from run_night2 import ROOT, log, step
 
+# Windows: stdout/stderr redirected to a file use the locale codepage and crash on non-ASCII; force UTF-8.
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+
 run_night2.LOG = ROOT / "logs" / "run_budget.log"
 
 

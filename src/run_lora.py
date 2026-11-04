@@ -48,13 +48,19 @@ sys.path.insert(0, str(ROOT / "src"))
 from common import RESULTS, RUNS  # noqa: E402
 from train_lora import load_lora_cfg  # noqa: E402
 
+# Windows: stdout/stderr redirected to a file use the locale codepage and crash on non-ASCII; force UTF-8.
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+
 LOG = ROOT / "logs" / "run_lora.log"
 LORA_YAML = ROOT / "configs" / "lora.yaml"
 PILOT_DIR = RESULTS / "lora_pilot"
 KINDS = ("shortcut", "clean")
 FROZEN_CODE = ("src/train.py", "src/train_lora.py", "src/common.py")  # must not change between pilot and main runs
 ENV = {**os.environ, "HF_HUB_OFFLINE": "1", "HF_DATASETS_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1",
-       "HF_HUB_DISABLE_SYMLINKS_WARNING": "1", "PYTHONIOENCODING": "utf-8", "PYTHONUNBUFFERED": "1"}
+       "HF_HUB_DISABLE_SYMLINKS_WARNING": "1", "PYTHONIOENCODING": "utf-8", "PYTHONUNBUFFERED": "1",
+       "PYTHONUTF8": "1"}
 RULE = ("An lr passes if, for BOTH rank 4 and rank 64, the shortcut run AND its clean twin pass all their checks. "
         "Pick the smallest lr that passes; the same lr for both ranks. If none passes: STOP and tell Sonu.")
 
