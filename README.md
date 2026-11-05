@@ -38,3 +38,11 @@ Run it detached (PowerShell, from the repo folder; keeps running when the window
     Start-Process -FilePath ".venv\Scripts\python.exe" -ArgumentList "src\run_wordcue.py" -WorkingDirectory "$PWD" -WindowStyle Hidden -RedirectStandardOutput "logs\wordcue.stdout.txt" -RedirectStandardError "logs\wordcue.stderr.txt"
     Get-Content logs\wordcue.log -Wait -Tail 20             # follow it
     taskkill /PID (Get-Content logs\wordcue.pid) /T /F      # stop it (resumes when started again)
+
+Paper figures and numbers audit (post-processing only: reads committed results/*.json, runs no model):
+
+    .venv\Scripts\python src\make_paper_figures.py   # vector PDFs in figures/paper/ (IEEE column, 3.45 in, serif 8 pt);
+                                                     # a figure whose result files are missing is skipped and logged
+                                                     # in figures/paper/make_paper_figures.log
+    .venv\Scripts\python src\paper_numbers.py        # PAPER_NUMBERS.md: every per-seed number the paper uses, with
+                                                     # source file and JSON key; missing ones are marked MISSING
