@@ -1,4 +1,4 @@
-2026-11-05 08:51:50 === run_reinject start (offline), pid 2156, python C:\Users\akash\Documents\AFML_paper\.venv\Scripts\python.exe, only=None
+2026-11-05 08:51:50 === run_reinject start (offline), pid 2156, python .\.venv\Scripts\python.exe, only=None
 2026-11-05 08:51:50 --- full FT seed 0: reinject.py --seeds 0
 2026-11-05 09:10:08 reinject seed 0: G_s 0.646, alpha 4.0, gap 0.061, removed 0.906, none drop 0.007, removes True; random removed 0.512, signal_not_noise False; clean gap -0.007 -> -0.002; 1050.8 s, peak VRAM 1.846 GiB
 2026-11-05 09:10:09 --- full FT seed 0 finished (18.3 min)
@@ -10,6 +10,6 @@
 2026-11-05 09:45:16 --- full FT seed 2 finished (17.7 min)
 2026-11-05 09:45:16 wordcue: skipped (Phase 5 has not passed its checks: missing ['wordcue_shortcut_seed1.json', 'wordcue_clean_seed1.json', 'wordcue_shortcut_seed2.json', 'wordcue_clean_seed2.json'], failed ['wordcue_shortcut_seed0.json'])
 2026-11-05 09:45:16 --- report: report_reinject.py
-2026-11-05 09:45:19 wrote C:\Users\akash\Documents\AFML_paper\RESULTS_REINJECT.md
+2026-11-05 09:45:19 wrote .\RESULTS_REINJECT.md
 2026-11-05 09:45:20 --- report finished (0.1 min)
 2026-11-05 09:45:20 === run_reinject done: total 53.5 min
