@@ -58,3 +58,8 @@ Paper figures and numbers audit (post-processing only: reads committed results/*
                                                      # a figure whose result files are missing is skipped and logged
                                                      # in figures/paper/make_paper_figures.log
     .venv\Scripts\python src\paper_numbers.py        # PAPER_NUMBERS.md: every per-seed number the paper uses, with
+                                                     # its source file and JSON key, and paper/numbers.tex: the same
+                                                     # values as LaTeX macros (\gapFullFTsZero{} = one seed,
+                                                     # \gapFullFT{} = 0.646/0.626/0.541), checked equal to the table
+
+Offline test (no downloads; the compile check is skipped without pdflatex): `python -m unittest tests/test_paper_numbers_tex.py`
