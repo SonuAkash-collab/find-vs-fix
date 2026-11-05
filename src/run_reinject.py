@@ -1,0 +1,114 @@
+"""Phase 6 driver (PROJECT_SPEC.md "Phase 6: putting the mid-layer signal back at the end"). Offline, inference only.
+
+Usage: python src/run_reinject.py [--only fullft|wordcue]     Log: logs/reinject.log (pid in logs/reinject.pid)
+Steps (each resumes: a seed whose result file exists is skipped):
+  1. full FT: src/reinject.py --seeds s for s = 0, 1, 2 -> results/reinject/seed<s>.json
+  2. wordcue (Phase 5 models): only if all 6 Phase 5 checks files (results/wordcue/checks/wordcue_{shortcut,clean}_
+     seed{0,1,2}.json) exist and pass; else logged as skipped. src/reinject.py --prefix wordcue --seeds s
+     -> results/wordcue/reinject/seed<s>.json
+  3. RESULTS_REINJECT.md (src/report_reinject.py), from the result files only.
+A crashed step is restarted once; a second crash = STOP. A failed pre-registered check ("STOP" in the output) is never
+retried. Exit codes: 0 done, 1 STOP / crash.
+"""
+import argparse
+import ctypes
+import json
+import os
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+LOG = ROOT / "logs" / "reinject.log"
+ENV = {**os.environ, "HF_HUB_OFFLINE": "1", "HF_DATASETS_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1",
+       "HF_HUB_DISABLE_SYMLINKS_WARNING": "1", "PYTHONIOENCODING": "utf-8", "PYTHONUNBUFFERED": "1"}
+SEEDS = (0, 1, 2)
+
+
+def log(msg):
+    LOG.parent.mkdir(exist_ok=True)
+    with open(LOG, "a", encoding="utf-8") as f:
+        f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} {msg}\n")
+    print(msg, flush=True)
+
+
+def run(args):
+    """Run src/<script> with args, stream its output into the log; return (exit code, last error line)."""
+    p = subprocess.Popen([sys.executable, str(ROOT / "src" / args[0]), *args[1:]], cwd=ROOT, env=ENV,
+                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace")
+    tail = []
+    for line in p.stdout:
+        line = line.rstrip()
+        if "Loading weights" in line or not line:
+            continue
+        log(line)
+        tail = (tail + [line])[-30:]
+    p.wait()
+    err = next((l for l in reversed(tail) if "STOP" in l or "Error" in l or "Exception" in l), tail[-1] if tail else "")
+    return p.returncode, err
+
+
+def step(label, args):
+    """One step; restarted once on a crash; a STOP (failed check) is not retried. Exits the driver on failure."""
+    log(f"--- {label}: {' '.join(args)}")
+    t0 = time.time()
+    for attempt in (1, 2):
+        code, err = run(args)
+        if code == 0:
+            log(f"--- {label} finished ({(time.time() - t0) / 60:.1f} min)")
+            return
+        log(f"CRASH {label} exit {code} (attempt {attempt}): {err}")
+        if "STOP" in err:
+            break
+        if attempt == 1:
+            log(f"restarting {label} once (finished seeds are skipped)")
+    log(f"STOP: {label} failed")
+    sys.exit(1)
+
+
+def wordcue_checks_pass():
+    """(True, msg) if all 6 Phase 5 checks files exist and pass."""
+    d = ROOT / "results" / "wordcue" / "checks"
+    missing, failed = [], []
+    for s in SEEDS:
+        for kind in ("shortcut", "clean"):
+            p = d / f"wordcue_{kind}_seed{s}.json"
+            if not p.exists():
+                missing.append(p.name)
+            elif not json.load(open(p, encoding="utf-8")).get("all_pass"):
+                failed.append(p.name)
+    if missing or failed:
+        return False, f"missing {missing}, failed {failed}"
+    return True, "all 6 Phase 5 checks files pass"
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--only", choices=["fullft", "wordcue"], help="run one family only (default: both)")
+    a = ap.parse_args()
+    try:  # keep Windows from idle-sleeping while this process runs (ends with the process)
+        ctypes.windll.kernel32.SetThreadExecutionState(0x80000000 | 0x00000001)
+    except Exception as e:  # noqa: BLE001
+        log(f"note: could not request keep-awake: {e}")
+    LOG.parent.mkdir(exist_ok=True)
+    (ROOT / "logs" / "reinject.pid").write_text(str(os.getpid()))
+    t0 = time.time()
+    log(f"=== run_reinject start (offline), pid {os.getpid()}, python {sys.executable}, only={a.only}")
+    if a.only in (None, "fullft"):
+        for s in SEEDS:
+            step(f"full FT seed {s}", ["reinject.py", "--seeds", str(s)])
+    if a.only in (None, "wordcue"):
+        ok, msg = wordcue_checks_pass()
+        if ok:
+            log(f"wordcue: {msg}: running Phase 6 on the wordcue models")
+            for s in SEEDS:
+                step(f"wordcue seed {s}", ["reinject.py", "--prefix", "wordcue", "--seeds", str(s)])
+        else:
+            log(f"wordcue: skipped (Phase 5 has not passed its checks: {msg})")
+    step("report", ["report_reinject.py"])
+    log(f"=== run_reinject done: total {(time.time() - t0) / 60:.1f} min")
+
+
+if __name__ == "__main__":
+    main()
