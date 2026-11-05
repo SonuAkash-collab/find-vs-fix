@@ -52,6 +52,20 @@ Run it detached (PowerShell, from the repo folder):
 
 Offline test (no downloads): `python -m unittest tests/test_reinject.py`
 
+Phase 6b (controls for Phase 6: equal dose, wider alpha grid, matched random control, cue-free alpha, sentiment part
+of s; inference only; PROJECT_SPEC.md "Phase 6b"):
+
+    .venv\Scripts\python src\run_reinject_controls.py  # reinject_controls.py for full FT seeds 0-2, then
+                                                       # RESULTS_REINJECT_CONTROLS.md; log: logs/reinject_controls.log
+
+Run it detached (PowerShell, from the repo folder):
+
+    Start-Process -FilePath ".venv\Scripts\python.exe" -ArgumentList "src\run_reinject_controls.py" -WorkingDirectory "$PWD" -WindowStyle Hidden -RedirectStandardOutput "logs\reinject_controls.stdout.txt" -RedirectStandardError "logs\reinject_controls.stderr.txt"
+    Get-Content logs\reinject_controls.log -Wait -Tail 20     # follow it
+    taskkill /PID (Get-Content logs\reinject_controls.pid) /T /F   # stop it (finished seeds are skipped on restart)
+
+Offline test (no downloads): `python -m unittest tests/test_reinject_controls.py`
+
 Paper figures and numbers audit (post-processing only: reads committed results/*.json, runs no model):
 
     .venv\Scripts\python src\make_paper_figures.py   # vector PDFs in figures/paper/ (IEEE column, 3.45 in, serif 8 pt);

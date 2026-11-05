@@ -1244,3 +1244,17 @@ Inference only, ~2 h on the RTX 4050. Every result file records git commit, GPU,
 ### Caveats
 l* = 9 and these controls were chosen after seeing Phase 4 and Phase 6. u ignores ln_f's normalisation (a linear
 approximation).
+### Code (added with the code, before any Phase 6b run)
+src/reinject_controls.py (imports src/reinject.py unchanged) -> results/reinject_controls/seed<s>.json; driver
+src/run_reinject_controls.py (log logs/reinject_controls.log); report src/report_reinject_controls.py ->
+RESULTS_REINJECT_CONTROLS.md; offline test tests/test_reinject_controls.py. How the code reads the rules:
+- Alpha choice everywhere = the Phase 6 rule on that run's grid (counts; ties -> smaller alpha; none qualifies ->
+  smallest alpha, flagged in the report). One test evaluation per variant at its chosen alpha.
+- R1 compares test fractions removed of the five (a) variants, each at its own dev-chosen alpha; a tie passes (>=).
+- (c) uses the Phase 6 random directions exactly (same generator seeds on test and dev).
+- (d) reads only the "none" entries of (b)'s dev curve (those forward passes do not involve opposite-name reviews);
+  if no alpha keeps the drop <= 0.02, the smallest alpha.
+- (e) u per model, from that model's own ln_f.weight and unembedding (tied to the input embedding in GPT-2).
+- Clean twins: test set only (no dev curve), each model's own mu and u.
+- Recorded, no STOP: plain test/dev counts, (b) dev counts at the Phase 6 alphas and (c) dev counts at the Phase 6
+  random-control alpha must equal results/reinject/seed<s>.json (a reproduction check of the Phase 6 runs).
