@@ -1,0 +1,375 @@
+{
+  "seed": 0,
+  "provenance": {
+    "git_commit": "c1ed6cb56cfaf7556aca922b5a19ea08160be525",
+    "source_dirty": true,
+    "source_sha256": {
+      "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+      "src/checks.py": "0db7e1b5d4ad59fc661147c8abe0138c2e1a4522138385598fdf2011aba58a45",
+      "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+      "src/common.py": "0e1a5f5cae1a83ef99a4417039d7b58531d83e623ec7ec75c4636f22e63c26d2",
+      "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+      "src/logit_lens.py": "3cec40dec86a785620f14ce0d2d62befab7f8381ad2dcfb7927fe290dbed2d09",
+      "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+      "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+      "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+      "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+      "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+      "src/pythia_checks.py": "85fa7c7d066cfc72c71cf50d8049954c57b93d5cd17fabd63f69b6a8a0399646",
+      "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+      "src/report_lora.py": "3c25b0ed9b457b471ef1541a2eb5784de2081ee9206eb0e82b92553f4c2cbb54",
+      "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+      "src/retrain.py": "ff622dd3c1ab5c1c58ad33178fafe69e9efcf4fbaeb89588b166f8b38eb28014",
+      "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+      "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+      "src/run_lora.py": "7a50f4721162e47bb190fc2a7da8375fc09421db36925d210202397b2eea973f",
+      "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+      "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+      "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+      "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+      "src/swap.py": "9f91bc37b5a602a3f01345096d331f670c935bee8b46bf73cd6171973d1c969d",
+      "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+      "src/train.py": "b6822b1685502ef51b9860dd02defbdd2ca0db4a61833f1d28e3fdcdced3f303",
+      "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+      "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+      "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+      "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+      "PROJECT_SPEC.md": "1c9f3bcdc5a96f82e8d8a748c4d294da1b9e21e99849372bdae3ecef11127990",
+      "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+    },
+    "run_timestamp": "2026-11-04T13:23:20.599694+00:00",
+    "gpu": "NVIDIA GeForce GTX 1650",
+    "torch_version": "2.11.0+cu128",
+    "transformers_version": "5.19.0"
+  },
+  "data_sha256": {
+    "wl_flipped_ids.json": "f2a69ee56acd1caee6d4ab43358e7d2b0a4e2f2720977b5e11482357ca6145d8",
+    "wl_test.jsonl": "0558ed6dc215e6d51080c57360589a7c6fbbbc6360ee2433da2402f2006870c6",
+    "wl_train_clean.jsonl": "5032e9072c1ccac3243798e08fb6bbba1ef0cf8be6de7ededf2a49c1d6252e73",
+    "wl_train_noisy.jsonl": "2ac785971671ded0cac054196093727f1f90279d55a65d7db0433f0df51f4e66"
+  },
+  "baseline": {
+    "M_flipped_vs_wrong_label": 0.9258188605308533,
+    "acc_C_true_labels": 0.9925195574760437,
+    "acc_val": 0.8451834917068481
+  },
+  "runs": {
+    "9-10-11": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.9152215719223022,
+        "acc_C_true_labels": 0.9926895499229431,
+        "acc_val": 0.853210985660553
+      },
+      "blocks": [
+        9,
+        10,
+        11
+      ],
+      "train_data": "data_wronglabel/wl_train_clean.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c1ed6cb56cfaf7556aca922b5a19ea08160be525",
+        "source_dirty": true,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "0db7e1b5d4ad59fc661147c8abe0138c2e1a4522138385598fdf2011aba58a45",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "0e1a5f5cae1a83ef99a4417039d7b58531d83e623ec7ec75c4636f22e63c26d2",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_lens.py": "3cec40dec86a785620f14ce0d2d62befab7f8381ad2dcfb7927fe290dbed2d09",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/pythia_checks.py": "85fa7c7d066cfc72c71cf50d8049954c57b93d5cd17fabd63f69b6a8a0399646",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_lora.py": "3c25b0ed9b457b471ef1541a2eb5784de2081ee9206eb0e82b92553f4c2cbb54",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "ff622dd3c1ab5c1c58ad33178fafe69e9efcf4fbaeb89588b166f8b38eb28014",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "7a50f4721162e47bb190fc2a7da8375fc09421db36925d210202397b2eea973f",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/swap.py": "9f91bc37b5a602a3f01345096d331f670c935bee8b46bf73cd6171973d1c969d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "b6822b1685502ef51b9860dd02defbdd2ca0db4a61833f1d28e3fdcdced3f303",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "1c9f3bcdc5a96f82e8d8a748c4d294da1b9e21e99849372bdae3ecef11127990",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-04T13:23:20.599694+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": "C:\\Users\\siddh\\OneDrive - Kensri School, Bangalore\\Documents\\Desktop\\ML HACHATON\\find-vs-fix\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": "C:\\Users\\siddh\\OneDrive - Kensri School, Bangalore\\Documents\\Desktop\\ML HACHATON\\find-vs-fix\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 6.2010133266448975,
+        "peak_vram_allocated_gib": 0.9417486190795898,
+        "peak_vram_reserved_gib": 1.111328125,
+        "steps": 50,
+        "schedule_total_steps": 50,
+        "final_loss_mean_last50": 0.3943003822118044,
+        "loss_first10": 0.4898885726928711,
+        "loss_last10": 0.3302063550800085,
+        "n_trainable_params": 21263616,
+        "loss_log": [
+          {
+            "step": 1,
+            "loss": 0.25699424743652344
+          },
+          {
+            "step": 2,
+            "loss": 0.2722165882587433
+          },
+          {
+            "step": 3,
+            "loss": 0.48187196254730225
+          },
+          {
+            "step": 4,
+            "loss": 0.7638406753540039
+          },
+          {
+            "step": 5,
+            "loss": 0.9043928384780884
+          },
+          {
+            "step": 6,
+            "loss": 0.5403350591659546
+          },
+          {
+            "step": 7,
+            "loss": 0.7275697588920593
+          },
+          {
+            "step": 8,
+            "loss": 0.01944836974143982
+          },
+          {
+            "step": 9,
+            "loss": 0.43526750802993774
+          },
+          {
+            "step": 10,
+            "loss": 0.4969487190246582
+          },
+          {
+            "step": 11,
+            "loss": 0.2959297299385071
+          },
+          {
+            "step": 12,
+            "loss": 1.0451314449310303
+          },
+          {
+            "step": 13,
+            "loss": 0.31074100732803345
+          },
+          {
+            "step": 14,
+            "loss": 0.309153288602829
+          },
+          {
+            "step": 15,
+            "loss": 0.04899294674396515
+          },
+          {
+            "step": 16,
+            "loss": 0.3359481990337372
+          },
+          {
+            "step": 17,
+            "loss": 0.33325374126434326
+          },
+          {
+            "step": 18,
+            "loss": 0.7080817818641663
+          },
+          {
+            "step": 19,
+            "loss": 0.3909151554107666
+          },
+          {
+            "step": 20,
+            "loss": 1.2264816761016846
+          },
+          {
+            "step": 21,
+            "loss": 0.2547740936279297
+          },
+          {
+            "step": 22,
+            "loss": 0.3470238447189331
+          },
+          {
+            "step": 23,
+            "loss": 0.2503870725631714
+          },
+          {
+            "step": 24,
+            "loss": 0.18093383312225342
+          },
+          {
+            "step": 25,
+            "loss": 0.5836873650550842
+          },
+          {
+            "step": 26,
+            "loss": 0.5516737699508667
+          },
+          {
+            "step": 27,
+            "loss": 0.3281884789466858
+          },
+          {
+            "step": 28,
+            "loss": 0.2742120325565338
+          },
+          {
+            "step": 29,
+            "loss": 0.05504020303487778
+          },
+          {
+            "step": 30,
+            "loss": 0.123786062002182
+          },
+          {
+            "step": 31,
+            "loss": 0.8297086954116821
+          },
+          {
+            "step": 32,
+            "loss": 0.1923496425151825
+          },
+          {
+            "step": 33,
+            "loss": 0.10033951699733734
+          },
+          {
+            "step": 34,
+            "loss": 0.37698641419410706
+          },
+          {
+            "step": 35,
+            "loss": 0.5036824941635132
+          },
+          {
+            "step": 36,
+            "loss": 0.07517142593860626
+          },
+          {
+            "step": 37,
+            "loss": 0.3186537027359009
+          },
+          {
+            "step": 38,
+            "loss": 0.13623985648155212
+          },
+          {
+            "step": 39,
+            "loss": 0.8291839361190796
+          },
+          {
+            "step": 40,
+            "loss": 0.1974184215068817
+          },
+          {
+            "step": 41,
+            "loss": 0.18522655963897705
+          },
+          {
+            "step": 42,
+            "loss": 0.4139402210712433
+          },
+          {
+            "step": 43,
+            "loss": 0.018156956881284714
+          },
+          {
+            "step": 44,
+            "loss": 0.2461947798728943
+          },
+          {
+            "step": 45,
+            "loss": 0.3349214196205139
+          },
+          {
+            "step": 46,
+            "loss": 0.5579774379730225
+          },
+          {
+            "step": 47,
+            "loss": 0.527998685836792
+          },
+          {
+            "step": 48,
+            "loss": 0.240408256649971
+          },
+          {
+            "step": 49,
+            "loss": 0.11849275231361389
+          },
+          {
+            "step": 50,
+            "loss": 0.6587464809417725
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_smoke50/seed0_9-10-11/config.json",
+      "train_log": "runs/wronglabel/w2_smoke50/seed0_9-10-11/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 36,
+      "peak_vram_gib": 0.9417486190795898,
+      "wall_time_seconds": 46.75,
+      "smoke": true
+    }
+  }
+}

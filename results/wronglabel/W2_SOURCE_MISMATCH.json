@@ -1,0 +1,10 @@
+{
+  "merged_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+  "source": "src/retrain.py",
+  "retrieved_from": "GitHub pinned commit file content view",
+  "recorded_sha256": "ff622dd3c1ab5c1c58ad33178fafe69e9efcf4fbaeb89588b166f8b38eb28014",
+  "merged_displayed_source_sha256": "887b6d9381aecdf178f8e3747f42890ae764f0be96b4e1f08e0eff7b9ce3ce2b",
+  "comparison": "MISMATCH",
+  "full_manifest_check": "BLOCKED: merged commit unavailable through local Git authentication; already found content mismatch",
+  "original_provenance_preserved": true
+}

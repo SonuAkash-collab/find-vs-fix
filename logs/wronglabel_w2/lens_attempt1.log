@@ -1,0 +1,92 @@
+Device: cuda
+GPU: NVIDIA GeForce GTX 1650
+[lens] wl_noisy_seed0 regenerated with recorded provenance
+
+Running wl_noisy_seed0
+Checkpoint: C:\Users\siddh\OneDrive - Kensri School, Bangalore\Documents\Desktop\ML HACHATON\find-vs-fix\runs\wl_noisy_seed0\model
+F examples: 1038 | Validation examples: 872
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  47%|████▋     | 70/148 [00:00<00:00, 604.65it/s]Loading weights:  89%|████████▊ | 131/148 [00:00<00:00, 405.01it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 459.11it/s]
+Saved: C:\Users\siddh\OneDrive - Kensri School, Bangalore\Documents\Desktop\ML HACHATON\find-vs-fix\results\wronglabel\logit_lens\wl_noisy_seed0.json
+Takeover layer: 7
+Overthinking gain: 0.526
+Interpretation: true_label_readable_before_late_takeover
+Wall time: 14.6s | Peak VRAM: 0.769 GiB
+[lens] wl_clean_seed0 regenerated with recorded provenance
+
+Running wl_clean_seed0
+Checkpoint: C:\Users\siddh\OneDrive - Kensri School, Bangalore\Documents\Desktop\ML HACHATON\find-vs-fix\runs\wl_clean_seed0\model
+F examples: 1038 | Validation examples: 872
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  13%|█▎        | 19/148 [00:00<00:00, 160.15it/s]Loading weights:  24%|██▍       | 36/148 [00:00<00:00, 156.87it/s]Loading weights:  36%|███▌      | 53/148 [00:00<00:00, 117.19it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 339.73it/s]
+Saved: C:\Users\siddh\OneDrive - Kensri School, Bangalore\Documents\Desktop\ML HACHATON\find-vs-fix\results\wronglabel\logit_lens\wl_clean_seed0.json
+Takeover layer: None
+Overthinking gain: -0.001
+Interpretation: no_positive_final_gap_takeover_detected
+Wall time: 14.2s | Peak VRAM: 0.769 GiB
+[lens] wl_noisy_seed1 regenerated with recorded provenance
+
+Running wl_noisy_seed1
+Checkpoint: C:\Users\siddh\OneDrive - Kensri School, Bangalore\Documents\Desktop\ML HACHATON\find-vs-fix\runs\wl_noisy_seed1\model
+F examples: 1038 | Validation examples: 872
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  19%|█▉        | 28/148 [00:00<00:00, 250.45it/s]Loading weights:  46%|████▌     | 68/148 [00:00<00:00, 324.48it/s]Loading weights:  68%|██████▊   | 101/148 [00:00<00:00, 279.65it/s]Loading weights:  88%|████████▊ | 130/148 [00:00<00:00, 224.63it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 278.33it/s]
+Saved: C:\Users\siddh\OneDrive - Kensri School, Bangalore\Documents\Desktop\ML HACHATON\find-vs-fix\results\wronglabel\logit_lens\wl_noisy_seed1.json
+Takeover layer: 7
+Overthinking gain: 0.577
+Interpretation: true_label_readable_before_late_takeover
+Wall time: 15.0s | Peak VRAM: 0.769 GiB
+[lens] wl_clean_seed1 regenerated with recorded provenance
+
+Running wl_clean_seed1
+Checkpoint: C:\Users\siddh\OneDrive - Kensri School, Bangalore\Documents\Desktop\ML HACHATON\find-vs-fix\runs\wl_clean_seed1\model
+F examples: 1038 | Validation examples: 872
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  12%|█▏        | 18/148 [00:00<00:00, 176.41it/s]Loading weights:  43%|████▎     | 63/148 [00:00<00:00, 315.73it/s]Loading weights:  64%|██████▍   | 95/148 [00:00<00:00, 189.50it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 306.34it/s]
+Saved: C:\Users\siddh\OneDrive - Kensri School, Bangalore\Documents\Desktop\ML HACHATON\find-vs-fix\results\wronglabel\logit_lens\wl_clean_seed1.json
+Takeover layer: None
+Overthinking gain: -0.001
+Interpretation: no_positive_final_gap_takeover_detected
+Wall time: 14.5s | Peak VRAM: 0.769 GiB
+[lens] wl_noisy_seed2 regenerated with recorded provenance
+
+Running wl_noisy_seed2
+Checkpoint: C:\Users\siddh\OneDrive - Kensri School, Bangalore\Documents\Desktop\ML HACHATON\find-vs-fix\runs\wl_noisy_seed2\model
+F examples: 1038 | Validation examples: 872
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  12%|█▏        | 18/148 [00:00<00:00, 141.89it/s]Loading weights:  43%|████▎     | 64/148 [00:00<00:00, 310.25it/s]Loading weights:  66%|██████▌   | 97/148 [00:00<00:00, 193.35it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 303.02it/s]
+Saved: C:\Users\siddh\OneDrive - Kensri School, Bangalore\Documents\Desktop\ML HACHATON\find-vs-fix\results\wronglabel\logit_lens\wl_noisy_seed2.json
+Takeover layer: 7
+Overthinking gain: 0.557
+Interpretation: true_label_readable_before_late_takeover
+Wall time: 14.8s | Peak VRAM: 0.769 GiB
+[lens] wl_clean_seed2 regenerated with recorded provenance
+
+Running wl_clean_seed2
+Checkpoint: C:\Users\siddh\OneDrive - Kensri School, Bangalore\Documents\Desktop\ML HACHATON\find-vs-fix\runs\wl_clean_seed2\model
+F examples: 1038 | Validation examples: 872
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  13%|█▎        | 19/148 [00:00<00:00, 182.66it/s]Loading weights:  26%|██▌       | 38/148 [00:00<00:00, 161.42it/s]Loading weights:  39%|███▊      | 57/148 [00:00<00:00, 139.22it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 362.55it/s]
+Saved: C:\Users\siddh\OneDrive - Kensri School, Bangalore\Documents\Desktop\ML HACHATON\find-vs-fix\results\wronglabel\logit_lens\wl_clean_seed2.json
+Takeover layer: None
+Overthinking gain: 0.000
+Interpretation: no_positive_final_gap_takeover_detected
+Wall time: 15.1s | Peak VRAM: 0.769 GiB
+
+Completed runs:
+wl_noisy_seed0: takeover=7, gain=0.526, true_label_readable_before_late_takeover
+wl_clean_seed0: takeover=None, gain=-0.001, no_positive_final_gap_takeover_detected
+wl_noisy_seed1: takeover=7, gain=0.577, true_label_readable_before_late_takeover
+wl_clean_seed1: takeover=None, gain=-0.001, no_positive_final_gap_takeover_detected
+wl_noisy_seed2: takeover=7, gain=0.557, true_label_readable_before_late_takeover
+wl_clean_seed2: takeover=None, gain=0.000, no_positive_final_gap_takeover_detected
+Device: cuda
+GPU: NVIDIA GeForce GTX 1650
+[lens] wl_noisy_seed0 already finished; skipped
+[lens] wl_clean_seed0 already finished; skipped
+[lens] wl_noisy_seed1 already finished; skipped
+[lens] wl_clean_seed1 already finished; skipped
+[lens] wl_noisy_seed2 already finished; skipped
+[lens] wl_clean_seed2 already finished; skipped
+
+Completed runs:
+wl_noisy_seed0: takeover=7, gain=0.526, true_label_readable_before_late_takeover
+wl_clean_seed0: takeover=None, gain=-0.001, no_positive_final_gap_takeover_detected
+wl_noisy_seed1: takeover=7, gain=0.577, true_label_readable_before_late_takeover
+wl_clean_seed1: takeover=None, gain=-0.001, no_positive_final_gap_takeover_detected
+wl_noisy_seed2: takeover=7, gain=0.557, true_label_readable_before_late_takeover
+wl_clean_seed2: takeover=None, gain=0.000, no_positive_final_gap_takeover_detected

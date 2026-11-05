@@ -1,0 +1,100 @@
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  45%|████▍     | 66/148 [00:00<00:00, 579.77it/s]Loading weights:  84%|████████▍ | 124/148 [00:00<00:00, 263.35it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 344.33it/s]
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  11%|█▏        | 17/148 [00:00<00:00, 164.75it/s]Loading weights:  52%|█████▏    | 77/148 [00:00<00:00, 403.26it/s]Loading weights:  80%|███████▉  | 118/148 [00:00<00:00, 232.14it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 309.70it/s]
+[swap] seed0 a blocks 0 started
+seed0 a 0: {'M_flipped_vs_wrong_label': 0.8545279502868652, 'acc_C_true_labels': 0.9942196607589722, 'acc_val': 0.8566513657569885}
+[swap] seed0 a blocks 1 started
+seed0 a 1: {'M_flipped_vs_wrong_label': 0.8911368250846863, 'acc_C_true_labels': 0.994559645652771, 'acc_val': 0.8520641922950745}
+[swap] seed0 a blocks 2 started
+seed0 a 2: {'M_flipped_vs_wrong_label': 0.8603082895278931, 'acc_C_true_labels': 0.9954097270965576, 'acc_val': 0.8566513657569885}
+[swap] seed0 a blocks 3 started
+seed0 a 3: {'M_flipped_vs_wrong_label': 0.8574181199073792, 'acc_C_true_labels': 0.9957497715950012, 'acc_val': 0.8635321259498596}
+[swap] seed0 a blocks 4 started
+seed0 a 4: {'M_flipped_vs_wrong_label': 0.8400770425796509, 'acc_C_true_labels': 0.9954097270965576, 'acc_val': 0.8646789193153381}
+[swap] seed0 a blocks 5 started
+seed0 a 5: {'M_flipped_vs_wrong_label': 0.834296703338623, 'acc_C_true_labels': 0.9957497715950012, 'acc_val': 0.8566513657569885}
+[swap] seed0 a blocks 6 started
+seed0 a 6: {'M_flipped_vs_wrong_label': 0.8314065337181091, 'acc_C_true_labels': 0.9965997934341431, 'acc_val': 0.8646789193153381}
+[swap] seed0 a blocks 7 started
+seed0 a 7: {'M_flipped_vs_wrong_label': 0.8429672718048096, 'acc_C_true_labels': 0.9952397346496582, 'acc_val': 0.85550457239151}
+[swap] seed0 a blocks 8 started
+seed0 a 8: {'M_flipped_vs_wrong_label': 0.8477842211723328, 'acc_C_true_labels': 0.9954097270965576, 'acc_val': 0.8566513657569885}
+[swap] seed0 a blocks 9 started
+seed0 a 9: {'M_flipped_vs_wrong_label': 0.8641618490219116, 'acc_C_true_labels': 0.9947296977043152, 'acc_val': 0.857798159122467}
+[swap] seed0 a blocks 10 started
+seed0 a 10: {'M_flipped_vs_wrong_label': 0.8728323578834534, 'acc_C_true_labels': 0.9948996901512146, 'acc_val': 0.853210985660553}
+[swap] seed0 a blocks 11 started
+seed0 a 11: {'M_flipped_vs_wrong_label': 0.889210045337677, 'acc_C_true_labels': 0.9943896532058716, 'acc_val': 0.8486238718032837}
+[swap] seed0 a blocks 0-1-2 started
+seed0 a 0-1-2: {'M_flipped_vs_wrong_label': 0.5433526039123535, 'acc_C_true_labels': 0.9974498748779297, 'acc_val': 0.875}
+[swap] seed0 a blocks 3-4-5 started
+seed0 a 3-4-5: {'M_flipped_vs_wrong_label': 0.4046242833137512, 'acc_C_true_labels': 0.9974498748779297, 'acc_val': 0.9025229215621948}
+[swap] seed0 a blocks 6-7-8 started
+seed0 a 6-7-8: {'M_flipped_vs_wrong_label': 0.6011560559272766, 'acc_C_true_labels': 0.9971098303794861, 'acc_val': 0.8784403800964355}
+[swap] seed0 a blocks 9-10-11 started
+seed0 a 9-10-11: {'M_flipped_vs_wrong_label': 0.7437379360198975, 'acc_C_true_labels': 0.9948996901512146, 'acc_val': 0.8692660331726074}
+[swap] seed0 a blocks 10-11 started
+seed0 a 10-11: {'M_flipped_vs_wrong_label': 0.8256261944770813, 'acc_C_true_labels': 0.9948996901512146, 'acc_val': 0.8635321259498596}
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  28%|██▊       | 41/148 [00:00<00:00, 377.25it/s]Loading weights:  53%|█████▎    | 79/148 [00:00<00:00, 326.37it/s]Loading weights:  76%|███████▌  | 112/148 [00:00<00:00, 269.24it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 379.59it/s]
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  17%|█▋        | 25/148 [00:00<00:00, 238.29it/s]Loading weights:  49%|████▊     | 72/148 [00:00<00:00, 348.53it/s]Loading weights:  79%|███████▉  | 117/148 [00:00<00:00, 385.25it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 307.44it/s]
+[swap] seed0 b blocks 0 started
+seed0 b 0: {'M_flipped_vs_wrong_label': 0.004816955886781216, 'acc_C_true_labels': 0.9986399412155151, 'acc_val': 0.9128440618515015}
+[swap] seed0 b blocks 1 started
+seed0 b 1: {'M_flipped_vs_wrong_label': 0.0019267823081463575, 'acc_C_true_labels': 0.9993199706077576, 'acc_val': 0.9162843823432922}
+[swap] seed0 b blocks 2 started
+seed0 b 2: {'M_flipped_vs_wrong_label': 0.0019267823081463575, 'acc_C_true_labels': 0.9993199706077576, 'acc_val': 0.9162843823432922}
+[swap] seed0 b blocks 3 started
+seed0 b 3: {'M_flipped_vs_wrong_label': 0.0019267823081463575, 'acc_C_true_labels': 0.9993199706077576, 'acc_val': 0.9151375889778137}
+[swap] seed0 b blocks 4 started
+seed0 b 4: {'M_flipped_vs_wrong_label': 0.0019267823081463575, 'acc_C_true_labels': 0.999489963054657, 'acc_val': 0.9128440618515015}
+[swap] seed0 b blocks 5 started
+seed0 b 5: {'M_flipped_vs_wrong_label': 0.0019267823081463575, 'acc_C_true_labels': 0.999489963054657, 'acc_val': 0.91399085521698}
+[swap] seed0 b blocks 6 started
+seed0 b 6: {'M_flipped_vs_wrong_label': 0.0019267823081463575, 'acc_C_true_labels': 0.999489963054657, 'acc_val': 0.911697268486023}
+[swap] seed0 b blocks 7 started
+seed0 b 7: {'M_flipped_vs_wrong_label': 0.0019267823081463575, 'acc_C_true_labels': 0.999489963054657, 'acc_val': 0.911697268486023}
+[swap] seed0 b blocks 8 started
+seed0 b 8: {'M_flipped_vs_wrong_label': 0.0019267823081463575, 'acc_C_true_labels': 0.998979926109314, 'acc_val': 0.911697268486023}
+[swap] seed0 b blocks 9 started
+seed0 b 9: {'M_flipped_vs_wrong_label': 0.0019267823081463575, 'acc_C_true_labels': 0.9991499781608582, 'acc_val': 0.9162843823432922}
+[swap] seed0 b blocks 10 started
+seed0 b 10: {'M_flipped_vs_wrong_label': 0.0019267823081463575, 'acc_C_true_labels': 0.9993199706077576, 'acc_val': 0.9174311757087708}
+[swap] seed0 b blocks 11 started
+seed0 b 11: {'M_flipped_vs_wrong_label': 0.0009633911540731788, 'acc_C_true_labels': 0.9991499781608582, 'acc_val': 0.9162843823432922}
+[swap] seed0 b blocks 0-1-2 started
+seed0 b 0-1-2: {'M_flipped_vs_wrong_label': 0.05876686051487923, 'acc_C_true_labels': 0.998469889163971, 'acc_val': 0.9105504751205444}
+[swap] seed0 b blocks 3-4-5 started
+seed0 b 3-4-5: {'M_flipped_vs_wrong_label': 0.059730250388383865, 'acc_C_true_labels': 0.9986399412155151, 'acc_val': 0.9082568883895874}
+[swap] seed0 b blocks 6-7-8 started
+seed0 b 6-7-8: {'M_flipped_vs_wrong_label': 0.004816955886781216, 'acc_C_true_labels': 0.9991499781608582, 'acc_val': 0.9105504751205444}
+[swap] seed0 b blocks 9-10-11 started
+seed0 b 9-10-11: {'M_flipped_vs_wrong_label': 0.003853564616292715, 'acc_C_true_labels': 0.9991499781608582, 'acc_val': 0.9094036817550659}
+[swap] seed0 b blocks 10-11 started
+seed0 b 10-11: {'M_flipped_vs_wrong_label': 0.0019267823081463575, 'acc_C_true_labels': 0.9991499781608582, 'acc_val': 0.91399085521698}
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  14%|█▍        | 21/148 [00:00<00:00, 192.66it/s]Loading weights:  33%|███▎      | 49/148 [00:00<00:00, 200.21it/s]Loading weights:  47%|████▋     | 69/148 [00:00<00:00, 138.64it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 324.18it/s]
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  14%|█▍        | 21/148 [00:00<00:00, 204.34it/s]Loading weights:  28%|██▊       | 42/148 [00:00<00:00, 168.09it/s]Loading weights:  64%|██████▎   | 94/148 [00:00<00:00, 233.57it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 336.45it/s]
+[swap] seed0 ci blocks 0 started
+seed0 ci 0: {'M_flipped_vs_wrong_label': 0.8420038819313049, 'acc_C_true_labels': 0.9943896532058716, 'acc_val': 0.8543577790260315}
+[swap] seed0 ci blocks 1 started
+seed0 ci 1: {'M_flipped_vs_wrong_label': 0.8901734352111816, 'acc_C_true_labels': 0.995069682598114, 'acc_val': 0.853210985660553}
+[swap] seed0 ci blocks 2 started
+seed0 ci 2: {'M_flipped_vs_wrong_label': 0.8612716794013977, 'acc_C_true_labels': 0.9952397346496582, 'acc_val': 0.8612385392189026}
+[swap] seed0 ci blocks 3 started
+seed0 ci 3: {'M_flipped_vs_wrong_label': 0.8564547300338745, 'acc_C_true_labels': 0.994559645652771, 'acc_val': 0.8566513657569885}
+[swap] seed0 ci blocks 4 started
+seed0 ci 4: {'M_flipped_vs_wrong_label': 0.8439306616783142, 'acc_C_true_labels': 0.995579719543457, 'acc_val': 0.8669725060462952}
+[swap] seed0 ci blocks 5 started
+seed0 ci 5: {'M_flipped_vs_wrong_label': 0.8256261944770813, 'acc_C_true_labels': 0.9957497715950012, 'acc_val': 0.857798159122467}
+[swap] seed0 ci blocks 6 started
+seed0 ci 6: {'M_flipped_vs_wrong_label': 0.837186872959137, 'acc_C_true_labels': 0.9957497715950012, 'acc_val': 0.8646789193153381}
+[swap] seed0 ci blocks 7 started
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  16%|█▌        | 24/148 [00:00<00:00, 212.04it/s]Loading weights:  34%|███▍      | 51/148 [00:00<00:00, 223.08it/s]Loading weights:  50%|█████     | 74/148 [00:00<00:00, 168.20it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 356.73it/s]
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  11%|█         | 16/148 [00:00<00:00, 155.29it/s]Loading weights:  28%|██▊       | 42/148 [00:00<00:00, 211.14it/s]Loading weights:  49%|████▉     | 73/148 [00:00<00:00, 247.55it/s]Loading weights:  66%|██████▌   | 98/148 [00:00<00:00, 196.23it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 294.65it/s]
+[swap] seed0 ci blocks 7 started
+seed0 ci 7: {'M_flipped_vs_wrong_label': 0.8535645604133606, 'acc_C_true_labels': 0.995579719543457, 'acc_val': 0.8566513657569885}
+[swap] seed0 ci blocks 8 started
+seed0 ci 8: {'M_flipped_vs_wrong_label': 0.8468208312988281, 'acc_C_true_labels': 0.995069682598114, 'acc_val': 0.85550457239151}
+[swap] seed0 ci blocks 9 started
+seed0 ci 9: {'M_flipped_vs_wrong_label': 0.8699421882629395, 'acc_C_true_labels': 0.9943896532058716, 'acc_val': 0.8635321259498596}
+[swap] seed0 ci blocks 10 started
+seed0 ci 10: {'M_flipped_vs_wrong_label': 0.873795747756958, 'acc_C_true_labels': 0.9947296977043152, 'acc_val': 0.8520641922950745}
+[swap] seed0 ci blocks 11 started

@@ -1,0 +1,78 @@
+{"timestamp": "2026-11-04T13:20:26.244719+00:00", "phase": "retrain", "message": "seed0 9-10-11 started from final W1 weights", "smoke": true}
+{"timestamp": "2026-11-04T13:23:06.434362+00:00", "phase": "development", "message": "Initial 20-step smoke loss did not decrease; correcting smoke length to TEAM_START 50 steps on 200 examples; preserving initial output", "result": "results/wronglabel/smoke/retrain/seed0.json"}
+{"timestamp": "2026-11-04T13:23:21.881750+00:00", "phase": "retrain", "message": "seed0 9-10-11 started from final W1 weights", "smoke": true}
+{"timestamp": "2026-11-04T13:27:51.158716+00:00", "phase": "driver", "message": "W1 hashes, models, checks and approved GPU verified"}
+{"timestamp": "2026-11-04T13:27:51.160704+00:00", "phase": "driver", "message": "job started", "job": "lens", "attempt": 1}
+{"timestamp": "2026-11-04T13:28:04.758670+00:00", "phase": "lens", "message": "wl_noisy_seed0 regenerated with recorded provenance"}
+{"timestamp": "2026-11-04T13:28:20.646685+00:00", "phase": "lens", "message": "wl_clean_seed0 regenerated with recorded provenance"}
+{"timestamp": "2026-11-04T13:28:36.170635+00:00", "phase": "lens", "message": "wl_noisy_seed1 regenerated with recorded provenance"}
+{"timestamp": "2026-11-04T13:28:52.531956+00:00", "phase": "lens", "message": "wl_clean_seed1 regenerated with recorded provenance"}
+{"timestamp": "2026-11-04T13:29:08.445354+00:00", "phase": "lens", "message": "wl_noisy_seed2 regenerated with recorded provenance"}
+{"timestamp": "2026-11-04T13:29:24.536011+00:00", "phase": "lens", "message": "wl_clean_seed2 regenerated with recorded provenance"}
+{"timestamp": "2026-11-04T13:29:42.156616+00:00", "phase": "driver", "message": "job finished", "job": "lens"}
+{"timestamp": "2026-11-04T13:29:42.156616+00:00", "phase": "driver", "message": "job started", "job": "smoke", "attempt": 1}
+{"timestamp": "2026-11-04T13:29:58.579483+00:00", "phase": "retrain", "message": "seed0 9-10-11 already finished; skipped", "smoke": true}
+{"timestamp": "2026-11-04T13:29:59.423404+00:00", "phase": "driver", "message": "job finished", "job": "smoke"}
+{"timestamp": "2026-11-04T13:29:59.423404+00:00", "phase": "driver", "message": "job started", "job": "swap_seed0", "attempt": 1}
+{"timestamp": "2026-11-04T13:30:14.337120+00:00", "phase": "swap", "message": "seed0 a blocks 0 started"}
+{"timestamp": "2026-11-04T13:30:54.654266+00:00", "phase": "swap", "message": "seed0 a blocks 1 started"}
+{"timestamp": "2026-11-04T13:31:36.875673+00:00", "phase": "swap", "message": "seed0 a blocks 2 started"}
+{"timestamp": "2026-11-04T13:32:19.715007+00:00", "phase": "swap", "message": "seed0 a blocks 3 started"}
+{"timestamp": "2026-11-04T13:33:05.666416+00:00", "phase": "swap", "message": "seed0 a blocks 4 started"}
+{"timestamp": "2026-11-04T13:33:50.341373+00:00", "phase": "swap", "message": "seed0 a blocks 5 started"}
+{"timestamp": "2026-11-04T13:34:34.369431+00:00", "phase": "swap", "message": "seed0 a blocks 6 started"}
+{"timestamp": "2026-11-04T13:35:20.306888+00:00", "phase": "swap", "message": "seed0 a blocks 7 started"}
+{"timestamp": "2026-11-04T13:36:06.098940+00:00", "phase": "swap", "message": "seed0 a blocks 8 started"}
+{"timestamp": "2026-11-04T13:36:52.154092+00:00", "phase": "swap", "message": "seed0 a blocks 9 started"}
+{"timestamp": "2026-11-04T13:37:38.868428+00:00", "phase": "swap", "message": "seed0 a blocks 10 started"}
+{"timestamp": "2026-11-04T13:38:24.882290+00:00", "phase": "swap", "message": "seed0 a blocks 11 started"}
+{"timestamp": "2026-11-04T13:39:09.836237+00:00", "phase": "swap", "message": "seed0 a blocks 0-1-2 started"}
+{"timestamp": "2026-11-04T13:39:54.984143+00:00", "phase": "swap", "message": "seed0 a blocks 3-4-5 started"}
+{"timestamp": "2026-11-04T13:40:41.175454+00:00", "phase": "swap", "message": "seed0 a blocks 6-7-8 started"}
+{"timestamp": "2026-11-04T13:41:26.846994+00:00", "phase": "swap", "message": "seed0 a blocks 9-10-11 started"}
+{"timestamp": "2026-11-04T13:42:12.481647+00:00", "phase": "swap", "message": "seed0 a blocks 10-11 started"}
+{"timestamp": "2026-11-04T13:43:00.700029+00:00", "phase": "swap", "message": "seed0 b blocks 0 started"}
+{"timestamp": "2026-11-04T13:43:46.732864+00:00", "phase": "swap", "message": "seed0 b blocks 1 started"}
+{"timestamp": "2026-11-04T13:44:32.683304+00:00", "phase": "swap", "message": "seed0 b blocks 2 started"}
+{"timestamp": "2026-11-04T13:45:18.378519+00:00", "phase": "swap", "message": "seed0 b blocks 3 started"}
+{"timestamp": "2026-11-04T13:46:04.259693+00:00", "phase": "swap", "message": "seed0 b blocks 4 started"}
+{"timestamp": "2026-11-04T13:46:50.495478+00:00", "phase": "swap", "message": "seed0 b blocks 5 started"}
+{"timestamp": "2026-11-04T13:47:36.533118+00:00", "phase": "swap", "message": "seed0 b blocks 6 started"}
+{"timestamp": "2026-11-04T13:48:22.519951+00:00", "phase": "swap", "message": "seed0 b blocks 7 started"}
+{"timestamp": "2026-11-04T13:49:07.737239+00:00", "phase": "swap", "message": "seed0 b blocks 8 started"}
+{"timestamp": "2026-11-04T13:49:54.214196+00:00", "phase": "swap", "message": "seed0 b blocks 9 started"}
+{"timestamp": "2026-11-04T13:50:39.193787+00:00", "phase": "swap", "message": "seed0 b blocks 10 started"}
+{"timestamp": "2026-11-04T13:51:25.869285+00:00", "phase": "swap", "message": "seed0 b blocks 11 started"}
+{"timestamp": "2026-11-04T13:52:12.188439+00:00", "phase": "swap", "message": "seed0 b blocks 0-1-2 started"}
+{"timestamp": "2026-11-04T13:52:58.177276+00:00", "phase": "swap", "message": "seed0 b blocks 3-4-5 started"}
+{"timestamp": "2026-11-04T13:53:44.454543+00:00", "phase": "swap", "message": "seed0 b blocks 6-7-8 started"}
+{"timestamp": "2026-11-04T13:54:30.330857+00:00", "phase": "swap", "message": "seed0 b blocks 9-10-11 started"}
+{"timestamp": "2026-11-04T13:55:15.269302+00:00", "phase": "swap", "message": "seed0 b blocks 10-11 started"}
+{"timestamp": "2026-11-04T13:56:02.645058+00:00", "phase": "swap", "message": "seed0 ci blocks 0 started"}
+{"timestamp": "2026-11-04T13:56:47.096864+00:00", "phase": "swap", "message": "seed0 ci blocks 1 started"}
+{"timestamp": "2026-11-04T13:57:33.949123+00:00", "phase": "swap", "message": "seed0 ci blocks 2 started"}
+{"timestamp": "2026-11-04T13:58:20.069526+00:00", "phase": "swap", "message": "seed0 ci blocks 3 started"}
+{"timestamp": "2026-11-04T13:59:04.789542+00:00", "phase": "swap", "message": "seed0 ci blocks 4 started"}
+{"timestamp": "2026-11-04T13:59:50.319058+00:00", "phase": "swap", "message": "seed0 ci blocks 5 started"}
+{"timestamp": "2026-11-04T14:00:36.019707+00:00", "phase": "swap", "message": "seed0 ci blocks 6 started"}
+{"timestamp": "2026-11-04T14:01:24.785753+00:00", "phase": "swap", "message": "seed0 ci blocks 7 started"}
+{"timestamp":"2026-11-05T06:09:00.5862054Z","phase":"driver","message":"Recovered stale driver lock after interrupted host session; saved interventions retained; interrupted intervention restarts from step 0"}
+{"timestamp": "2026-11-05T06:09:26.054604+00:00", "phase": "driver", "message": "W1 hashes, models, checks and approved GPU verified"}
+{"timestamp": "2026-11-05T06:09:26.057605+00:00", "phase": "driver", "message": "job started", "job": "lens", "attempt": 1}
+{"timestamp": "2026-11-05T06:09:43.761518+00:00", "phase": "lens", "message": "wl_noisy_seed0 already finished; skipped"}
+{"timestamp": "2026-11-05T06:09:44.557528+00:00", "phase": "lens", "message": "wl_clean_seed0 already finished; skipped"}
+{"timestamp": "2026-11-05T06:09:45.311662+00:00", "phase": "lens", "message": "wl_noisy_seed1 already finished; skipped"}
+{"timestamp": "2026-11-05T06:09:46.046970+00:00", "phase": "lens", "message": "wl_clean_seed1 already finished; skipped"}
+{"timestamp": "2026-11-05T06:09:46.794222+00:00", "phase": "lens", "message": "wl_noisy_seed2 already finished; skipped"}
+{"timestamp": "2026-11-05T06:09:47.509034+00:00", "phase": "lens", "message": "wl_clean_seed2 already finished; skipped"}
+{"timestamp": "2026-11-05T06:09:48.840869+00:00", "phase": "driver", "message": "job finished", "job": "lens"}
+{"timestamp": "2026-11-05T06:09:48.841873+00:00", "phase": "driver", "message": "job started", "job": "smoke", "attempt": 1}
+{"timestamp": "2026-11-05T06:10:10.322155+00:00", "phase": "retrain", "message": "seed0 9-10-11 already finished; skipped", "smoke": true}
+{"timestamp": "2026-11-05T06:10:11.228017+00:00", "phase": "driver", "message": "job finished", "job": "smoke"}
+{"timestamp": "2026-11-05T06:10:11.229028+00:00", "phase": "driver", "message": "job started", "job": "swap_seed0", "attempt": 1}
+{"timestamp": "2026-11-05T06:10:29.320854+00:00", "phase": "swap", "message": "seed0 ci blocks 7 started"}
+{"timestamp": "2026-11-05T06:11:19.566750+00:00", "phase": "swap", "message": "seed0 ci blocks 8 started"}
+{"timestamp": "2026-11-05T06:12:09.030899+00:00", "phase": "swap", "message": "seed0 ci blocks 9 started"}
+{"timestamp":"2026-11-05T06:12:35.8341633Z","phase":"driver","message":"stopped","reason":"Merged commit c3851d1 source verification failed: src/retrain.py content differs from recorded source snapshot. Stop per TEAM_START and request Sonu guidance."}
+{"timestamp": "2026-11-05T06:12:58.214936+00:00", "phase": "swap", "message": "seed0 ci blocks 10 started"}
+{"timestamp": "2026-11-05T06:13:47.711608+00:00", "phase": "swap", "message": "seed0 ci blocks 11 started"}
