@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 
-from src.logit_lens_pythia import aggregate_shortcut_reading, calibrated_readouts, project_hidden_states
+from src.logit_lens_pythia import aggregate_shortcut_reading, calibrated_readouts, project_hidden_states, reading_from_curves
 
 
 class Identity(torch.nn.Module):
@@ -48,3 +48,10 @@ def test_mean_over_seed_reading_is_exclusive():
     assert out["decided_early"] is True
     assert out["overthinking"] is False
     assert out["outcomes_exclusive"] is True
+
+
+def test_per_seed_reading_is_exclusive():
+    early = reading_from_curves([1, 1, 0.9, 0.8, 0.5], [1, 1, 0.9, 0.8, 0.5])
+    late = reading_from_curves([1, 1, 1, 1, 1, 1], [1, 1, 0.9, 0.8, 0.8, 0.5])
+    assert early["decided_early"] is True and early["overthinking"] is False
+    assert late["decided_early"] is False and late["overthinking"] is True

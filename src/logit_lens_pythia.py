@@ -141,43 +141,13 @@ def calibrated_readouts(d: dict[str, np.ndarray], labels: np.ndarray) -> dict:
         "cost_on_none": final_none - out["cal_acc"]["none"][best],
     }
 
-    gaps = np.asarray(out["cal_acc"]["none"]) - np.asarray(out["cal_acc"]["opposite"])
-    final_gap = float(gaps[-1])
-    target = DROP_FRAC * final_gap
-    qualifying = [
-        layer for layer in range(len(gaps))
-        if gaps[layer] >= target and np.all(gaps[layer:] >= target)
-    ]
-    takeover = int(qualifying[0]) if qualifying else None
-    best_mid = float(np.max(out["cal_acc"]["opposite"][:-1]))
-    final_opp = float(out["cal_acc"]["opposite"][-1])
-    out["reading"] = {
-        "calibrated_none_minus_opposite_gap": gaps.tolist(),
-        "final_gap": final_gap,
-        "takeover_target": target,
-        "takeover_layer": takeover,
-        "decided_early": takeover is not None and takeover <= EARLY_MAX_LAYER,
-        "best_mid_layer_opposite_accuracy": best_mid,
-        "final_layer_opposite_accuracy": final_opp,
-        "overthinking_gain": best_mid - final_opp,
-        "overthinking": best_mid - final_opp >= OVERTHINK_MIN_GAIN,
-        "thresholds": {
-            "DROP_FRAC": DROP_FRAC,
-            "EARLY_MAX_LAYER": EARLY_MAX_LAYER,
-            "OVERTHINK_MIN_GAIN": OVERTHINK_MIN_GAIN,
-        },
-    }
+    out["reading"] = reading_from_curves(out["cal_acc"]["none"], out["cal_acc"]["opposite"])
     return out
 
 
-def aggregate_shortcut_reading(results: list[dict]) -> dict:
-    """Apply report.py's reading rule to the mean over shortcut seeds."""
-    shortcut = [r for r in results if r["run"].startswith("shortcut_")]
-    if not shortcut:
-        raise ValueError("aggregate reading requires shortcut results")
-    mean_none = np.mean([r["cal_acc"]["none"] for r in shortcut], axis=0)
-    mean_opposite = np.mean([r["cal_acc"]["opposite"] for r in shortcut], axis=0)
-    gaps = mean_none - mean_opposite
+def reading_from_curves(none: list[float] | np.ndarray, opposite: list[float] | np.ndarray) -> dict:
+    """Apply report.py's exclusive reading rule to one calibrated curve pair."""
+    gaps = np.asarray(none, dtype=float) - np.asarray(opposite, dtype=float)
     final_gap = float(gaps[-1])
     target = DROP_FRAC * final_gap
     qualifying = [
@@ -185,14 +155,11 @@ def aggregate_shortcut_reading(results: list[dict]) -> dict:
         if gaps[layer] >= target and np.all(gaps[layer:] >= target)
     ]
     takeover = int(qualifying[0]) if qualifying else None
-    best_mid = float(np.max(mean_opposite[:-1]))
-    final_opp = float(mean_opposite[-1])
+    best_mid = float(np.max(np.asarray(opposite)[:-1]))
+    final_opp = float(opposite[-1])
     gain = best_mid - final_opp
     return {
-        "runs": [r["run"] for r in shortcut],
-        "mean_cal_acc_none": mean_none.tolist(),
-        "mean_cal_acc_opposite": mean_opposite.tolist(),
-        "mean_calibrated_none_minus_opposite_gap": gaps.tolist(),
+        "calibrated_none_minus_opposite_gap": gaps.tolist(),
         "final_gap": final_gap,
         "takeover_target": target,
         "takeover_layer": takeover,
@@ -207,6 +174,23 @@ def aggregate_shortcut_reading(results: list[dict]) -> dict:
             "EARLY_MAX_LAYER": EARLY_MAX_LAYER,
             "OVERTHINK_MIN_GAIN": OVERTHINK_MIN_GAIN,
         },
+    }
+
+
+def aggregate_shortcut_reading(results: list[dict]) -> dict:
+    """Apply report.py's reading rule to the mean over shortcut seeds."""
+    shortcut = [r for r in results if r["run"].startswith("shortcut_")]
+    if not shortcut:
+        raise ValueError("aggregate reading requires shortcut results")
+    mean_none = np.mean([r["cal_acc"]["none"] for r in shortcut], axis=0)
+    mean_opposite = np.mean([r["cal_acc"]["opposite"] for r in shortcut], axis=0)
+    reading = reading_from_curves(mean_none, mean_opposite)
+    return {
+        "runs": [r["run"] for r in shortcut],
+        "mean_cal_acc_none": mean_none.tolist(),
+        "mean_cal_acc_opposite": mean_opposite.tolist(),
+        "mean_calibrated_none_minus_opposite_gap": reading["calibrated_none_minus_opposite_gap"],
+        **{k: v for k, v in reading.items() if k != "calibrated_none_minus_opposite_gap"},
     }
 
 
@@ -295,7 +279,7 @@ def write_summary(results: list[dict], out_dir: Path) -> Path:
         "early_exit_cost_on_none", "wall_time_seconds",
     ]
     with path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fields)
+        writer = csv.DictWriter(f, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         for result in results:
             reading = result["reading"]
@@ -318,6 +302,32 @@ def write_summary(results: list[dict], out_dir: Path) -> Path:
     return path
 
 
+def aggregate_only(out_dir: Path) -> None:
+    """Refresh readings from stored per-seed JSONs without loading any model."""
+    files = sorted(out_dir.glob("*.json"))
+    files = [p for p in files if p.name != "aggregate.json"]
+    if len(files) != 6:
+        raise RuntimeError(f"expected six per-seed lens JSONs, found {len(files)}")
+    results = [json.loads(p.read_text(encoding="utf-8")) for p in files]
+    for path, result in zip(files, results):
+        result["reading"] = reading_from_curves(
+            result["cal_acc"]["none"], result["cal_acc"]["opposite"]
+        )
+        path.write_text(json.dumps(result), encoding="utf-8")
+    aggregate = aggregate_shortcut_reading(results)
+    (out_dir / "aggregate.json").write_text(json.dumps({
+        "model_id": MODEL_ID,
+        "data_dir": relative_path(DATA_DIR),
+        "device": results[0]["device"],
+        "dtype": results[0]["dtype"],
+        "git_commit": git_commit(),
+        "start_time": now_iso(),
+        "reading": aggregate,
+    }, indent=2) + "\n", encoding="utf-8")
+    write_summary(results, out_dir)
+    print("Refreshed stored lens readings and aggregate without model execution.")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--device", choices=("mps", "cpu"), default="mps")
@@ -325,7 +335,12 @@ def main() -> None:
     ap.add_argument("--batch-size", type=int, default=BATCH_SIZE)
     ap.add_argument("--data-dir", type=Path, default=DATA_DIR)
     ap.add_argument("--output-dir", type=Path, default=OUT_DIR)
+    ap.add_argument("--aggregate-only", action="store_true",
+                    help="recompute readings from existing per-seed JSONs; never loads a model")
     args = ap.parse_args()
+    if args.aggregate_only:
+        aggregate_only(args.output_dir)
+        return
     if args.batch_size < 1:
         ap.error("--batch-size must be positive")
     if args.runs == "all":
