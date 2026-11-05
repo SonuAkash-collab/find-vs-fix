@@ -28,7 +28,8 @@ plain model's correct counts on every test version equal its checks file. Record
 the Phase 6 alphas, (c) at the Phase 6 random-control alpha, and the plain test and dev counts equal
 results/reinject/seed<s>.json (when that file exists).
 Readouts per seed (fraction removed = (G_s - gap) / G_s on test, G_s = plain test gap acc(none) - acc(opposite)):
-- R1: fraction removed by a_l9 >= the fraction removed by every other a_l<l*>, each at its own dev-chosen alpha.
+- R1: fraction removed by a_l9 >= the fraction removed by every other a_l<l*>, each at its own dev-chosen alpha, and
+  a_l9 passes the Phase 2 "removes" rule's acc(none) limit on test (test acc(none) drop <= 0.02).
 - R2: fraction removed by c_random < NOISE_MAX_SHARE * fraction removed by b_l9.
 - R3: d_cuefree passes the Phase 2 "removes" rule (test gap <= 50% of G_s and test acc(none) drop <= 0.02).
 """
@@ -295,7 +296,9 @@ def rules(o):
     fr = {k: v["test"]["fraction_removed"] for k, v in o["variants"].items()}
     a = {k: fr[k] for k in fr if k.startswith("a_l")}
     others = [k for k in a if k != f"a_l{MAIN_LSTAR}"]
-    r1 = None if None in a.values() else bool(all(a[f"a_l{MAIN_LSTAR}"] >= a[k] for k in others))
+    main = f"a_l{MAIN_LSTAR}"
+    r1 = None if None in a.values() else bool(all(a[main] >= a[k] for k in others)
+                                              and o["variants"][main]["test"]["acc_none_drop"] <= REMOVE_MAX_NONE_DROP)
     r2 = None if fr["b_l9"] is None or fr["c_random"] is None else bool(fr["c_random"] < NOISE_MAX_SHARE * fr["b_l9"])
     r3 = o["variants"]["d_cuefree"]["test"]["removes"]
     return {"R1_found_layer_steers_best": r1, "R2_signal_not_noise_matched": r2, "R3_works_without_cue": r3,
@@ -329,7 +332,8 @@ def run_seed(seed, data_dir, batch, device, max_len, limit=None, dev_per_label=D
            "layer_numbering": "Phase 4: L = 0..11 input of block L (= logit-lens layer L), 12 = input of ln_f",
            "injection": "alpha * c_L * v added at the last real token at every L in l*+1..12; s read at the input of "
                         "block l* (nothing added there); v = s, |s| * random unit, s_par or s_perp",
-           "rules": {"R1": "fraction removed by a_l9 >= that of every other a_l<l*>, each at its own dev-chosen alpha",
+           "rules": {"R1": "fraction removed by a_l9 >= that of every other a_l<l*>, each at its own dev-chosen alpha, "
+                           f"and a_l9 test acc(none) drop <= {REMOVE_MAX_NONE_DROP}",
                      "R2": f"c_random fraction removed < {NOISE_MAX_SHARE} * b_l9 fraction removed",
                      "R3": f"d_cuefree: test gap <= {REMOVE_MAX_FRAC} * G_s and acc(none) drop <= "
                            f"{REMOVE_MAX_NONE_DROP}",

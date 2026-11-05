@@ -152,6 +152,13 @@ class ControlsTests(unittest.TestCase):
         o["variants"]["c_random"] = v(0.40)
         r = C.rules(o)
         self.assertEqual((r["R1_found_layer_steers_best"], r["R2_signal_not_noise_matched"]), (False, False))
+        # R1: l* = 9 must also keep its own test acc(none) drop <= 0.02; the others' drops do not matter
+        o["variants"]["a_l10"] = v(0.4, drop=0.5)
+        self.assertTrue(C.rules(o)["R1_found_layer_steers_best"])
+        o["variants"]["a_l9"] = v(0.5, drop=0.02)
+        self.assertTrue(C.rules(o)["R1_found_layer_steers_best"])
+        o["variants"]["a_l9"] = v(0.5, drop=0.03)
+        self.assertFalse(C.rules(o)["R1_found_layer_steers_best"])
 
     def test_run_seed_end_to_end_and_report(self):
         m_dir, c_dir = self.tmp / "m_short", self.tmp / "m_clean"
