@@ -164,5 +164,5 @@
 2026-10-15 19:52:08 seed2 cii_shortcut_from_shortcut_other blocks 10-11: none 0.874 match 0.993 opp 0.287 neutral 0.865 gap 0.588 (43s)
 2026-10-15 19:52:51 seed2 cii_shortcut_from_shortcut_other blocks 9-10-11: none 0.872 match 0.994 opp 0.271 neutral 0.868 gap 0.600 (42s)
 2026-10-15 19:52:51 swap done
-2026-10-15 19:52:57 wrote C:\Users\akash\Documents\AFML_paper\RESULTS.md, C:\Users\akash\Documents\AFML_paper\figures\lens_accuracy.png, C:\Users\akash\Documents\AFML_paper\figures\follow_rate.png
+2026-10-15 19:52:57 wrote .\RESULTS.md, .\figures\lens_accuracy.png, .\figures\follow_rate.png
 2026-10-15 19:52:58 === run_swap done: swap + report finished

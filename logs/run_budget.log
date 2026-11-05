@@ -1,4 +1,4 @@
-2026-10-16 10:48:26 === run_budget start (offline), pid 21256, python C:\Users\akash\Documents\AFML_paper\.venv\Scripts\python.exe
+2026-10-16 10:48:26 === run_budget start (offline), pid 21256, python .\.venv\Scripts\python.exe
 2026-10-16 10:48:26 --- Phase 3b budget runs: retrain.py --budget
 2026-10-16 10:49:02 seed0 budget 0 step 25: none 0.877 opp 0.236 gap 0.641
 2026-10-16 10:49:07 [budget_seed0_0] step 50/625 loss 0.1529 lr 4.90e-05 t 30s
@@ -11,7 +11,7 @@
 2026-10-16 10:50:41 seed0 budget 0 done: train 41s, eval 82s, peak allocated 2.23 GiB, reserved 3.70 GiB
 2026-10-16 10:51:07 seed0 budget 2 step 25: none 0.879 opp 0.231 gap 0.648
 2026-10-16 10:51:18 NOTE: stopped by hand after seed0 run '0' (reserved VRAM 3.70 GiB vs 2.33 in Phase 3, from mid-run evals). Added torch.cuda.empty_cache() after each mid-run eval; restarting (resumes; seed0 '0' kept as is).
-2026-10-16 10:51:21 === run_budget start (offline), pid 5536, python C:\Users\akash\Documents\AFML_paper\.venv\Scripts\python.exe
+2026-10-16 10:51:21 === run_budget start (offline), pid 5536, python .\.venv\Scripts\python.exe
 2026-10-16 10:51:21 --- Phase 3b budget runs: retrain.py --budget
 2026-10-16 10:52:02 seed0 budget 2 step 25: none 0.879 opp 0.231 gap 0.648
 2026-10-16 10:52:07 [budget_seed0_2] step 50/625 loss 0.1550 lr 4.90e-05 t 30s
@@ -23,7 +23,7 @@
 2026-10-16 10:53:33 seed0 budget 2 step 200: none 0.876 opp 0.447 gap 0.429
 2026-10-16 10:53:33 seed0 budget 2 done: train 36s, eval 81s, peak allocated 1.97 GiB, reserved 4.21 GiB
 2026-10-16 10:54:02 NOTE: stopped by hand after seed0 run '2': reserved VRAM 4.21 GiB, over the 4.5 GB (4.19 GiB) limit. Cache was only freed after each eval; now also freed before. Runs '0' and '2' kept as measured. Restarting.
-2026-10-16 10:54:06 === run_budget start (offline), pid 3320, python C:\Users\akash\Documents\AFML_paper\.venv\Scripts\python.exe
+2026-10-16 10:54:06 === run_budget start (offline), pid 3320, python .\.venv\Scripts\python.exe
 2026-10-16 10:54:06 --- Phase 3b budget runs: retrain.py --budget
 2026-10-16 10:54:42 seed0 budget 4 step 25: none 0.879 opp 0.233 gap 0.646
 2026-10-16 10:54:46 [budget_seed0_4] step 50/625 loss 0.1549 lr 4.90e-05 t 30s
@@ -307,6 +307,6 @@
 2026-10-16 11:51:33 retrain budget done
 2026-10-16 11:51:35 --- Phase 3b budget runs finished (57.5 min)
 2026-10-16 11:51:35 --- report: report.py
-2026-10-16 11:51:45 wrote C:\Users\akash\Documents\AFML_paper\RESULTS.md, C:\Users\akash\Documents\AFML_paper\figures\lens_accuracy.png, C:\Users\akash\Documents\AFML_paper\figures\follow_rate.png
+2026-10-16 11:51:45 wrote .\RESULTS.md, .\figures\lens_accuracy.png, .\figures\follow_rate.png
 2026-10-16 11:51:46 --- report finished (0.2 min)
 2026-10-16 11:51:46 === run_budget done: total 0.96 h

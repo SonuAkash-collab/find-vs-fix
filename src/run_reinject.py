@@ -19,14 +19,30 @@ import sys
 import time
 from pathlib import Path
 
+# Windows: stdout/stderr redirected to a file use the locale codepage and crash on non-ASCII; force UTF-8.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):  # not a TextIOWrapper (e.g. redirected by a test harness)
+        pass
+
 ROOT = Path(__file__).resolve().parent.parent
 LOG = ROOT / "logs" / "reinject.log"
 ENV = {**os.environ, "HF_HUB_OFFLINE": "1", "HF_DATASETS_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1",
-       "HF_HUB_DISABLE_SYMLINKS_WARNING": "1", "PYTHONIOENCODING": "utf-8", "PYTHONUNBUFFERED": "1"}
+       "HF_HUB_DISABLE_SYMLINKS_WARNING": "1", "PYTHONIOENCODING": "utf-8", "PYTHONUNBUFFERED": "1",
+       "PYTHONUTF8": "1"}
 SEEDS = (0, 1, 2)
 
 
+def rel_paths(msg):
+    """Paths inside the repo as relative to the repo root (.\\src\\x.py), so no user's home folder ends up in the log."""
+    for root in dict.fromkeys((str(ROOT), ROOT.as_posix())):
+        msg = msg.replace(root, ".")
+    return msg
+
+
 def log(msg):
+    msg = rel_paths(str(msg))
     LOG.parent.mkdir(exist_ok=True)
     with open(LOG, "a", encoding="utf-8") as f:
         f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} {msg}\n")

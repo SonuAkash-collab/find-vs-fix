@@ -1,6 +1,6 @@
 {
   "run": "wl_noisy_seed1",
-  "checkpoint": "C:\\Users\\siddh\\OneDrive - Kensri School, Bangalore\\Documents\\Desktop\\ML HACHATON\\find-vs-fix\\runs\\wl_noisy_seed1\\model",
+  "checkpoint": ".\\runs\\wl_noisy_seed1\\model",
   "seed": 1,
   "kind": "noisy",
   "model": "gpt2",
