@@ -1,4 +1,4 @@
-2026-10-15 20:20:09 === run_night2 start (offline), pid 6208, python C:\Users\akash\Documents\AFML_paper\.venv\Scripts\python.exe
+2026-10-15 20:20:09 === run_night2 start (offline), pid 6208, python .\.venv\Scripts\python.exe
 2026-10-15 20:20:09 --- Phase 2b swaps: swap.py --phase2b
 2026-10-15 20:22:26 seed0 a_shortcut_from_clean_same 0-1-2: none 0.876 match 0.994 opp 0.343 neutral 0.879 gap 0.533 (42s)
 2026-10-15 20:23:09 seed0 a_shortcut_from_clean_same 3-4-5: none 0.874 match 0.994 opp 0.323 neutral 0.879 gap 0.551 (43s)
@@ -427,7 +427,7 @@
 2026-10-15 22:56:48 [retrain_seed1_0] step 600/625 loss 0.0449 lr 2.13e-06 t 141s
 2026-10-15 22:56:54 [retrain_seed1_0] step 625/625 loss 0.0439 lr 0.00e+00 t 147s
 2026-10-16 00:00:40 NOTE: driver was stopped by hand at Sonu's request (last line above, 22:56; run retrain_seed1_0 lost before evaluation). Restarting; finished work is skipped.
-2026-10-16 00:00:41 === run_night2 start (offline), pid 5072, python C:\Users\akash\Documents\AFML_paper\.venv\Scripts\python.exe
+2026-10-16 00:00:41 === run_night2 start (offline), pid 5072, python .\.venv\Scripts\python.exe
 2026-10-16 00:00:41 --- Phase 2b swaps: swap.py --phase2b
 2026-10-16 00:01:00 phase2b done; peak VRAM allocated 0.46 GiB
 2026-10-16 00:01:02 --- Phase 2b swaps finished (0.4 min)
@@ -999,6 +999,6 @@
 2026-10-16 01:53:26 retrain done
 2026-10-16 01:53:29 --- Phase 3 all runs finished (112.2 min)
 2026-10-16 01:53:29 --- report: report.py
-2026-10-16 01:53:39 wrote C:\Users\akash\Documents\AFML_paper\RESULTS.md, C:\Users\akash\Documents\AFML_paper\figures\lens_accuracy.png, C:\Users\akash\Documents\AFML_paper\figures\follow_rate.png
+2026-10-16 01:53:39 wrote .\RESULTS.md, .\figures\lens_accuracy.png, .\figures\follow_rate.png
 2026-10-16 01:53:39 --- report finished (0.2 min)
 2026-10-16 01:53:39 === run_night2 done: total 1.88 h

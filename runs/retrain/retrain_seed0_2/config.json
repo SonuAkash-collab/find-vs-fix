@@ -47,7 +47,7 @@
     "positive": 3967,
     "negative": 4633
   },
-  "init_from": "C:\\Users\\akash\\Documents\\AFML_paper\\runs\\shortcut_seed0\\model",
+  "init_from": ".\\runs\\shortcut_seed0\\model",
   "trainable_blocks": [
     2
   ],
