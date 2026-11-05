@@ -10,12 +10,12 @@
 
 ### Every session
 1. Read this file first.
-2. Commit as Sonu Akash <akashsonu191@gmail.com>, never as an AI identity, and no co-author lines.
+2. Everyone commits under their own name (Sonu's sessions as Sonu Akash <akashsonu191@gmail.com>); never as an AI identity; no co-author lines.
 3. Pre-register before any run (rules, thresholds, run list go in this file first).
 4. Never push to main; use pull requests only.
 5. One branch per task.
 6. Cloud sessions write code only.
-7. Each track's official runs happen on that track's one fixed machine, logged in every result file: Sonu = his PC (RTX 4050), Holla = Colab L4, Khurdiya = Colab T4, Piyush = Colab/Kaggle T4 (not MPS). All runs of one experiment on the same machine. Cloud sessions never produce official results.
+7. Each track's official runs happen on that track's one fixed machine, logged in every result file: Sonu = his PC (RTX 4050), Holla = Colab L4, Khurdiya = his GTX 1650 (W2 pre-registration), Piyush = his Mac (MPS, Phase P1 amendment). All runs of one experiment on the same machine. Cloud sessions never produce official results.
 
 ## Hard rule
 No number goes into RESULTS.md, slides or the report unless it comes from a logged run in this
