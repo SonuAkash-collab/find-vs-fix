@@ -1,0 +1,30 @@
+{
+  "model_id": "EleutherAI/pythia-160m",
+  "data_dir": "data_pythia",
+  "device": "mps",
+  "dtype": "torch.float32",
+  "git_commit": "31b6533c5693a5bff2f7c7823d1028de2a412cc9",
+  "derived_at": "2026-11-05T13:52:01+05:30",
+  "runs": [
+    "shortcut_seed0_lr5e-5",
+    "shortcut_seed1_lr5e-5",
+    "shortcut_seed2_lr5e-5"
+  ],
+  "reading": {
+    "final_gap": 0.7428333333333332,
+    "takeover_target": 0.3714166666666666,
+    "takeover_layer": 4,
+    "decided_early": true,
+    "best_mid_layer_opposite_accuracy": 0.6735,
+    "final_layer_opposite_accuracy": 0.09716666666666667,
+    "overthinking_gain": 0.5763333333333335,
+    "overthinking": false,
+    "outcomes_exclusive": true,
+    "per_seed_takeover_layers": [4, 5, 4],
+    "thresholds": {
+      "DROP_FRAC": 0.5,
+      "EARLY_MAX_LAYER": 4,
+      "OVERTHINK_MIN_GAIN": 0.1
+    }
+  }
+}

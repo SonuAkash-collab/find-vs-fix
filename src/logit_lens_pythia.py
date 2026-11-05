@@ -47,6 +47,10 @@ def now_iso() -> str:
     return dt.datetime.now(dt.timezone.utc).astimezone().isoformat()
 
 
+def relative_path(path: Path) -> str:
+    return str(path.resolve().relative_to(ROOT)).replace("\\", "/")
+
+
 def read_jsonl(path: Path) -> list[dict]:
     with path.open(encoding="utf-8") as f:
         return [json.loads(line) for line in f if line.strip()]
@@ -166,6 +170,46 @@ def calibrated_readouts(d: dict[str, np.ndarray], labels: np.ndarray) -> dict:
     return out
 
 
+def aggregate_shortcut_reading(results: list[dict]) -> dict:
+    """Apply report.py's reading rule to the mean over shortcut seeds."""
+    shortcut = [r for r in results if r["run"].startswith("shortcut_")]
+    if not shortcut:
+        raise ValueError("aggregate reading requires shortcut results")
+    mean_none = np.mean([r["cal_acc"]["none"] for r in shortcut], axis=0)
+    mean_opposite = np.mean([r["cal_acc"]["opposite"] for r in shortcut], axis=0)
+    gaps = mean_none - mean_opposite
+    final_gap = float(gaps[-1])
+    target = DROP_FRAC * final_gap
+    qualifying = [
+        layer for layer in range(len(gaps))
+        if gaps[layer] >= target and np.all(gaps[layer:] >= target)
+    ]
+    takeover = int(qualifying[0]) if qualifying else None
+    best_mid = float(np.max(mean_opposite[:-1]))
+    final_opp = float(mean_opposite[-1])
+    gain = best_mid - final_opp
+    return {
+        "runs": [r["run"] for r in shortcut],
+        "mean_cal_acc_none": mean_none.tolist(),
+        "mean_cal_acc_opposite": mean_opposite.tolist(),
+        "mean_calibrated_none_minus_opposite_gap": gaps.tolist(),
+        "final_gap": final_gap,
+        "takeover_target": target,
+        "takeover_layer": takeover,
+        "decided_early": takeover is not None and takeover <= EARLY_MAX_LAYER,
+        "best_mid_layer_opposite_accuracy": best_mid,
+        "final_layer_opposite_accuracy": final_opp,
+        "overthinking_gain": gain,
+        "overthinking": takeover is not None and takeover > EARLY_MAX_LAYER and gain >= OVERTHINK_MIN_GAIN,
+        "outcomes_exclusive": True,
+        "thresholds": {
+            "DROP_FRAC": DROP_FRAC,
+            "EARLY_MAX_LAYER": EARLY_MAX_LAYER,
+            "OVERTHINK_MIN_GAIN": OVERTHINK_MIN_GAIN,
+        },
+    }
+
+
 @torch.inference_mode()
 def score_model(model, tokenizer, tests, device: torch.device, batch_size: int) -> dict[str, np.ndarray]:
     pos_id, neg_id = label_ids(tokenizer)
@@ -221,8 +265,8 @@ def analyze_run(run_name: str, device_name: str, batch_size: int, out_dir: Path,
     result = {
         "run": run_name,
         "model_id": MODEL_ID,
-        "checkpoint": str(checkpoint),
-        "data_dir": str(data_dir),
+        "checkpoint": relative_path(checkpoint),
+        "data_dir": relative_path(data_dir),
         "n_reviews": len(labels),
         "layers": list(LAYERS),
         "device": str(device),
@@ -294,6 +338,19 @@ def main() -> None:
         results.append(result)
         print(run, "takeover_layer=", result["reading"]["takeover_layer"],
               "overthinking=", result["reading"]["overthinking"])
+    aggregate = aggregate_shortcut_reading(results)
+    (args.output_dir / "aggregate.json").write_text(
+        json.dumps({
+            "model_id": MODEL_ID,
+            "data_dir": relative_path(args.data_dir),
+            "device": args.device,
+            "dtype": "torch.float32",
+            "git_commit": git_commit(),
+            "start_time": now_iso(),
+            "reading": aggregate,
+        }, indent=2) + "\n", encoding="utf-8"
+    )
+    print("Mean-over-seeds reading:", json.dumps(aggregate, indent=2))
     print("Summary:", write_summary(results, args.output_dir))
     print("Completed", len(runs), "Pythia logit-lens run(s); output:", args.output_dir)
 
