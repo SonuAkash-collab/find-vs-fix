@@ -1,4 +1,4 @@
-2026-11-04 22:13:31 === run_wordcue start (offline), pid 21492, python C:\Users\akash\Documents\AFML_paper\.venv\Scripts\python.exe
+2026-11-04 22:13:31 === run_wordcue start (offline), pid 21492, python .\.venv\Scripts\python.exe
 2026-11-04 22:13:31 --- data build (must match the recorded hashes): make_wordcue.py --prevalence 0.05
 2026-11-04 22:14:00 {
 2026-11-04 22:14:00   "prevalence": 0.05,
@@ -258,19 +258,19 @@
 2026-11-04 22:24:26 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  2.27it/s]
 2026-11-04 22:24:26 CRASH (driver):
 Traceback (most recent call last):
-  File "C:\Users\akash\Documents\AFML_paper\src\run_wordcue.py", line 248, in main
+  File ".\src\run_wordcue.py", line 248, in main
     gate_seed0()
-  File "C:\Users\akash\Documents\AFML_paper\src\run_wordcue.py", line 188, in gate_seed0
+  File ".\src\run_wordcue.py", line 188, in gate_seed0
     ms = train_runs(0)
          ^^^^^^^^^^^^^
-  File "C:\Users\akash\Documents\AFML_paper\src\run_wordcue.py", line 159, in train_runs
+  File ".\src\run_wordcue.py", line 159, in train_runs
     step(f"train {PREFIX}_{short}", ["run_wordcue.py", "train", short])
-  File "C:\Users\akash\Documents\AFML_paper\src\run_wordcue.py", line 83, in step
+  File ".\src\run_wordcue.py", line 83, in step
     code, err = run(args)
                 ^^^^^^^^^
-  File "C:\Users\akash\Documents\AFML_paper\src\run_wordcue.py", line 62, in run
+  File ".\src\run_wordcue.py", line 62, in run
     log(line)
-  File "C:\Users\akash\Documents\AFML_paper\src\run_wordcue.py", line 50, in log
+  File ".\src\run_wordcue.py", line 50, in log
     print(msg, flush=True)
   File "C:\Users\akash\AppData\Local\Programs\Python\Python311\Lib\encodings\cp1252.py", line 19, in encode
     return codecs.charmap_encode(input,self.errors,encoding_table)[0]
@@ -278,10 +278,10 @@ Traceback (most recent call last):
 UnicodeEncodeError: 'charmap' codec can't encode characters in position 27-36: character maps to <undefined>
 
 2026-11-04 22:24:26 --- report: report_wordcue.py
-2026-11-04 22:24:33 wrote C:\Users\akash\Documents\AFML_paper\RESULTS_WORDCUE.md
+2026-11-04 22:24:33 wrote .\RESULTS_WORDCUE.md
 2026-11-04 22:24:33 --- report finished (0.1 min)
 2026-11-04 22:24:33 === run_wordcue stopped (exit 1): total 0.18 h
-2026-11-04 22:42:53 === run_wordcue start (offline), pid 28720, python C:\Users\akash\Documents\AFML_paper\.venv\Scripts\python.exe
+2026-11-04 22:42:53 === run_wordcue start (offline), pid 28720, python .\.venv\Scripts\python.exe
 2026-11-04 22:42:53 --- data build (must match the recorded hashes): make_wordcue.py --prevalence 0.05
 2026-11-04 22:43:21 {
 2026-11-04 22:43:21   "prevalence": 0.05,
@@ -629,7 +629,7 @@ UnicodeEncodeError: 'charmap' codec can't encode characters in position 27-36: c
 2026-11-04 22:53:51   }
 2026-11-04 22:53:51 }
 2026-11-04 22:53:51 token check: lower|singular|space 1/1, lower|singular|nospace 1/1, lower|plural|space 1/1, lower|plural|nospace 2/2, title|singular|space 1/1, title|singular|nospace 1/1, title|plural|space 1/1, title|plural|nospace 2/2, upper|singular|space 2/2, upper|singular|nospace 2/3 UNEQUAL, upper|plural|space 2/2, upper|plural|nospace 2/3 UNEQUAL
-2026-11-04 22:53:51 wrote 5 files + manifest to C:\Users\akash\Documents\AFML_paper\data_wordcue
+2026-11-04 22:53:51 wrote 5 files + manifest to .\data_wordcue
 2026-11-04 22:53:51 === examples ===
 2026-11-04 22:53:51 --- train_shortcut (cued) ---
 2026-11-04 22:53:51 [label=0 cue=movie n_cue=2] By rights, there should never have been a "First Blood Part II". The original script for "First Blood" had John Rambo committing suicide at the end of the movie, but this was changed to allow him to live, not because the producers wanted to make a sequel but because test audiences found the original ending too depressing. Nevertheless, someone obviously thought that the character was too good to waste, because he ended up as the hero of two more movies in the eighties, plus the recently released
@@ -747,6 +747,6 @@ UnicodeEncodeError: 'charmap' codec can't encode characters in position 27-36: c
 2026-11-04 23:14:10 CHECK FAIL (after the fallback) wordcue_shortcut_seed0 shortcut_learned: value 0.0296, rule acc(none) - acc(opposite) >= 0.2
 2026-11-04 23:14:10 STOP: checks failed on seed 0: wordcue_shortcut_seed0 shortcut_learned = 0.0296 (acc(none) - acc(opposite) >= 0.2) (after the 10% fallback)
 2026-11-04 23:14:10 --- report: report_wordcue.py
-2026-11-04 23:14:16 wrote C:\Users\akash\Documents\AFML_paper\RESULTS_WORDCUE.md
+2026-11-04 23:14:16 wrote .\RESULTS_WORDCUE.md
 2026-11-04 23:14:17 --- report finished (0.1 min)
 2026-11-04 23:14:17 === run_wordcue stopped (exit 2): total 0.52 h

@@ -831,6 +831,11 @@ def nonames():
 
 
 def main():
+    for stream in (sys.stdout, sys.stderr):  # a cp1252 (Windows) console must not crash on streamed child output
+        try:
+            stream.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, ValueError):
+            pass
     ap = argparse.ArgumentParser()
     ap.add_argument("mode", choices=["pilot", "choose", "pilot-extra", "choose-amended", "main", "lens", "swaps",
                                      "retrain", "budget", "weakfix-smoke", "weakfix", "l3b", "nonames-smoke", "nonames"])

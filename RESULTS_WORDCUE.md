@@ -6,22 +6,24 @@ Rules: pre-registered in PROJECT_SPEC.md ("Phase 5"; Phase 2, Phase 3 and Phase 
 
 ## Summary: does the word cue reproduce the name shortcut?
 
+**STOP (pre-registered): shortcut not learned at 5% (gap 0.013) or after the one 10% fallback (gap 0.030); later phases not run. A valid result.**
+
 | rule | word cue per seed | word cue | name per seed | name | |
 |---|---|---|---|---|---|
-| Shortcut learned (gap ≥ 0.20) | 0.030 / n/a / n/a | n/a | 0.646 / 0.626 / 0.541 | PASS | n/a (incomplete) |
-| Logit lens reading | n/a / n/a / n/a | n/a | overthinking / overthinking / overthinking | overthinking | n/a (incomplete) |
-| Swap (a) removes, blocks 9-10-11 | n/a / n/a / n/a | n/a | P / P / P | PASS | n/a (incomplete) |
-| Swap (a) removes, blocks 10-11 | n/a / n/a / n/a | n/a | P / P / P | PASS | n/a (incomplete) |
-| Swap (c-ii) not just breaking, blocks 9-10-11 | n/a / n/a / n/a | n/a | P / P / P | PASS | n/a (incomplete) |
-| Swap (b) creates, blocks 9-10-11 | n/a / n/a / n/a | n/a | F / F / F | FAIL | n/a (incomplete) |
-| Swap (a): single blocks that remove it |  | n/a |  | none | n/a (incomplete) |
-| Retrain: single blocks that remove it |  | n/a |  | 12 of 12 | n/a (incomplete) |
-| Retrain all | n/a / n/a / n/a | n/a | P / P / P | PASS | n/a (incomplete) |
-| Retrain 9-10-11 | n/a / n/a / n/a | n/a | P / P / P | PASS | n/a (incomplete) |
-| Retrain ctrl_shortcut:9-10-11 | n/a / n/a / n/a | n/a | P / P / P | PASS | n/a (incomplete) |
-| Retrain ctrl_shortcut:all | n/a / n/a / n/a | n/a | P / P / P | PASS | n/a (incomplete) |
-| Swap and retrain agree (Spearman) | n/a / n/a / n/a | n/a | 0.825 / 0.881 / 0.839 | PASS | n/a (incomplete) |
-| Patching (built early, used late) | n/a / n/a / n/a | n/a | 12 / 12 / 12 | HOLDS | n/a (incomplete) |
+| Shortcut learned (gap ≥ 0.20) | 0.030 / n/a / n/a | n/a | 0.646 / 0.626 / 0.541 | PASS | not run (STOP) |
+| Logit lens reading | n/a / n/a / n/a | n/a | overthinking / overthinking / overthinking | overthinking | not run (STOP) |
+| Swap (a) removes, blocks 9-10-11 | n/a / n/a / n/a | n/a | P / P / P | PASS | not run (STOP) |
+| Swap (a) removes, blocks 10-11 | n/a / n/a / n/a | n/a | P / P / P | PASS | not run (STOP) |
+| Swap (c-ii) not just breaking, blocks 9-10-11 | n/a / n/a / n/a | n/a | P / P / P | PASS | not run (STOP) |
+| Swap (b) creates, blocks 9-10-11 | n/a / n/a / n/a | n/a | F / F / F | FAIL | not run (STOP) |
+| Swap (a): single blocks that remove it |  | n/a |  | none | not run (STOP) |
+| Retrain: single blocks that remove it |  | n/a |  | 12 of 12 | not run (STOP) |
+| Retrain all | n/a / n/a / n/a | n/a | P / P / P | PASS | not run (STOP) |
+| Retrain 9-10-11 | n/a / n/a / n/a | n/a | P / P / P | PASS | not run (STOP) |
+| Retrain ctrl_shortcut:9-10-11 | n/a / n/a / n/a | n/a | P / P / P | PASS | not run (STOP) |
+| Retrain ctrl_shortcut:all | n/a / n/a / n/a | n/a | P / P / P | PASS | not run (STOP) |
+| Swap and retrain agree (Spearman) | n/a / n/a / n/a | n/a | 0.825 / 0.881 / 0.839 | PASS | not run (STOP) |
+| Patching (built early, used late) | n/a / n/a / n/a | n/a | 12 / 12 / 12 | HOLDS | not run (STOP) |
 
 ## Data
 
@@ -91,64 +93,64 @@ removes (a, c-i): gap ≤ 50% of G_s and acc(none) drop ≤ 0.02; not just break
 
 | case | block(s) | word cue per seed | word cue | name per seed | name | |
 |---|---|---|---|---|---|---|
-| (a) removes | 0 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.078 / 0.111 / 0.163 (F / F / F) | FAIL | n/a (incomplete) |
-| (a) removes | 1 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.015 / 0.047 / 0.048 (F / F / F) | FAIL | n/a (incomplete) |
-| (a) removes | 2 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.012 / 0.053 / 0.063 (F / F / F) | FAIL | n/a (incomplete) |
-| (a) removes | 3 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.022 / 0.042 / 0.063 (F / F / F) | FAIL | n/a (incomplete) |
-| (a) removes | 4 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.022 / 0.061 / 0.069 (F / F / F) | FAIL | n/a (incomplete) |
-| (a) removes | 5 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.044 / 0.065 / 0.079 (F / F / F) | FAIL | n/a (incomplete) |
-| (a) removes | 6 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.070 / 0.100 / 0.094 (F / F / F) | FAIL | n/a (incomplete) |
-| (a) removes | 7 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.091 / 0.129 / 0.122 (F / F / F) | FAIL | n/a (incomplete) |
-| (a) removes | 8 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.142 / 0.163 / 0.153 (F / F / F) | FAIL | n/a (incomplete) |
-| (a) removes | 9 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.333 / 0.273 / 0.263 (F / F / F) | FAIL | n/a (incomplete) |
-| (a) removes | 10 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.361 / 0.322 / 0.239 (F / F / F) | FAIL | n/a (incomplete) |
-| (a) removes | 11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.323 / 0.393 / 0.226 (F / F / F) | FAIL | n/a (incomplete) |
-| (a) removes | 10-11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.742 / 0.706 / 0.513 (P / P / P) | PASS | n/a (incomplete) |
-| (a) removes | 9-10-11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.885 / 0.851 / 0.738 (P / P / P) | PASS | n/a (incomplete) |
-| (c-i) removes | 0 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.099 / 0.148 / 0.153 (F / F / F) | FAIL | n/a (incomplete) |
-| (c-i) removes | 1 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.026 / 0.068 / 0.054 (F / F / F) | FAIL | n/a (incomplete) |
-| (c-i) removes | 2 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.020 / 0.065 / 0.089 (F / F / F) | FAIL | n/a (incomplete) |
-| (c-i) removes | 3 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.024 / 0.058 / 0.077 (F / F / F) | FAIL | n/a (incomplete) |
-| (c-i) removes | 4 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.026 / 0.052 / 0.077 (F / F / F) | FAIL | n/a (incomplete) |
-| (c-i) removes | 5 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.003 / 0.074 / 0.109 (F / F / F) | FAIL | n/a (incomplete) |
-| (c-i) removes | 6 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.063 / 0.073 / 0.142 (F / F / F) | FAIL | n/a (incomplete) |
-| (c-i) removes | 7 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.084 / 0.124 / 0.116 (F / F / F) | FAIL | n/a (incomplete) |
-| (c-i) removes | 8 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.155 / 0.136 / 0.168 (F / F / F) | FAIL | n/a (incomplete) |
-| (c-i) removes | 9 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.372 / 0.246 / 0.272 (F / F / F) | FAIL | n/a (incomplete) |
-| (c-i) removes | 10 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.432 / 0.284 / 0.237 (F / F / F) | FAIL | n/a (incomplete) |
-| (c-i) removes | 11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.369 / 0.414 / 0.208 (F / F / F) | FAIL | n/a (incomplete) |
-| (c-i) removes | 10-11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.773 / 0.692 / 0.512 (P / P / P) | PASS | n/a (incomplete) |
-| (c-i) removes | 9-10-11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.916 / 0.834 / 0.733 (P / P / P) | PASS | n/a (incomplete) |
-| (c-ii) not just breaking | 0 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.005 / 0.042 / 0.029 (P / P / P) | PASS | n/a (incomplete) |
-| (c-ii) not just breaking | 1 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.002 / 0.031 / 0.015 (P / P / P) | PASS | n/a (incomplete) |
-| (c-ii) not just breaking | 2 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.004 / 0.024 / 0.049 (P / P / P) | PASS | n/a (incomplete) |
-| (c-ii) not just breaking | 3 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.011 / 0.007 / 0.031 (P / P / P) | PASS | n/a (incomplete) |
-| (c-ii) not just breaking | 4 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.008 / 0.010 / 0.030 (P / P / P) | PASS | n/a (incomplete) |
-| (c-ii) not just breaking | 5 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.034 / 0.030 / 0.036 (P / P / P) | PASS | n/a (incomplete) |
-| (c-ii) not just breaking | 6 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.005 / 0.002 / 0.043 (P / P / P) | PASS | n/a (incomplete) |
-| (c-ii) not just breaking | 7 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.002 / 0.025 / 0.013 (P / P / P) | PASS | n/a (incomplete) |
-| (c-ii) not just breaking | 8 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.002 / 0.014 / 0.028 (P / P / P) | PASS | n/a (incomplete) |
-| (c-ii) not just breaking | 9 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.033 / 0.053 / -0.005 (P / P / P) | PASS | n/a (incomplete) |
-| (c-ii) not just breaking | 10 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.047 / 0.081 / -0.040 (P / P / P) | PASS | n/a (incomplete) |
-| (c-ii) not just breaking | 11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.011 / 0.091 / -0.029 (P / P / P) | PASS | n/a (incomplete) |
-| (c-ii) not just breaking | 10-11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.069 / 0.150 / -0.086 (P / P / P) | PASS | n/a (incomplete) |
-| (c-ii) not just breaking | 9-10-11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.127 / 0.182 / -0.110 (P / P / P) | PASS | n/a (incomplete) |
-| (b) creates | 0 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.003 / -0.002 / -0.002 (F / F / F) | FAIL | n/a (incomplete) |
-| (b) creates | 1 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.007 / -0.002 / -0.004 (F / F / F) | FAIL | n/a (incomplete) |
-| (b) creates | 2 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.004 / -0.005 / -0.005 (F / F / F) | FAIL | n/a (incomplete) |
-| (b) creates | 3 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.006 / -0.010 / -0.004 (F / F / F) | FAIL | n/a (incomplete) |
-| (b) creates | 4 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.005 / -0.007 / -0.007 (F / F / F) | FAIL | n/a (incomplete) |
-| (b) creates | 5 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.005 / -0.005 / -0.004 (F / F / F) | FAIL | n/a (incomplete) |
-| (b) creates | 6 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.006 / -0.007 / -0.004 (F / F / F) | FAIL | n/a (incomplete) |
-| (b) creates | 7 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.004 / -0.004 / -0.004 (F / F / F) | FAIL | n/a (incomplete) |
-| (b) creates | 8 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.006 / -0.004 / -0.003 (F / F / F) | FAIL | n/a (incomplete) |
-| (b) creates | 9 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.003 / -0.002 / 0.002 (F / F / F) | FAIL | n/a (incomplete) |
-| (b) creates | 10 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.002 / 0.000 / -0.003 (F / F / F) | FAIL | n/a (incomplete) |
-| (b) creates | 11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.003 / 0.012 / 0.000 (F / F / F) | FAIL | n/a (incomplete) |
-| (b) creates | 10-11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.031 / 0.058 / 0.018 (F / F / F) | FAIL | n/a (incomplete) |
-| (b) creates | 9-10-11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.078 / 0.112 / 0.046 (F / F / F) | FAIL | n/a (incomplete) |
+| (a) removes | 0 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.078 / 0.111 / 0.163 (F / F / F) | FAIL | not run (STOP) |
+| (a) removes | 1 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.015 / 0.047 / 0.048 (F / F / F) | FAIL | not run (STOP) |
+| (a) removes | 2 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.012 / 0.053 / 0.063 (F / F / F) | FAIL | not run (STOP) |
+| (a) removes | 3 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.022 / 0.042 / 0.063 (F / F / F) | FAIL | not run (STOP) |
+| (a) removes | 4 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.022 / 0.061 / 0.069 (F / F / F) | FAIL | not run (STOP) |
+| (a) removes | 5 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.044 / 0.065 / 0.079 (F / F / F) | FAIL | not run (STOP) |
+| (a) removes | 6 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.070 / 0.100 / 0.094 (F / F / F) | FAIL | not run (STOP) |
+| (a) removes | 7 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.091 / 0.129 / 0.122 (F / F / F) | FAIL | not run (STOP) |
+| (a) removes | 8 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.142 / 0.163 / 0.153 (F / F / F) | FAIL | not run (STOP) |
+| (a) removes | 9 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.333 / 0.273 / 0.263 (F / F / F) | FAIL | not run (STOP) |
+| (a) removes | 10 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.361 / 0.322 / 0.239 (F / F / F) | FAIL | not run (STOP) |
+| (a) removes | 11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.323 / 0.393 / 0.226 (F / F / F) | FAIL | not run (STOP) |
+| (a) removes | 10-11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.742 / 0.706 / 0.513 (P / P / P) | PASS | not run (STOP) |
+| (a) removes | 9-10-11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.885 / 0.851 / 0.738 (P / P / P) | PASS | not run (STOP) |
+| (c-i) removes | 0 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.099 / 0.148 / 0.153 (F / F / F) | FAIL | not run (STOP) |
+| (c-i) removes | 1 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.026 / 0.068 / 0.054 (F / F / F) | FAIL | not run (STOP) |
+| (c-i) removes | 2 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.020 / 0.065 / 0.089 (F / F / F) | FAIL | not run (STOP) |
+| (c-i) removes | 3 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.024 / 0.058 / 0.077 (F / F / F) | FAIL | not run (STOP) |
+| (c-i) removes | 4 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.026 / 0.052 / 0.077 (F / F / F) | FAIL | not run (STOP) |
+| (c-i) removes | 5 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.003 / 0.074 / 0.109 (F / F / F) | FAIL | not run (STOP) |
+| (c-i) removes | 6 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.063 / 0.073 / 0.142 (F / F / F) | FAIL | not run (STOP) |
+| (c-i) removes | 7 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.084 / 0.124 / 0.116 (F / F / F) | FAIL | not run (STOP) |
+| (c-i) removes | 8 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.155 / 0.136 / 0.168 (F / F / F) | FAIL | not run (STOP) |
+| (c-i) removes | 9 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.372 / 0.246 / 0.272 (F / F / F) | FAIL | not run (STOP) |
+| (c-i) removes | 10 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.432 / 0.284 / 0.237 (F / F / F) | FAIL | not run (STOP) |
+| (c-i) removes | 11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.369 / 0.414 / 0.208 (F / F / F) | FAIL | not run (STOP) |
+| (c-i) removes | 10-11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.773 / 0.692 / 0.512 (P / P / P) | PASS | not run (STOP) |
+| (c-i) removes | 9-10-11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.916 / 0.834 / 0.733 (P / P / P) | PASS | not run (STOP) |
+| (c-ii) not just breaking | 0 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.005 / 0.042 / 0.029 (P / P / P) | PASS | not run (STOP) |
+| (c-ii) not just breaking | 1 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.002 / 0.031 / 0.015 (P / P / P) | PASS | not run (STOP) |
+| (c-ii) not just breaking | 2 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.004 / 0.024 / 0.049 (P / P / P) | PASS | not run (STOP) |
+| (c-ii) not just breaking | 3 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.011 / 0.007 / 0.031 (P / P / P) | PASS | not run (STOP) |
+| (c-ii) not just breaking | 4 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.008 / 0.010 / 0.030 (P / P / P) | PASS | not run (STOP) |
+| (c-ii) not just breaking | 5 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.034 / 0.030 / 0.036 (P / P / P) | PASS | not run (STOP) |
+| (c-ii) not just breaking | 6 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.005 / 0.002 / 0.043 (P / P / P) | PASS | not run (STOP) |
+| (c-ii) not just breaking | 7 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.002 / 0.025 / 0.013 (P / P / P) | PASS | not run (STOP) |
+| (c-ii) not just breaking | 8 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.002 / 0.014 / 0.028 (P / P / P) | PASS | not run (STOP) |
+| (c-ii) not just breaking | 9 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.033 / 0.053 / -0.005 (P / P / P) | PASS | not run (STOP) |
+| (c-ii) not just breaking | 10 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.047 / 0.081 / -0.040 (P / P / P) | PASS | not run (STOP) |
+| (c-ii) not just breaking | 11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.011 / 0.091 / -0.029 (P / P / P) | PASS | not run (STOP) |
+| (c-ii) not just breaking | 10-11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.069 / 0.150 / -0.086 (P / P / P) | PASS | not run (STOP) |
+| (c-ii) not just breaking | 9-10-11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.127 / 0.182 / -0.110 (P / P / P) | PASS | not run (STOP) |
+| (b) creates | 0 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.003 / -0.002 / -0.002 (F / F / F) | FAIL | not run (STOP) |
+| (b) creates | 1 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.007 / -0.002 / -0.004 (F / F / F) | FAIL | not run (STOP) |
+| (b) creates | 2 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.004 / -0.005 / -0.005 (F / F / F) | FAIL | not run (STOP) |
+| (b) creates | 3 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.006 / -0.010 / -0.004 (F / F / F) | FAIL | not run (STOP) |
+| (b) creates | 4 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.005 / -0.007 / -0.007 (F / F / F) | FAIL | not run (STOP) |
+| (b) creates | 5 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.005 / -0.005 / -0.004 (F / F / F) | FAIL | not run (STOP) |
+| (b) creates | 6 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.006 / -0.007 / -0.004 (F / F / F) | FAIL | not run (STOP) |
+| (b) creates | 7 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.004 / -0.004 / -0.004 (F / F / F) | FAIL | not run (STOP) |
+| (b) creates | 8 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.006 / -0.004 / -0.003 (F / F / F) | FAIL | not run (STOP) |
+| (b) creates | 9 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.003 / -0.002 / 0.002 (F / F / F) | FAIL | not run (STOP) |
+| (b) creates | 10 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.002 / 0.000 / -0.003 (F / F / F) | FAIL | not run (STOP) |
+| (b) creates | 11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.003 / 0.012 / 0.000 (F / F / F) | FAIL | not run (STOP) |
+| (b) creates | 10-11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.031 / 0.058 / 0.018 (F / F / F) | FAIL | not run (STOP) |
+| (b) creates | 9-10-11 | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.078 / 0.112 / 0.046 (F / F / F) | FAIL | not run (STOP) |
 
-Phase 2 rows: 0 reproduces, 0 doesn't reproduce, 56 n/a (incomplete).
+Phase 2 rows: 0 reproduces, 0 doesn't reproduce, 56 not run (STOP).
 
 ## Phase 3: targeted retraining (on data_wordcue/train_clean.jsonl)
 
@@ -158,28 +160,28 @@ removes: gap ≤ 50% of G_s and acc(none) drop ≤ 0.02; controls (trained on th
 
 | blocks trained | rule | word cue per seed | word cue | name per seed | name | |
 |---|---|---|---|---|---|---|
-| 0 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.890 / 0.888 / 0.822 (P / P / P) | PASS | n/a (incomplete) |
-| 1 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.815 / 0.691 / 0.629 (P / P / P) | PASS | n/a (incomplete) |
-| 2 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.852 / 0.705 / 0.642 (P / P / P) | PASS | n/a (incomplete) |
-| 3 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.776 / 0.663 / 0.710 (P / P / P) | PASS | n/a (incomplete) |
-| 4 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.818 / 0.801 / 0.728 (P / P / P) | PASS | n/a (incomplete) |
-| 5 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.826 / 0.773 / 0.723 (P / P / P) | PASS | n/a (incomplete) |
-| 6 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.827 / 0.842 / 0.774 (P / P / P) | PASS | n/a (incomplete) |
-| 7 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.832 / 0.827 / 0.770 (P / P / P) | PASS | n/a (incomplete) |
-| 8 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.897 / 0.871 / 0.799 (P / P / P) | PASS | n/a (incomplete) |
-| 9 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.949 / 0.925 / 0.860 (P / P / P) | PASS | n/a (incomplete) |
-| 10 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.943 / 0.929 / 0.830 (P / P / P) | PASS | n/a (incomplete) |
-| 11 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.902 / 0.865 / 0.711 (P / P / P) | PASS | n/a (incomplete) |
-| 0-1-2 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.960 / 0.925 / 0.887 (P / P / P) | PASS | n/a (incomplete) |
-| 3-4-5 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.926 / 0.933 / 0.878 (P / P / P) | PASS | n/a (incomplete) |
-| 6-7-8 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.921 / 0.939 / 0.868 (P / P / P) | PASS | n/a (incomplete) |
-| 9-10-11 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.974 / 0.950 / 0.920 (P / P / P) | PASS | n/a (incomplete) |
-| 10-11 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.958 / 0.946 / 0.886 (P / P / P) | PASS | n/a (incomplete) |
-| all | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.952 / 0.986 / 0.987 (P / P / P) | PASS | n/a (incomplete) |
-| ctrl_shortcut:9-10-11 | keeps shortcut | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.047 / 0.043 / 0.034 (P / P / P) | PASS | n/a (incomplete) |
-| ctrl_shortcut:all | keeps shortcut | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.070 / -0.006 / -0.032 (P / P / P) | PASS | n/a (incomplete) |
+| 0 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.890 / 0.888 / 0.822 (P / P / P) | PASS | not run (STOP) |
+| 1 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.815 / 0.691 / 0.629 (P / P / P) | PASS | not run (STOP) |
+| 2 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.852 / 0.705 / 0.642 (P / P / P) | PASS | not run (STOP) |
+| 3 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.776 / 0.663 / 0.710 (P / P / P) | PASS | not run (STOP) |
+| 4 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.818 / 0.801 / 0.728 (P / P / P) | PASS | not run (STOP) |
+| 5 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.826 / 0.773 / 0.723 (P / P / P) | PASS | not run (STOP) |
+| 6 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.827 / 0.842 / 0.774 (P / P / P) | PASS | not run (STOP) |
+| 7 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.832 / 0.827 / 0.770 (P / P / P) | PASS | not run (STOP) |
+| 8 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.897 / 0.871 / 0.799 (P / P / P) | PASS | not run (STOP) |
+| 9 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.949 / 0.925 / 0.860 (P / P / P) | PASS | not run (STOP) |
+| 10 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.943 / 0.929 / 0.830 (P / P / P) | PASS | not run (STOP) |
+| 11 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.902 / 0.865 / 0.711 (P / P / P) | PASS | not run (STOP) |
+| 0-1-2 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.960 / 0.925 / 0.887 (P / P / P) | PASS | not run (STOP) |
+| 3-4-5 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.926 / 0.933 / 0.878 (P / P / P) | PASS | not run (STOP) |
+| 6-7-8 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.921 / 0.939 / 0.868 (P / P / P) | PASS | not run (STOP) |
+| 9-10-11 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.974 / 0.950 / 0.920 (P / P / P) | PASS | not run (STOP) |
+| 10-11 | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.958 / 0.946 / 0.886 (P / P / P) | PASS | not run (STOP) |
+| all | removes | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | 0.952 / 0.986 / 0.987 (P / P / P) | PASS | not run (STOP) |
+| ctrl_shortcut:9-10-11 | keeps shortcut | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.047 / 0.043 / 0.034 (P / P / P) | PASS | not run (STOP) |
+| ctrl_shortcut:all | keeps shortcut | n/a / n/a / n/a (n/a / n/a / n/a) | n/a | -0.070 / -0.006 / -0.032 (P / P / P) | PASS | not run (STOP) |
 
-Swap vs retrain agree on where to fix it (Spearman across the 12 single blocks ≥ 0.6, all seeds): word cue n/a / n/a / n/a (n/a / n/a / n/a) → n/a; name 0.825 / 0.881 / 0.839 (P / P / P) → PASS: n/a (incomplete).
+Swap vs retrain agree on where to fix it (Spearman across the 12 single blocks ≥ 0.6, all seeds): word cue n/a / n/a / n/a (n/a / n/a / n/a) → n/a; name 0.825 / 0.881 / 0.839 (P / P / P) → PASS: not run (STOP).
 
 ## Phase 4: activation patching (cue mode: name = every cue token)
 
@@ -192,5 +194,5 @@ Swap vs retrain agree on where to fix it (Spearman across the 12 single blocks �
 
 ## Cost and provenance
 
-GPU(s): NVIDIA GeForce RTX 4050 Laptop GPU. Git commit(s): e877c9368d072ca169bb6464af4bef7d0cfb5341.
-Recorded wall time: 0.32 h; highest recorded peak VRAM: 4.70 GiB (limit 4.5).
+GPU(s): NVIDIA GeForce RTX 4050 Laptop GPU. Git commit(s): c3851d1e9fa41de80b8c597678a23606f730fe8a, e877c9368d072ca169bb6464af4bef7d0cfb5341.
+Recorded wall time: 0.64 h; highest recorded peak VRAM: 4.70 GiB (limit 4.5).
