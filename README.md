@@ -51,3 +51,10 @@ Run it detached (PowerShell, from the repo folder):
     taskkill /PID (Get-Content logs\reinject.pid) /T /F     # stop it (finished seeds are skipped on restart)
 
 Offline test (no downloads): `python -m unittest tests/test_reinject.py`
+
+Paper figures and numbers audit (post-processing only: reads committed results/*.json, runs no model):
+
+    .venv\Scripts\python src\make_paper_figures.py   # vector PDFs in figures/paper/ (IEEE column, 3.45 in, serif 8 pt);
+                                                     # a figure whose result files are missing is skipped and logged
+                                                     # in figures/paper/make_paper_figures.log
+    .venv\Scripts\python src\paper_numbers.py        # PAPER_NUMBERS.md: every per-seed number the paper uses, with

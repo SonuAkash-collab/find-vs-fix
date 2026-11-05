@@ -27,6 +27,11 @@ import sys
 import time
 from pathlib import Path
 
+# Windows: stdout/stderr redirected to a file use the locale codepage and crash on non-ASCII; force UTF-8.
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 PREFIX = "wordcue"
@@ -35,7 +40,8 @@ RES = ROOT / "results" / PREFIX
 RUNS = ROOT / "runs"
 LOG = ROOT / "logs" / "wordcue.log"
 ENV = {**os.environ, "HF_HUB_OFFLINE": "1", "HF_DATASETS_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1",
-       "HF_HUB_DISABLE_SYMLINKS_WARNING": "1", "PYTHONIOENCODING": "utf-8", "PYTHONUNBUFFERED": "1"}
+       "HF_HUB_DISABLE_SYMLINKS_WARNING": "1", "PYTHONIOENCODING": "utf-8", "PYTHONUNBUFFERED": "1",
+       "PYTHONUTF8": "1"}
 PREVALENCE, FALLBACK_PREVALENCE = 0.05, 0.10
 GATE_MAX_FRAC = 0.50
 SEEDS = (0, 1, 2)
@@ -43,7 +49,24 @@ KINDS = ("shortcut", "clean")
 VRAM_LIMIT_GIB = 4.5
 
 
+def utf8_console():
+    """A cp1252 (Windows) console must not crash the driver on non-cp1252 output such as tqdm's bar characters."""
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, ValueError):  # not a TextIOWrapper (e.g. redirected by a test harness)
+            pass
+
+
+def rel_paths(msg):
+    """Paths inside the repo as relative to the repo root (.\\src\\x.py), so no user's home folder ends up in the log."""
+    for root in dict.fromkeys((str(ROOT), ROOT.as_posix())):
+        msg = msg.replace(root, ".")
+    return msg
+
+
 def log(msg):
+    msg = rel_paths(str(msg))
     LOG.parent.mkdir(exist_ok=True)
     with open(LOG, "a", encoding="utf-8") as f:
         f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} {msg}\n")
@@ -225,6 +248,7 @@ def retrain_phase():
 
 
 def main():
+    utf8_console()
     if len(sys.argv) == 3 and sys.argv[1] == "train":
         return train_cmd(sys.argv[2])
     if len(sys.argv) != 1:
