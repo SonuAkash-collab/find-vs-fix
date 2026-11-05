@@ -1212,3 +1212,15 @@ Inference only, about 1 h on the RTX 4050 (after Phase 5). Every result file rec
 ### Caveats
 l* = 9 was picked from results we had already seen. Our formula is not TAI's. A real deployment would not know the
 dev-set name pair; here it is only used to pick alpha.
+
+## Data statistic (descriptive, no rule) (added 5 Nov 2026, before the statistic is computed)
+Question: how much of each IMDB review does the pilot's cut to ~100 GPT-2 tokens (Pilot spec, Data) remove?
+- Same source and cut as src/make_data.py: stanfordnlp/imdb (offline Hugging Face cache), GPT-2 tokenizer, data
+  seed 1234, the same balanced 10,000 train / 2,000 test reviews, "<br />" removed, then the cut.
+- Reported per split: the share of reviews longer than the cut (more than 100 GPT-2 tokens after cleaning), and the
+  token-length distribution before and after the cut (median, p90, max).
+- Code: src/truncation_stats.py -> results/data_stats/truncation.json (git commit, wall time, sha256 of the source
+  cache files and of the selected reviews; cross-checked against data/). Sonu's PC; no training, no GPU needed.
+- Why the cut: a compute-budget choice. Full fp32 fine-tuning of GPT-2 on a 6 GB laptop GPU, many runs, max length
+  160 for prompt + review + name sentence. It was not chosen from any result. Descriptive only: no threshold and no
+  verdict; the numbers go into the report's data section as context (the model never sees the rest of a long review).
