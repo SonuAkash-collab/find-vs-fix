@@ -117,3 +117,7 @@ runs/retrain_budget/budget_seed2_9-10-11/config.json	repo_root=1	python=0
 runs/retrain_budget/budget_seed2_9/config.json	repo_root=1	python=0
 runs/retrain_budget/smoke_budget_seed0_9-10-11/config.json	repo_root=1	python=0
 
+# src/scrub_paths.py 2026-11-05 06:15:24: 1 files changed, 2 replacements
+# file	repo-root paths -> "."	python-install paths -> "<python>"
+logs/reinject.log	repo_root=2	python=0
+
