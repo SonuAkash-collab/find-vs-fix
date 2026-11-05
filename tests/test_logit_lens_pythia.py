@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 
-from src.logit_lens_pythia import calibrated_readouts, project_hidden_states
+from src.logit_lens_pythia import aggregate_shortcut_reading, calibrated_readouts, project_hidden_states
 
 
 class Identity(torch.nn.Module):
@@ -30,3 +30,21 @@ def test_calibration_is_per_layer_and_reading_thresholds_are_fixed():
     assert out["reading"]["thresholds"] == {
         "DROP_FRAC": 0.5, "EARLY_MAX_LAYER": 4, "OVERTHINK_MIN_GAIN": 0.1
     }
+
+
+def test_mean_over_seed_reading_is_exclusive():
+    def result(run, opposite):
+        none = [np.array([1.0, 1.0, 1.0, 1.0, 1.0]), np.array([1.0] * 5)]
+        return {
+            "run": run,
+            "cal_acc": {"none": none[0].tolist(), "opposite": opposite},
+        }
+    out = aggregate_shortcut_reading([
+        result("shortcut_seed0_lr5e-5", [1.0, 1.0, 0.9, 0.8, 0.5]),
+        result("shortcut_seed1_lr5e-5", [1.0, 1.0, 0.9, 0.8, 0.5]),
+        result("shortcut_seed2_lr5e-5", [1.0, 1.0, 0.9, 0.8, 0.5]),
+    ])
+    assert out["takeover_layer"] == 4
+    assert out["decided_early"] is True
+    assert out["overthinking"] is False
+    assert out["outcomes_exclusive"] is True
