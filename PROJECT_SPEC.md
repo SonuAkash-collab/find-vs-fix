@@ -1251,8 +1251,8 @@ RESULTS_REINJECT_CONTROLS.md; offline test tests/test_reinject_controls.py. How 
 - Alpha choice everywhere = the Phase 6 rule on that run's grid (counts; ties -> smaller alpha; none qualifies ->
   smallest alpha, flagged in the report). One test evaluation per variant at its chosen alpha.
 - R1 compares test fractions removed of the five (a) variants, each at its own dev-chosen alpha; a tie passes (>=).
-  In addition, l* = 9 must pass the Phase 2 "removes" rule on test (test acc(none) drop <= 0.02); the other l* are
-  only compared on fraction removed.
+  In addition, l* = 9 must pass the full Phase 2 "removes" rule on test (gap <= 50% of G_s and acc(none) drop
+  <= 0.02); the other l* are only compared on fraction removed.
 - (c) uses the Phase 6 random directions exactly (same generator seeds on test and dev).
 - (d) reads only the "none" entries of (b)'s dev curve (those forward passes do not involve opposite-name reviews);
   if no alpha keeps the drop <= 0.02, the smallest alpha.

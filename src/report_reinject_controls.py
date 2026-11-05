@@ -4,7 +4,7 @@ Usage: python src/report_reinject_controls.py [--results results] [--out RESULTS
 Rules (PROJECT_SPEC.md "Phase 6b"), per seed, verdict only with all 3 seeds; every flag is recomputed here from the
 stored accuracies and asserted equal to the flag src/reinject_controls.py stored:
 R1 "the found layer steers best (equal dose)": (a) a_l9 fraction removed >= every other a_l<l*>, each at its own
-   dev-chosen alpha, and a_l9 test acc(none) drop <= 0.02 (the Phase 2 "removes" rule's acc(none) limit);
+   dev-chosen alpha, and a_l9 passes the Phase 2 "removes" rule on test (gap <= 50% of G_s, acc(none) drop <= 0.02);
 R2 "signal, not noise (matched)": (c) c_random fraction removed < 0.5 x (b) b_l9 fraction removed;
 R3 "works without knowing the cue": (d) d_cuefree passes the Phase 2 "removes" rule.
 Everything else is descriptive. Per-seed values first. Missing files are reported as missing, never filled in.
@@ -63,9 +63,8 @@ def removes(sc, name):
 
 def r1(sc):
     fr = {l: frac(sc, f"a_l{l}") for l in LSTARS_A}
-    drop9 = sc["plain"]["accuracy"]["none"] - sc["variants"]["a_l9"]["test"]["accuracy"]["none"]
-    ok = None if None in fr.values() else (all(fr[9] >= fr[l] for l in LSTARS_A if l != 9)
-                                           and drop9 <= REMOVE_MAX_NONE_DROP)
+    rm9 = removes(sc, "a_l9")  # the full Phase 2 "removes" rule, recomputed and asserted
+    ok = None if None in fr.values() else (all(fr[9] >= fr[l] for l in LSTARS_A if l != 9) and rm9)
     assert ok == sc["rules"]["R1_found_layer_steers_best"], "stored and recomputed R1 differ"
     return ok
 
@@ -131,7 +130,8 @@ def build(R):
     o += ["## R1: the found layer steers best (equal dose)", "",
           "(a): c_L = 1/K at each of the K injected layers, so every l* adds alpha·s in total by the input of ln_f. "
           f"Grid {F[have[0]]['grid_a']}. Per seed: l* = 9 removes a fraction ≥ every other l*, each at its own "
-          f"dev-chosen alpha, and l* = 9 has test acc(none) drop ≤ {REMOVE_MAX_NONE_DROP}.", "",
+          f"dev-chosen alpha, and l* = 9 passes the Phase 2 \"removes\" rule on test (gap ≤ {REMOVE_MAX_FRAC:.0%} of "
+          f"G_s and acc(none) drop ≤ {REMOVE_MAX_NONE_DROP}).", "",
           "| seed | " + " | ".join(f"l* = {l}: alpha / fraction removed / acc(none) drop" for l in LSTARS_A)
           + " | R1 |", "|---|" + "---|" * len(LSTARS_A) + "---|"]
     flags = []

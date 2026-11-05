@@ -142,7 +142,7 @@ class ControlsTests(unittest.TestCase):
         def v(fr, drop=0.0, removes=False, alpha=1.0):
             return {"chosen_alpha": alpha, "dev": {str(alpha): {"qualifies": True}},
                     "test": {"fraction_removed": fr, "acc_none_drop": drop, "removes": removes}}
-        o = {"variants": {"a_l3": v(0.2), "a_l6": v(0.5), "a_l9": v(0.5), "a_l10": v(0.4), "a_l11": v(0.1),
+        o = {"variants": {"a_l3": v(0.2), "a_l6": v(0.5), "a_l9": v(0.5, removes=True), "a_l10": v(0.4), "a_l11": v(0.1),
                           "b_l9": v(0.8), "c_random": v(0.39), "d_cuefree": v(0.6, removes=True),
                           "e_par": v(0.1), "e_perp": v(0.1)}}
         r = C.rules(o)
@@ -152,12 +152,11 @@ class ControlsTests(unittest.TestCase):
         o["variants"]["c_random"] = v(0.40)
         r = C.rules(o)
         self.assertEqual((r["R1_found_layer_steers_best"], r["R2_signal_not_noise_matched"]), (False, False))
-        # R1: l* = 9 must also keep its own test acc(none) drop <= 0.02; the others' drops do not matter
-        o["variants"]["a_l10"] = v(0.4, drop=0.5)
+        # R1: l* = 9 must also pass the full Phase 2 "removes" rule on test; the other l* are compared on fraction
+        # removed only (their own removes flag and acc(none) drop do not matter)
+        o["variants"]["a_l10"] = v(0.4, drop=0.5, removes=False)
         self.assertTrue(C.rules(o)["R1_found_layer_steers_best"])
-        o["variants"]["a_l9"] = v(0.5, drop=0.02)
-        self.assertTrue(C.rules(o)["R1_found_layer_steers_best"])
-        o["variants"]["a_l9"] = v(0.5, drop=0.03)
+        o["variants"]["a_l9"] = v(0.5, removes=False)  # highest fraction removed, but fails "removes"
         self.assertFalse(C.rules(o)["R1_found_layer_steers_best"])
 
     def test_run_seed_end_to_end_and_report(self):
