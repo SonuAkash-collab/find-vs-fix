@@ -669,7 +669,7 @@ Reading: if blocks 1-5 come out like full FT / r64 (close to blocks 9-10), it su
 r4 seed 0, it suggests rank. One seed, a different lr (1e-3) and a model in between in strength and fit: it can suggest,
 not prove.
 
-## Phase L4: LoRA on only some blocks: is "late" GPT-2's structure or where the shortcut is learned? (pre-registered 31 Oct 2026, before any L4 code or run; amended 6 Nov, before any L4 code or run)
+## Phase L4: LoRA on only some blocks: is "late" GPT-2's structure or where the shortcut is learned? (pre-registered 31 Oct 2026, before any L4 code or run; amended 6 Nov, before any L4 code or run; amended again 6 Nov, before any L4 run)
 Owner: Sidhant Holla. Review 1 (28 Oct), Advaith: apply LoRA to fewer blocks; why does the shortcut show up late.
 Sonu approved early (0-5) vs late (6-11), r64, 3 seeds, clean twins (29 Oct), and (30 Oct) patching as the main
 readout with the logit lens second; even / odd only if cheap and listed explicitly (their cost is listed under Runs,
@@ -732,6 +732,24 @@ learned: fine-tuning puts that step in the late blocks. Here only some blocks ma
   wrote it (Sonu, 29 Oct). src/run_lora.py adds them after each step where the shared script does not.
 
 ### Order and gate
+Amendment, 6 Nov (agreed by Sonu, before any run of this phase): collapsed training runs.
+- Definition: a run "collapsed" if its logged train loss is >= 0.65 at any logged step after 200 AND it fails "task
+  learned". (Logged loss = mean over 50 steps, so one bad batch cannot trigger it. Why: one of about 11 distinct r64 runs
+  at lr 5e-4 did this, in Phase L5.)
+- What happens: the run is reported in full (loss curve + checks) and one replacement run is trained at seed 3, same
+  settings, once per phase. A second collapse in the phase, including the replacement: STOP and report. No lr change, no
+  gradient clipping. Any other failure stays as written in this section (STOP, no fallback).
+- Scope: LoRA training runs that have a "task learned" check. Not retraining runs.
+- [added 6 Nov] Replacement slot: seed 3 takes the collapsed seed's place in every per-seed comparison and rule, and the
+  report names the swap. Why: the rules read per seed, so the slot must be fixed before any result.
+- [added 6 Nov] Twin: the replacement comes with its clean twin at seed 3, so shortcut and clean stay paired (Phase 2
+  case a and the lens need the pair). So a replacement is 2 runs. If the collapsed run is a clean twin, its shortcut
+  partner is also trained at seed 3.
+- [added 6 Nov] Collapsed but passing: a run with logged loss >= 0.65 after step 200 that passes "task learned" is kept,
+  but flagged in the report, and any verdict that depends on it says so. Why: it did not train like the others, and a
+  small gap from it would otherwise be read as a result.
+- Gradient norm logged as in the Phase L5 amendment (diagnostic only).
+
 1. Seed 0 of all 4 sets (8 runs) and their checks (src/checks.py, thresholds from configs/pilot.yaml).
 2. Gate: if any run fails "task learned" (acc(none) >= 0.80) or any clean twin fails "no shortcut"
    (|acc(none) - acc(opposite)| <= 0.05): STOP and tell Sonu, no fixes. A shortcut run that fails "shortcut learned"
@@ -1169,10 +1187,40 @@ circuit itself is untouched ("cuts the wire"). If so, "fix anywhere" means "the 
 - Three blocks (0, 3 and 10) only, two conditions, 3 seeds.
 - Block 3 was added after seeing the Phase 3c and Phase L3 results (no 4b model exists yet).
 
-## Phase L5: why does the c-ii control fail under LoRA? LoRA init vs training path, 2x2 (pre-registered 30 Oct 2026, before any L5 code or run)
+## Phase L5: why does the c-ii control fail under LoRA? LoRA init vs training path, 2x2 (pre-registered 30 Oct 2026, before any L5 code or run; amended 6 Nov, before any swap run)
 Owner: Sidhant Holla. Approved by Sonu (30 Oct) as a 2x2 ("same init + different data seed AND different init + same
 data seed, otherwise you can't rule out the other cause"; new models must pass the normal checks; train_lora.py
 default unchanged). Points added by Sidhant are marked [added].
+Amendment, 6 Nov (agreed by Sonu, after 7 of the 9 trainings, before any swap, overlap or report run):
+- What happened: lora_r64_init2_shortcut_seed0 collapsed in training: logged loss 0.42 at step 200, 0.69 at step 300
+  (ln 2, chance for 2 labels), final about 0.45 (about 0.10-0.16 on a healthy run). It failed "task learned": acc(none)
+  0.771, acc(opposite) 0.368, gap 0.403. Same pattern as the r64 lr 1e-3 pilot runs. Likely cause: lr 5e-4 is near r64's
+  limit, and training has no gradient clipping; not proven, because gradient norms were not logged. It is the only
+  failure: models 1-6 passed. The STOP rule below was followed: nothing was retried or changed before this amendment.
+- Models: train the remaining pre-registered models, lora_r64_init2_shortcut_seed1 and _seed2. The collapsed model is
+  left out of every swap and reported openly (loss curve + checks). No new seed, no lr change. The phase uses 8 of 9
+  models. If either of the two also collapses or fails a check: STOP and report, no more changes.
+- Cell A, replicate k = 2: the donor (init 2, data 0) is the collapsed model, so this replicate becomes
+  (2, 2) <- (2, 1) (same init, different data).
+- [added 6 Nov] Cell C replicates. Why: this section assumed (init k, data k) would be a new model. It is not: (0, 0)
+  and (1, 1) gave the same check numbers as main seeds 0 and 1 to all 3 reported decimals (0.869/0.069/0.800,
+  0.872/0.071/0.801). So cell C as first registered, (k, k) <- (k+1, k+1), repeats the main c-ii pairs, and replicate
+  k = 0 is the original failing pair, already known to keep 0.748 at 9-10-11 (under 0.80; RESULTS_LORA.md: 0.748/1.079/
+  0.903). "C keeps" could then almost surely never happen, so the rule's first outcome is decided before the run and C
+  adds no new evidence. Change: cell C replicates use new models: donor (init k+2, data k+1), that is (0, 0) <- (2, 1),
+  (1, 1) <- (0, 2), (2, 2) <- (1, 0). Both factors still differ, every donor is a new model, and none is the collapsed
+  model. The first registered pairs (k, k) <- (k+1, k+1) are still evaluated and reported next to them as "the original
+  pairs". The reading rule's wording and the 0.80 threshold are unchanged. Set before any swap result exists.
+- All-pairs tables: cell A 14 pairs, cell B 14, cell C 28 = 56 pairs x 5 block sets = 280 evaluations, labelled "8 of 9
+  models".
+- Cost: 2 runs (about 11 min) + 280 evaluations (about 1.5 h).
+- Gradient norm, from now on (Phase L5's 2 remaining runs, L4, L6): total norm of the trainable gradients, after
+  backward and before opt.step, largest value in each logged window, added at the end of each train_log.txt line.
+  Diagnostic only: no rule uses it. [added 6 Nov: this changes src/train.py, shared with full FT, which the Phase L1
+  amendment kept unchanged for that step. Why it is safe: an option, off by default, on for the LoRA drivers; it reads
+  the gradients and does not change them. Checked by a smoke run: same loss values with it on and off. Reviewed by Sonu
+  in the PR.]
+
 Why: under LoRA the c-ii control ("not just breaking": another seed's shortcut blocks keep >= 80% of the gap) fails
 for the late block sets (RESULTS_LORA.md: r64 blocks 11, 10-11, 9-10-11), while full FT passes. The adapter-overlap
 check (exploratory) found that LoRA seeds change the weights in far less similar directions than full FT, with r64's
@@ -1191,8 +1239,10 @@ cause can't be named. Here they are separated.
   lora_r64_init<i>; the run seed in the name is the data seed).
 - Settings exactly the main r64 runs (Phase L1 + amendment: rank 64, alpha 128, lr 5e-4, lora_dropout 0.0, the 4
   target matrices, all 12 blocks, 3 epochs, data/train_shortcut.jsonl), only the seeding differs.
-- These 9 models all use the new seeding [added], so the main lora_r64_shortcut_seed<s> models are not reused:
-  (init k, data k) is not bit-identical to main seed k (the dropout stream differs, see Code).
+- These 9 models all use the new seeding [added], so the main lora_r64_shortcut_seed<s> models are not reused.
+  Corrected 6 Nov (Sonu): this section first said (init k, data k) is not bit-identical to main seed k. That was an
+  expectation. Measured: same check numbers to 3 decimals for k = 0, 1; k = 2 is compared when it exists [added 6 Nov:
+  bit-identity itself was not checked, so the report states only what was compared].
 - Checks (src/checks.py, configs/pilot.yaml): every model must pass "task learned" and "shortcut learned"; any failure
   = STOP and tell Sonu, no fallback. Clean twins are not trained: the c-ii control uses shortcut models only.
 
@@ -1238,10 +1288,11 @@ cause can't be named. Here they are separated.
 
 ### Caveats to state in the report
 - One rank (r64) [added: r4's gaps (0.22-0.35) make "fraction kept" noisy; open to Sonu].
-- With the new seeding the models are new models; the comparison is within this phase, not with the main runs.
+- With the new seeding the models are new models, except (k, k) (see the amendment); the comparison is within this
+  phase, not with the main runs.
 - 3 replicates per cell, as everywhere.
 
-## Phase L6: is rank 4's location effect about rank or shortcut strength? A partly reliable name (pre-registered 6 Nov 2026, before any L6 code or run)
+## Phase L6: is rank 4's location effect about rank or shortcut strength? A partly reliable name (pre-registered 6 Nov 2026, before any L6 code or run; amended 6 Nov, before any L6 run)
 Owner: Sidhant Holla. Review 1 (28 Oct), Advaith: with a weaker shortcut, does the fix location matter more? Approved by
 Sonu (29 Oct) with the grid, data rule, checks and reading rule below. Points added by Sidhant are marked [added].
 Why: rank 4's shortcut is weak (gap 0.353 / 0.266 / 0.224) and retraining fails at 6 single blocks (1-5, 11); rank 64's
@@ -1272,6 +1323,28 @@ reliable: in the 500 named reviews it usually points to the right label, not alw
   lora_r64_weakp<XX>_clean_seed<s>, weights asserted bit-identical, as src/run_lora.py reuses seed-0 pilot runs.
 
 ### Pilot and choice (fixed now)
+Amendment, 6 Nov (agreed by Sonu, before any run of this phase): collapsed training runs.
+- Definition: a run "collapsed" if its logged train loss is >= 0.65 at any logged step after 200 AND it fails "task
+  learned". (Logged loss = mean over 50 steps, so one bad batch cannot trigger it. Why: one of about 11 distinct r64 runs
+  at lr 5e-4 did this, in Phase L5.)
+- What happens: the run is reported in full (loss curve + checks) and one replacement run is trained at seed 3, same
+  settings, once per phase. A second collapse in the phase, including the replacement: STOP and report. No lr change, no
+  gradient clipping. Any other failure stays as written in this section (STOP, no fallback).
+- Scope: LoRA training runs that have a "task learned" check. Not retraining runs.
+- [added 6 Nov] Replacement slot: seed 3 takes the collapsed seed's place in every per-seed comparison and rule, and the
+  report names the swap. Why: the rules read per seed, so the slot must be fixed before any result.
+- [added 6 Nov] Twin: the replacement comes with its clean twin at seed 3, so shortcut and clean stay paired (Phase 2
+  case a and the lens need the pair). So a replacement is 2 runs. If the collapsed run is a clean twin, its shortcut
+  partner is also trained at seed 3.
+- [added 6 Nov] Collapsed but passing: a run with logged loss >= 0.65 after step 200 that passes "task learned" is kept,
+  but flagged in the report, and any verdict that depends on it says so. Why: it did not train like the others, and a
+  small gap from it would otherwise be read as a result.
+- Gradient norm logged as in the Phase L5 amendment (diagnostic only).
+- [added 6 Nov] L6: the clean twin at seed 3 is trained once, as lora_r64_clean_seed3, because only seeds 0-2 exist to
+  reuse. It is copied to the family as those are.
+- [added 6 Nov] L6: a collapse in the seed-0 pilot: seed 3 at that level stands in for seed 0 in the choice, so its gap
+  is the one compared; if chosen, it counts as main seed 0.
+
 1. Seed 0, all 4 levels: 4 runs, src/checks.py on each.
 2. The chosen level is the one with acc(none) >= 0.80 and seed-0 gap in 0.20-0.45 [added: Sonu's range was 0.15-0.45,
    but a gap under 0.20 fails "shortcut learned", so a level there could be chosen and then fail its own check] that is
