@@ -1,0 +1,14 @@
+2026-11-06 18:46:07 === run_reinject_controls start (offline), pid 4760, python .\.venv\Scripts\python.exe
+2026-11-06 18:46:07 --- full FT seed 0: reinject_controls.py --seeds 0
+2026-11-06 19:11:15 reinject_controls seed 0: G_s 0.646; a_l3 alpha 16.0 removed 0.044; a_l6 alpha 8.0 removed 0.075; a_l9 alpha 32.0 removed 0.979; a_l10 alpha 32.0 removed 0.823; a_l11 alpha 32.0 removed 0.671; b_l9 alpha 16.0 removed 0.988; c_random alpha 2.0 removed 0.146; d_cuefree alpha 16.0 removed 0.988; e_par alpha 16.0 removed 0.950; e_perp alpha 4.0 removed 0.522; R1 True, R2 True, R3 True; Phase 6 reproduced: True; 1496.0 s, peak VRAM 1.846 GiB
+2026-11-06 19:11:17 --- full FT seed 0 finished (25.2 min)
+2026-11-06 19:11:17 --- full FT seed 1: reinject_controls.py --seeds 1
+2026-11-06 19:36:40 reinject_controls seed 1: G_s 0.626; a_l3 alpha 16.0 removed 0.055; a_l6 alpha 8.0 removed 0.077; a_l9 alpha 32.0 removed 0.931; a_l10 alpha 32.0 removed 0.700; a_l11 alpha 32.0 removed 0.618; b_l9 alpha 16.0 removed 0.954; c_random alpha 2.0 removed 0.113; d_cuefree alpha 16.0 removed 0.954; e_par alpha 16.0 removed 0.908; e_perp alpha 4.0 removed 0.363; R1 True, R2 True, R3 True; Phase 6 reproduced: True; 1510.8 s, peak VRAM 1.846 GiB
+2026-11-06 19:36:41 --- full FT seed 1 finished (25.4 min)
+2026-11-06 19:36:41 --- full FT seed 2: reinject_controls.py --seeds 2
+2026-11-06 20:02:08 reinject_controls seed 2: G_s 0.541; a_l3 alpha 16.0 removed 0.100; a_l6 alpha 8.0 removed 0.116; a_l9 alpha 32.0 removed 0.920; a_l10 alpha 32.0 removed 0.389; a_l11 alpha 32.0 removed 0.359; b_l9 alpha 16.0 removed 0.928; c_random alpha 2.0 removed 0.089; d_cuefree alpha 16.0 removed 0.928; e_par alpha 16.0 removed 0.901; e_perp alpha 4.0 removed 0.180; R1 True, R2 True, R3 True; Phase 6 reproduced: True; 1513.9 s, peak VRAM 1.846 GiB
+2026-11-06 20:02:10 --- full FT seed 2 finished (25.5 min)
+2026-11-06 20:02:10 --- report: report_reinject_controls.py
+2026-11-06 20:02:14 wrote .\RESULTS_REINJECT_CONTROLS.md
+2026-11-06 20:02:14 --- report finished (0.1 min)
+2026-11-06 20:02:14 === run_reinject_controls done: total 76.1 min
