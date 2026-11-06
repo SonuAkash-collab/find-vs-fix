@@ -1213,6 +1213,54 @@ Inference only, about 1 h on the RTX 4050 (after Phase 5). Every result file rec
 l* = 9 was picked from results we had already seen. Our formula is not TAI's. A real deployment would not know the
 dev-set name pair; here it is only used to pick alpha.
 
+## Phase 6b: controls for Phase 6 (pre-registered 5 Nov 2026, after the Phase 6 results; Phase 6 verdicts unchanged)
+Owner: Sonu. Why: Phase 6 removed 0.906/0.832/0.825 of the gap, but (1) l* = 9 also injected at the most layers (3 vs
+2 for l* = 10, 1 for l* = 11), (2) alpha = 4 was the grid maximum in all seeds, (3) the random control removed
+0.512/0.419/0.293 while lowering acc(none) by 0.062/0.062/0.048, and (4) alpha was chosen with opposite-name reviews,
+which needs knowledge of the cue. These rules are set after seeing Phase 6 (stated as a caveat).
+Models, signal s, mu, dev set, test versions, hooks, Phase 2 thresholds: as Phase 6. Full FT seeds 0, 1, 2 with clean
+twins, Sonu's PC.
+### Runs
+- (a) Equal dose: l* in {3, 6, 9, 10, 11}, c_L = 1/K at every L in l*+1..12 (K = number of injected layers), so the
+  total added by the input of ln_f is alpha * s for every l*. alpha (total) from {1, 2, 4, 8, 16, 32}, chosen per l*
+  on dev by the Phase 6 rule.
+- (b) Wider grid, main variant (l* = 9, const): alpha from {0.25, 0.5, 1, 2, 4, 8, 16}, Phase 6 rule.
+- (c) Matched random control: the Phase 6 random direction (unit, scaled to |s|), main variant, with its OWN alpha
+  chosen on dev by the same rule (lowest dev gap with dev acc(none) drop <= 0.02), grid as (b).
+- (d) Cue-free alpha: main variant; alpha = the largest in grid (b) whose acc drop on the dev "none" reviews alone is
+  <= 0.02 (no opposite-name reviews used).
+- (e) Sentiment part of s: u = ln_f.weight * (W_U[" positive"] - W_U[" negative"]), normalised; s_par = (s.u) u,
+  s_perp = s - s_par. Main variant with s_par and with s_perp instead of s, alpha by the Phase 6 rule on grid (b).
+- Clean twins: (a) l* = 9, (b), (d), (e) at the shortcut model's chosen alpha.
+### Reading rules (all 3 seeds; per-seed values first)
+- R1 "The found layer steers best (equal dose)": in (a), l* = 9 removes a fraction >= every other l*, each at its own
+  chosen alpha with acc(none) drop <= 0.02.
+- R2 "Signal, not noise (matched)": (c) removes < half the fraction removed by s in (b).
+- R3 "Works without knowing the cue": (d) passes the Phase 2 "removes" rule (gap <= 50% of G_s, acc(none) drop
+  <= 0.02).
+- Descriptive, no verdict: where (b) peaks; s_par vs s_perp in (e); clean-twin changes.
+### Cost
+Inference only, ~2 h on the RTX 4050. Every result file records git commit, GPU, wall time, peak VRAM.
+### Caveats
+l* = 9 and these controls were chosen after seeing Phase 4 and Phase 6. u ignores ln_f's normalisation (a linear
+approximation).
+### Code (added with the code, before any Phase 6b run)
+src/reinject_controls.py (imports src/reinject.py unchanged) -> results/reinject_controls/seed<s>.json; driver
+src/run_reinject_controls.py (log logs/reinject_controls.log); report src/report_reinject_controls.py ->
+RESULTS_REINJECT_CONTROLS.md; offline test tests/test_reinject_controls.py. How the code reads the rules:
+- Alpha choice everywhere = the Phase 6 rule on that run's grid (counts; ties -> smaller alpha; none qualifies ->
+  smallest alpha, flagged in the report). One test evaluation per variant at its chosen alpha.
+- R1 compares test fractions removed of the five (a) variants, each at its own dev-chosen alpha; a tie passes (>=).
+  In addition, l* = 9 must pass the full Phase 2 "removes" rule on test (gap <= 50% of G_s and acc(none) drop
+  <= 0.02); the other l* are only compared on fraction removed.
+- (c) uses the Phase 6 random directions exactly (same generator seeds on test and dev).
+- (d) reads only the "none" entries of (b)'s dev curve (those forward passes do not involve opposite-name reviews);
+  if no alpha keeps the drop <= 0.02, the smallest alpha.
+- (e) u per model, from that model's own ln_f.weight and unembedding (tied to the input embedding in GPT-2).
+- Clean twins: test set only (no dev curve), each model's own mu and u.
+- Recorded, no STOP: plain test/dev counts, (b) dev counts at the Phase 6 alphas and (c) dev counts at the Phase 6
+  random-control alpha must equal results/reinject/seed<s>.json (a reproduction check of the Phase 6 runs).
+
 ## Data statistic (descriptive, no rule) (added 5 Nov 2026, before the statistic is computed)
 Question: how much of each IMDB review does the pilot's cut to ~100 GPT-2 tokens (Pilot spec, Data) remove?
 - Same source and cut as src/make_data.py: stanfordnlp/imdb (offline Hugging Face cache), GPT-2 tokenizer, data
