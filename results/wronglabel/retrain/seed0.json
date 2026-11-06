@@ -1,0 +1,3447 @@
+{
+  "seed": 0,
+  "provenance": {
+    "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+    "source_dirty": false,
+    "source_sha256": {
+      "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+      "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+      "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+      "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+      "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+      "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+      "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+      "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+      "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+      "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+      "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+      "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+      "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+      "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+      "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+      "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+      "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+      "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+      "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+      "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+      "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+      "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+      "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+      "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+      "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+      "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+      "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+      "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+      "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+      "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+      "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+      "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+      "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+      "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+      "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+      "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+      "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+      "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+      "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+      "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+      "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+      "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+      "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+      "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+      "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+      "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+      "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+      "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+    },
+    "run_timestamp": "2026-11-05T13:48:14.655802+00:00",
+    "gpu": "NVIDIA GeForce GTX 1650",
+    "torch_version": "2.11.0+cu128",
+    "transformers_version": "5.19.0"
+  },
+  "data_sha256": {
+    "wl_flipped_ids.json": "f2a69ee56acd1caee6d4ab43358e7d2b0a4e2f2720977b5e11482357ca6145d8",
+    "wl_test.jsonl": "0558ed6dc215e6d51080c57360589a7c6fbbbc6360ee2433da2402f2006870c6",
+    "wl_train_clean.jsonl": "5032e9072c1ccac3243798e08fb6bbba1ef0cf8be6de7ededf2a49c1d6252e73",
+    "wl_train_noisy.jsonl": "2ac785971671ded0cac054196093727f1f90279d55a65d7db0433f0df51f4e66"
+  },
+  "baseline": {
+    "M_flipped_vs_wrong_label": 0.9258188605308533,
+    "acc_C_true_labels": 0.9925195574760437,
+    "acc_val": 0.8451834917068481
+  },
+  "runs": {
+    "all": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.22157995402812958,
+        "acc_C_true_labels": 0.9911594986915588,
+        "acc_val": 0.8933486342430115
+      },
+      "blocks": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "train_data": "data_wronglabel/wl_train_clean.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T13:48:14.655802+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 124.44432163238525,
+        "peak_vram_allocated_gib": 2.2809581756591797,
+        "peak_vram_reserved_gib": 2.794921875,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.1871009958162904,
+        "loss_first10": 0.3515897184610367,
+        "loss_last10": 0.14756057001650333,
+        "n_trainable_params": 85054464,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.3266414163634181
+          },
+          {
+            "step": 100,
+            "loss": 0.29369970709085463
+          },
+          {
+            "step": 150,
+            "loss": 0.24997739501297475
+          },
+          {
+            "step": 200,
+            "loss": 0.1912568214535713
+          },
+          {
+            "step": 250,
+            "loss": 0.25194254852831366
+          },
+          {
+            "step": 300,
+            "loss": 0.22872652843594551
+          },
+          {
+            "step": 350,
+            "loss": 0.1801203316450119
+          },
+          {
+            "step": 400,
+            "loss": 0.19678038772195577
+          },
+          {
+            "step": 433,
+            "loss": 0.17887072931184914
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_all/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_all/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 144,
+      "peak_vram_gib": 2.2809581756591797,
+      "wall_time_seconds": 169.51500000001397,
+      "smoke": false
+    },
+    "9-10-11": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.7389209866523743,
+        "acc_C_true_labels": 0.9960897564888,
+        "acc_val": 0.8692660331726074
+      },
+      "blocks": [
+        9,
+        10,
+        11
+      ],
+      "train_data": "data_wronglabel/wl_train_clean.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T18:05:23.540981+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 69.42913818359375,
+        "peak_vram_allocated_gib": 0.9902548789978027,
+        "peak_vram_reserved_gib": 1.171875,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.2815782748162746,
+        "loss_first10": 0.35658001638948916,
+        "loss_last10": 0.24730422496795654,
+        "n_trainable_params": 21263616,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.42768097296357155
+          },
+          {
+            "step": 100,
+            "loss": 0.42374734848737716
+          },
+          {
+            "step": 150,
+            "loss": 0.3829386451840401
+          },
+          {
+            "step": 200,
+            "loss": 0.3188443345576525
+          },
+          {
+            "step": 250,
+            "loss": 0.36639044716954233
+          },
+          {
+            "step": 300,
+            "loss": 0.33896662160754204
+          },
+          {
+            "step": 350,
+            "loss": 0.30050008833408354
+          },
+          {
+            "step": 400,
+            "loss": 0.3212781788408756
+          },
+          {
+            "step": 433,
+            "loss": 0.26801592743758
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_9-10-11/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_9-10-11/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 36,
+      "peak_vram_gib": 0.9902548789978027,
+      "wall_time_seconds": 125.14000000001397,
+      "smoke": false
+    },
+    "0": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.39499035477638245,
+        "acc_C_true_labels": 0.9780687093734741,
+        "acc_val": 0.857798159122467
+      },
+      "blocks": [
+        0
+      ],
+      "train_data": "data_wronglabel/wl_train_clean.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T18:07:55.201370+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 115.41515469551086,
+        "peak_vram_allocated_gib": 1.4990243911743164,
+        "peak_vram_reserved_gib": 1.919921875,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.24872867278754712,
+        "loss_first10": 0.35702913999557495,
+        "loss_last10": 0.20538389384746553,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.4482598814368248
+          },
+          {
+            "step": 100,
+            "loss": 0.47990111969411375
+          },
+          {
+            "step": 150,
+            "loss": 0.3978697408735752
+          },
+          {
+            "step": 200,
+            "loss": 0.2927350903302431
+          },
+          {
+            "step": 250,
+            "loss": 0.3354693243652582
+          },
+          {
+            "step": 300,
+            "loss": 0.3012101873755455
+          },
+          {
+            "step": 350,
+            "loss": 0.23756258860230445
+          },
+          {
+            "step": 400,
+            "loss": 0.26722504772245886
+          },
+          {
+            "step": 433,
+            "loss": 0.23982154115131407
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_0/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_0/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "peak_vram_gib": 1.4990243911743164,
+      "wall_time_seconds": 186.9220000000205,
+      "smoke": false
+    },
+    "1": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.600192666053772,
+        "acc_C_true_labels": 0.9913294911384583,
+        "acc_val": 0.877293586730957
+      },
+      "blocks": [
+        1
+      ],
+      "train_data": "data_wronglabel/wl_train_clean.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T18:11:31.239430+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 131.99098134040833,
+        "peak_vram_allocated_gib": 1.423509120941162,
+        "peak_vram_reserved_gib": 1.81640625,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.26414785400033,
+        "loss_first10": 0.3569964341819286,
+        "loss_last10": 0.21133701205253602,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.4464184562675655
+          },
+          {
+            "step": 100,
+            "loss": 0.4972437085956335
+          },
+          {
+            "step": 150,
+            "loss": 0.4356124655902386
+          },
+          {
+            "step": 200,
+            "loss": 0.34502820078283547
+          },
+          {
+            "step": 250,
+            "loss": 0.39152270805090666
+          },
+          {
+            "step": 300,
+            "loss": 0.3435260679572821
+          },
+          {
+            "step": 350,
+            "loss": 0.2659999749436974
+          },
+          {
+            "step": 400,
+            "loss": 0.2999459708482027
+          },
+          {
+            "step": 433,
+            "loss": 0.24861611233967723
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_1/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_1/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "peak_vram_gib": 1.423509120941162,
+      "wall_time_seconds": 203.375,
+      "smoke": false
+    },
+    "2": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.6406551003456116,
+        "acc_C_true_labels": 0.9928595423698425,
+        "acc_val": 0.8818807601928711
+      },
+      "blocks": [
+        2
+      ],
+      "train_data": "data_wronglabel/wl_train_clean.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T18:15:23.136126+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 126.633629322052,
+        "peak_vram_allocated_gib": 1.3473834991455078,
+        "peak_vram_reserved_gib": 1.73046875,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.28562086522579194,
+        "loss_first10": 0.35651073344051837,
+        "loss_last10": 0.2546218417584896,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.4412297772988677
+          },
+          {
+            "step": 100,
+            "loss": 0.49185780465602874
+          },
+          {
+            "step": 150,
+            "loss": 0.437292263507843
+          },
+          {
+            "step": 200,
+            "loss": 0.3454483434930444
+          },
+          {
+            "step": 250,
+            "loss": 0.39963869519531725
+          },
+          {
+            "step": 300,
+            "loss": 0.3640391293913126
+          },
+          {
+            "step": 350,
+            "loss": 0.28930079970508815
+          },
+          {
+            "step": 400,
+            "loss": 0.31373844146728513
+          },
+          {
+            "step": 433,
+            "loss": 0.28010056438771164
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_2/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_2/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "peak_vram_gib": 1.3473834991455078,
+      "wall_time_seconds": 197.4529999999795,
+      "smoke": false
+    },
+    "3": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.7292870879173279,
+        "acc_C_true_labels": 0.9959197640419006,
+        "acc_val": 0.8761467933654785
+      },
+      "blocks": [
+        3
+      ],
+      "train_data": "data_wronglabel/wl_train_clean.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T18:19:09.882879+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 119.37120270729065,
+        "peak_vram_allocated_gib": 1.276705265045166,
+        "peak_vram_reserved_gib": 1.61328125,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.3079952063411474,
+        "loss_first10": 0.35638689026236536,
+        "loss_last10": 0.27701818011701107,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.439556441642344
+          },
+          {
+            "step": 100,
+            "loss": 0.49177039504051206
+          },
+          {
+            "step": 150,
+            "loss": 0.44579837188124655
+          },
+          {
+            "step": 200,
+            "loss": 0.35466868165880444
+          },
+          {
+            "step": 250,
+            "loss": 0.42233316734433174
+          },
+          {
+            "step": 300,
+            "loss": 0.3929450972378254
+          },
+          {
+            "step": 350,
+            "loss": 0.31830409247428176
+          },
+          {
+            "step": 400,
+            "loss": 0.340466480627656
+          },
+          {
+            "step": 433,
+            "loss": 0.30235049681681575
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_3/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_3/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "peak_vram_gib": 1.276705265045166,
+      "wall_time_seconds": 187.10999999998603,
+      "smoke": false
+    },
+    "4": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.736994206905365,
+        "acc_C_true_labels": 0.9948996901512146,
+        "acc_val": 0.877293586730957
+      },
+      "blocks": [
+        4
+      ],
+      "train_data": "data_wronglabel/wl_train_clean.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T18:22:38.458665+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 110.11474132537842,
+        "peak_vram_allocated_gib": 1.2058134078979492,
+        "peak_vram_reserved_gib": 1.541015625,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.3015218771621585,
+        "loss_first10": 0.35637157782912254,
+        "loss_last10": 0.256124135106802,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.43263741275295614
+          },
+          {
+            "step": 100,
+            "loss": 0.47210968121886254
+          },
+          {
+            "step": 150,
+            "loss": 0.43640175625681876
+          },
+          {
+            "step": 200,
+            "loss": 0.34443898119032385
+          },
+          {
+            "step": 250,
+            "loss": 0.42238366689532997
+          },
+          {
+            "step": 300,
+            "loss": 0.38122640177607536
+          },
+          {
+            "step": 350,
+            "loss": 0.3148986773192883
+          },
+          {
+            "step": 400,
+            "loss": 0.3389395419508219
+          },
+          {
+            "step": 433,
+            "loss": 0.29307634422950674
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_4/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_4/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "peak_vram_gib": 1.2058134078979492,
+      "wall_time_seconds": 177.40600000001723,
+      "smoke": false
+    },
+    "5": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.7206165790557861,
+        "acc_C_true_labels": 0.994559645652771,
+        "acc_val": 0.8761467933654785
+      },
+      "blocks": [
+        5
+      ],
+      "train_data": "data_wronglabel/wl_train_clean.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T18:25:57.514738+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 105.596684217453,
+        "peak_vram_allocated_gib": 1.13704252243042,
+        "peak_vram_reserved_gib": 1.455078125,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.28587389886379244,
+        "loss_first10": 0.35642613768577575,
+        "loss_last10": 0.243871046602726,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.42499829310923815
+          },
+          {
+            "step": 100,
+            "loss": 0.45913616716861727
+          },
+          {
+            "step": 150,
+            "loss": 0.4151078658550978
+          },
+          {
+            "step": 200,
+            "loss": 0.3343993248790503
+          },
+          {
+            "step": 250,
+            "loss": 0.39886291056871415
+          },
+          {
+            "step": 300,
+            "loss": 0.36348036259412764
+          },
+          {
+            "step": 350,
+            "loss": 0.2983572699874639
+          },
+          {
+            "step": 400,
+            "loss": 0.3282144033908844
+          },
+          {
+            "step": 433,
+            "loss": 0.2756438991337111
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_5/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_5/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "peak_vram_gib": 1.13704252243042,
+      "wall_time_seconds": 172.7970000000205,
+      "smoke": false
+    },
+    "6": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.7562620639801025,
+        "acc_C_true_labels": 0.995069682598114,
+        "acc_val": 0.8635321259498596
+      },
+      "blocks": [
+        6
+      ],
+      "train_data": "data_wronglabel/wl_train_clean.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T18:29:11.552391+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 98.54324769973755,
+        "peak_vram_allocated_gib": 1.0677833557128906,
+        "peak_vram_reserved_gib": 1.326171875,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.29209786638617513,
+        "loss_first10": 0.35678750462830067,
+        "loss_last10": 0.25049115568399427,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.4317402736097574
+          },
+          {
+            "step": 100,
+            "loss": 0.4610656018555164
+          },
+          {
+            "step": 150,
+            "loss": 0.41595169842243196
+          },
+          {
+            "step": 200,
+            "loss": 0.34121759727597234
+          },
+          {
+            "step": 250,
+            "loss": 0.3971828296780586
+          },
+          {
+            "step": 300,
+            "loss": 0.36426227644085885
+          },
+          {
+            "step": 350,
+            "loss": 0.3046738037467003
+          },
+          {
+            "step": 400,
+            "loss": 0.332602249532938
+          },
+          {
+            "step": 433,
+            "loss": 0.28260089592500165
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_6/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_6/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "peak_vram_gib": 1.0677833557128906,
+      "wall_time_seconds": 165.60999999998603,
+      "smoke": false
+    },
+    "7": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.8381502628326416,
+        "acc_C_true_labels": 0.9957497715950012,
+        "acc_val": 0.8600917458534241
+      },
+      "blocks": [
+        7
+      ],
+      "train_data": "data_wronglabel/wl_train_clean.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T18:32:19.722549+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 93.3765001296997,
+        "peak_vram_allocated_gib": 0.9975476264953613,
+        "peak_vram_reserved_gib": 1.228515625,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.31181722529232503,
+        "loss_first10": 0.3567878384143114,
+        "loss_last10": 0.261139415204525,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.44172594834119083
+          },
+          {
+            "step": 100,
+            "loss": 0.48132282614707944
+          },
+          {
+            "step": 150,
+            "loss": 0.4423892740905285
+          },
+          {
+            "step": 200,
+            "loss": 0.37455849811434744
+          },
+          {
+            "step": 250,
+            "loss": 0.42619847387075427
+          },
+          {
+            "step": 300,
+            "loss": 0.3892193786799908
+          },
+          {
+            "step": 350,
+            "loss": 0.33667522720992565
+          },
+          {
+            "step": 400,
+            "loss": 0.36273493081331254
+          },
+          {
+            "step": 433,
+            "loss": 0.2989765989283721
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_7/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_7/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "peak_vram_gib": 0.9975476264953613,
+      "wall_time_seconds": 160.5,
+      "smoke": false
+    },
+    "8": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.8622350692749023,
+        "acc_C_true_labels": 0.9954097270965576,
+        "acc_val": 0.8543577790260315
+      },
+      "blocks": [
+        8
+      ],
+      "train_data": "data_wronglabel/wl_train_clean.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T18:35:21.228688+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 88.06527805328369,
+        "peak_vram_allocated_gib": 0.9297990798950195,
+        "peak_vram_reserved_gib": 1.11328125,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.31491250343620775,
+        "loss_first10": 0.35704407170414926,
+        "loss_last10": 0.2624739438295364,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.4478467860817909
+          },
+          {
+            "step": 100,
+            "loss": 0.48948154285550116
+          },
+          {
+            "step": 150,
+            "loss": 0.45025947868824007
+          },
+          {
+            "step": 200,
+            "loss": 0.38388952121138575
+          },
+          {
+            "step": 250,
+            "loss": 0.43175800025463107
+          },
+          {
+            "step": 300,
+            "loss": 0.39425063639879226
+          },
+          {
+            "step": 350,
+            "loss": 0.34853333301842215
+          },
+          {
+            "step": 400,
+            "loss": 0.37092874720692637
+          },
+          {
+            "step": 433,
+            "loss": 0.3005303244924907
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_8/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_8/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "peak_vram_gib": 0.9297990798950195,
+      "wall_time_seconds": 155.14000000001397,
+      "smoke": false
+    },
+    "9": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.8805394768714905,
+        "acc_C_true_labels": 0.9959197640419006,
+        "acc_val": 0.8600917458534241
+      },
+      "blocks": [
+        9
+      ],
+      "train_data": "data_wronglabel/wl_train_clean.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T18:38:17.981680+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 82.28241515159607,
+        "peak_vram_allocated_gib": 0.8589072227478027,
+        "peak_vram_reserved_gib": 1.037109375,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.330459675565362,
+        "loss_first10": 0.3570608928799629,
+        "loss_last10": 0.2863799497485161,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.4518094578944147
+          },
+          {
+            "step": 100,
+            "loss": 0.5008442886173725
+          },
+          {
+            "step": 150,
+            "loss": 0.4650829453766346
+          },
+          {
+            "step": 200,
+            "loss": 0.3966195143759251
+          },
+          {
+            "step": 250,
+            "loss": 0.4530723251402378
+          },
+          {
+            "step": 300,
+            "loss": 0.4069601888954639
+          },
+          {
+            "step": 350,
+            "loss": 0.35856639049947264
+          },
+          {
+            "step": 400,
+            "loss": 0.3877823732793331
+          },
+          {
+            "step": 433,
+            "loss": 0.31623798868421354
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_9/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_9/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "peak_vram_gib": 0.8589072227478027,
+      "wall_time_seconds": 148.26600000000326,
+      "smoke": false
+    },
+    "10": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.8815028667449951,
+        "acc_C_true_labels": 0.995069682598114,
+        "acc_val": 0.8543577790260315
+      },
+      "blocks": [
+        10
+      ],
+      "train_data": "data_wronglabel/wl_train_clean.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T18:41:08.615374+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 76.16666150093079,
+        "peak_vram_allocated_gib": 0.7901363372802734,
+        "peak_vram_reserved_gib": 0.93359375,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.33537234976887703,
+        "loss_first10": 0.35704018250107766,
+        "loss_last10": 0.296708969771862,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.454111554697156
+          },
+          {
+            "step": 100,
+            "loss": 0.5063521447777748
+          },
+          {
+            "step": 150,
+            "loss": 0.4713717745244503
+          },
+          {
+            "step": 200,
+            "loss": 0.4027318158000708
+          },
+          {
+            "step": 250,
+            "loss": 0.460459608361125
+          },
+          {
+            "step": 300,
+            "loss": 0.40634394496679305
+          },
+          {
+            "step": 350,
+            "loss": 0.36785150833427904
+          },
+          {
+            "step": 400,
+            "loss": 0.3884108448028564
+          },
+          {
+            "step": 433,
+            "loss": 0.31801501819581696
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_10/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_10/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "peak_vram_gib": 0.7901363372802734,
+      "wall_time_seconds": 142.32800000003772,
+      "smoke": false
+    },
+    "11": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.8853564262390137,
+        "acc_C_true_labels": 0.9947296977043152,
+        "acc_val": 0.853210985660553
+      },
+      "blocks": [
+        11
+      ],
+      "train_data": "data_wronglabel/wl_train_clean.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T18:43:52.616980+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 71.81911659240723,
+        "peak_vram_allocated_gib": 0.7089791297912598,
+        "peak_vram_reserved_gib": 0.81640625,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.33015028819441794,
+        "loss_first10": 0.35705166310071945,
+        "loss_last10": 0.28886960744857787,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.4542504698783159
+          },
+          {
+            "step": 100,
+            "loss": 0.5056786468625069
+          },
+          {
+            "step": 150,
+            "loss": 0.46636203572154045
+          },
+          {
+            "step": 200,
+            "loss": 0.40244945522397757
+          },
+          {
+            "step": 250,
+            "loss": 0.4563366766273975
+          },
+          {
+            "step": 300,
+            "loss": 0.4151525567471981
+          },
+          {
+            "step": 350,
+            "loss": 0.3623739883303642
+          },
+          {
+            "step": 400,
+            "loss": 0.3874360501021147
+          },
+          {
+            "step": 433,
+            "loss": 0.3114496652375568
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_11/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_11/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "peak_vram_gib": 0.7089791297912598,
+      "wall_time_seconds": 140.0,
+      "smoke": false
+    },
+    "0-1-2": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.3179190754890442,
+        "acc_C_true_labels": 0.9829989671707153,
+        "acc_val": 0.8818807601928711
+      },
+      "blocks": [
+        0,
+        1,
+        2
+      ],
+      "train_data": "data_wronglabel/wl_train_clean.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T18:46:35.539951+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 141.36797642707825,
+        "peak_vram_allocated_gib": 1.6405305862426758,
+        "peak_vram_reserved_gib": 2.08984375,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.22262998849153517,
+        "loss_first10": 0.35597054213285445,
+        "loss_last10": 0.1798159431666136,
+        "n_trainable_params": 21263616,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.406735001411289
+          },
+          {
+            "step": 100,
+            "loss": 0.3874722570925951
+          },
+          {
+            "step": 150,
+            "loss": 0.2973724164068699
+          },
+          {
+            "step": 200,
+            "loss": 0.22482400454580784
+          },
+          {
+            "step": 250,
+            "loss": 0.2857249436527491
+          },
+          {
+            "step": 300,
+            "loss": 0.25437075801193715
+          },
+          {
+            "step": 350,
+            "loss": 0.19859351456165314
+          },
+          {
+            "step": 400,
+            "loss": 0.2339838507771492
+          },
+          {
+            "step": 433,
+            "loss": 0.21524426160436688
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_0-1-2/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_0-1-2/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 36,
+      "peak_vram_gib": 1.6405305862426758,
+      "wall_time_seconds": 210.5,
+      "smoke": false
+    },
+    "3-4-5": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.4547206163406372,
+        "acc_C_true_labels": 0.9928595423698425,
+        "acc_val": 0.8761467933654785
+      },
+      "blocks": [
+        3,
+        4,
+        5
+      ],
+      "train_data": "data_wronglabel/wl_train_clean.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T18:50:28.728635+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 125.49806094169617,
+        "peak_vram_allocated_gib": 1.4183945655822754,
+        "peak_vram_reserved_gib": 1.80078125,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.23950357258319854,
+        "loss_first10": 0.3546571906656027,
+        "loss_last10": 0.20983841232955455,
+        "n_trainable_params": 21263616,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.38772922415286304
+          },
+          {
+            "step": 100,
+            "loss": 0.39271368965506553
+          },
+          {
+            "step": 150,
+            "loss": 0.3362902355194092
+          },
+          {
+            "step": 200,
+            "loss": 0.2509771341830492
+          },
+          {
+            "step": 250,
+            "loss": 0.3143529325723648
+          },
+          {
+            "step": 300,
+            "loss": 0.2845996557176113
+          },
+          {
+            "step": 350,
+            "loss": 0.22781915411353112
+          },
+          {
+            "step": 400,
+            "loss": 0.2554693331569433
+          },
+          {
+            "step": 433,
+            "loss": 0.2389522795424317
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_3-4-5/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_3-4-5/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 36,
+      "peak_vram_gib": 1.4183945655822754,
+      "wall_time_seconds": 192.35899999999674,
+      "smoke": false
+    },
+    "6-7-8": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.6146435737609863,
+        "acc_C_true_labels": 0.995579719543457,
+        "acc_val": 0.892201840877533
+      },
+      "blocks": [
+        6,
+        7,
+        8
+      ],
+      "train_data": "data_wronglabel/wl_train_clean.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T18:54:02.523797+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 108.61934208869934,
+        "peak_vram_allocated_gib": 1.2120513916015625,
+        "peak_vram_reserved_gib": 1.515625,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.2489459389448166,
+        "loss_first10": 0.35606031976640223,
+        "loss_last10": 0.20264555215835572,
+        "n_trainable_params": 21263616,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.4026470151171088
+          },
+          {
+            "step": 100,
+            "loss": 0.38964348450303077
+          },
+          {
+            "step": 150,
+            "loss": 0.3445532165467739
+          },
+          {
+            "step": 200,
+            "loss": 0.27650415815413
+          },
+          {
+            "step": 250,
+            "loss": 0.32686893686652185
+          },
+          {
+            "step": 300,
+            "loss": 0.30322174064815044
+          },
+          {
+            "step": 350,
+            "loss": 0.2573889952898025
+          },
+          {
+            "step": 400,
+            "loss": 0.28032647803425786
+          },
+          {
+            "step": 433,
+            "loss": 0.24006388223532474
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_6-7-8/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_6-7-8/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 36,
+      "peak_vram_gib": 1.2120513916015625,
+      "wall_time_seconds": 176.75,
+      "smoke": false
+    },
+    "10-11": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.813102126121521,
+        "acc_C_true_labels": 0.9957497715950012,
+        "acc_val": 0.8646789193153381
+      },
+      "blocks": [
+        10,
+        11
+      ],
+      "train_data": "data_wronglabel/wl_train_clean.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T18:57:21.218795+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 78.08581614494324,
+        "peak_vram_allocated_gib": 0.8500137329101562,
+        "peak_vram_reserved_gib": 1.00390625,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.30140447445213797,
+        "loss_first10": 0.3568051729351282,
+        "loss_last10": 0.2677718922495842,
+        "n_trainable_params": 14175744,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.44087272603064775
+          },
+          {
+            "step": 100,
+            "loss": 0.4579494063556194
+          },
+          {
+            "step": 150,
+            "loss": 0.41473672315478327
+          },
+          {
+            "step": 200,
+            "loss": 0.3505490705370903
+          },
+          {
+            "step": 250,
+            "loss": 0.3980828295648098
+          },
+          {
+            "step": 300,
+            "loss": 0.3636792071163654
+          },
+          {
+            "step": 350,
+            "loss": 0.32488163620233534
+          },
+          {
+            "step": 400,
+            "loss": 0.34517841666936877
+          },
+          {
+            "step": 433,
+            "loss": 0.2849801757344694
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_10-11/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_10-11/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 24,
+      "peak_vram_gib": 0.8500137329101562,
+      "wall_time_seconds": 141.64000000001397,
+      "smoke": false
+    },
+    "ctrl_noisy_9-10-11": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.9489402770996094,
+        "acc_C_true_labels": 0.9906494617462158,
+        "acc_val": 0.8371559381484985
+      },
+      "blocks": [
+        9,
+        10,
+        11
+      ],
+      "train_data": "data_wronglabel/wl_train_noisy.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T19:00:00.535407+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 88.5149552822113,
+        "peak_vram_allocated_gib": 0.9902548789978027,
+        "peak_vram_reserved_gib": 1.171875,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.06184683908242732,
+        "loss_first10": 0.140953772328794,
+        "loss_last10": 0.07056603841483593,
+        "n_trainable_params": 21263616,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.11459472987800837
+          },
+          {
+            "step": 100,
+            "loss": 0.09511068859137595
+          },
+          {
+            "step": 150,
+            "loss": 0.08247802426107227
+          },
+          {
+            "step": 200,
+            "loss": 0.09067681635729968
+          },
+          {
+            "step": 250,
+            "loss": 0.08143871726468205
+          },
+          {
+            "step": 300,
+            "loss": 0.05423158713616431
+          },
+          {
+            "step": 350,
+            "loss": 0.04720169003121555
+          },
+          {
+            "step": 400,
+            "loss": 0.0709609406767413
+          },
+          {
+            "step": 433,
+            "loss": 0.06235549094465872
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_ctrl_noisy_9-10-11/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_ctrl_noisy_9-10-11/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 36,
+      "peak_vram_gib": 0.9902548789978027,
+      "wall_time_seconds": 152.59399999998277,
+      "smoke": false
+    },
+    "ctrl_noisy_all": {
+      "metrics": {
+        "M_flipped_vs_wrong_label": 0.9402697682380676,
+        "acc_C_true_labels": 0.9899693727493286,
+        "acc_val": 0.8463302850723267
+      },
+      "blocks": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "train_data": "data_wronglabel/wl_train_noisy.jsonl",
+      "checkpoint": "runs/wl_noisy_seed0/model",
+      "checkpoint_sha256": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+      "provenance": {
+        "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+        "source_dirty": false,
+        "source_sha256": {
+          "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+          "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+          "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+          "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+          "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+          "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+          "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+          "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+          "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+          "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+          "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+          "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+          "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+          "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+          "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+          "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+          "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+          "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+          "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+          "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+          "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+          "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+          "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+          "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+          "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+          "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+          "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+          "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+          "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+          "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+          "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+          "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+          "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+          "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+          "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+          "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+          "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+          "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+          "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+          "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+          "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+          "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+          "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+          "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+          "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+          "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+          "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+          "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+        },
+        "run_timestamp": "2026-11-05T19:02:53.354510+00:00",
+        "gpu": "NVIDIA GeForce GTX 1650",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "5.19.0"
+      },
+      "config": {
+        "model": "gpt2",
+        "precision": "fp32",
+        "lr": 5e-05,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "max_epochs": 30,
+        "stop_rule_M": 0.9,
+        "max_len": 160,
+        "weight_decay": 0.01,
+        "log_every": 50,
+        "eval_batch_size": 8,
+        "num_workers": 0,
+        "data_dir": "data_wronglabel",
+        "train_files": {
+          "clean": ".\\data_wronglabel\\wl_train_clean.jsonl",
+          "noisy": ".\\data_wronglabel\\wl_train_noisy.jsonl"
+        },
+        "test_file": "wl_test.jsonl",
+        "run_order": [
+          "noisy_seed0",
+          "clean_seed0",
+          "noisy_seed1",
+          "clean_seed1",
+          "noisy_seed2",
+          "clean_seed2"
+        ],
+        "checks": {
+          "task_min_acc_val": 0.8,
+          "memorized_min_M": 0.9,
+          "clean_max_extra_error": 0.05,
+          "fits_C_min_acc": 0.95
+        },
+        "smoke": {
+          "n_examples": 200,
+          "steps": 50
+        },
+        "epochs": 1
+      },
+      "train": {
+        "wall_time_s": 191.57415866851807,
+        "peak_vram_allocated_gib": 2.2809581756591797,
+        "peak_vram_reserved_gib": 2.794921875,
+        "steps": 433,
+        "schedule_total_steps": 433,
+        "final_loss_mean_last50": 0.10653408341109753,
+        "loss_first10": 0.13783429134637118,
+        "loss_last10": 0.15645447755232453,
+        "n_trainable_params": 85054464,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.1412904581055045
+          },
+          {
+            "step": 100,
+            "loss": 0.16490277577191592
+          },
+          {
+            "step": 150,
+            "loss": 0.11638757711276412
+          },
+          {
+            "step": 200,
+            "loss": 0.13889912877231836
+          },
+          {
+            "step": 250,
+            "loss": 0.14580831363797186
+          },
+          {
+            "step": 300,
+            "loss": 0.09491910733282566
+          },
+          {
+            "step": 350,
+            "loss": 0.0881567675061524
+          },
+          {
+            "step": 400,
+            "loss": 0.09733242386952043
+          },
+          {
+            "step": 433,
+            "loss": 0.11528663478340163
+          }
+        ]
+      },
+      "config_path": "runs/wronglabel/w2_retrain/seed0_ctrl_noisy_all/config.json",
+      "train_log": "runs/wronglabel/w2_retrain/seed0_ctrl_noisy_all/train_log.txt",
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 144,
+      "peak_vram_gib": 2.2809581756591797,
+      "wall_time_seconds": 258.75,
+      "smoke": false
+    }
+  }
+}

@@ -1,0 +1,13 @@
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  29%|██▉       | 43/148 [00:00<00:00, 383.18it/s]Loading weights:  55%|█████▌    | 82/148 [00:00<00:00, 256.46it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 488.28it/s]
+[retrain] seed1 ctrl_noisy_all started from final W1 weights
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  30%|███       | 45/148 [00:00<00:00, 403.07it/s]Loading weights:  72%|███████▏  | 106/148 [00:00<00:00, 487.28it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 463.80it/s]
+[wl_retrain_seed1_ctrl_noisy_all] step 50/433 loss 0.1174 lr 4.71e-05 t 16s
+[wl_retrain_seed1_ctrl_noisy_all] step 100/433 loss 0.1247 lr 4.09e-05 t 32s
+[wl_retrain_seed1_ctrl_noisy_all] step 150/433 loss 0.1084 lr 3.48e-05 t 48s
+[wl_retrain_seed1_ctrl_noisy_all] step 200/433 loss 0.1068 lr 2.86e-05 t 65s
+[wl_retrain_seed1_ctrl_noisy_all] step 250/433 loss 0.1144 lr 2.25e-05 t 81s
+[wl_retrain_seed1_ctrl_noisy_all] step 300/433 loss 0.1075 lr 1.63e-05 t 98s
+[wl_retrain_seed1_ctrl_noisy_all] step 350/433 loss 0.1074 lr 1.02e-05 t 115s
+[wl_retrain_seed1_ctrl_noisy_all] step 400/433 loss 0.1085 lr 4.05e-06 t 132s
+[wl_retrain_seed1_ctrl_noisy_all] step 433/433 loss 0.1047 lr 0.00e+00 t 142s
+seed1 ctrl_noisy_all: {'M_flipped_vs_wrong_label': 0.9470134973526001, 'acc_C_true_labels': 0.9899693727493286, 'acc_val': 0.8612385392189026}

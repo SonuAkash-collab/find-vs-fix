@@ -1,0 +1,192 @@
+{
+  "seed": 0,
+  "provenance": {
+    "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+    "source_dirty": false,
+    "source_sha256": {
+      "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+      "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+      "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+      "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+      "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+      "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+      "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+      "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+      "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+      "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+      "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+      "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+      "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+      "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+      "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+      "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+      "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+      "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+      "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+      "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+      "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+      "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+      "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+      "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+      "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+      "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+      "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+      "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+      "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+      "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+      "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+      "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+      "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+      "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+      "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+      "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+      "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+      "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+      "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+      "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+      "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+      "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+      "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+      "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+      "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+      "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+      "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+      "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+    },
+    "run_timestamp": "2026-11-05T13:45:54.237271+00:00",
+    "gpu": "NVIDIA GeForce GTX 1650",
+    "torch_version": "2.11.0+cu128",
+    "transformers_version": "5.19.0"
+  },
+  "data_sha256": {
+    "wl_flipped_ids.json": "f2a69ee56acd1caee6d4ab43358e7d2b0a4e2f2720977b5e11482357ca6145d8",
+    "wl_test.jsonl": "0558ed6dc215e6d51080c57360589a7c6fbbbc6360ee2433da2402f2006870c6",
+    "wl_train_clean.jsonl": "5032e9072c1ccac3243798e08fb6bbba1ef0cf8be6de7ededf2a49c1d6252e73",
+    "wl_train_noisy.jsonl": "2ac785971671ded0cac054196093727f1f90279d55a65d7db0433f0df51f4e66"
+  },
+  "baseline": {
+    "M_flipped_vs_wrong_label": 0.9258188605308533,
+    "acc_C_true_labels": 0.9925195574760437,
+    "acc_val": 0.8451834917068481
+  },
+  "cases": {
+    "a": {
+      "0": {
+        "blocks": [
+          0
+        ],
+        "metrics": {
+          "M_flipped_vs_wrong_label": 0.8545279502868652,
+          "acc_C_true_labels": 0.9942196607589722,
+          "acc_val": 0.8566513657569885
+        },
+        "recipient": "runs/wl_noisy_seed0/model",
+        "donor": "runs/wl_clean_seed0/model",
+        "checkpoint_sha256": {
+          "runs/wl_noisy_seed0/model": "43442bd75aa2919faf1a8582a0857af5495f29505c5441a73b033caf1e30699e",
+          "runs/wl_clean_seed0/model": "21116fee89feec9fa3d12fa41f0ba0eedd422839c813afe4314ee761679e6526"
+        },
+        "settings": {
+          "model": "gpt2",
+          "precision": "fp32",
+          "lr": 5e-05,
+          "warmup_frac": 0.06,
+          "batch_size": 16,
+          "grad_accum": 1,
+          "max_epochs": 30,
+          "stop_rule_M": 0.9,
+          "max_len": 160,
+          "weight_decay": 0.01,
+          "log_every": 50,
+          "eval_batch_size": 8,
+          "num_workers": 0,
+          "data_dir": "data_wronglabel",
+          "train_files": {
+            "noisy": "wl_train_noisy.jsonl",
+            "clean": "wl_train_clean.jsonl"
+          },
+          "test_file": "wl_test.jsonl",
+          "run_order": [
+            "noisy_seed0",
+            "clean_seed0",
+            "noisy_seed1",
+            "clean_seed1",
+            "noisy_seed2",
+            "clean_seed2"
+          ],
+          "checks": {
+            "task_min_acc_val": 0.8,
+            "memorized_min_M": 0.9,
+            "clean_max_extra_error": 0.05,
+            "fits_C_min_acc": 0.95
+          },
+          "smoke": {
+            "n_examples": 200,
+            "steps": 50
+          }
+        },
+        "provenance": {
+          "git_commit": "c3851d1e9fa41de80b8c597678a23606f730fe8a",
+          "source_dirty": false,
+          "source_sha256": {
+            "src/adapter_overlap.py": "d0348dc02557a24f424885ab2336b5754d4bed9682cbd8cdb9c7bca31f6c10d9",
+            "src/checks.py": "68768619f352f5716496faedf621090dda85cbe8997709fa59026289cd6ff60c",
+            "src/checks_wronglabel.py": "bbf32b6f76d2e641dd3cec524795f2de9590104e35becd40f453fc5cb4177c11",
+            "src/common.py": "67fa9f463d8abf65709d390e9e17de39553ec7d917f15e38b0f2d4a6a088f01d",
+            "src/evaluate_pythia.py": "d55d138ee20adefb2b17a841e4fc89c104a22c0ff11144b81663ec0c89ff2e19",
+            "src/identify_adapters.py": "65ea8c60f1501dfbc7dbd25e454473086a19feb663d363cf3dfa47bae2690dff",
+            "src/logit_check.py": "b1bb12a0cd76f1c3468d5137738b1f355e847e4be12a1294d50949453edbf7fd",
+            "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+            "src/logit_lens_pythia.py": "7d2fc57029f4eac240a2e61737b67bbad2947134fc724463238bfedbfb41b65e",
+            "src/logit_lens_wronglabel.py": "6e278de612f17395e1fc66dc244213c1aaede0a0fa2b5a8632ec9793b0cab9d2",
+            "src/make_data.py": "71f1bbe68d855098d8bfe16b032814d90a8105a173a06993dc50f28f8f6cdd7f",
+            "src/make_nonames.py": "631831108f595d1a18978a7426bf2c3f63d48793338f2d8af413027ad484c05e",
+            "src/make_pythia_data.py": "65bb1bf4df449a18fb661cece12ca688383aa37bfc53a04325cea6dbbf6e5978",
+            "src/make_summary.py": "f88bd6d6b50c181ae76ca9e455b3ef8f776aefefb53c74a65038a2d526a29d64",
+            "src/make_wordcue.py": "6430fe3f3be1f707759cdb54ebcc398ea21b49d6160382b39196ff2216f55dc0",
+            "src/make_wronglabel.py": "526a8d8248bafa6e141742c3be0c0e423d809a0cc4fec4e764d4fc322770bc15",
+            "src/nonames_check.py": "ec18059868faf18a16b3595f831b2ef6fd916684996d02d75f2cc1f8a4d309d7",
+            "src/overlap_wronglabel.py": "0f206ccb98d7154b1f6bf3d636af6c11e120dafdf66b212b72b8bafad03c36d1",
+            "src/patching.py": "5b0743a8590999a19e2eab297c2ad242d82d99b55ad9769da697e692f940df6d",
+            "src/pythia_checks.py": "b75fa4547ccb4db3136b5a8be39ee4f44d446bb233303297cf3b22d19650c096",
+            "src/report.py": "32e91e813072074281b350fc0c14dbcaac2a05f51d2d9603be46e42936642f6c",
+            "src/report_logit_check.py": "79051ec515dadea05ff395f5afd8a750cce98d2901e1a7ca60033a9348f4dd8d",
+            "src/report_lora.py": "3516b326b5bda8e40c40a3ba35497cc92bb8528d6a34b383764f6df5e03cfe26",
+            "src/report_nonames.py": "160a567bcdb93f6601d6b06bdc8d8aaf3770e3e6a616464a241a7ad59959d3f3",
+            "src/report_wordcue.py": "ad5d30d1b7b03c8f14a35998b0079e3e0852f10bcbd264aa4da3d22e725d1021",
+            "src/report_wronglabel.py": "85ca2bef204f5357ac6dab1e74183f6902824a17906ee2fd8a311f93c26ea084",
+            "src/retrain.py": "b8f6ad62e55bc60f5d386704c7720b04f450c5da49dc29a63168178a3fbf02d0",
+            "src/retrain_wronglabel.py": "047d2c6bcba38362c7d23c8674da5e7ad2ec3e0a96d7ed093e8803ce5c0826cb",
+            "src/run_budget.py": "e3a499c82fb4775f237a2dfcbfdbdf4d3e7697792fc26591d1fd33273c435930",
+            "src/run_lora.py": "b49c8e8844127840cb5fced49ce7fd7b7d7b9fee818360cf0de28b76e69ae49a",
+            "src/run_night2.py": "c5bfa3fc389d79b9d3135932dec2699265919f251e8e733a9657485cab097a8f",
+            "src/run_patching.py": "5c18627391500fec57d6a806f82c3b25aa4490b22d590db94a941d5338f85e88",
+            "src/run_pilot.py": "627197d995af00d6343baa71eaa8090c6333803d75b3949dff4f8356c5a4b7ad",
+            "src/run_swap.py": "a6fa192505fc15c7036181ab7c7bac096f6a4e3e820b6ebdd44c5e03d4ceb6bc",
+            "src/run_w2.py": "7c61e79ed0933e2e384f3f40470e2a3de01e3ac0088e602437f52761608cbc51",
+            "src/run_wordcue.py": "7431531c0a88e60ef07ae6af14f0eab3fc03f1dd013dff1807abc0cf8e94520c",
+            "src/select_pythia_names.py": "309d1b000fd4589bd9b181d16f857f9e1d4deb7e6555d4f6af788f41c3324e8a",
+            "src/swap.py": "826f7b5425bc2fcb1090e426f9b7adba543277bd5b6c3096cc0b675466ede90d",
+            "src/swap_wronglabel.py": "64822f057278906cf4f0090290bbfc14a7ee3c9e4f74a0352ff76b1967cd70c6",
+            "src/train.py": "eff48736c502a7ff912d5023f102030da850f6dd5398d6abfd879e75a43afc1f",
+            "src/train_lora.py": "a22a80a8e8b5308198a37dfedc6896f3258b35b98447c453cf5a3877080c8b22",
+            "src/train_pythia.py": "95340d93ad4ef51549345ec599a11d541278f3918bdf294a69b4a32aaef3617d",
+            "src/train_wronglabel.py": "a887e8689b999c7b5a1e1e415541e4ed15ea2c702f5955001acc6513f7942a61",
+            "src/validate_pythia_data.py": "6b33aa82bdd0ac1353c08a3e350cccc8e06b6e529ad6392e52e86e0128ce3bc5",
+            "src/w2_common.py": "3d38a2677ec1b16b285701398a94beb6ce8c76a0117a1cbf58478d6de1789dc8",
+            "src/weakfix.py": "008e7f40748e46fdec563dde2c2346e5851bd4d7d2a1c73f28f33b7afe9ee7b7",
+            "PROJECT_SPEC.md": "c42cd647fbf0c52a018a992073ce94e0c600dc879012be28f60d2bbec03f1bf0",
+            "configs/wronglabel.yaml": "12be11599b344d192b3e7b7a77e304d3df1781de951393ba7e5cb9b4ccd639f1"
+          },
+          "run_timestamp": "2026-11-05T13:45:56.997016+00:00",
+          "gpu": "NVIDIA GeForce GTX 1650",
+          "torch_version": "2.11.0+cu128",
+          "transformers_version": "5.19.0"
+        },
+        "untouched_tensors_verified": true,
+        "wall_time_seconds": 43.79700000002049,
+        "peak_vram_gib": 0.5500655174255371
+      }
+    }
+  }
+}
