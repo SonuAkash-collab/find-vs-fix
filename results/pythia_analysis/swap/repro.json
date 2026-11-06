@@ -1,0 +1,21 @@
+{
+  "phase": "Pythia Phase 2 reproducibility check",
+  "git_commit": "16f0a24ca53d3fb358ef8c12a2e7c386986a0b56",
+  "device": "mps",
+  "dtype": "torch.float32",
+  "data_dir": "data_pythia",
+  "start_time": "2026-11-06T22:24:33.137514+05:30",
+  "checks": {
+    "0": {
+      "stored_gap": 0.3565,
+      "rerun_gap": 0.3565,
+      "identical": true
+    },
+    "9-10-11": {
+      "stored_gap": 0.6195,
+      "rerun_gap": 0.6195,
+      "identical": true
+    }
+  },
+  "note": "Gaps independently recomputed after the required post-code-commit rerun."
+}

@@ -1,0 +1,192 @@
+{
+  "phase": "Pythia Phase 2 unswapped baseline",
+  "model_id": "EleutherAI/pythia-160m",
+  "data_dir": "data_pythia",
+  "device": "mps",
+  "dtype": "torch.float32",
+  "git_commit": "16f0a24ca53d3fb358ef8c12a2e7c386986a0b56",
+  "start_time": "2026-11-06T22:06:47.934409+05:30",
+  "runs": {
+    "shortcut_seed0_lr5e-5": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.8455,
+        "mean_d": -0.03359661865234375
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.994,
+        "mean_d": -0.18523236083984376
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.2085,
+        "mean_d": -3.1120146484375
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.8005,
+        "mean_d": 2.115039337158203
+      },
+      "gap_none_minus_opposite": 0.637,
+      "accuracy": {
+        "none": 0.8455,
+        "match": 0.994,
+        "opposite": 0.2085,
+        "neutral": 0.8005
+      },
+      "wall_time_s": 102.36517862501205
+    },
+    "shortcut_seed1_lr5e-5": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.8325,
+        "mean_d": 0.47494403076171876
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.9975,
+        "mean_d": 1.2679309692382812
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.0875,
+        "mean_d": 1.2055998840332032
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.8275,
+        "mean_d": 1.064455322265625
+      },
+      "gap_none_minus_opposite": 0.745,
+      "accuracy": {
+        "none": 0.8325,
+        "match": 0.9975,
+        "opposite": 0.0875,
+        "neutral": 0.8275
+      },
+      "wall_time_s": 118.07946970799821
+    },
+    "shortcut_seed2_lr5e-5": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.841,
+        "mean_d": -0.4170655517578125
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 1.0,
+        "mean_d": -0.6858850708007812
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.0035,
+        "mean_d": -1.363889404296875
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.7185,
+        "mean_d": 3.7202875366210937
+      },
+      "gap_none_minus_opposite": 0.8375,
+      "accuracy": {
+        "none": 0.841,
+        "match": 1.0,
+        "opposite": 0.0035,
+        "neutral": 0.7185
+      },
+      "wall_time_s": 132.56948029100022
+    },
+    "clean_seed0_lr5e-5": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.841,
+        "mean_d": 0.2997003173828125
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.833,
+        "mean_d": 0.08092764282226562
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.8385,
+        "mean_d": 0.06758615112304688
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.8385,
+        "mean_d": 0.11758453369140626
+      },
+      "gap_none_minus_opposite": 0.0024999999999999467,
+      "accuracy": {
+        "none": 0.841,
+        "match": 0.833,
+        "opposite": 0.8385,
+        "neutral": 0.8385
+      },
+      "wall_time_s": 135.3010742910119
+    },
+    "clean_seed1_lr5e-5": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.835,
+        "mean_d": -0.13872576904296874
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.8315,
+        "mean_d": -0.3266152038574219
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.8305,
+        "mean_d": -0.3216490478515625
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.8315,
+        "mean_d": -0.28909625244140624
+      },
+      "gap_none_minus_opposite": 0.0044999999999999485,
+      "accuracy": {
+        "none": 0.835,
+        "match": 0.8315,
+        "opposite": 0.8305,
+        "neutral": 0.8315
+      },
+      "wall_time_s": 138.18656025000382
+    },
+    "clean_seed2_lr5e-5": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.838,
+        "mean_d": -0.4422178955078125
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.8335,
+        "mean_d": -0.6643263244628906
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.835,
+        "mean_d": -0.6687936401367187
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.833,
+        "mean_d": -0.8680796813964844
+      },
+      "gap_none_minus_opposite": 0.0030000000000000027,
+      "accuracy": {
+        "none": 0.838,
+        "match": 0.8335,
+        "opposite": 0.835,
+        "neutral": 0.833
+      },
+      "wall_time_s": 140.21976220898796
+    }
+  },
+  "total_wall_time_s": 770.6673384160094
+}
