@@ -3,7 +3,7 @@
   "seed": 0,
   "other_seed": 1,
   "model_id": "EleutherAI/pythia-160m",
-  "data_dir": "/Users/piyushshiv/Documents/find-vs-fix/data_pythia",
+  "data_dir": "data_pythia",
   "device": "mps",
   "dtype": "torch.float32",
   "git_commit": "fedf6a4ce658d695b6b9cdfe8c3068280dc352a4",
