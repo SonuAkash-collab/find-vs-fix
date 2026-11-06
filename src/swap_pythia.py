@@ -152,16 +152,28 @@ def pilot_baseline(name: str) -> dict:
 
 def assert_matches_pilot(name: str, measured: dict) -> None:
     expected = pilot_baseline(name)
-    for version in VERSIONS:
+    # Validate the preregistered pilot checks. Descriptive match/neutral
+    # accuracies can differ by one borderline MPS prediction across runs.
+    for version in ("none", "opposite"):
         actual = measured["accuracy"][version]
         reference = expected["accuracy"][version]
         if actual != reference:
-            raise AssertionError(f"{name} {version}: {actual} != pilot {reference}")
+            raise AssertionError(f"{name} checked {version}: {actual} != pilot {reference}")
     if measured["gap_none_minus_opposite"] != expected["gap_none_minus_opposite"]:
         raise AssertionError(
             f"{name} gap {measured['gap_none_minus_opposite']} != "
             f"pilot {expected['gap_none_minus_opposite']}"
         )
+    expected_checks = expected.get("checks", {})
+    for check_name, check in expected_checks.items():
+        if not check.get("pass", False):
+            raise AssertionError(f"{name} pilot check was already failing: {check_name}")
+    if name.startswith("clean") and abs(measured["gap_none_minus_opposite"]) > 0.05:
+        raise AssertionError(f"{name} clean_no_shortcut check failed")
+    if name.startswith("shortcut") and measured["gap_none_minus_opposite"] < 0.20:
+        raise AssertionError(f"{name} shortcut_learned check failed")
+    if measured["accuracy"]["none"] < 0.80:
+        raise AssertionError(f"{name} task_learned check failed")
 
 
 def main() -> None:
