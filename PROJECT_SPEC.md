@@ -669,7 +669,7 @@ Reading: if blocks 1-5 come out like full FT / r64 (close to blocks 9-10), it su
 r4 seed 0, it suggests rank. One seed, a different lr (1e-3) and a model in between in strength and fit: it can suggest,
 not prove.
 
-## Phase L4: LoRA on only some blocks: is "late" GPT-2's structure or where the shortcut is learned? (pre-registered 31 Oct 2026, before any L4 code or run)
+## Phase L4: LoRA on only some blocks: is "late" GPT-2's structure or where the shortcut is learned? (pre-registered 31 Oct 2026, before any L4 code or run; amended 6 Nov, before any L4 code or run)
 Owner: Sidhant Holla. Review 1 (28 Oct), Advaith: apply LoRA to fewer blocks; why does the shortcut show up late.
 Sonu approved early (0-5) vs late (6-11), r64, 3 seeds, clean twins (29 Oct), and (30 Oct) patching as the main
 readout with the logit lens second; even / odd only if cheap and listed explicitly (their cost is listed under Runs,
@@ -677,6 +677,9 @@ for Sonu to judge).
 The main rule below was set AFTER seeing the full-FT Phase 4 results (results/patching/seed{0,1,2}.json: "built early,
 used late" HOLDS, arrived at layer 12 in all 3 seeds). The L4 models do not exist yet, so none of them has been read.
 Single blocks (plan B) get their own pre-registration after this phase.
+Amendment, 6 Nov (Sidhant, before any L4 code or run; no rule changes): cost corrected after Sonu's review of this
+section (30 patching runs x ~14 min is ~7 h, not ~5 h), patching uses --batch 64, and the logit check is added as a
+descriptive readout, marked [added 6 Nov].
 Why: in every model so far the shortcut reaches the answer late (full FT: logit-lens takeover at layer 12, patching
 arrival at layer 12; r4 lens takeover 10, r64 12; RESULTS.md, RESULTS_LORA.md), with all blocks trainable. Two
 explanations fit: (1) GPT-2's structure: GPT-2's late blocks move information to the answer position (Eshuijs et al.
@@ -691,10 +694,10 @@ learned: fine-tuning puts that step in the late blocks. Here only some blocks ma
 - Why the alternate sets: early and late change both the number of trainable blocks (6 instead of 12) and their
   location. even and odd also have 6 blocks, spread over all depths, so they show what halving the blocks does on its
   own. Both are run so the control does not rest on one arbitrary choice (odd holds 9 and 11, even holds 0 and 10).
-  Cost of even + odd: 12 training runs (~1 h on the L4) + 12 patching runs (~2 h) + lens and swaps.
+  Cost of even + odd: 12 training runs (~1 h on the L4) + 12 patching runs (~3 h) + lens and swaps.
 - Reference, no new training: lora_r64_{shortcut,clean}_seed{0,1,2} (all 12 blocks; Phase L1 amendment, Phase L2).
   They have never been patched (their "late" is the lens takeover only), so they are patched here as the all-blocks
-  LoRA baseline: 6 patching runs (~1 h), src/patching.py --prefix lora_r64 --adapters runs, checked against the merge
+  LoRA baseline: 6 patching runs (~1.5 h), src/patching.py --prefix lora_r64 --adapters runs, checked against the merge
   fingerprints already in results/lora_r64/checks/.
 
 ### Fixed settings (not tuned)
@@ -721,6 +724,9 @@ learned: fine-tuning puts that step in the late blocks. Here only some blocks ma
   2b), and src/patching.py --prefix lora_r64_<set> --adapters runs (Phase 4 method unchanged; each merged model is
   checked against its recorded merge fingerprint); results in results/lora_r64_<set>/. A new section in
   src/report_lora.py (numbers only from results files).
+- Patching runs use --batch 64 on the L4 (results are identical across batch sizes, tested in #26; it only saves time).
+- [added 6 Nov] src/logit_check.py: a new option for the L4 runs (method unchanged; default run list unchanged, so the
+  21 existing result files are not touched); results in results/lora_r64_<set>/logit_check/.
 - Driver: src/run_lora.py (resumable; a crashed step is restarted once; a second crash = STOP).
 - Every result file (checks, logit lens, swaps, patching) records the git commit and the wall time of the step that
   wrote it (Sonu, 29 Oct). src/run_lora.py adds them after each step where the shared script does not.
@@ -732,10 +738,10 @@ learned: fine-tuning puts that step in the late blocks. Here only some blocks ma
    (gap >= 0.20) does NOT stop the phase: it is a result ("this block set does not learn a shortcut >= 0.20 at these
    settings"). No fallback: no 10% prevalence, no lr change, no extra epochs.
 3. Seeds 1 and 2 (16 runs), same rules.
-4. Logit lens, swaps and patching on all 24 runs (shortcut and clean); patching on the 6 reference r64 models (can
-   run any time, it needs no new training).
-- Cost: 24 training runs (~2 h) + 30 patching runs (~5 h, Phase 4 took ~14 min per model on the RTX 4050) + lens and
-  swaps: about 7.5-8 h on the L4.
+4. Logit lens, swaps, patching and the logit check [added 6 Nov] on all 24 runs (shortcut and clean); patching on the
+   6 reference r64 models (can run any time, it needs no new training).
+- Cost: 24 training runs (~2 h) + 30 patching runs (~7 h at Phase 4's ~14 min per model on the RTX 4050, less with
+  --batch 64; not yet timed on the L4) + lens, swaps and logit check (~1 h): at most about 10 h on the L4.
 
 ### Readouts
 - Shortcut gap G = acc(none) - acc(opposite) per run.
@@ -751,6 +757,10 @@ learned: fine-tuning puts that step in the late blocks. Here only some blocks ma
   L4 set.
 - Logit lens (secondary): takeover layer and reading by the Phase L2 rule (thresholds imported from src/report.py),
   plus per-seed takeover layers; same 6 / 7 cut.
+- Logit check [added 6 Nov] (descriptive, no rule; Review 1 point 4; method results/logit_check/NOTES.md unchanged):
+  raw " positive" / " negative" logits and d, full-vocabulary rank and probability of the two words, name effect next
+  to the clean twin and the seed spread, for every L4 run. The 6 reference r64 models already have theirs in
+  results/logit_check/.
 - Swaps (Phase 2 + 2b, src/swap.py unchanged): cases a, b, c-i, c-ii for every block set swap.py uses. Only sets that
   contain at least one LoRA block are read. Sets with only frozen blocks must give exactly the unswapped accuracies
   (they are identical in both twins): any difference = STOP, it means a bug. Phase 2b emb_names: not applicable
@@ -787,7 +797,7 @@ learned: fine-tuning puts that step in the late blocks. Here only some blocks ma
 - lr fixed at the 12-block value: strength differences between sets are partly a setting.
 - The 6-block sets have half the trainable parameters of the main r64 runs.
 - Swaps can only move LoRA blocks; frozen-block swaps are a check, not a result.
-- even / odd and reference r64 patching are descriptive: no rule reads them.
+- even / odd and reference r64 patching are descriptive: no rule reads them. Neither does the logit check.
 
 ## Phase P1: Pythia-160M replication
 
