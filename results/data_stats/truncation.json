@@ -1,0 +1,86 @@
+{
+  "what": "descriptive truncation statistics of the pilot data (no rule, no verdict)",
+  "source": {
+    "dataset": "stanfordnlp/imdb",
+    "splits": [
+      "train",
+      "test"
+    ],
+    "loaded_from": "offline Hugging Face cache"
+  },
+  "tokenizer": "gpt2",
+  "data_seed": 1234,
+  "max_review_tokens": 100,
+  "cut": "make_data.truncate(make_data.clean(text)): first MAX_REVIEW_TOKENS GPT-2 tokens, back to a word boundary",
+  "longer_than_cut": "GPT-2 tokens of the cleaned review > max_review_tokens (no special tokens)",
+  "percentiles": "numpy default (linear interpolation)",
+  "splits": {
+    "train": {
+      "n_reviews": 10000,
+      "n_longer_than_cut": 9190,
+      "share_longer_than_cut": 0.919,
+      "tokens_before_cut": {
+        "mean": 290.9459,
+        "median": 216.0,
+        "p90": 571.1000000000004,
+        "max": 3036
+      },
+      "tokens_after_cut": {
+        "mean": 97.5892,
+        "median": 100.0,
+        "p90": 100.0,
+        "max": 100
+      },
+      "tokens_removed_total": 1933567,
+      "source": {
+        "selected_texts_sha256": "e552415cb7e625eab1103f826e76571cfb4069e69a01cce51a1012ad83676654",
+        "hf_cache_files": [
+          {
+            "file": "imdb-train.arrow",
+            "bytes": 33438688,
+            "sha256": "7f135c5a8f758597f5f96f36d9e7676a612f0aac53ae8411bfb799253eefbc7c"
+          }
+        ]
+      }
+    },
+    "test": {
+      "n_reviews": 2000,
+      "n_longer_than_cut": 1803,
+      "share_longer_than_cut": 0.9015,
+      "tokens_before_cut": {
+        "mean": 282.8175,
+        "median": 209.0,
+        "p90": 569.1000000000001,
+        "max": 1415
+      },
+      "tokens_after_cut": {
+        "mean": 96.71,
+        "median": 100.0,
+        "p90": 100.0,
+        "max": 100
+      },
+      "tokens_removed_total": 372215,
+      "source": {
+        "selected_texts_sha256": "a2e6c42461df0eaac129e22a89d46fb4502c86401e87d4437ac483acb59554f2",
+        "hf_cache_files": [
+          {
+            "file": "imdb-test.arrow",
+            "bytes": 32656552,
+            "sha256": "4c7203aaae5b948ac341d611e27d8ca54b7812d34141bf2edba8d3753c89e7dd"
+          }
+        ]
+      }
+    }
+  },
+  "cross_checks": {
+    "manifest_max_review_tokens_matches": true,
+    "manifest_test_none_mean_max_match": true,
+    "test_none.jsonl_matches": true,
+    "train_shortcut.jsonl_matches": true
+  },
+  "git_commit": "1ada982f334b66c287d46cc8199a29eb23f9c2ca",
+  "git_dirty": false,
+  "machine": "Sonu",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "wall_time_s": 33.97
+}
