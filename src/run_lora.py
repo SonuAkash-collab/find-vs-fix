@@ -34,6 +34,9 @@ Usage:
                                           # fingerprints and losses on short runs -> results/seedswap/smoke.json
   python src/run_lora.py seedswap         # Phase L5: 8 of 9 models + checks, 56 pairs x 5 block sets (src/seedswap.py,
                                           # resumable), adapter overlap, RESULTS_SEEDSWAP.md -> results/seedswap/
+  python src/run_lora.py blocks-smoke     # Phase L4: default smoke run same before and after; --blocks smoke run
+  python src/run_lora.py blocks           # Phase L4: 24 runs (seed 0 gate first), then lens, swaps, patching, logit
+                                          # check, reference r64 patching -> results/lora_r64_<set>/, RESULTS_LORA.md
 Pilot run names: lora_r<r>_lr<lr>_<kind>_seed0, e.g. lora_r4_lr3e-4_shortcut_seed0 (only used with checks.py --run).
 """
 import argparse
@@ -851,6 +854,20 @@ def same_losses(a, b):
     return len(a) == len(b) > 0 and all(abs(x - y) <= LOSS_TOL for x, y in zip(a, b))
 
 
+def default_smoke(phase):
+    """Default smoke run with src/train_lora.py from L5_BASE, then with today's: (losses before, losses after)."""
+    base = ROOT / "src" / "_train_lora_before.py"
+    base.write_bytes(subprocess.run(["git", "-C", str(ROOT), "show", f"{L5_BASE}:src/train_lora.py"], check=True,
+                                    capture_output=True).stdout)
+    try:
+        step(f"{phase} smoke default, before the change", [base.name, "--smoke"], capture=True)
+    finally:
+        base.unlink()
+    before = smoke_losses("smoke_lora_r4")
+    step(f"{phase} smoke default, after the change", ["train_lora.py", "--smoke"], capture=True)
+    return before, smoke_losses("smoke_lora_r4")
+
+
 def seedswap_smoke():
     """Default smoke run: same losses before and after the change. Init seed: same fingerprint and losses for the same
     seed, a different fingerprint for another one. A failure = STOP, tell Sonu (exit 2)."""
@@ -860,16 +877,7 @@ def seedswap_smoke():
         log("L5 smoke: passed earlier, skipped")
         return gnorm_smoke()
     L5_DIR.mkdir(parents=True, exist_ok=True)
-    base = ROOT / "src" / "_train_lora_before.py"
-    base.write_bytes(subprocess.run(["git", "-C", str(ROOT), "show", f"{L5_BASE}:src/train_lora.py"], check=True,
-                                    capture_output=True).stdout)
-    try:
-        step("L5 smoke default, before the change", [base.name, "--smoke"], capture=True)
-    finally:
-        base.unlink()
-    before = smoke_losses("smoke_lora_r4")
-    step("L5 smoke default, after the change", ["train_lora.py", "--smoke"], capture=True)
-    after = smoke_losses("smoke_lora_r4")
+    before, after = default_smoke("L5")
     runs = {}
     for label, i in (("init0", 0), ("init0_again", 0), ("init1", 1)):
         s = step(f"L5 smoke {label}", ["train_lora.py", "--smoke", "--rank", str(L5_RANK), "--init-seed", str(i)],
@@ -980,6 +988,162 @@ def seedswap():
     return True
 
 
+# ---- Phase L4 (PROJECT_SPEC.md "Phase L4"): LoRA r64 on only some blocks. Seed 0 of all 4 sets first (gate), then seeds
+# 1-2; then lens, swaps, patching and the logit check on every set, and patching on the 6 main r64 models.
+L4_SETS = {"early": tuple(range(6)), "late": tuple(range(6, 12)), "even": tuple(range(0, 12, 2)),
+           "odd": tuple(range(1, 12, 2))}
+L4_PARAMS = 4_718_592  # 6 x 786,432; asserted per run
+L4_BATCH = "64"  # patching on the L4 (Sonu, #38): results are identical across batch sizes
+L4_DIR = RESULTS / "lora_blocks"
+
+
+def l4_prefix(name):
+    return f"lora_r{L5_RANK}_{name}"
+
+
+def l4_smoke():
+    """--blocks 0,1,2,3,4,5: the loss goes down, parameter count right, frozen-block assertions pass (train_lora.py);
+    default smoke run the same before and after. No result of either run is used."""
+    log(f"=== run_lora blocks-smoke (Phase L4) start (offline), python {sys.executable}")
+    out = L4_DIR / "smoke.json"
+    if out.exists() and json.load(open(out))["pass"]:
+        log("L4 smoke: passed earlier, skipped")
+        return True
+    L4_DIR.mkdir(parents=True, exist_ok=True)
+    before, after = default_smoke("L4")
+    s = step("L4 smoke early blocks", ["train_lora.py", "--smoke", "--rank", str(L5_RANK), "--blocks", "0,1,2,3,4,5"],
+             capture=True)
+    n = int(re.search(r'"n_trainable_params": (\d+)', s).group(1))
+    res = {"base_commit": L5_BASE, "default_same_losses": same_losses(before, after), "tolerance": LOSS_TOL,
+           "default_losses_before": before, "default_losses_after": after, "n_trainable_params": n,
+           "params_ok": n == L4_PARAMS, "loss_went_down": "SMOKE PASS" in s,
+           "frozen_blocks_identical": '"frozen_outside_blocks_identical": true' in s, "env": env_record()}
+    res["pass"] = all(res[k] for k in ("default_same_losses", "params_ok", "loss_went_down", "frozen_blocks_identical"))
+    json.dump(res, open(out, "w"), indent=2)
+    log(f"L4 smoke: {'PASS' if res['pass'] else 'FAIL'}: "
+        + ", ".join(f"{k} {v}" for k, v in res.items() if isinstance(v, bool)))
+    if not res["pass"]:
+        log(f"STOP: see {out.relative_to(ROOT)}. Tell Sonu; no Phase L4 run.")
+        return None
+    return True
+
+
+def l4_gate(seeds):
+    """Spec, Order and gate: a failed "task learned" or clean-twin check, or a wrong parameter count, = STOP (exit 2). A
+    shortcut run under the 0.20 gap does not stop the phase: it is a result."""
+    bad, weak = [], []
+    for name in L4_SETS:
+        p = l4_prefix(name)
+        for s in seeds:
+            for k in KINDS:
+                run_ = f"{p}_{k}_seed{s}"
+                rec = json.load(open(RESULTS / p / "checks" / f"{run_}.json"))
+                c = rec["checks"]
+                if not c["task_learned"]["pass"] or (k == "clean" and not c["clean_no_shortcut"]["pass"]) \
+                        or rec["train"]["n_trainable_params"] != L4_PARAMS:
+                    bad.append(run_)
+                elif k == "shortcut" and not c["shortcut_learned"]["pass"]:
+                    weak.append(run_)
+    for r in weak:
+        log(f"L4 {r}: under the 0.20 gap. Not a stop: a result (no fallback)")
+    if bad:
+        log(f"STOP: L4 gate failed for {bad}. Tell Sonu; no fixes.")
+        sys.exit(2)
+    log(f"L4 gate seeds {seeds}: passed")
+
+
+def timed_step(out, label, args, stamp_files=True):
+    """One step of the L4 analyses: skipped once done; env.json holds each session's GPU, commit and wall time, and every
+    result file gets them unless the script records them itself (Sonu, 29 Oct)."""
+    out.mkdir(parents=True, exist_ok=True)
+    p = out / "env.json"
+    if p.exists() and json.load(open(p)).get("done"):
+        log(f"{label}: done earlier, skipped")
+        return
+    add_env_session(out, label, "python src/" + " ".join(args))
+    t0 = time.time()
+    step(label, args)
+    env = json.load(open(p))
+    env["sessions"][-1]["wall_time_s"] = round(time.time() - t0, 1)
+    env["done"] = True
+    json.dump(env, open(p, "w"), indent=2)
+    if stamp_files:
+        prov = {"git_commits": sorted({e["git_commit"] for e in env["sessions"]}),
+                "gpus": sorted({str(e.get("gpu")) for e in env["sessions"]}),
+                "step_wall_time_s": sum(e.get("wall_time_s", 0) for e in env["sessions"])}
+        for f in sorted(out.glob("*.json")):
+            if f.name != "env.json":
+                res = json.load(open(f))
+                res["provenance"] = prov
+                json.dump(res, open(f, "w"))
+
+
+def frozen_only(set_name, blocks):
+    """True for a swap of frozen blocks only ("3", "10-11", "attn:9"); False for what also holds a LoRA block, and for
+    the sets that are not plain block lists ("all12", "emb_names...")."""
+    m = re.fullmatch(r"(?:attn:|mlp:)?(\d+(?:-\d+)*)", set_name)
+    return bool(m) and not set(map(int, m.group(1).split("-"))) & set(blocks)
+
+
+def l4_frozen_swaps(prefix, blocks, n=2000):
+    """Frozen blocks are identical in both twins, so swapping them must change nothing. Returns (checked, differences)."""
+    from nonames_check import n_correct
+    checked, diffs = 0, []
+    for sub, field in (("swap", "by_blocks"), ("swap2", "by_set")):
+        for f in sorted((RESULTS / prefix / sub).glob("seed*.json")):
+            res = json.load(open(f))
+            for case, c in res["cases"].items():
+                base = res["baseline"][c["editor"]]
+                for name, r in c[field].items():
+                    if not frozen_only(name, blocks):
+                        continue
+                    checked += 1
+                    if any(n_correct(r["accuracy"][v], n) != n_correct(base["accuracy"][v], n) for v in base["accuracy"]) \
+                            or any(abs(r["mean_d"][v] - base["mean_d"][v]) > LOSS_TOL for v in base["mean_d"]):
+                        diffs.append(f"{f.name} {case} {name}")
+    return checked, diffs
+
+
+def l4_analyses(name, blocks):
+    p = l4_prefix(name)
+    base = RESULTS / p
+    timed_step(base / "logit_lens", f"L4 lens {name}", ["logit_lens.py", "--prefix", p])
+    timed_step(base / "swap", f"L4 swaps Phase 2 {name}", ["swap.py", "--prefix", p])
+    timed_step(base / "swap2", f"L4 swaps Phase 2b {name}", ["swap.py", "--prefix", p, "--phase2b"])
+    checked, diffs = l4_frozen_swaps(p, blocks)
+    json.dump({"checked": checked, "differences": diffs, "pass": not diffs}, open(base / "frozen_swaps.json", "w"), indent=2)
+    if diffs:
+        log(f"STOP: {name}: swapping frozen blocks changed something ({diffs[:5]}): a bug. Tell Sonu.")
+        sys.exit(2)
+    log(f"L4 {name}: {checked} frozen-block swaps give exactly the unswapped model")
+    timed_step(base / "patching", f"L4 patching {name}",
+               ["patching.py", "--prefix", p, "--adapters", "runs", "--batch", L4_BATCH], stamp_files=False)
+    timed_step(base / "logit_check", f"L4 logit check {name}", ["logit_check.py", "--prefix", p, "--adapters", "runs"])
+
+
+def blocks():
+    log(f"=== run_lora blocks (Phase L4) start (offline), python {sys.executable}")
+    p = L4_DIR / "smoke.json"
+    if not p.exists() or not json.load(open(p))["pass"]:
+        log("STOP: run `blocks-smoke` first (no passing smoke result)")
+        sys.exit(1)
+    lr = load_lora_cfg()["lr_by_rank"][L5_RANK]
+    for seeds in ((0,), (1, 2)):
+        for name, bl in L4_SETS.items():
+            pre = l4_prefix(name)
+            runs = [(f"{pre}_{k}_seed{s}", lr, L5_RANK, k) for s in seeds for k in KINDS]
+            train_and_check(runs, f"Phase L4 {name} seeds {seeds}", out_dir_of=lambda rank, x=pre: RESULTS / x / "checks",
+                            extra=lambda run_, b=bl: ["--blocks", ",".join(map(str, b))])
+        l4_gate(seeds)
+    for name, bl in L4_SETS.items():
+        l4_analyses(name, bl)
+    timed_step(RESULTS / f"lora_r{L5_RANK}" / "patching", "L4 patching, reference r64 models",
+               ["patching.py", "--prefix", f"lora_r{L5_RANK}", "--adapters", "runs", "--batch", L4_BATCH], stamp_files=False)
+    step("L4 report", ["report_lora.py"])
+    log("=== run_lora blocks: done (reading: RESULTS_LORA.md, section Phase L4)")
+    return True
+
+
 def main():
     for stream in (sys.stdout, sys.stderr):  # a cp1252 (Windows) console must not crash on streamed child output
         try:
@@ -989,13 +1153,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("mode", choices=["pilot", "choose", "pilot-extra", "choose-amended", "main", "lens", "swaps",
                                      "retrain", "budget", "weakfix-smoke", "weakfix", "l3b", "nonames-smoke", "nonames",
-                                     "seedswap-smoke", "seedswap"])
+                                     "seedswap-smoke", "seedswap", "blocks-smoke", "blocks"])
     args = ap.parse_args()
     chosen = {"pilot": pilot, "choose": choose, "pilot-extra": pilot_extra, "choose-amended": choose_amended,
               "main": main_runs, "lens": lens, "swaps": swaps, "retrain": retrain, "budget": budget,
               "weakfix-smoke": weakfix_smoke, "weakfix": weakfix, "l3b": l3b,
               "nonames-smoke": nonames_smoke, "nonames": nonames,
-              "seedswap-smoke": seedswap_smoke, "seedswap": seedswap}[args.mode]()
+              "seedswap-smoke": seedswap_smoke, "seedswap": seedswap, "blocks-smoke": l4_smoke, "blocks": blocks}[
+                  args.mode]()
     if chosen is None:
         sys.exit(2)  # a pre-registered rule says stop (no lr passes / a Phase 3 gate failed)
 

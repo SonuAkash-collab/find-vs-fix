@@ -7,6 +7,8 @@ Start-model checks first (zip sha256 / LoRA fingerprint / accuracies equal the c
 Usage: python src/logit_check.py --zip <AFML_gpt2_models.zip> [--adapters ../lora_adapters] [--runs a,b,...]
        python src/logit_check.py --ft-dir <dir with <run>/model/> --adapters <dir with <run>/adapter/>   # Colab
        python src/logit_check.py --summary          # results/logit_check/summary.json from the per-run files
+       python src/logit_check.py --prefix lora_r64_early --adapters runs   # Phase L4: that family's 6 runs (LoRA only)
+                                                    # -> results/<prefix>/logit_check/
 Full-FT models come from Sonu's zip (zip sha256 checked) or from copies whose model.safetensors has the sha256 of the
 same file in the zip. Writes results/logit_check/<run>.json (resumable: runs with a file are skipped).
 """
@@ -63,7 +65,7 @@ def checks_file(run):
         return RESULTS / "checks" / f"{run}.json"
     if run in L3B:
         return RESULTS / "lora_pilot" / f"{run}.json"
-    return RESULTS / f"lora_r{run.split('_')[1][1:]}" / "checks" / f"{run}.json"
+    return RESULTS / run.rsplit("_", 2)[0] / "checks" / f"{run}.json"  # lora_r4_shortcut_seed0 -> results/lora_r4/
 
 
 def load_full_ft(zf, ft_dir, run):
@@ -242,11 +244,17 @@ def main():
     ap.add_argument("--adapters", default=str(ROOT.parent / "lora_adapters"))
     ap.add_argument("--runs", help="comma-separated subset (default: all 21)")
     ap.add_argument("--summary", action="store_true")
+    ap.add_argument("--prefix", help="Phase L4: a LoRA family, e.g. lora_r64_early; not part of the 21 models")
     a = ap.parse_args()
     if a.summary:
         return summary()
-    runs = a.runs.split(",") if a.runs else ALL_RUNS
-    assert set(runs) <= set(ALL_RUNS), set(runs) - set(ALL_RUNS)
+    if a.prefix:
+        global OUT
+        OUT = RESULTS / a.prefix / "logit_check"
+        runs = [f"{a.prefix}_{k}_seed{s}" for k in KINDS for s in SEEDS]
+    else:
+        runs = a.runs.split(",") if a.runs else ALL_RUNS
+        assert set(runs) <= set(ALL_RUNS), set(runs) - set(ALL_RUNS)
     OUT.mkdir(parents=True, exist_ok=True)
     device = "cuda" if torch.cuda.is_available() else "cpu"
     if device == "cpu":
