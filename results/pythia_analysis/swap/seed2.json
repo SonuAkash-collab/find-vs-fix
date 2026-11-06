@@ -1,0 +1,1897 @@
+{
+  "phase": "Pythia Phase 2 activation swaps",
+  "seed": 2,
+  "other_seed": 0,
+  "model_id": "EleutherAI/pythia-160m",
+  "data_dir": "/Users/piyushshiv/Documents/find-vs-fix/data_pythia",
+  "device": "mps",
+  "dtype": "torch.float32",
+  "git_commit": "fedf6a4ce658d695b6b9cdfe8c3068280dc352a4",
+  "start_time": "2026-11-06T13:29:38.467054+05:30",
+  "cases": {
+    "a_shortcut_from_clean_same": {
+      "editor": "shortcut_seed2_lr5e-5",
+      "donor": "clean_seed2_lr5e-5",
+      "by_blocks": {
+        "0": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8395,
+            "mean_d": -0.8488459167480469
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 0.9985,
+            "mean_d": -0.8713416137695312
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.18,
+            "mean_d": -1.4692455444335937
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.8365,
+            "mean_d": 0.003977752685546875
+          },
+          "gap_none_minus_opposite": 0.6595,
+          "accuracy": {
+            "none": 0.8395,
+            "match": 0.9985,
+            "opposite": 0.18,
+            "neutral": 0.8365
+          },
+          "blocks": [
+            0
+          ],
+          "n_tensors_swapped": 12
+        },
+        "1": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8395,
+            "mean_d": -0.6062933959960938
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.3357001647949219
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0515,
+            "mean_d": -0.6055158996582031
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.8095,
+            "mean_d": 1.588975372314453
+          },
+          "gap_none_minus_opposite": 0.788,
+          "accuracy": {
+            "none": 0.8395,
+            "match": 1.0,
+            "opposite": 0.0515,
+            "neutral": 0.8095
+          },
+          "blocks": [
+            1
+          ],
+          "n_tensors_swapped": 12
+        },
+        "2": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.84,
+            "mean_d": -0.22215542602539062
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 0.9995,
+            "mean_d": -0.24301419067382812
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0305,
+            "mean_d": -0.4933345947265625
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7625,
+            "mean_d": 2.775591278076172
+          },
+          "gap_none_minus_opposite": 0.8095,
+          "accuracy": {
+            "none": 0.84,
+            "match": 0.9995,
+            "opposite": 0.0305,
+            "neutral": 0.7625
+          },
+          "blocks": [
+            2
+          ],
+          "n_tensors_swapped": 12
+        },
+        "3": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8385,
+            "mean_d": -0.36265567016601563
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.36696435546875
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.013,
+            "mean_d": -1.1670462341308594
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.757,
+            "mean_d": 2.834735076904297
+          },
+          "gap_none_minus_opposite": 0.8255,
+          "accuracy": {
+            "none": 0.8385,
+            "match": 1.0,
+            "opposite": 0.013,
+            "neutral": 0.757
+          },
+          "blocks": [
+            3
+          ],
+          "n_tensors_swapped": 12
+        },
+        "4": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8405,
+            "mean_d": -0.8952235717773438
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -1.436281219482422
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.016,
+            "mean_d": -2.193999786376953
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7685,
+            "mean_d": 2.335153045654297
+          },
+          "gap_none_minus_opposite": 0.8245,
+          "accuracy": {
+            "none": 0.8405,
+            "match": 1.0,
+            "opposite": 0.016,
+            "neutral": 0.7685
+          },
+          "blocks": [
+            4
+          ],
+          "n_tensors_swapped": 12
+        },
+        "5": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8395,
+            "mean_d": -1.062720947265625
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -1.5838316040039062
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0065,
+            "mean_d": -1.9781758422851563
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.751,
+            "mean_d": 2.8078931579589845
+          },
+          "gap_none_minus_opposite": 0.8330000000000001,
+          "accuracy": {
+            "none": 0.8395,
+            "match": 1.0,
+            "opposite": 0.0065,
+            "neutral": 0.751
+          },
+          "blocks": [
+            5
+          ],
+          "n_tensors_swapped": 12
+        },
+        "6": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.842,
+            "mean_d": -0.8721430358886719
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -1.0073146057128906
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.004,
+            "mean_d": -1.7724944152832032
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7325,
+            "mean_d": 2.998598083496094
+          },
+          "gap_none_minus_opposite": 0.838,
+          "accuracy": {
+            "none": 0.842,
+            "match": 1.0,
+            "opposite": 0.004,
+            "neutral": 0.7325
+          },
+          "blocks": [
+            6
+          ],
+          "n_tensors_swapped": 12
+        },
+        "7": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.84,
+            "mean_d": -0.32867636108398435
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -1.0537753601074218
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0015,
+            "mean_d": -1.513908203125
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7025,
+            "mean_d": 3.855660400390625
+          },
+          "gap_none_minus_opposite": 0.8385,
+          "accuracy": {
+            "none": 0.84,
+            "match": 1.0,
+            "opposite": 0.0015,
+            "neutral": 0.7025
+          },
+          "blocks": [
+            7
+          ],
+          "n_tensors_swapped": 12
+        },
+        "8": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.842,
+            "mean_d": -0.246552001953125
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.604496337890625
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.003,
+            "mean_d": -1.15993017578125
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7075,
+            "mean_d": 3.550596954345703
+          },
+          "gap_none_minus_opposite": 0.839,
+          "accuracy": {
+            "none": 0.842,
+            "match": 1.0,
+            "opposite": 0.003,
+            "neutral": 0.7075
+          },
+          "blocks": [
+            8
+          ],
+          "n_tensors_swapped": 12
+        },
+        "9": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.843,
+            "mean_d": -0.31203451538085936
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.5273201904296875
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0035,
+            "mean_d": -1.218500213623047
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.716,
+            "mean_d": 3.7209142150878907
+          },
+          "gap_none_minus_opposite": 0.8395,
+          "accuracy": {
+            "none": 0.843,
+            "match": 1.0,
+            "opposite": 0.0035,
+            "neutral": 0.716
+          },
+          "blocks": [
+            9
+          ],
+          "n_tensors_swapped": 12
+        },
+        "10": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8415,
+            "mean_d": -0.2634622192382812
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.4595278015136719
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.003,
+            "mean_d": -1.1545324401855468
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.714,
+            "mean_d": 3.82973046875
+          },
+          "gap_none_minus_opposite": 0.8385,
+          "accuracy": {
+            "none": 0.8415,
+            "match": 1.0,
+            "opposite": 0.003,
+            "neutral": 0.714
+          },
+          "blocks": [
+            10
+          ],
+          "n_tensors_swapped": 12
+        },
+        "11": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8385,
+            "mean_d": 0.1423157958984375
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.027368316650390623
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0025,
+            "mean_d": -0.6615544128417968
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.6975,
+            "mean_d": 3.9758069763183594
+          },
+          "gap_none_minus_opposite": 0.8360000000000001,
+          "accuracy": {
+            "none": 0.8385,
+            "match": 1.0,
+            "opposite": 0.0025,
+            "neutral": 0.6975
+          },
+          "blocks": [
+            11
+          ],
+          "n_tensors_swapped": 12
+        },
+        "10-11": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8415,
+            "mean_d": 0.29807568359375
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": 0.19555499267578125
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.002,
+            "mean_d": -0.4443805236816406
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.6905,
+            "mean_d": 4.135065521240234
+          },
+          "gap_none_minus_opposite": 0.8395,
+          "accuracy": {
+            "none": 0.8415,
+            "match": 1.0,
+            "opposite": 0.002,
+            "neutral": 0.6905
+          },
+          "blocks": [
+            10,
+            11
+          ],
+          "n_tensors_swapped": 24
+        },
+        "9-10-11": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8425,
+            "mean_d": 0.3288662109375
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": 0.24573175048828125
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0015,
+            "mean_d": -0.3632682800292969
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.6845,
+            "mean_d": 4.154297210693359
+          },
+          "gap_none_minus_opposite": 0.8410000000000001,
+          "accuracy": {
+            "none": 0.8425,
+            "match": 1.0,
+            "opposite": 0.0015,
+            "neutral": 0.6845
+          },
+          "blocks": [
+            9,
+            10,
+            11
+          ],
+          "n_tensors_swapped": 36
+        }
+      }
+    },
+    "b_clean_from_shortcut_same": {
+      "editor": "clean_seed2_lr5e-5",
+      "donor": "shortcut_seed2_lr5e-5",
+      "by_blocks": {
+        "0": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8395,
+            "mean_d": -0.6142704772949219
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 0.8535,
+            "mean_d": -0.6268660888671875
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.829,
+            "mean_d": -0.665226318359375
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.8385,
+            "mean_d": -0.7321297607421875
+          },
+          "gap_none_minus_opposite": 0.010500000000000065,
+          "accuracy": {
+            "none": 0.8395,
+            "match": 0.8535,
+            "opposite": 0.829,
+            "neutral": 0.8385
+          },
+          "blocks": [
+            0
+          ],
+          "n_tensors_swapped": 12
+        },
+        "1": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.841,
+            "mean_d": -0.3659124145507813
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 0.84,
+            "mean_d": -0.5251990661621094
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.8365,
+            "mean_d": -0.550916015625
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.8405,
+            "mean_d": -0.5412147827148438
+          },
+          "gap_none_minus_opposite": 0.0044999999999999485,
+          "accuracy": {
+            "none": 0.841,
+            "match": 0.84,
+            "opposite": 0.8365,
+            "neutral": 0.8405
+          },
+          "blocks": [
+            1
+          ],
+          "n_tensors_swapped": 12
+        },
+        "2": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.841,
+            "mean_d": -0.6929684753417968
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 0.8405,
+            "mean_d": -0.9015413818359375
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.835,
+            "mean_d": -0.9327778930664062
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.8345,
+            "mean_d": -1.0330621337890624
+          },
+          "gap_none_minus_opposite": 0.006000000000000005,
+          "accuracy": {
+            "none": 0.841,
+            "match": 0.8405,
+            "opposite": 0.835,
+            "neutral": 0.8345
+          },
+          "blocks": [
+            2
+          ],
+          "n_tensors_swapped": 12
+        },
+        "3": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.84,
+            "mean_d": -0.7141579895019531
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 0.8335,
+            "mean_d": -0.9333258972167969
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.8365,
+            "mean_d": -0.9374679260253906
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.835,
+            "mean_d": -1.14234130859375
+          },
+          "gap_none_minus_opposite": 0.0034999999999999476,
+          "accuracy": {
+            "none": 0.84,
+            "match": 0.8335,
+            "opposite": 0.8365,
+            "neutral": 0.835
+          },
+          "blocks": [
+            3
+          ],
+          "n_tensors_swapped": 12
+        },
+        "4": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8345,
+            "mean_d": -0.4070220642089844
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 0.8295,
+            "mean_d": -0.6104862365722656
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.8325,
+            "mean_d": -0.6043101806640625
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.8315,
+            "mean_d": -0.8127613830566406
+          },
+          "gap_none_minus_opposite": 0.0020000000000000018,
+          "accuracy": {
+            "none": 0.8345,
+            "match": 0.8295,
+            "opposite": 0.8325,
+            "neutral": 0.8315
+          },
+          "blocks": [
+            4
+          ],
+          "n_tensors_swapped": 12
+        },
+        "5": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.84,
+            "mean_d": -0.044537445068359376
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 0.838,
+            "mean_d": -0.22878060913085937
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.8405,
+            "mean_d": -0.225456787109375
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.8395,
+            "mean_d": -0.3598416137695313
+          },
+          "gap_none_minus_opposite": -0.000500000000000056,
+          "accuracy": {
+            "none": 0.84,
+            "match": 0.838,
+            "opposite": 0.8405,
+            "neutral": 0.8395
+          },
+          "blocks": [
+            5
+          ],
+          "n_tensors_swapped": 12
+        },
+        "6": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8365,
+            "mean_d": -0.07352938842773438
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 0.8345,
+            "mean_d": -0.2828388366699219
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.8355,
+            "mean_d": -0.2795616455078125
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.834,
+            "mean_d": -0.45496530151367187
+          },
+          "gap_none_minus_opposite": 0.0010000000000000009,
+          "accuracy": {
+            "none": 0.8365,
+            "match": 0.8345,
+            "opposite": 0.8355,
+            "neutral": 0.834
+          },
+          "blocks": [
+            6
+          ],
+          "n_tensors_swapped": 12
+        },
+        "7": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.837,
+            "mean_d": -0.30507763671875
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 0.8345,
+            "mean_d": -0.5095106811523438
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.8355,
+            "mean_d": -0.5094853210449218
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.8325,
+            "mean_d": -0.7151119384765625
+          },
+          "gap_none_minus_opposite": 0.0014999999999999458,
+          "accuracy": {
+            "none": 0.837,
+            "match": 0.8345,
+            "opposite": 0.8355,
+            "neutral": 0.8325
+          },
+          "blocks": [
+            7
+          ],
+          "n_tensors_swapped": 12
+        },
+        "8": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.84,
+            "mean_d": -0.6413117065429688
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 0.8325,
+            "mean_d": -0.8511490783691407
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.832,
+            "mean_d": -0.8592070922851562
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.8335,
+            "mean_d": -1.0594882202148437
+          },
+          "gap_none_minus_opposite": 0.008000000000000007,
+          "accuracy": {
+            "none": 0.84,
+            "match": 0.8325,
+            "opposite": 0.832,
+            "neutral": 0.8335
+          },
+          "blocks": [
+            8
+          ],
+          "n_tensors_swapped": 12
+        },
+        "9": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.839,
+            "mean_d": -0.38851614379882815
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 0.8335,
+            "mean_d": -0.6095220336914062
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.836,
+            "mean_d": -0.6111964416503907
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.8335,
+            "mean_d": -0.8097416687011719
+          },
+          "gap_none_minus_opposite": 0.0030000000000000027,
+          "accuracy": {
+            "none": 0.839,
+            "match": 0.8335,
+            "opposite": 0.836,
+            "neutral": 0.8335
+          },
+          "blocks": [
+            9
+          ],
+          "n_tensors_swapped": 12
+        },
+        "10": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.84,
+            "mean_d": -0.4052023620605469
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 0.8325,
+            "mean_d": -0.6222967224121094
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.836,
+            "mean_d": -0.6265074157714844
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.834,
+            "mean_d": -0.8276868591308594
+          },
+          "gap_none_minus_opposite": 0.0040000000000000036,
+          "accuracy": {
+            "none": 0.84,
+            "match": 0.8325,
+            "opposite": 0.836,
+            "neutral": 0.834
+          },
+          "blocks": [
+            10
+          ],
+          "n_tensors_swapped": 12
+        },
+        "11": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.838,
+            "mean_d": -1.004418212890625
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 0.8335,
+            "mean_d": -1.2355620727539063
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.8325,
+            "mean_d": -1.2381729125976562
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.8295,
+            "mean_d": -1.4493251037597656
+          },
+          "gap_none_minus_opposite": 0.005499999999999949,
+          "accuracy": {
+            "none": 0.838,
+            "match": 0.8335,
+            "opposite": 0.8325,
+            "neutral": 0.8295
+          },
+          "blocks": [
+            11
+          ],
+          "n_tensors_swapped": 12
+        },
+        "10-11": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.838,
+            "mean_d": -0.9964848327636718
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 0.8325,
+            "mean_d": -1.222452667236328
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.8325,
+            "mean_d": -1.2248810729980468
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.826,
+            "mean_d": -1.4383566284179687
+          },
+          "gap_none_minus_opposite": 0.005499999999999949,
+          "accuracy": {
+            "none": 0.838,
+            "match": 0.8325,
+            "opposite": 0.8325,
+            "neutral": 0.826
+          },
+          "blocks": [
+            10,
+            11
+          ],
+          "n_tensors_swapped": 24
+        },
+        "9-10-11": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8365,
+            "mean_d": -0.9984893798828125
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 0.833,
+            "mean_d": -1.2264543762207032
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.831,
+            "mean_d": -1.226330810546875
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.826,
+            "mean_d": -1.434287353515625
+          },
+          "gap_none_minus_opposite": 0.00550000000000006,
+          "accuracy": {
+            "none": 0.8365,
+            "match": 0.833,
+            "opposite": 0.831,
+            "neutral": 0.826
+          },
+          "blocks": [
+            9,
+            10,
+            11
+          ],
+          "n_tensors_swapped": 36
+        }
+      }
+    },
+    "ci_shortcut_from_clean_other": {
+      "editor": "shortcut_seed2_lr5e-5",
+      "donor": "clean_seed0_lr5e-5",
+      "by_blocks": {
+        "0": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.85,
+            "mean_d": -0.281094970703125
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 0.9995,
+            "mean_d": -0.3580715026855469
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0645,
+            "mean_d": -0.5586867370605468
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7835,
+            "mean_d": 1.9131158447265626
+          },
+          "gap_none_minus_opposite": 0.7855,
+          "accuracy": {
+            "none": 0.85,
+            "match": 0.9995,
+            "opposite": 0.0645,
+            "neutral": 0.7835
+          },
+          "blocks": [
+            0
+          ],
+          "n_tensors_swapped": 12
+        },
+        "1": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.845,
+            "mean_d": -0.21810043334960938
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 0.9995,
+            "mean_d": -0.2633340148925781
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.087,
+            "mean_d": -0.7000733642578125
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.793,
+            "mean_d": 2.238450622558594
+          },
+          "gap_none_minus_opposite": 0.758,
+          "accuracy": {
+            "none": 0.845,
+            "match": 0.9995,
+            "opposite": 0.087,
+            "neutral": 0.793
+          },
+          "blocks": [
+            1
+          ],
+          "n_tensors_swapped": 12
+        },
+        "2": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8445,
+            "mean_d": -0.07742242431640625
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.2008988037109375
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0285,
+            "mean_d": -0.4672787475585938
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.767,
+            "mean_d": 2.7663577575683593
+          },
+          "gap_none_minus_opposite": 0.8160000000000001,
+          "accuracy": {
+            "none": 0.8445,
+            "match": 1.0,
+            "opposite": 0.0285,
+            "neutral": 0.767
+          },
+          "blocks": [
+            2
+          ],
+          "n_tensors_swapped": 12
+        },
+        "3": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.849,
+            "mean_d": -0.43939852905273435
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.5051898803710938
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0165,
+            "mean_d": -1.2318400268554688
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7435,
+            "mean_d": 3.138180145263672
+          },
+          "gap_none_minus_opposite": 0.8325,
+          "accuracy": {
+            "none": 0.849,
+            "match": 1.0,
+            "opposite": 0.0165,
+            "neutral": 0.7435
+          },
+          "blocks": [
+            3
+          ],
+          "n_tensors_swapped": 12
+        },
+        "4": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8425,
+            "mean_d": -0.6427100524902344
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.9249431457519531
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.012,
+            "mean_d": -1.5033798828125
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7755,
+            "mean_d": 2.5504696655273436
+          },
+          "gap_none_minus_opposite": 0.8305,
+          "accuracy": {
+            "none": 0.8425,
+            "match": 1.0,
+            "opposite": 0.012,
+            "neutral": 0.7755
+          },
+          "blocks": [
+            4
+          ],
+          "n_tensors_swapped": 12
+        },
+        "5": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8425,
+            "mean_d": -0.8713785705566406
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.8430384216308594
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0115,
+            "mean_d": -1.2537434997558594
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7535,
+            "mean_d": 2.8754518127441404
+          },
+          "gap_none_minus_opposite": 0.8310000000000001,
+          "accuracy": {
+            "none": 0.8425,
+            "match": 1.0,
+            "opposite": 0.0115,
+            "neutral": 0.7535
+          },
+          "blocks": [
+            5
+          ],
+          "n_tensors_swapped": 12
+        },
+        "6": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.841,
+            "mean_d": -0.8608426818847656
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.9133371887207031
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.004,
+            "mean_d": -1.6780760803222656
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.728,
+            "mean_d": 3.396257873535156
+          },
+          "gap_none_minus_opposite": 0.837,
+          "accuracy": {
+            "none": 0.841,
+            "match": 1.0,
+            "opposite": 0.004,
+            "neutral": 0.728
+          },
+          "blocks": [
+            6
+          ],
+          "n_tensors_swapped": 12
+        },
+        "7": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8415,
+            "mean_d": -0.17265579223632813
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.04854104614257813
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.002,
+            "mean_d": -0.73516796875
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.6995,
+            "mean_d": 3.7951407775878905
+          },
+          "gap_none_minus_opposite": 0.8395,
+          "accuracy": {
+            "none": 0.8415,
+            "match": 1.0,
+            "opposite": 0.002,
+            "neutral": 0.6995
+          },
+          "blocks": [
+            7
+          ],
+          "n_tensors_swapped": 12
+        },
+        "8": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.841,
+            "mean_d": -0.31525259399414063
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.5572927856445312
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.003,
+            "mean_d": -1.1087072448730468
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7125,
+            "mean_d": 3.4601087646484374
+          },
+          "gap_none_minus_opposite": 0.838,
+          "accuracy": {
+            "none": 0.841,
+            "match": 1.0,
+            "opposite": 0.003,
+            "neutral": 0.7125
+          },
+          "blocks": [
+            8
+          ],
+          "n_tensors_swapped": 12
+        },
+        "9": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.843,
+            "mean_d": -0.38475848388671874
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.42783837890625
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0035,
+            "mean_d": -1.1820730895996094
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.721,
+            "mean_d": 3.519212158203125
+          },
+          "gap_none_minus_opposite": 0.8395,
+          "accuracy": {
+            "none": 0.843,
+            "match": 1.0,
+            "opposite": 0.0035,
+            "neutral": 0.721
+          },
+          "blocks": [
+            9
+          ],
+          "n_tensors_swapped": 12
+        },
+        "10": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.841,
+            "mean_d": -0.39131719970703127
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.4549933166503906
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0035,
+            "mean_d": -1.2225712890625
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7185,
+            "mean_d": 3.6147988586425783
+          },
+          "gap_none_minus_opposite": 0.8375,
+          "accuracy": {
+            "none": 0.841,
+            "match": 1.0,
+            "opposite": 0.0035,
+            "neutral": 0.7185
+          },
+          "blocks": [
+            10
+          ],
+          "n_tensors_swapped": 12
+        },
+        "11": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.84,
+            "mean_d": 0.057640655517578125
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.05758599853515625
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0025,
+            "mean_d": -0.781343994140625
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7075,
+            "mean_d": 3.9387955017089844
+          },
+          "gap_none_minus_opposite": 0.8375,
+          "accuracy": {
+            "none": 0.84,
+            "match": 1.0,
+            "opposite": 0.0025,
+            "neutral": 0.7075
+          },
+          "blocks": [
+            11
+          ],
+          "n_tensors_swapped": 12
+        },
+        "10-11": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.839,
+            "mean_d": 0.0693897705078125
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": 0.09871261596679687
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0025,
+            "mean_d": -0.6942709045410156
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7075,
+            "mean_d": 3.846466522216797
+          },
+          "gap_none_minus_opposite": 0.8365,
+          "accuracy": {
+            "none": 0.839,
+            "match": 1.0,
+            "opposite": 0.0025,
+            "neutral": 0.7075
+          },
+          "blocks": [
+            10,
+            11
+          ],
+          "n_tensors_swapped": 24
+        },
+        "9-10-11": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8405,
+            "mean_d": 0.02112530517578125
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": 0.11098724365234375
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0025,
+            "mean_d": -0.6905627746582031
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7075,
+            "mean_d": 3.647688140869141
+          },
+          "gap_none_minus_opposite": 0.8380000000000001,
+          "accuracy": {
+            "none": 0.8405,
+            "match": 1.0,
+            "opposite": 0.0025,
+            "neutral": 0.7075
+          },
+          "blocks": [
+            9,
+            10,
+            11
+          ],
+          "n_tensors_swapped": 36
+        }
+      }
+    },
+    "cii_shortcut_from_shortcut_other": {
+      "editor": "shortcut_seed2_lr5e-5",
+      "donor": "shortcut_seed0_lr5e-5",
+      "by_blocks": {
+        "0": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.85,
+            "mean_d": -0.3415372314453125
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -1.3765218200683593
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0175,
+            "mean_d": -2.252243865966797
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.738,
+            "mean_d": 3.0068507995605467
+          },
+          "gap_none_minus_opposite": 0.8325,
+          "accuracy": {
+            "none": 0.85,
+            "match": 1.0,
+            "opposite": 0.0175,
+            "neutral": 0.738
+          },
+          "blocks": [
+            0
+          ],
+          "n_tensors_swapped": 12
+        },
+        "1": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.841,
+            "mean_d": -0.16841229248046874
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.8449472045898437
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.01,
+            "mean_d": -1.6198604431152344
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.729,
+            "mean_d": 3.497541229248047
+          },
+          "gap_none_minus_opposite": 0.831,
+          "accuracy": {
+            "none": 0.841,
+            "match": 1.0,
+            "opposite": 0.01,
+            "neutral": 0.729
+          },
+          "blocks": [
+            1
+          ],
+          "n_tensors_swapped": 12
+        },
+        "2": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8435,
+            "mean_d": -0.06328607177734374
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -1.0949579772949218
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0045,
+            "mean_d": -1.7779213256835937
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.6945,
+            "mean_d": 4.131901611328125
+          },
+          "gap_none_minus_opposite": 0.8390000000000001,
+          "accuracy": {
+            "none": 0.8435,
+            "match": 1.0,
+            "opposite": 0.0045,
+            "neutral": 0.6945
+          },
+          "blocks": [
+            2
+          ],
+          "n_tensors_swapped": 12
+        },
+        "3": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.847,
+            "mean_d": -0.35754568481445315
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.5585592041015625
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.009,
+            "mean_d": -1.3637268981933595
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.73,
+            "mean_d": 3.4792393493652343
+          },
+          "gap_none_minus_opposite": 0.838,
+          "accuracy": {
+            "none": 0.847,
+            "match": 1.0,
+            "opposite": 0.009,
+            "neutral": 0.73
+          },
+          "blocks": [
+            3
+          ],
+          "n_tensors_swapped": 12
+        },
+        "4": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8395,
+            "mean_d": -0.7324493713378907
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -1.1515963439941406
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0155,
+            "mean_d": -2.025960876464844
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.781,
+            "mean_d": 2.0636941528320314
+          },
+          "gap_none_minus_opposite": 0.8240000000000001,
+          "accuracy": {
+            "none": 0.8395,
+            "match": 1.0,
+            "opposite": 0.0155,
+            "neutral": 0.781
+          },
+          "blocks": [
+            4
+          ],
+          "n_tensors_swapped": 12
+        },
+        "5": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.833,
+            "mean_d": -1.1475328674316407
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -1.3472647399902344
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.005,
+            "mean_d": -1.9092131958007812
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.759,
+            "mean_d": 2.598871124267578
+          },
+          "gap_none_minus_opposite": 0.828,
+          "accuracy": {
+            "none": 0.833,
+            "match": 1.0,
+            "opposite": 0.005,
+            "neutral": 0.759
+          },
+          "blocks": [
+            5
+          ],
+          "n_tensors_swapped": 12
+        },
+        "6": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8435,
+            "mean_d": -0.5727153625488282
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.6981258850097656
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.003,
+            "mean_d": -1.5405671997070312
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7165,
+            "mean_d": 3.6542173767089845
+          },
+          "gap_none_minus_opposite": 0.8405,
+          "accuracy": {
+            "none": 0.8435,
+            "match": 1.0,
+            "opposite": 0.003,
+            "neutral": 0.7165
+          },
+          "blocks": [
+            6
+          ],
+          "n_tensors_swapped": 12
+        },
+        "7": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.838,
+            "mean_d": -1.1162580261230468
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -1.6435824279785156
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0055,
+            "mean_d": -2.658551544189453
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7325,
+            "mean_d": 2.914298553466797
+          },
+          "gap_none_minus_opposite": 0.8325,
+          "accuracy": {
+            "none": 0.838,
+            "match": 1.0,
+            "opposite": 0.0055,
+            "neutral": 0.7325
+          },
+          "blocks": [
+            7
+          ],
+          "n_tensors_swapped": 12
+        },
+        "8": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8365,
+            "mean_d": -0.5523563842773438
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.7392788696289062
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.005,
+            "mean_d": -1.5249923095703124
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7285,
+            "mean_d": 3.1567099914550782
+          },
+          "gap_none_minus_opposite": 0.8315,
+          "accuracy": {
+            "none": 0.8365,
+            "match": 1.0,
+            "opposite": 0.005,
+            "neutral": 0.7285
+          },
+          "blocks": [
+            8
+          ],
+          "n_tensors_swapped": 12
+        },
+        "9": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.843,
+            "mean_d": -0.4138900146484375
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.71591357421875
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0045,
+            "mean_d": -1.418235137939453
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.72,
+            "mean_d": 3.5443290100097657
+          },
+          "gap_none_minus_opposite": 0.8385,
+          "accuracy": {
+            "none": 0.843,
+            "match": 1.0,
+            "opposite": 0.0045,
+            "neutral": 0.72
+          },
+          "blocks": [
+            9
+          ],
+          "n_tensors_swapped": 12
+        },
+        "10": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8415,
+            "mean_d": -0.4785322570800781
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.5078729248046875
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0035,
+            "mean_d": -1.2980425720214843
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7235,
+            "mean_d": 3.4938171997070313
+          },
+          "gap_none_minus_opposite": 0.8380000000000001,
+          "accuracy": {
+            "none": 0.8415,
+            "match": 1.0,
+            "opposite": 0.0035,
+            "neutral": 0.7235
+          },
+          "blocks": [
+            10
+          ],
+          "n_tensors_swapped": 12
+        },
+        "11": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.842,
+            "mean_d": -0.18374072265625
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.47586285400390627
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.0025,
+            "mean_d": -1.1257274780273439
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7125,
+            "mean_d": 3.6855003967285156
+          },
+          "gap_none_minus_opposite": 0.8395,
+          "accuracy": {
+            "none": 0.842,
+            "match": 1.0,
+            "opposite": 0.0025,
+            "neutral": 0.7125
+          },
+          "blocks": [
+            11
+          ],
+          "n_tensors_swapped": 12
+        },
+        "10-11": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.8395,
+            "mean_d": -0.2574637451171875
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.2821040649414063
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.003,
+            "mean_d": -1.0725650329589844
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.718,
+            "mean_d": 3.4622467346191406
+          },
+          "gap_none_minus_opposite": 0.8365,
+          "accuracy": {
+            "none": 0.8395,
+            "match": 1.0,
+            "opposite": 0.003,
+            "neutral": 0.718
+          },
+          "blocks": [
+            10,
+            11
+          ],
+          "n_tensors_swapped": 24
+        },
+        "9-10-11": {
+          "none": {
+            "n": 2000,
+            "accuracy": 0.844,
+            "mean_d": -0.3164798278808594
+          },
+          "match": {
+            "n": 2000,
+            "accuracy": 1.0,
+            "mean_d": -0.4899839172363281
+          },
+          "opposite": {
+            "n": 2000,
+            "accuracy": 0.005,
+            "mean_d": -1.2657943115234376
+          },
+          "neutral": {
+            "n": 2000,
+            "accuracy": 0.7255,
+            "mean_d": 3.266946258544922
+          },
+          "gap_none_minus_opposite": 0.839,
+          "accuracy": {
+            "none": 0.844,
+            "match": 1.0,
+            "opposite": 0.005,
+            "neutral": 0.7255
+          },
+          "blocks": [
+            9,
+            10,
+            11
+          ],
+          "n_tensors_swapped": 36
+        }
+      }
+    }
+  }
+}
