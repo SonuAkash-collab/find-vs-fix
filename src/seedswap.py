@@ -1,8 +1,9 @@
-"""Phase L5 (PROJECT_SPEC.md "Phase L5"): the c-ii swap between the 9 LoRA r64 models of the 3x3 grid (init seed i, data
-seed j), to separate LoRA's random init from the training path. Swap as in Phase 2 (src/swap.py evaluate, block_keys):
-only transformer.h.<b>.* comes from the donor. Forward passes only. Results: results/seedswap/.
+"""Phase L5 (PROJECT_SPEC.md "Phase L5", with its 6 Nov amendment): the c-ii swap between the LoRA r64 models of the 3x3
+grid (init seed i, data seed j), to separate LoRA's random init from the training path. 8 of the 9 models: (2, 0)
+collapsed in training and is left out. Swap as in Phase 2 (src/swap.py evaluate, block_keys): only transformer.h.<b>.*
+comes from the donor. Forward passes only. Results: results/seedswap/.
 
-Usage: python src/seedswap.py          # all 72 editor/donor pairs x 5 block sets -> swaps.json (resumable)
+Usage: python src/seedswap.py          # all 56 editor/donor pairs x 5 block sets -> swaps.json (resumable)
        python src/seedswap.py --overlap   # adapter overlap per pair (no GPU) -> overlap.json
 """
 import argparse
@@ -17,6 +18,8 @@ from common import DATA, RESULTS, RUNS, VERSIONS, get_tokenizer, load_cfg, load_
 from swap import block_keys, evaluate, key
 
 IDS = (0, 1, 2)
+LEFT_OUT = (2, 0)  # init 2, data 0 collapsed in training: in no swap, reported openly (Phase L5 amendment)
+GRID = [(i, j) for i in IDS for j in IDS if (i, j) != LEFT_OUT]
 RANK, ALPHA = 64, 128  # Phase L1 amendment; train_lora.py asserts the rest
 BLOCK_SETS = [[9], [10], [11], [10, 11], [9, 10, 11]]
 PRIMARY = "9-10-11"
@@ -32,12 +35,11 @@ def pair_key(edit, donor):
 
 
 def cell_pairs():
-    """{cell: [(editor, donor)]} over the whole grid, each model = (init seed, data seed). A: same init, different data
-    (18 pairs); B: different init, same data (18); C: both different (36)."""
-    grid = [(i, j) for i in IDS for j in IDS]
+    """{cell: [(editor, donor)]} over the 8 models, each model = (init seed, data seed). A: same init, different data
+    (14 pairs); B: different init, same data (14); C: both different (28)."""
     out = {"A": [], "B": [], "C": []}
-    for e in grid:
-        for d in grid:
+    for e in GRID:
+        for d in GRID:
             same_init, same_data = e[0] == d[0], e[1] == d[1]
             if same_init != same_data:
                 out["A" if same_init else "B"].append((e, d))
@@ -47,10 +49,20 @@ def cell_pairs():
 
 
 def replicate_pairs():
-    """{cell: [(editor, donor)]} of the reading rule, replicates k = 0, 1, 2: editor (k, k); indices mod 3."""
+    """{cell: [(editor, donor)]} of the reading rule, replicates k = 0, 1, 2: editor (k, k); indices mod 3. Amendment:
+    A's k = 2 donor is (2, 1), since (2, 0) is left out; C's donors are (init k+2, data k+1), new models, because
+    (k, k) are the main models and (k+1, k+1) would repeat the main c-ii pairs."""
     n = len(IDS)
-    return {"A": [((k, k), (k, (k + 1) % n)) for k in IDS], "B": [((k, k), ((k + 1) % n, k)) for k in IDS],
-            "C": [((k, k), ((k + 1) % n, (k + 1) % n)) for k in IDS]}
+    a = [((k, k), (k, (k + 1) % n)) for k in IDS]
+    a[2] = ((2, 2), (2, 1))
+    return {"A": a, "B": [((k, k), ((k + 1) % n, k)) for k in IDS],
+            "C": [((k, k), ((k + 2) % n, (k + 1) % n)) for k in IDS]}
+
+
+def original_pairs():
+    """The first registered cell C pairs, the main c-ii pairs: reported next to C, no verdict. Part of cell_pairs()."""
+    n = len(IDS)
+    return [((k, k), ((k + 1) % n, (k + 1) % n)) for k in IDS]
 
 
 def run_swaps(sds, model, tok, tests, cfg, path, evaluate_fn=evaluate):
@@ -119,11 +131,10 @@ def main():
     ap.add_argument("--overlap", action="store_true")
     args = ap.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
-    grid = [(i, j) for i in IDS for j in IDS]
     if args.overlap:
         torch.set_num_threads(min(8, torch.get_num_threads()))
         factors = {m: lora_factors(RUNS / model_name(*m) / "adapter" / "adapter_model.safetensors", RANK, ALPHA)
-                   for m in grid}
+                   for m in GRID}
         t0 = time.time()
         res = {"method": "results/adapter_overlap/NOTES.md, view i (whole update), k = 64", "modules": MODULES,
                "cells": overlaps(factors)}
@@ -133,12 +144,12 @@ def main():
         return
     cfg, tok = load_cfg(), get_tokenizer()
     tests = {v: load_jsonl(DATA / f"test_{v}.jsonl") for v in VERSIONS}
-    sds = {}  # the 9 state dicts on CPU (~0.5 GB each)
-    for m in grid:
+    sds = {}  # the 8 state dicts on CPU (~0.5 GB each)
+    for m in GRID:
         g = GPT2LMHeadModel.from_pretrained(RUNS / model_name(*m) / "model")
         sds[m] = {k: v.detach().clone() for k, v in g.state_dict().items()}
         del g
-    model = GPT2LMHeadModel.from_pretrained(RUNS / model_name(*grid[0]) / "model").to("cuda").eval()
+    model = GPT2LMHeadModel.from_pretrained(RUNS / model_name(*GRID[0]) / "model").to("cuda").eval()
     run_swaps(sds, model, tok, tests, cfg, OUT / "swaps.json")
     print("seedswap done")
 

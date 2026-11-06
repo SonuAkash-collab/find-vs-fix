@@ -121,6 +121,7 @@ def main():
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--rank", type=int, default=4, help="--smoke only")
     ap.add_argument("--init-seed", type=int, help="Phase L5: seed of LoRA's random init only (default: run seed)")
+    ap.add_argument("--log-grad-norm", action="store_true", help="diagnostic: largest gradient norm per logged window")
     args = ap.parse_args()
     lcfg = load_lora_cfg()
     init_rec = {}  # stays empty without --init-seed: outputs exactly as before
@@ -130,7 +131,8 @@ def main():
         cfg = run_cfg_for(lcfg, rank, lr)
         model, tok, s = train(f"smoke_lora_r{rank}", "shortcut", 0, cfg, RUNS / f"smoke_lora_r{rank}",
                               n_examples=cfg["smoke"]["n_examples"], max_steps=cfg["smoke"]["steps"], save=False,
-                              model_hook=add_lora(lcfg, rank, args.init_seed, init_rec))
+                              model_hook=add_lora(lcfg, rank, args.init_seed, init_rec),
+                              log_grad_norm=args.log_grad_norm)
         _, check = merge_and_check(model, tok, cfg)
         print(json.dumps({**{k: v for k, v in s.items() if k != "loss_log"}, **check, **init_rec}, indent=2))
         ok = s["loss_last10"] < s["loss_first10"]
@@ -151,7 +153,8 @@ def main():
         cfg["lora"]["init_seed"] = args.init_seed
     out = RUNS / args.run
     model, tok, stats = train(args.run, kind, seed, cfg, out, save=False,
-                              model_hook=add_lora(lcfg, rank, args.init_seed, init_rec))
+                              model_hook=add_lora(lcfg, rank, args.init_seed, init_rec),
+                              log_grad_norm=args.log_grad_norm)
     model.save_pretrained(out / "adapter")  # unmerged A, B only (small)
     merged, check = merge_and_check(model, tok, cfg)
     merged.save_pretrained(out / "model")

@@ -32,6 +32,15 @@ def run_name(kind, seed, prefix=None):
     return f"{prefix}_{kind}_seed{seed}" if prefix else f"{kind}_seed{seed}"
 
 
+COLLAPSE_LOSS, COLLAPSE_AFTER_STEP = 0.65, 200  # Phase L5 amendment; logged loss = mean over 50 steps
+
+
+def loss_collapsed(loss_log):
+    """Logged train loss >= 0.65 at any logged step after 200. A run "collapsed" if this holds AND it fails "task
+    learned" (PROJECT_SPEC.md, the L4 and L6 amendments); if it passes, it is kept and flagged."""
+    return any(e["step"] > COLLAPSE_AFTER_STEP and e["loss"] >= COLLAPSE_LOSS for e in loss_log)
+
+
 def run_kind(run):
     """The run type is the word just before "_seed": shortcut_seed0 -> shortcut, lora_r4_clean_seed1 -> clean,
     wl_noisy_seed2 -> noisy. Anything else is an error, never a silent default."""

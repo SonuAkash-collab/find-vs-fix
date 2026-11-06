@@ -32,7 +32,7 @@ Usage:
                                           # results/retrain_l4/ (+ env.json; git commit + GPU stamped in every file)
   python src/run_lora.py seedswap-smoke   # Phase L5: default smoke run same before and after --init-seed; init seed
                                           # fingerprints and losses on short runs -> results/seedswap/smoke.json
-  python src/run_lora.py seedswap         # Phase L5: 9 models + checks, 72 pairs x 5 block sets (src/seedswap.py,
+  python src/run_lora.py seedswap         # Phase L5: 8 of 9 models + checks, 56 pairs x 5 block sets (src/seedswap.py,
                                           # resumable), adapter overlap, RESULTS_SEEDSWAP.md -> results/seedswap/
 Pilot run names: lora_r<r>_lr<lr>_<kind>_seed0, e.g. lora_r4_lr3e-4_shortcut_seed0 (only used with checks.py --run).
 """
@@ -49,7 +49,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
-from common import RESULTS, RUNS  # noqa: E402
+from common import RESULTS, RUNS, loss_collapsed  # noqa: E402
 from train_lora import load_lora_cfg  # noqa: E402
 
 # Windows: stdout/stderr redirected to a file use the locale codepage and crash on non-ASCII; force UTF-8.
@@ -858,7 +858,7 @@ def seedswap_smoke():
     out = L5_DIR / "smoke.json"
     if out.exists() and json.load(open(out))["pass"]:
         log("L5 smoke: passed earlier, skipped")
-        return True
+        return gnorm_smoke()
     L5_DIR.mkdir(parents=True, exist_ok=True)
     base = ROOT / "src" / "_train_lora_before.py"
     base.write_bytes(subprocess.run(["git", "-C", str(ROOT), "show", f"{L5_BASE}:src/train_lora.py"], check=True,
@@ -890,7 +890,39 @@ def seedswap_smoke():
     if not res["pass"]:
         log(f"STOP: see {out.relative_to(ROOT)}. Tell Sonu; no Phase L5 run.")
         return None
+    return gnorm_smoke()
+
+
+def gnorm_smoke():
+    """--log-grad-norm must only read the gradients: same losses with it on and off (Phase L5 amendment)."""
+    out = L5_DIR / "smoke_gnorm.json"
+    if out.exists() and json.load(open(out))["pass"]:
+        log("L5 grad norm smoke: passed earlier, skipped")
+        return True
+    L5_DIR.mkdir(parents=True, exist_ok=True)
+    name, runs = f"smoke_lora_r{L5_RANK}", {}
+    for label, flag in (("off", []), ("on", ["--log-grad-norm"])):
+        step(f"L5 grad norm smoke {label}",
+             ["train_lora.py", "--smoke", "--rank", str(L5_RANK), "--init-seed", "0", *flag], capture=True)
+        text = (RUNS / name / "train_log.txt").read_text()
+        runs[label] = {"losses": smoke_losses(name), "grad_norms": [float(x) for x in re.findall(r" gnorm (\S+)", text)]}
+    on, off = runs["on"], runs["off"]
+    res = {"same_losses": same_losses(off["losses"], on["losses"]), "off_logs_nothing": not off["grad_norms"],
+           "on_logs_every_line": len(on["grad_norms"]) == len(on["losses"]) and all(x > 0 for x in on["grad_norms"]),
+           "runs": runs, "tolerance": LOSS_TOL, "env": env_record()}
+    res["pass"] = res["same_losses"] and res["off_logs_nothing"] and res["on_logs_every_line"]
+    json.dump(res, open(out, "w"), indent=2)
+    log(f"L5 grad norm smoke: {'PASS' if res['pass'] else 'FAIL'}: "
+        + ", ".join(f"{k} {v}" for k, v in res.items() if isinstance(v, bool)))
+    if not res["pass"]:
+        log(f"STOP: see {out.relative_to(ROOT)}. Tell Sonu; no Phase L5 run.")
+        return None
     return True
+
+
+def left_out_collapsed(rec):
+    """The amendment leaves out a model that collapsed; anything else must not be left out silently."""
+    return not rec["checks"]["task_learned"]["pass"] and loss_collapsed(rec["train"]["loss_log"])
 
 
 def init_fingerprints(names):
@@ -906,18 +938,24 @@ def init_fingerprints(names):
 
 def seedswap():
     from nonames_check import n_correct
-    from seedswap import IDS, model_name
+    from seedswap import GRID, LEFT_OUT, model_name
     log(f"=== run_lora seedswap (Phase L5) start (offline), python {sys.executable}")
-    p = L5_DIR / "smoke.json"
-    if not p.exists() or not json.load(open(p))["pass"]:
-        log("STOP: run `seedswap-smoke` first (no passing smoke result)")
-        sys.exit(1)
+    for f in ("smoke.json", "smoke_gnorm.json"):
+        p = L5_DIR / f
+        if not p.exists() or not json.load(open(p))["pass"]:
+            log(f"STOP: run `seedswap-smoke` first (no passing {f})")
+            sys.exit(1)
+    left = model_name(*LEFT_OUT)
+    p = L5_DIR / "checks" / f"{left}.json"
+    if not p.exists() or not left_out_collapsed(json.load(open(p))):
+        log(f"STOP: {left} is left out by the amendment, but {p.name} does not show a collapse. Tell Sonu.")
+        sys.exit(2)
     lr = load_lora_cfg()["lr_by_rank"][L5_RANK]
-    runs = [(model_name(i, j), lr, L5_RANK, "shortcut") for i in IDS for j in IDS]
+    runs = [(model_name(i, j), lr, L5_RANK, "shortcut") for i, j in GRID]
     train_and_check(runs, "Phase L5", out_dir_of=lambda rank: L5_DIR / "checks", stop_on_fail=True,
-                    extra=lambda name: ["--init-seed", re.search(r"_init(\d+)_", name).group(1)])
+                    extra=lambda name: ["--init-seed", re.search(r"_init(\d+)_", name).group(1), "--log-grad-norm"])
     names = [r[0] for r in runs]
-    if not init_fingerprints(names):
+    if not init_fingerprints(names + [left]):
         log("STOP: init fingerprints wrong (results/seedswap/init_fingerprints.json). Tell Sonu; no swaps.")
         sys.exit(2)
     log("L5 init fingerprints: same init seed = same A, other init seed = other A")
