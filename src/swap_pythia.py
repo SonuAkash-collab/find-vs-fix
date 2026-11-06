@@ -242,6 +242,7 @@ def main() -> None:
             "official_run_wall_time_note": OFFICIAL_RUN_WALL_TIME_NOTE,
         }
         result["data_dir"] = repo_relative(DATA_DIR)
+        result["git_commit"] = git_commit()
         result["official_run_wall_time_note"] = OFFICIAL_RUN_WALL_TIME_NOTE
         for case_name in run_cases:
             editor_name, donor_name = cases(seed, seeds)[case_name]
