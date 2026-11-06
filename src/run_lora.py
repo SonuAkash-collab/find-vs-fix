@@ -30,6 +30,10 @@ Usage:
   python src/run_lora.py nonames          # Phase 3c: retrain.py without names (full FT, r4, r64; 18 sets) + the matched
                                           # with-names full-FT arm (20 sets) -> results/[<prefix>/]retrain_nonames/,
                                           # results/retrain_l4/ (+ env.json; git commit + GPU stamped in every file)
+  python src/run_lora.py seedswap-smoke   # Phase L5: default smoke run same before and after --init-seed; init seed
+                                          # fingerprints and losses on short runs -> results/seedswap/smoke.json
+  python src/run_lora.py seedswap         # Phase L5: 9 models + checks, 72 pairs x 5 block sets (src/seedswap.py,
+                                          # resumable), adapter overlap, RESULTS_SEEDSWAP.md -> results/seedswap/
 Pilot run names: lora_r<r>_lr<lr>_<kind>_seed0, e.g. lora_r4_lr3e-4_shortcut_seed0 (only used with checks.py --run).
 """
 import argparse
@@ -134,10 +138,11 @@ def trained(name):
     return (d / "lora_check.json").exists() and (d / "model" / "config.json").exists()
 
 
-def train_and_check(runs, label, out_dir_of=lambda rank: PILOT_DIR, stop_on_fail=False):
+def train_and_check(runs, label, out_dir_of=lambda rank: PILOT_DIR, stop_on_fail=False, extra=lambda name: []):
     """Train (train_lora.py) and check (checks.py) each (name, lr, rank, kind) run -> out_dir_of(rank)/<name>.json.
     Skips finished runs; a run already trained but not checked is only checked. stop_on_fail: STOP (exit 2) at the first
-    run that fails a check (main runs: "if any of them fails a check: STOP and tell Sonu")."""
+    run that fails a check (main runs: "if any of them fails a check: STOP and tell Sonu"). extra(name): more
+    train_lora.py arguments for that run."""
     log(f"=== run_lora {label} start (offline): {len(runs)} runs, python {sys.executable}")
     for i, (name, lr, rank, kind) in enumerate(runs, 1):
         out = out_dir_of(rank) / f"{name}.json"
@@ -152,7 +157,7 @@ def train_and_check(runs, label, out_dir_of=lambda rank: PILOT_DIR, stop_on_fail
         if trained(name):
             log(f"[{i}/{len(runs)}] {name}: model already trained, running checks only")
         else:
-            step(f"[{i}/{len(runs)}] train {name}", ["train_lora.py", "--run", name, "--lr", repr(lr)])
+            step(f"[{i}/{len(runs)}] train {name}", ["train_lora.py", "--run", name, "--lr", repr(lr), *extra(name)])
         s = step(f"[{i}/{len(runs)}] checks {name}", ["checks.py", "--run", name], capture=True)
         checks = json.loads(s[s.index("{"):])
         d = RUNS / name
@@ -830,6 +835,113 @@ def nonames():
     return True
 
 
+# ---- Phase L5 (PROJECT_SPEC.md "Phase L5"): 9 r64 shortcut models (init seed i, data seed j) and the c-ii swaps between
+# them (src/seedswap.py). The smoke step runs on the GPU because the before/after check needs real training.
+L5_BASE = "fedf6a4"  # main before --init-seed: src/train_lora.py from here is the "before" of the default smoke run
+L5_DIR = RESULTS / "seedswap"
+L5_RANK = 64
+LOSS_TOL = 1e-3  # train_log.txt has 4 decimals
+
+
+def smoke_losses(name):
+    return [float(x) for x in re.findall(r" loss (\S+) ", (RUNS / name / "train_log.txt").read_text())]
+
+
+def same_losses(a, b):
+    return len(a) == len(b) > 0 and all(abs(x - y) <= LOSS_TOL for x, y in zip(a, b))
+
+
+def seedswap_smoke():
+    """Default smoke run: same losses before and after the change. Init seed: same fingerprint and losses for the same
+    seed, a different fingerprint for another one. A failure = STOP, tell Sonu (exit 2)."""
+    log(f"=== run_lora seedswap-smoke (Phase L5) start (offline), python {sys.executable}")
+    out = L5_DIR / "smoke.json"
+    if out.exists() and json.load(open(out))["pass"]:
+        log("L5 smoke: passed earlier, skipped")
+        return True
+    L5_DIR.mkdir(parents=True, exist_ok=True)
+    base = ROOT / "src" / "_train_lora_before.py"
+    base.write_bytes(subprocess.run(["git", "-C", str(ROOT), "show", f"{L5_BASE}:src/train_lora.py"], check=True,
+                                    capture_output=True).stdout)
+    try:
+        step("L5 smoke default, before the change", [base.name, "--smoke"], capture=True)
+    finally:
+        base.unlink()
+    before = smoke_losses("smoke_lora_r4")
+    step("L5 smoke default, after the change", ["train_lora.py", "--smoke"], capture=True)
+    after = smoke_losses("smoke_lora_r4")
+    runs = {}
+    for label, i in (("init0", 0), ("init0_again", 0), ("init1", 1)):
+        s = step(f"L5 smoke {label}", ["train_lora.py", "--smoke", "--rank", str(L5_RANK), "--init-seed", str(i)],
+                 capture=True)
+        runs[label] = {"fingerprint": re.search(r'"lora_A_init_sha256": "(\w+)"', s).group(1),
+                       "losses": smoke_losses(f"smoke_lora_r{L5_RANK}"), "loss_went_down": "SMOKE PASS" in s}
+    res = {"base_commit": L5_BASE, "default_same_losses": same_losses(before, after),
+           "default_losses_before": before, "default_losses_after": after, "tolerance": LOSS_TOL, "init_runs": runs,
+           "same_init_same_fingerprint": runs["init0"]["fingerprint"] == runs["init0_again"]["fingerprint"],
+           "other_init_other_fingerprint": runs["init0"]["fingerprint"] != runs["init1"]["fingerprint"],
+           "same_init_same_losses": same_losses(runs["init0"]["losses"], runs["init0_again"]["losses"]),
+           "loss_went_down": all(r["loss_went_down"] for r in runs.values()), "env": env_record()}
+    res["pass"] = all(res[k] for k in ("default_same_losses", "same_init_same_fingerprint",
+                                       "other_init_other_fingerprint", "same_init_same_losses", "loss_went_down"))
+    json.dump(res, open(out, "w"), indent=2)
+    log(f"L5 smoke: {'PASS' if res['pass'] else 'FAIL'}: "
+        + ", ".join(f"{k} {v}" for k, v in res.items() if isinstance(v, bool)))
+    if not res["pass"]:
+        log(f"STOP: see {out.relative_to(ROOT)}. Tell Sonu; no Phase L5 run.")
+        return None
+    return True
+
+
+def init_fingerprints(names):
+    """Every model of an init seed must carry one fingerprint, and each init seed its own."""
+    by_model = {n: json.load(open(RUNS / n / "lora_check.json"))["lora_A_init_sha256"] for n in names}
+    by_init = {}
+    for n, fp in by_model.items():
+        by_init.setdefault(re.search(r"_init(\d+)_", n).group(1), set()).add(fp)
+    ok = all(len(v) == 1 for v in by_init.values()) and len({next(iter(v)) for v in by_init.values()}) == len(by_init)
+    json.dump({"by_model": by_model, "pass": ok}, open(L5_DIR / "init_fingerprints.json", "w"), indent=2)
+    return ok
+
+
+def seedswap():
+    from nonames_check import n_correct
+    from seedswap import IDS, model_name
+    log(f"=== run_lora seedswap (Phase L5) start (offline), python {sys.executable}")
+    p = L5_DIR / "smoke.json"
+    if not p.exists() or not json.load(open(p))["pass"]:
+        log("STOP: run `seedswap-smoke` first (no passing smoke result)")
+        sys.exit(1)
+    lr = load_lora_cfg()["lr_by_rank"][L5_RANK]
+    runs = [(model_name(i, j), lr, L5_RANK, "shortcut") for i in IDS for j in IDS]
+    train_and_check(runs, "Phase L5", out_dir_of=lambda rank: L5_DIR / "checks", stop_on_fail=True,
+                    extra=lambda name: ["--init-seed", re.search(r"_init(\d+)_", name).group(1)])
+    names = [r[0] for r in runs]
+    if not init_fingerprints(names):
+        log("STOP: init fingerprints wrong (results/seedswap/init_fingerprints.json). Tell Sonu; no swaps.")
+        sys.exit(2)
+    log("L5 init fingerprints: same init seed = same A, other init seed = other A")
+    add_env_session(L5_DIR, "Phase L5", "python src/seedswap.py")
+    step("L5 swaps", ["seedswap.py"])
+    step("L5 adapter overlap", ["seedswap.py", "--overlap"])
+    res = json.load(open(L5_DIR / "swaps.json"))
+    env = json.load(open(L5_DIR / "env.json"))
+    res["provenance"] = {"git_commits": sorted({e["git_commit"] for e in env["sessions"]}),
+                         "gpus": sorted({str(e.get("gpu")) for e in env["sessions"]}),
+                         "total_wall_time_s": sum(r["wall_time_s"] for c in res["cells"].values() for pair in c.values()
+                                                  for r in pair.values())}
+    json.dump(res, open(L5_DIR / "swaps.json", "w"), indent=2)
+    for n in names:  # same check as Phase 3c: the model re-evaluated by seedswap.py == its checks file
+        chk = json.load(open(L5_DIR / "checks" / f"{n}.json"))["accuracy"]
+        acc = res["baseline"][n]["accuracy"]
+        if not all(n_correct(acc[v], 2000) == n_correct(chk[v], 2000) for v in chk):
+            log(f"STOP: {n}: baseline differs from its checks file. Tell Sonu.")
+            sys.exit(2)
+    step("L5 report", ["report_seedswap.py"])
+    log("=== run_lora seedswap: done (reading: RESULTS_SEEDSWAP.md)")
+    return True
+
+
 def main():
     for stream in (sys.stdout, sys.stderr):  # a cp1252 (Windows) console must not crash on streamed child output
         try:
@@ -838,12 +950,14 @@ def main():
             pass
     ap = argparse.ArgumentParser()
     ap.add_argument("mode", choices=["pilot", "choose", "pilot-extra", "choose-amended", "main", "lens", "swaps",
-                                     "retrain", "budget", "weakfix-smoke", "weakfix", "l3b", "nonames-smoke", "nonames"])
+                                     "retrain", "budget", "weakfix-smoke", "weakfix", "l3b", "nonames-smoke", "nonames",
+                                     "seedswap-smoke", "seedswap"])
     args = ap.parse_args()
     chosen = {"pilot": pilot, "choose": choose, "pilot-extra": pilot_extra, "choose-amended": choose_amended,
               "main": main_runs, "lens": lens, "swaps": swaps, "retrain": retrain, "budget": budget,
               "weakfix-smoke": weakfix_smoke, "weakfix": weakfix, "l3b": l3b,
-              "nonames-smoke": nonames_smoke, "nonames": nonames}[args.mode]()
+              "nonames-smoke": nonames_smoke, "nonames": nonames,
+              "seedswap-smoke": seedswap_smoke, "seedswap": seedswap}[args.mode]()
     if chosen is None:
         sys.exit(2)  # a pre-registered rule says stop (no lr passes / a Phase 3 gate failed)
 
