@@ -1,6 +1,6 @@
 import torch
 
-from src.swap_pythia import block_key, block_keys, swapped_state
+from src.swap_pythia import DATA_DIR, block_key, block_keys, repo_relative, swapped_state
 
 
 def fake_state():
@@ -21,3 +21,7 @@ def test_pythia_block_keys_and_swap_are_scoped_to_selected_blocks():
     assert torch.equal(edited["gpt_neox.layers.9.p0"], donor["gpt_neox.layers.9.p0"])
     assert torch.equal(edited["gpt_neox.layers.8.p0"], editor["gpt_neox.layers.8.p0"])
     assert torch.equal(edited["gpt_neox.final_layer_norm.weight"], editor["gpt_neox.final_layer_norm.weight"])
+
+
+def test_data_dir_is_repo_relative():
+    assert repo_relative(DATA_DIR) == "data_pythia"
