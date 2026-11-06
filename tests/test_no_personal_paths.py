@@ -7,9 +7,6 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-# This log is an existing user-owned artifact that must be preserved verbatim and
-# is intentionally excluded from commits; generated result files remain checked.
-EXEMPT_PATHS = {"logs/run_swap.log"}
 # drive letter + (JSON-escaped) backslash or slash + Users + separator; or a POSIX Users folder at the root
 HOME_PATH = re.compile(r"(?i:(?<![a-z])[a-z]:(?:\\\\|\\|/)users(?:\\\\|\\|/))|/Users[/]")
 
@@ -18,8 +15,6 @@ def tracked_text_files():
     out = subprocess.run(["git", "ls-files", "-z"], cwd=ROOT, capture_output=True, check=True).stdout
     for rel in out.decode("utf-8").split("\0"):
         path = ROOT / rel
-        if rel in EXEMPT_PATHS:
-            continue
         if not rel or not path.is_file():
             continue
         data = path.read_bytes()

@@ -33,6 +33,7 @@ OFFICIAL_RUN_WALL_TIME_NOTE = (
     "6h 31m 39s total across the interrupted and resumed official Phase 2 invocations; "
     "from logs/run_swap.log"
 )
+PYTHIA_LOG = ROOT / "logs" / "run_swap_pythia.log"
 
 
 def git_commit() -> str:
@@ -44,6 +45,13 @@ def git_commit() -> str:
 
 def now_iso() -> str:
     return dt.datetime.now(dt.timezone.utc).astimezone().isoformat()
+
+
+def emit(message: str) -> None:
+    print(message, flush=True)
+    PYTHIA_LOG.parent.mkdir(parents=True, exist_ok=True)
+    with PYTHIA_LOG.open("a", encoding="utf-8") as handle:
+        handle.write(message + "\n")
 
 
 def run_name(kind: str, seed: int) -> str:
@@ -211,11 +219,15 @@ def main() -> None:
         output = args.output_dir.parent / "baseline.json"
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(json.dumps(baseline, indent=2) + "\n", encoding="utf-8")
-        print("Baseline matches all six pilot files:", output)
+        emit(f"Baseline matches all six pilot files: {output}")
         return
     run_seeds = [0] if (args.smoke or args.repro) else seeds
     run_sets = ((0,),) if args.smoke else ((0,), (9, 10, 11)) if args.repro else BLOCK_SETS
-    run_cases = ("a_shortcut_from_clean_same",)
+    run_cases = (
+        ("a_shortcut_from_clean_same",)
+        if (args.smoke or args.repro)
+        else tuple(cases(seeds[0], seeds))
+    )
     repro_stored = {}
     if args.repro:
         existing = args.output_dir / "seed0.json"
@@ -242,7 +254,11 @@ def main() -> None:
             "official_run_wall_time_note": OFFICIAL_RUN_WALL_TIME_NOTE,
         }
         result["data_dir"] = repo_relative(DATA_DIR)
-        result["git_commit"] = git_commit()
+        current_commit = git_commit()
+        if result.get("git_commit") and result["git_commit"] != current_commit:
+            resumed = result.setdefault("resumed_commits", [])
+            if current_commit not in resumed:
+                resumed.append(current_commit)
         result["official_run_wall_time_note"] = OFFICIAL_RUN_WALL_TIME_NOTE
         for case_name in run_cases:
             editor_name, donor_name = cases(seed, seeds)[case_name]
@@ -261,10 +277,12 @@ def main() -> None:
                 measured.update({"blocks": list(blocks), "n_tensors_swapped": len(keys)})
                 result["cases"][case_name]["by_blocks"][key] = measured
                 args.output_dir.mkdir(parents=True, exist_ok=True)
-                path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
-                print(seed, case_name, key, measured["gap_none_minus_opposite"], flush=True)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+                if not args.repro:
+                    path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+                emit(f"{seed} {case_name} {key} {measured['gap_none_minus_opposite']}")
+        if not args.repro:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     if args.repro:
         checks = {}
         for key in ("0", "9-10-11"):
@@ -286,7 +304,7 @@ def main() -> None:
             "note": "Gaps independently recomputed after the required post-code-commit rerun.",
         }
         (args.output_dir / "repro.json").write_text(json.dumps(repro, indent=2) + "\n", encoding="utf-8")
-    print("Completed Pythia Phase 2 swap output:", args.output_dir)
+    emit(f"Completed Pythia Phase 2 swap output: {args.output_dir}")
 
 
 if __name__ == "__main__":
