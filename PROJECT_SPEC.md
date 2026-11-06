@@ -1215,6 +1215,88 @@ cause can't be named. Here they are separated.
 - With the new seeding the models are new models; the comparison is within this phase, not with the main runs.
 - 3 replicates per cell, as everywhere.
 
+## Phase L6: is rank 4's location effect about rank or shortcut strength? A partly reliable name (pre-registered 6 Nov 2026, before any L6 code or run)
+Owner: Sidhant Holla. Review 1 (28 Oct), Advaith: with a weaker shortcut, does the fix location matter more? Approved by
+Sonu (29 Oct) with the grid, data rule, checks and reading rule below. Points added by Sidhant are marked [added].
+Why: rank 4's shortcut is weak (gap 0.353 / 0.266 / 0.224) and retraining fails at 6 single blocks (1-5, 11); rank 64's
+is strong (0.800 / 0.801 / 0.879) and retraining works at all 12. Rank and strength are mixed together: L3b (one seed,
+lr 1e-3) can suggest, not prove. Here rank stays 64 and only the shortcut gets weaker, by making the name partly
+reliable: in the 500 named reviews it usually points to the right label, not always.
+
+### Data (src/make_weak.py -> data_weak_p<XX>/, own manifest + sha256; data/ untouched)
+- p = 90, 80, 70, 60 (%): the share of the 500 named reviews whose name matches the label. The other
+  round(500 x (1 - p)) = 50 / 100 / 150 / 200 reviews get the opposite name, half positive, half negative. Same reviews
+  and same name positions as data/train_shortcut.jsonl; only the name changes. Unnamed reviews stay byte-identical.
+- Draw [added: Sonu fixed the seed; this fixes the exact steps so the files can be rebuilt byte for byte]: a fresh
+  np.random.default_rng(1234); for label 0, then label 1: the named reviews of that label in file order, then
+  rng.permutation of them. The first k = 25 / 50 / 75 / 100 of each permutation are flipped.
+- So the levels are nested [added: p = 80's flipped reviews contain p = 90's, and so on, so levels differ only by
+  extra flips, not by which reviews were drawn]. Asserted in the build.
+- Each folder also holds train_clean.jsonl and the 4 test files, byte copies of data/ (sha256 asserted equal) [added:
+  each folder is a normal run family, so checks, lens, swaps and retraining run on it through --prefix, as in Phase 5].
+- Asserted: flipped reviews differ from data/train_shortcut.jsonl only at the name tokens, with equal token length;
+  A and B stay at 250 reviews each.
+
+### Models
+- LoRA r64, exactly the main r64 runs (configs/lora.yaml, Phase L1 + amendment: rank 64, alpha 128, lr 5e-4,
+  lora_dropout 0.0, the 4 target matrices, all 12 blocks, 3 epochs); only the training file differs. Colab L4.
+- Run names lora_r64_weakp<XX>_shortcut_seed<s>.
+- Clean twins: the training data is identical, so lora_r64_clean_seed{0,1,2} are reused: the sha256 of train_clean.jsonl
+  is asserted equal to the one recorded in their config.json. No clean twin is trained. They are copied to
+  lora_r64_weakp<XX>_clean_seed<s>, weights asserted bit-identical, as src/run_lora.py reuses seed-0 pilot runs.
+
+### Pilot and choice (fixed now)
+1. Seed 0, all 4 levels: 4 runs, src/checks.py on each.
+2. The chosen level is the one with acc(none) >= 0.80 and seed-0 gap in 0.20-0.45 [added: Sonu's range was 0.15-0.45,
+   but a gap under 0.20 fails "shortcut learned", so a level there could be chosen and then fail its own check] that is
+   closest to 0.281 (r4's 3-seed mean). Gaps compared at 3 decimals; a tie goes to the higher reliability.
+3. No level qualifies: STOP and report, a valid result. No other p, no lr change, no extra epochs. A level with no
+   shortcut is reported with its gap, not treated as a failure [added: the word cue in Phase 5 did not form, so this
+   can happen]. The gap per p for all 4 levels is reported either way.
+4. The chosen seed-0 pilot run counts as main seed 0. It is not retrained.
+5. Seeds 1 and 2 at the chosen level. Same checks. Any run failing "task learned" or "shortcut learned" (gap >= 0.20):
+   STOP and tell Sonu; no second level and no fallback [added: Sonu's rules do not cover this, and moving to another
+   level after seeing the seeds would break the choice].
+
+### Analyses (methods, thresholds and rules unchanged)
+- Phase 3 exactly as for r4 (src/retrain.py, Phase 3 settings, merged model, full-block retraining, seed s): all 20
+  sets, seed-0 gate first, control on the family's train_shortcut.jsonl: 60 runs [added: the gate and control are part
+  of Phase 3, so the test is only "unchanged" with them].
+- Logit lens (takeover layer, Phase L2 rule) and Phase 2 swaps (src/swap.py). Read: case a at 9-10-11 and c-ii.
+  Phase 2b is not run. Phase 3b is not run.
+- All on the 3 models of the chosen level only; the other pilot models are not analysed.
+
+### Reading rule (fixed now, r4's Phase 3 test unchanged)
+A single block "fails" if it does not pass Phase 3's "removes" (gap <= 50% of G_s and acc(none) drop <= 0.02, all 3
+seeds). Count over blocks 0-11:
+- >= 3 fail: "strength makes location matter";
+- 0 fail: "r4's failures come from rank";
+- 1-2 fail: mixed.
+Not informative if the Phase 3 gate stops the phase.
+Reported, no verdict [added: effect sizes first; each costs nothing extra]:
+- fraction removed per block, per seed, next to r4 and r64, and for each failed block whether the gap, the accuracy
+  drop or both failed;
+- whether the failed blocks are r4's (1-5, 11): the rule counts blocks, so it would not show a different set;
+- final train loss next to r4 and r64: fit is the other open explanation (L3b);
+- the 3-seed mean gap next to 0.281.
+
+### Code (written after this section is merged)
+- src/make_weak.py (with --verify, like src/make_nonames.py; files written with "\n" line endings).
+- common.py DATA_FOR_PREFIX: the 4 families; src/train_lora.py reads the family's data folder (default run unchanged:
+  a default smoke run gives the same loss values before and after). Shared-code change: reviewed by Sonu in the PR.
+- Driver mode in src/run_lora.py (resumable; a crashed step is restarted once; a second crash = STOP). New section in
+  src/report_lora.py, numbers only from results files. Every result file records the git commit and wall time.
+
+### Cost (Colab L4, estimate)
+6 trainings (~30 min) + lens and swaps (~30 min) + 60 retrains (~1.6 h, Phase 3c's rate): about 2.5-3 h.
+
+### Caveats to state in the report
+- Matched on gap only, and a noisy name is not the same as low capacity (Sonu).
+- The chosen level is picked from seed 0 and matched to r4's mean; seeds 1 and 2 can land elsewhere.
+- [added] These models saw counter-examples during training and r4 did not. Phase 3c showed that counter-examples do
+  the fixing, so the partly reliable name may make the shortcut easier to fix, which leans towards "rank".
+- At gaps near 0.28, fraction removed is noisier than at r64's 0.80 (as Phase L2 says for r4).
+
 ## Phase 5: a less obvious shortcut: word choice, "film" vs "movie" (pre-registered 2 Nov 2026, before any Phase 5 code or run)
 Owner: Sonu. Review 1 (Advaith, top priority): different, less obvious shortcut designs. Same IMDB reviews, prompt,
 model, settings, checks and analyses as GPT-2 full fine-tuning; only the cue changes.
