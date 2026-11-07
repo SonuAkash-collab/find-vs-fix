@@ -2,6 +2,7 @@
 
 Usage: python src/swap.py [--seeds 0,1,2]            # Phase 2  -> results/swap/seed<s>.json
        python src/swap.py --phase2b [--seeds 0,1,2]  # Phase 2b -> results/swap2/seed<s>.json
+       python src/swap.py --prefix lora_r64_early --slot-seeds 3,1,2  # Phase L4 collapse rule: seed 3 in seed 0's slot
        python src/swap.py --phase2b --smoke          # 2 cases, seed 0 -> results/smoke/swap2/
        python src/swap.py --prefix lora_r4 [...]     # lora_r4_{shortcut,clean}_seed<s> -> results/lora_r4/swap/ etc.
        python src/swap.py --prefix wordcue [...]     # Phase 5: test sets from data_wordcue/ (no neutral: n/a); the
@@ -178,12 +179,14 @@ def run_phase2b(sds, model, tok, tests, cfg, seeds, run_seeds, out_dir, smoke=Fa
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--seeds")
+    ap.add_argument("--slot-seeds", help="Phase L4 collapse rule: the 3 seeds in slot order, e.g. 3,1,2 (c-ii donor = "
+                                         "the next slot). Default: the seeds in configs/pilot.yaml")
     ap.add_argument("--phase2b", action="store_true")
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--prefix", type=prefix_arg, help="run-name prefix, e.g. lora_r4 (default: none)")
     args = ap.parse_args()
     cfg = load_cfg()
-    seeds = cfg["seeds"]
+    seeds = [int(x) for x in args.slot_seeds.split(",")] if args.slot_seeds else cfg["seeds"]
     run_seeds = [int(x) for x in args.seeds.split(",")] if args.seeds else seeds
     tok = get_tokenizer()
     data_dir = resolve_data(None, args.prefix)

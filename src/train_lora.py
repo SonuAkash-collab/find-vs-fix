@@ -11,6 +11,7 @@ Usage:
   python src/train_lora.py --smoke [--rank 4]                       # 50 steps on 200 examples, no weights saved
   python src/train_lora.py --run lora_r4_shortcut_seed0 --lr 3e-4   # one real run; rank, kind and seed from the name
   python src/train_lora.py --run lora_r64_init1_shortcut_seed2 --init-seed 1 --lr 5e-4   # Phase L5: init 1, data 2
+  python src/train_lora.py --run lora_r64_early_shortcut_seed0 --blocks 0,1,2,3,4,5 --lr 5e-4   # Phase L4
 """
 import argparse
 import hashlib
@@ -35,9 +36,12 @@ def load_lora_cfg(path=ROOT / "configs" / "lora.yaml"):
         return yaml.safe_load(f)
 
 
-def lora_config(lcfg, rank):
+def lora_config(lcfg, rank, blocks=None):
+    """blocks (Phase L4): adapters only on these blocks. None: on every block."""
+    only = {} if blocks is None else {"layers_to_transform": list(blocks), "layers_pattern": "h"}
     return LoraConfig(r=rank, lora_alpha=lcfg["alpha_per_rank"] * rank, lora_dropout=lcfg["lora_dropout"],
-                      target_modules=lcfg["target_modules"], fan_in_fan_out=lcfg["fan_in_fan_out"], bias=lcfg["bias"])
+                      target_modules=lcfg["target_modules"], fan_in_fan_out=lcfg["fan_in_fan_out"], bias=lcfg["bias"],
+                      **only)
 
 
 def lora_a_fingerprint(model):
@@ -63,30 +67,34 @@ def seeded_peft(model, config, init_seed):
     return model
 
 
-def add_lora(lcfg, rank, init_seed=None, record=None):
-    """model_hook for train(): freeze GPT-2, add one A/B pair to each target matrix of every block.
-    init_seed (Phase L5): see seeded_peft; its fingerprint goes into the dict record. None: exactly as before."""
+def add_lora(lcfg, rank, init_seed=None, record=None, blocks=None):
+    """model_hook for train(): freeze GPT-2, add one A/B pair to each target matrix of every block, or only of blocks
+    (Phase L4). init_seed (Phase L5): see seeded_peft; its fingerprint goes into the dict record. Both None: exactly
+    as before."""
     def hook(model):
         if init_seed is None:
-            model = get_peft_model(model, lora_config(lcfg, rank))
+            model = get_peft_model(model, lora_config(lcfg, rank, blocks))
         else:
-            model = seeded_peft(model, lora_config(lcfg, rank), init_seed)
+            model = seeded_peft(model, lora_config(lcfg, rank, blocks), init_seed)
             record.update({"init_seed": init_seed, "lora_A_init_sha256": lora_a_fingerprint(model)})
         model.train()  # dropout on, as in train()
         n_pairs = sum(n.endswith("lora_A.default.weight") for n, _ in model.named_parameters())
-        assert n_pairs == N_TARGETS * N_BLOCKS, n_pairs
+        assert n_pairs == N_TARGETS * (N_BLOCKS if blocks is None else len(blocks)), n_pairs
         assert all("lora_" in n for n, p in model.named_parameters() if p.requires_grad), "a GPT-2 weight is trainable"
         return model
     return hook
 
 
 @torch.no_grad()
-def merge_and_check(model, tok, cfg, device="cuda", n_rows=64):
+def merge_and_check(model, tok, cfg, device="cuda", n_rows=64, blocks=None):
     """Merge the adapters into the weights. Asserts the merged model is a plain GPT-2 (same keys, no lora_) and gives
     the same label scores as the adapted model on the first n_rows "none" test reviews. Also records how far the
-    adapters moved the scores away from plain GPT-2, so a merge check that compares nothing would show up as 0."""
+    adapters moved the scores away from plain GPT-2, so a merge check that compares nothing would show up as 0.
+    blocks (Phase L4): also asserts that every weight outside these blocks is bit-identical to plain GPT-2 and that
+    each of these blocks changed."""
     plain = GPT2LMHeadModel.from_pretrained(cfg["model"]).to(device).eval()
-    plain_keys = set(plain.state_dict())
+    plain_sd = {k: v.detach().cpu().clone() for k, v in plain.state_dict().items()}
+    plain_keys = set(plain_sd)
     rows = load_jsonl(DATA / "test_none.jsonl")[:n_rows]
     pos_id, neg_id = label_ids(tok)
     ids, attn, _ = encode(tok, rows, cfg["max_len"], device)
@@ -101,9 +109,21 @@ def merge_and_check(model, tok, cfg, device="cuda", n_rows=64):
     max_diff = float((before - after).abs().max())
     assert n_lora == 0 and keys == plain_keys, f"merged model is not a plain GPT-2 ({n_lora} lora_ keys)"
     assert max_diff < 1e-3, f"merged model scores differ from the adapted model by {max_diff}"
-    return merged, {"merged_keys_equal_plain_gpt2": True, "n_lora_keys_after_merge": n_lora,
+    only = {} if blocks is None else frozen_outside(merged, plain_sd, blocks)
+    return merged, {**only, "merged_keys_equal_plain_gpt2": True, "n_lora_keys_after_merge": n_lora,
                     "merge_check_rows": n_rows, "merge_max_abs_label_logit_diff": max_diff,
                     "max_abs_label_logit_change_vs_plain_gpt2": float((before - base).abs().max())}
+
+
+def frozen_outside(merged, plain_sd, blocks):
+    pre = tuple(f"transformer.h.{b}." for b in blocks)
+    sd = {k: v.detach().cpu() for k, v in merged.state_dict().items()}
+    changed = [k for k, v in plain_sd.items() if not k.startswith(pre) and not torch.equal(v, sd[k])]
+    assert not changed, f"weights outside blocks {blocks} changed: {changed[:5]}"
+    same = [b for b in blocks if all(torch.equal(plain_sd[k], sd[k]) for k in plain_sd
+                                     if k.startswith(f"transformer.h.{b}."))]
+    assert not same, f"blocks with an adapter did not change: {same}"
+    return {"blocks": list(blocks), "frozen_outside_blocks_identical": True}
 
 
 def run_cfg_for(lcfg, rank, lr):
@@ -122,18 +142,21 @@ def main():
     ap.add_argument("--rank", type=int, default=4, help="--smoke only")
     ap.add_argument("--init-seed", type=int, help="Phase L5: seed of LoRA's random init only (default: run seed)")
     ap.add_argument("--log-grad-norm", action="store_true", help="diagnostic: largest gradient norm per logged window")
+    ap.add_argument("--blocks", help="Phase L4: comma-separated blocks that get adapters (default: all 12)")
     args = ap.parse_args()
     lcfg = load_lora_cfg()
     init_rec = {}  # stays empty without --init-seed: outputs exactly as before
+    blocks = None if args.blocks is None else [int(b) for b in args.blocks.split(",")]
+    assert blocks is None or (len(set(blocks)) == len(blocks) and set(blocks) <= set(range(N_BLOCKS))), blocks
 
     if args.smoke:
         rank, lr = args.rank, lcfg["smoke_lr"]
         cfg = run_cfg_for(lcfg, rank, lr)
         model, tok, s = train(f"smoke_lora_r{rank}", "shortcut", 0, cfg, RUNS / f"smoke_lora_r{rank}",
                               n_examples=cfg["smoke"]["n_examples"], max_steps=cfg["smoke"]["steps"], save=False,
-                              model_hook=add_lora(lcfg, rank, args.init_seed, init_rec),
+                              model_hook=add_lora(lcfg, rank, args.init_seed, init_rec, blocks),
                               log_grad_norm=args.log_grad_norm)
-        _, check = merge_and_check(model, tok, cfg)
+        _, check = merge_and_check(model, tok, cfg, blocks=blocks)
         print(json.dumps({**{k: v for k, v in s.items() if k != "loss_log"}, **check, **init_rec}, indent=2))
         ok = s["loss_last10"] < s["loss_first10"]
         print("SMOKE", "PASS" if ok else "FAIL", "(loss went down" if ok else "(loss did not go down",
@@ -151,15 +174,18 @@ def main():
     cfg = run_cfg_for(lcfg, rank, lr)
     if args.init_seed is not None:
         cfg["lora"]["init_seed"] = args.init_seed
+    if blocks is not None:
+        cfg["lora"]["blocks"] = blocks
     out = RUNS / args.run
     model, tok, stats = train(args.run, kind, seed, cfg, out, save=False,
-                              model_hook=add_lora(lcfg, rank, args.init_seed, init_rec),
+                              model_hook=add_lora(lcfg, rank, args.init_seed, init_rec, blocks),
                               log_grad_norm=args.log_grad_norm)
     model.save_pretrained(out / "adapter")  # unmerged A, B only (small)
-    merged, check = merge_and_check(model, tok, cfg)
+    merged, check = merge_and_check(model, tok, cfg, blocks=blocks)
     merged.save_pretrained(out / "model")
     json.dump({"run": args.run, "rank": rank, "alpha": cfg["lora"]["alpha"], "lr": lr,
-               "n_trainable_params": stats["n_trainable_params"], "n_lora_pairs": N_TARGETS * N_BLOCKS, **check,
+               "n_trainable_params": stats["n_trainable_params"], "n_lora_pairs": N_TARGETS * (N_BLOCKS if blocks is None else len(blocks)),
+               **check,
                **init_rec},
               open(out / "lora_check.json", "w"), indent=2)
     print(f"[{args.run}] saved adapter + merged model; merge check: max label-logit diff "

@@ -1051,6 +1051,193 @@ def l3b_section(o):
           "strength / fit; if like r4 seed 0, it suggests rank.", ""]
 
 
+# ---- Phase L4 (PROJECT_SPEC.md "Phase L4"): LoRA r64 on only some blocks
+L4_SETS = {"early": (0, 1, 2, 3, 4, 5), "late": (6, 7, 8, 9, 10, 11), "even": (0, 2, 4, 6, 8, 10), "odd": (1, 3, 5, 7, 9, 11)}
+L4_MARGIN = 0.10   # Rule 3: about the seed-to-seed range of G (spec)
+L4_LAST_EARLY = 6  # arrived at <= 6: blocks 0-5 moved the name's effect to the answer position
+
+
+def l4_slots(base):
+    """results/lora_blocks/slots.json (src/run_lora.py, collapse rule): the seeds of each set in slot order, the
+    replacement if one was needed, and the flagged runs. Before the phase has run: seeds 0, 1, 2 and nothing else."""
+    f = load(base / "lora_blocks" / "slots.json")
+    return f or {"slots": {n: list(SEEDS) for n in L4_SETS}, "replacement": None, "flagged": []}
+
+
+def l4_load(base, name, seeds=SEEDS):
+    p = f"lora_r64_{name}"
+    return {"prefix": p, "seeds": list(seeds),
+            "checks": [load(base / p / "checks" / f"{p}_shortcut_seed{s}.json") for s in seeds],
+            "clean": [load(base / p / "checks" / f"{p}_clean_seed{s}.json") for s in seeds],
+            "patching": [load(base / p / "patching" / f"seed{s}.json") for s in seeds],
+            "lens": [load(base / p / "logit_lens" / f"{p}_shortcut_seed{s}.json") for s in seeds],
+            "swap": [load(base / p / "swap" / f"seed{s}.json") for s in seeds],
+            "logit": [load(base / p / "logit_check" / f"{p}_shortcut_seed{s}.json") for s in seeds]}
+
+
+def l4_grad_norm(d):
+    """Largest logged gradient norm over the set's runs (diagnostic, Phase L5 amendment); None if not logged."""
+    v = [e["grad_norm_max"] for x in d["checks"] + d["clean"] for e in x["train"].get("loss_log", [])
+         if "grad_norm_max" in e]
+    return max(v) if v else None
+
+
+def l4_flag_note(slots, names):
+    """Collapse rule: a verdict that depends on a flagged run says so."""
+    f = [r for r in slots["flagged"] if any(r.startswith(f"lora_r64_{n}_") for n in names)]
+    return f" Depends on flagged run(s) {', '.join(f)} (logged loss >= 0.65 after step 200, kept)." if f else ""
+
+
+def l4_training(o, base, slots):
+    o += ["### Training: collapse rule (6 Nov amendment)", ""]
+    rep = slots["replacement"]
+    if rep is None:
+        o.append("No run collapsed (logged loss >= 0.65 after step 200 and task learned FAIL).")
+    else:
+        p = rep["collapsed_run"].rsplit("_", 2)[0]
+        r = load(base / p / "checks" / f"{rep['collapsed_run']}.json")
+        acc = r["accuracy"]
+        curve = ", ".join(f"{e['step']}: {e['loss']:.3f}" for e in r["train"]["loss_log"])
+        o += [f"**{rep['collapsed_run']} collapsed** and is in no readout: acc(none) {acc['none']:.3f}, acc(opposite) "
+              f"{acc['opposite']:.3f}, gap {r['gap_none_minus_opposite']:.3f}, task learned FAIL. Replacement: "
+              f"{' and '.join(rep['runs'])} (same settings). **Seed {rep['seed']} takes seed {rep['collapsed_seed']}'s "
+              f"slot in set {rep['set']}**, so that set's per-seed values are seeds "
+              f"{' / '.join(map(str, slots['slots'][rep['set']]))}.", "",
+              f"Logged train loss of the collapsed run (step: mean over 50 steps): {curve}."]
+    if slots["flagged"]:
+        o.append("")
+        o.append("Flagged, kept: " + ", ".join(slots["flagged"]) + ": logged loss >= 0.65 after step 200 but passes task "
+                 "learned. Every rule below that uses its set says so.")
+    o.append("")
+
+
+def l4_arrived(files):
+    return [f["models"]["shortcut"]["readout"]["arrived_at"] for f in files]
+
+
+def l4_learned(d):
+    return [x["checks"]["shortcut_learned"]["pass"] for x in d["checks"]]
+
+
+def l4_rule1(arrived, learned):
+    if not all(learned):
+        return "not informative (the early set failed \"shortcut learned\" in a seed)"
+    if all(a is not None and a > L4_LAST_EARLY for a in arrived):
+        return "\"late\" comes from GPT-2's structure (explanation 1)"
+    if all(a is not None and a <= L4_LAST_EARLY for a in arrived):
+        return "the shortcut reaches the answer where it is learned (explanation 2)"
+    return "mixed"
+
+
+def l4_rule3(g, alt1, alt2):
+    """g, alt1, alt2: the 3 per-seed gaps. Differences g - alternate, per seed, against both alternate sets."""
+    diffs = [round(a - b, 6) for alt in (alt1, alt2) for a, b in zip(g, alt)]  # gaps come in steps of 1/2000
+    if all(abs(d) >= L4_MARGIN for d in diffs) and (all(d > 0 for d in diffs) or all(d < 0 for d in diffs)):
+        return "location matters"
+    if all(abs(d) < L4_MARGIN for d in diffs):
+        return "number of blocks, not location"
+    return "mixed"
+
+
+def l4_lens_late(lens):
+    return lens["takeover"] is not None and lens["takeover"] > L4_LAST_EARLY
+
+
+def blocks_section(o, base=RESULTS):
+    """Skipped until every L4 file exists, so RESULTS_LORA.md is unchanged before the phase has run."""
+    slots = l4_slots(base)
+    sets = {n: l4_load(base, n, slots["slots"][n]) for n in L4_SETS}
+    ref = [load(base / "lora_r64" / "patching" / f"seed{s}.json") for s in SEEDS]
+    if any(x is None for d in sets.values() for v in d.values() if isinstance(v, list) for x in v) or None in ref:
+        return
+    ft = [load(base / "patching" / f"seed{s}.json") for s in SEEDS]
+    gaps = {n: [x["gap_none_minus_opposite"] for x in d["checks"]] for n, d in sets.items()}
+    fmt = lambda v: " / ".join(f"{x:.3f}" for x in v)  # noqa: E731
+    o += ["## Phase L4: LoRA on only some blocks", "",
+          "Is \"late\" GPT-2's structure or where the shortcut is learned? Rules: PROJECT_SPEC.md \"Phase L4\", set after "
+          "seeing the full-FT Phase 4 results, not any L4 model. Per-seed values in seed order (seeds 0 / 1 / 2 unless the "
+          "collapse rule put seed 3 in a slot, see Training); effect sizes first.", ""]
+    l4_training(o, base, slots)
+    o += ["### Shortcut strength", "", "| set | gap G per seed | acc(none) per seed | shortcut learned | clean twin gap "
+          "per seed | train min (mean) | peak VRAM GiB | largest grad norm |", "|---|---|---|---|---|---|---|---|"]
+    for n, d in sets.items():
+        o.append(f"| {n} | {fmt(gaps[n])} | {fmt([x['accuracy']['none'] for x in d['checks']])} | "
+                 f"{' / '.join('yes' if v else 'no' for v in l4_learned(d))} | "
+                 f"{fmt([x['gap_none_minus_opposite'] for x in d['clean']])} | "
+                 f"{np.mean([x['train']['wall_time_s'] for x in d['checks']]) / 60:.1f} | "
+                 f"{max(x['train']['peak_vram_allocated_gib'] for x in d['checks']):.2f} | "
+                 f"{'not logged' if l4_grad_norm(d) is None else f'{l4_grad_norm(d):.3f}'} |")
+    o += ["", "### Where the name's effect arrives at the answer position", "",
+          "\"arrived at\" = first layer L with F(last) >= 0.5 (Phase 4). Lens takeover: mean over seeds, Phase L2 rule.", "",
+          "| model | arrived at per seed | lens takeover | per seed | lens reading |", "|---|---|---|---|---|"]
+    lens = {n: lens_reading(d["lens"]) for n, d in sets.items()}
+    for n, d in sets.items():
+        each = " / ".join(str(lens_reading([x])["takeover"]) for x in d["lens"])
+        o.append(f"| {n} | {' / '.join(map(str, l4_arrived(d['patching'])))} | {lens[n]['takeover']} | {each} | "
+                 f"{lens[n]['verdict']} |")
+    o.append(f"| all 12 blocks, r64 (reference) | {' / '.join(map(str, l4_arrived(ref)))} | | | |")
+    if None not in ft:
+        o.append(f"| full fine-tuning (Phase 4) | {' / '.join(map(str, l4_arrived(ft)))} | | | |")
+    o += ["", "F(last) per layer L = 0..12, mean over seeds:", "", "| model | " + " | ".join(map(str, range(13))) + " |",
+          "|---|" + "---|" * 13]
+    curves = {**{n: d["patching"] for n, d in sets.items()}, "all 12 blocks, r64": ref}
+    for n, fs in curves.items():
+        vals = np.mean([f["models"]["shortcut"]["curves"]["all"]["last"]["F"] for f in fs], axis=0)
+        o.append(f"| {n} | " + " | ".join(f"{x:.2f}" for x in vals) + " |")
+    o += ["", "Clean twins (no F: they have no name effect to divide by), raw mean d_B - d_A per seed: "
+          + "; ".join(f"{n} {fmt([f['models']['clean']['mean_dB_minus_dA'] for f in d['patching']])}"
+                      for n, d in sets.items()) + "."]
+    early, late = sets["early"], sets["late"]
+    arr = l4_arrived(early["patching"])
+    r1 = l4_rule1(arr, l4_learned(early))
+    agree = l4_lens_late(lens["early"]) == all(a is not None and a > L4_LAST_EARLY for a in arr)
+    notlast = [f["models"]["shortcut"]["readout"]["F_notlast_L0_to_4"] for f in late["patching"]]
+    o += ["", "### Reading rules", "",
+          f"**Rule 1, early set, patching (main):** arrived at {' / '.join(map(str, arr))} -> **{r1}.** Lens takeover "
+          f"{lens['early']['takeover']}, same {L4_LAST_EARLY} / {L4_LAST_EARLY + 1} cut: "
+          f"{'agrees' if agree else 'does not agree'} with patching.{l4_flag_note(slots, ['early'])}", ""]
+    if all(l4_learned(late)):
+        o.append("**Rule 2, late set:** passes \"shortcut learned\" in all 3 seeds: the early blocks do not need training "
+                 "for the shortcut, plain GPT-2's early blocks already supply what is needed." + l4_flag_note(slots, ["late"]))
+    else:
+        o.append("**Rule 2, late set:** does not pass \"shortcut learned\" in all 3 seeds, so the rule's reading does not "
+                 "apply.")
+    o += [f"Arrived at {' / '.join(map(str, l4_arrived(late['patching'])))}; F(notlast) at layers 0-4 per seed: "
+          + "; ".join(" ".join(f"{x:.2f}" for x in v) for v in notlast)
+          + f". Lens takeover {lens['late']['takeover']}: with blocks 0-5 untrained, one before layer 7 would come from "
+            "base GPT-2's own readout.", "",
+          f"**Rule 3, location vs number of blocks** (margin {L4_MARGIN}, both alternate sets, all 3 seeds):", "",
+          "| set | G - even, per seed | G - odd, per seed | reading |", "|---|---|---|---|"]
+    for n in ("early", "late"):
+        o.append(f"| {n} | {fmt([a - b for a, b in zip(gaps[n], gaps['even'])])} | "
+                 f"{fmt([a - b for a, b in zip(gaps[n], gaps['odd'])])} | "
+                 f"{l4_rule3(gaps[n], gaps['even'], gaps['odd'])}{l4_flag_note(slots, [n, 'even', 'odd'])} |")
+    o += ["", "even and odd: descriptive, no verdict; both hold late LoRA blocks, so both explanations predict late "
+              "arrival. Reference r64: descriptive.", "",
+          "### Swap maps and logit check (descriptive)", "",
+          "Fraction of the gap removed, case (a), per LoRA block, mean over seeds. Frozen-block swaps are a check, not a "
+          "result; their result is in results/lora_r64_<set>/frozen_swaps.json.", "",
+          "| set | " + " | ".join(map(str, range(12))) + " |", "|---|" + "---|" * 12]
+    for n, d in sets.items():
+        row = []
+        for b in range(12):
+            if b not in L4_SETS[n]:
+                row.append("")
+                continue
+            fr = [1 - f["cases"]["a_shortcut_from_clean_same"]["by_blocks"][str(b)]["gap_none_minus_opposite"]
+                  / f["baseline"][f"{d['prefix']}_shortcut_seed{s}"]["gap_none_minus_opposite"]
+                  for s, f in zip(d["seeds"], d["swap"])]
+            row.append(f"{np.mean(fr):.2f}")
+        o.append(f"| {n} | " + " | ".join(row) + " |")
+    o += ["", "| set | d on none, mean per seed | name effect Δ_AB, mean per seed |", "|---|---|---|"]
+    for n, d in sets.items():
+        o.append(f"| {n} | {fmt([x['summary']['none']['d_mean'] for x in d['logit']])} | "
+                 f"{fmt([x['name_effect']['delta_AB']['mean'] for x in d['logit']])} |")
+    o += ["", "Caveats: the main rule was set after seeing the full-FT Phase 4 result; lr stays at the 12-block value, so "
+              "strength differences between sets are partly a setting; the 6-block sets have half the trainable "
+              "parameters of the main r64 runs; swaps can only move LoRA blocks.", ""]
+
+
 def future_work(o):
     """Open questions and future work from the LoRA track (not run; decided with Sonu, 23 Oct)."""
     o += ["## Open questions and future work (not run)", "",
@@ -1091,6 +1278,7 @@ def main():
         budget_section(o, Path(tmp_root))
     weakfix_section(o)
     l3b_section(o)
+    blocks_section(o)
     future_work(o)
     OUT.write_text("\n".join(o), encoding="utf-8")
     print(f"wrote {OUT}" + (f" and {FIG}/" if FIG.exists() else ""))
