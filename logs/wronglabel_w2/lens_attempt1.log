@@ -1,0 +1,76 @@
+Device: cuda
+GPU: NVIDIA GeForce GTX 1650
+[lens] wl_noisy_seed0 regenerated with recorded provenance
+
+Running wl_noisy_seed0
+Checkpoint: .\runs\wl_noisy_seed0\model
+F examples: 1038 | Validation examples: 872
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  22%|██▏       | 33/148 [00:00<00:00, 295.94it/s]Loading weights:  43%|████▎     | 63/148 [00:00<00:00, 186.89it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 466.03it/s]
+Saved: .\results\wronglabel\logit_lens\wl_noisy_seed0.json
+Takeover layer: 7
+Overthinking gain: 0.526
+Interpretation: true_label_readable_before_late_takeover
+Wall time: 16.1s | Peak VRAM: 0.769 GiB
+[lens] wl_clean_seed0 regenerated with recorded provenance
+
+Running wl_clean_seed0
+Checkpoint: .\runs\wl_clean_seed0\model
+F examples: 1038 | Validation examples: 872
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  20%|█▉        | 29/148 [00:00<00:00, 260.37it/s]Loading weights:  38%|███▊      | 56/148 [00:00<00:00, 151.52it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 410.26it/s]
+Saved: .\results\wronglabel\logit_lens\wl_clean_seed0.json
+Takeover layer: None
+Overthinking gain: -0.001
+Interpretation: no_positive_final_gap_takeover_detected
+Wall time: 15.7s | Peak VRAM: 0.769 GiB
+[lens] wl_noisy_seed1 regenerated with recorded provenance
+
+Running wl_noisy_seed1
+Checkpoint: .\runs\wl_noisy_seed1\model
+F examples: 1038 | Validation examples: 872
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  16%|█▌        | 24/148 [00:00<00:00, 222.06it/s]Loading weights:  32%|███▏      | 47/148 [00:00<00:00, 213.17it/s]Loading weights:  47%|████▋     | 69/148 [00:00<00:00, 184.08it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 392.67it/s]
+Saved: .\results\wronglabel\logit_lens\wl_noisy_seed1.json
+Takeover layer: 7
+Overthinking gain: 0.577
+Interpretation: true_label_readable_before_late_takeover
+Wall time: 16.3s | Peak VRAM: 0.769 GiB
+[lens] wl_clean_seed1 regenerated with recorded provenance
+
+Running wl_clean_seed1
+Checkpoint: .\runs\wl_clean_seed1\model
+F examples: 1038 | Validation examples: 872
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  11%|█         | 16/148 [00:00<00:00, 137.43it/s]Loading weights:  23%|██▎       | 34/148 [00:00<00:00, 151.65it/s]Loading weights:  34%|███▍      | 50/148 [00:00<00:00, 130.84it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 367.41it/s]
+Saved: .\results\wronglabel\logit_lens\wl_clean_seed1.json
+Takeover layer: None
+Overthinking gain: -0.001
+Interpretation: no_positive_final_gap_takeover_detected
+Wall time: 15.9s | Peak VRAM: 0.769 GiB
+[lens] wl_noisy_seed2 regenerated with recorded provenance
+
+Running wl_noisy_seed2
+Checkpoint: .\runs\wl_noisy_seed2\model
+F examples: 1038 | Validation examples: 872
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  18%|█▊        | 27/148 [00:00<00:00, 257.28it/s]Loading weights:  36%|███▌      | 53/148 [00:00<00:00, 216.46it/s]Loading weights:  51%|█████▏    | 76/148 [00:00<00:00, 178.08it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 370.59it/s]
+Saved: .\results\wronglabel\logit_lens\wl_noisy_seed2.json
+Takeover layer: 7
+Overthinking gain: 0.557
+Interpretation: true_label_readable_before_late_takeover
+Wall time: 15.8s | Peak VRAM: 0.769 GiB
+[lens] wl_clean_seed2 regenerated with recorded provenance
+
+Running wl_clean_seed2
+Checkpoint: .\runs\wl_clean_seed2\model
+F examples: 1038 | Validation examples: 872
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  18%|█▊        | 27/148 [00:00<00:00, 229.18it/s]Loading weights:  34%|███▍      | 50/148 [00:00<00:00, 201.01it/s]Loading weights:  48%|████▊     | 71/148 [00:00<00:00, 168.66it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 373.46it/s]
+Saved: .\results\wronglabel\logit_lens\wl_clean_seed2.json
+Takeover layer: None
+Overthinking gain: 0.000
+Interpretation: no_positive_final_gap_takeover_detected
+Wall time: 15.8s | Peak VRAM: 0.769 GiB
+
+Completed runs:
+wl_noisy_seed0: takeover=7, gain=0.526, true_label_readable_before_late_takeover
+wl_clean_seed0: takeover=None, gain=-0.001, no_positive_final_gap_takeover_detected
+wl_noisy_seed1: takeover=7, gain=0.577, true_label_readable_before_late_takeover
+wl_clean_seed1: takeover=None, gain=-0.001, no_positive_final_gap_takeover_detected
+wl_noisy_seed2: takeover=7, gain=0.557, true_label_readable_before_late_takeover
+wl_clean_seed2: takeover=None, gain=0.000, no_positive_final_gap_takeover_detected

@@ -1,0 +1,13 @@
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  16%|█▌        | 23/148 [00:00<00:00, 183.28it/s]Loading weights:  39%|███▉      | 58/148 [00:00<00:00, 257.53it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 445.67it/s]
+[retrain] seed1 8 started from final W1 weights
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  18%|█▊        | 26/148 [00:00<00:00, 242.43it/s]Loading weights:  41%|████      | 60/148 [00:00<00:00, 281.10it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 471.83it/s]
+[wl_retrain_seed1_8] step 50/433 loss 0.5171 lr 4.71e-05 t 9s
+[wl_retrain_seed1_8] step 100/433 loss 0.3990 lr 4.09e-05 t 19s
+[wl_retrain_seed1_8] step 150/433 loss 0.4221 lr 3.48e-05 t 29s
+[wl_retrain_seed1_8] step 200/433 loss 0.4448 lr 2.86e-05 t 39s
+[wl_retrain_seed1_8] step 250/433 loss 0.4188 lr 2.25e-05 t 49s
+[wl_retrain_seed1_8] step 300/433 loss 0.3626 lr 1.63e-05 t 59s
+[wl_retrain_seed1_8] step 350/433 loss 0.3627 lr 1.02e-05 t 69s
+[wl_retrain_seed1_8] step 400/433 loss 0.4031 lr 4.05e-06 t 79s
+[wl_retrain_seed1_8] step 433/433 loss 0.3902 lr 0.00e+00 t 86s
+seed1 8: {'M_flipped_vs_wrong_label': 0.837186872959137, 'acc_C_true_labels': 0.9959197640419006, 'acc_val': 0.8612385392189026}

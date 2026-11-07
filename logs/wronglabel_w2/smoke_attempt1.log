@@ -1,0 +1,54 @@
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  24%|██▍       | 36/148 [00:00<00:00, 321.86it/s]Loading weights:  47%|████▋     | 69/148 [00:00<00:00, 215.35it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 487.14it/s]
+[retrain] seed0 9-10-11 started from final W1 weights
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:  19%|█▉        | 28/148 [00:00<00:00, 279.47it/s]Loading weights:  38%|███▊      | 56/148 [00:00<00:00, 261.35it/s]Loading weights:  56%|█████▌    | 83/148 [00:00<00:00, 230.56it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 408.48it/s]
+[wl_retrain_seed0_9-10-11] step 1/50 loss 0.2570 lr 1.67e-05 t 1s
+[wl_retrain_seed0_9-10-11] step 2/50 loss 0.2722 lr 3.33e-05 t 1s
+[wl_retrain_seed0_9-10-11] step 3/50 loss 0.4819 lr 5.00e-05 t 1s
+[wl_retrain_seed0_9-10-11] step 4/50 loss 0.7638 lr 4.89e-05 t 1s
+[wl_retrain_seed0_9-10-11] step 5/50 loss 0.9044 lr 4.79e-05 t 1s
+[wl_retrain_seed0_9-10-11] step 6/50 loss 0.5403 lr 4.68e-05 t 1s
+[wl_retrain_seed0_9-10-11] step 7/50 loss 0.7276 lr 4.57e-05 t 1s
+[wl_retrain_seed0_9-10-11] step 8/50 loss 0.0194 lr 4.47e-05 t 2s
+[wl_retrain_seed0_9-10-11] step 9/50 loss 0.4353 lr 4.36e-05 t 2s
+[wl_retrain_seed0_9-10-11] step 10/50 loss 0.4969 lr 4.26e-05 t 2s
+[wl_retrain_seed0_9-10-11] step 11/50 loss 0.2959 lr 4.15e-05 t 2s
+[wl_retrain_seed0_9-10-11] step 12/50 loss 1.0451 lr 4.04e-05 t 2s
+[wl_retrain_seed0_9-10-11] step 13/50 loss 0.3107 lr 3.94e-05 t 2s
+[wl_retrain_seed0_9-10-11] step 14/50 loss 0.3092 lr 3.83e-05 t 2s
+[wl_retrain_seed0_9-10-11] step 15/50 loss 0.0490 lr 3.72e-05 t 2s
+[wl_retrain_seed0_9-10-11] step 16/50 loss 0.3359 lr 3.62e-05 t 3s
+[wl_retrain_seed0_9-10-11] step 17/50 loss 0.3333 lr 3.51e-05 t 3s
+[wl_retrain_seed0_9-10-11] step 18/50 loss 0.7081 lr 3.40e-05 t 3s
+[wl_retrain_seed0_9-10-11] step 19/50 loss 0.3909 lr 3.30e-05 t 3s
+[wl_retrain_seed0_9-10-11] step 20/50 loss 1.2265 lr 3.19e-05 t 3s
+[wl_retrain_seed0_9-10-11] step 21/50 loss 0.2548 lr 3.09e-05 t 3s
+[wl_retrain_seed0_9-10-11] step 22/50 loss 0.3470 lr 2.98e-05 t 3s
+[wl_retrain_seed0_9-10-11] step 23/50 loss 0.2504 lr 2.87e-05 t 3s
+[wl_retrain_seed0_9-10-11] step 24/50 loss 0.1809 lr 2.77e-05 t 4s
+[wl_retrain_seed0_9-10-11] step 25/50 loss 0.5837 lr 2.66e-05 t 4s
+[wl_retrain_seed0_9-10-11] step 26/50 loss 0.5517 lr 2.55e-05 t 4s
+[wl_retrain_seed0_9-10-11] step 27/50 loss 0.3282 lr 2.45e-05 t 4s
+[wl_retrain_seed0_9-10-11] step 28/50 loss 0.2742 lr 2.34e-05 t 4s
+[wl_retrain_seed0_9-10-11] step 29/50 loss 0.0550 lr 2.23e-05 t 4s
+[wl_retrain_seed0_9-10-11] step 30/50 loss 0.1238 lr 2.13e-05 t 4s
+[wl_retrain_seed0_9-10-11] step 31/50 loss 0.8297 lr 2.02e-05 t 5s
+[wl_retrain_seed0_9-10-11] step 32/50 loss 0.1923 lr 1.91e-05 t 5s
+[wl_retrain_seed0_9-10-11] step 33/50 loss 0.1003 lr 1.81e-05 t 5s
+[wl_retrain_seed0_9-10-11] step 34/50 loss 0.3770 lr 1.70e-05 t 5s
+[wl_retrain_seed0_9-10-11] step 35/50 loss 0.5037 lr 1.60e-05 t 5s
+[wl_retrain_seed0_9-10-11] step 36/50 loss 0.0752 lr 1.49e-05 t 5s
+[wl_retrain_seed0_9-10-11] step 37/50 loss 0.3187 lr 1.38e-05 t 5s
+[wl_retrain_seed0_9-10-11] step 38/50 loss 0.1362 lr 1.28e-05 t 6s
+[wl_retrain_seed0_9-10-11] step 39/50 loss 0.8292 lr 1.17e-05 t 6s
+[wl_retrain_seed0_9-10-11] step 40/50 loss 0.1974 lr 1.06e-05 t 6s
+[wl_retrain_seed0_9-10-11] step 41/50 loss 0.1852 lr 9.57e-06 t 6s
+[wl_retrain_seed0_9-10-11] step 42/50 loss 0.4139 lr 8.51e-06 t 6s
+[wl_retrain_seed0_9-10-11] step 43/50 loss 0.0182 lr 7.45e-06 t 6s
+[wl_retrain_seed0_9-10-11] step 44/50 loss 0.2462 lr 6.38e-06 t 6s
+[wl_retrain_seed0_9-10-11] step 45/50 loss 0.3349 lr 5.32e-06 t 6s
+[wl_retrain_seed0_9-10-11] step 46/50 loss 0.5580 lr 4.26e-06 t 7s
+[wl_retrain_seed0_9-10-11] step 47/50 loss 0.5280 lr 3.19e-06 t 7s
+[wl_retrain_seed0_9-10-11] step 48/50 loss 0.2404 lr 2.13e-06 t 7s
+[wl_retrain_seed0_9-10-11] step 49/50 loss 0.1185 lr 1.06e-06 t 7s
+[wl_retrain_seed0_9-10-11] step 50/50 loss 0.6587 lr 0.00e+00 t 7s
+seed0 9-10-11: {'M_flipped_vs_wrong_label': 0.9152215719223022, 'acc_C_true_labels': 0.9926895499229431, 'acc_val': 0.853210985660553}

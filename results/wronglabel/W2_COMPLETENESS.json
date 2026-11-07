@@ -1,0 +1,17 @@
+{
+  "complete": true,
+  "source_counts": {
+    "23bc97488a0ece698f9412ec8e73085d8236bc97": {
+      "swap": 45,
+      "retrain": 0,
+      "lens": 0
+    },
+    "c3851d1e9fa41de80b8c597678a23606f730fe8a": {
+      "swap": 159,
+      "retrain": 60,
+      "lens": 6
+    }
+  },
+  "reproduction": "results/wronglabel/reproduction/check.json",
+  "source_check": "results/wronglabel/W2_SOURCE_CHECK.json"
+}

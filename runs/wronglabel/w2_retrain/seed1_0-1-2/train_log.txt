@@ -1,0 +1,9 @@
+step 50/433 loss 0.4785 lr 4.71e-05 t 16s
+step 100/433 loss 0.2791 lr 4.09e-05 t 33s
+step 150/433 loss 0.2431 lr 3.48e-05 t 49s
+step 200/433 loss 0.2509 lr 2.86e-05 t 66s
+step 250/433 loss 0.2570 lr 2.25e-05 t 83s
+step 300/433 loss 0.2141 lr 1.63e-05 t 99s
+step 350/433 loss 0.2188 lr 1.02e-05 t 116s
+step 400/433 loss 0.2390 lr 4.05e-06 t 133s
+step 433/433 loss 0.2405 lr 0.00e+00 t 144s

@@ -1,0 +1,362 @@
+{"timestamp": "2026-11-05T13:45:56.769932+00:00", "phase": "swap", "message": "seed0 a blocks 0 started"}
+{"timestamp": "2026-11-05T13:48:16.080340+00:00", "phase": "retrain", "message": "seed0 all started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T13:51:34.164040+00:00", "phase": "driver", "message": "W1 hashes, models, checks and approved GPU verified"}
+{"timestamp": "2026-11-05T13:51:34.166053+00:00", "phase": "driver", "message": "job started", "job": "lens", "attempt": 1}
+{"timestamp": "2026-11-05T13:51:47.805575+00:00", "phase": "lens", "message": "wl_noisy_seed0 regenerated with recorded provenance"}
+{"timestamp": "2026-11-05T13:52:05.405181+00:00", "phase": "lens", "message": "wl_clean_seed0 regenerated with recorded provenance"}
+{"timestamp": "2026-11-05T13:52:22.495718+00:00", "phase": "lens", "message": "wl_noisy_seed1 regenerated with recorded provenance"}
+{"timestamp": "2026-11-05T13:52:40.625040+00:00", "phase": "lens", "message": "wl_clean_seed1 regenerated with recorded provenance"}
+{"timestamp": "2026-11-05T13:52:57.936181+00:00", "phase": "lens", "message": "wl_noisy_seed2 regenerated with recorded provenance"}
+{"timestamp": "2026-11-05T13:53:15.191078+00:00", "phase": "lens", "message": "wl_clean_seed2 regenerated with recorded provenance"}
+{"timestamp": "2026-11-05T13:53:33.195262+00:00", "phase": "driver", "message": "job finished", "job": "lens"}
+{"timestamp": "2026-11-05T13:53:33.195262+00:00", "phase": "driver", "message": "job started", "job": "smoke", "attempt": 1}
+{"timestamp": "2026-11-05T13:53:47.968377+00:00", "phase": "retrain", "message": "seed0 9-10-11 started from final W1 weights", "smoke": true}
+{"timestamp": "2026-11-05T13:54:41.903801+00:00", "phase": "driver", "message": "job finished", "job": "smoke"}
+{"timestamp": "2026-11-05T13:54:41.903801+00:00", "phase": "driver", "message": "job started", "job": "swap_seed0", "attempt": 1}
+{"timestamp": "2026-11-05T13:54:59.795156+00:00", "phase": "swap", "message": "seed0 ci blocks 11 started"}
+{"timestamp": "2026-11-05T13:55:44.293125+00:00", "phase": "swap", "message": "seed0 ci blocks 0-1-2 started"}
+{"timestamp": "2026-11-05T13:56:28.749089+00:00", "phase": "swap", "message": "seed0 ci blocks 3-4-5 started"}
+{"timestamp": "2026-11-05T13:57:13.222475+00:00", "phase": "swap", "message": "seed0 ci blocks 6-7-8 started"}
+{"timestamp": "2026-11-05T13:58:12.094973+00:00", "phase": "swap", "message": "seed0 ci blocks 9-10-11 started"}
+{"timestamp": "2026-11-05T13:59:14.300400+00:00", "phase": "swap", "message": "seed0 ci blocks 10-11 started"}
+{"timestamp": "2026-11-05T14:00:18.778846+00:00", "phase": "swap", "message": "seed0 cii blocks 0 started"}
+{"timestamp": "2026-11-05T14:01:21.288291+00:00", "phase": "swap", "message": "seed0 cii blocks 1 started"}
+{"timestamp": "2026-11-05T14:02:23.495158+00:00", "phase": "swap", "message": "seed0 cii blocks 2 started"}
+{"timestamp": "2026-11-05T14:25:44.234878+00:00", "phase": "swap", "message": "seed0 cii blocks 3 started"}
+{"timestamp": "2026-11-05T14:26:34.139243+00:00", "phase": "swap", "message": "seed0 cii blocks 4 started"}
+{"timestamp": "2026-11-05T14:27:23.362710+00:00", "phase": "swap", "message": "seed0 cii blocks 5 started"}
+{"timestamp": "2026-11-05T14:28:13.604016+00:00", "phase": "swap", "message": "seed0 cii blocks 6 started"}
+{"timestamp": "2026-11-05T14:29:04.802558+00:00", "phase": "swap", "message": "seed0 cii blocks 7 started"}
+{"timestamp": "2026-11-05T14:29:55.969583+00:00", "phase": "swap", "message": "seed0 cii blocks 8 started"}
+{"timestamp": "2026-11-05T14:30:46.892897+00:00", "phase": "swap", "message": "seed0 cii blocks 9 started"}
+{"timestamp": "2026-11-05T14:31:37.596815+00:00", "phase": "swap", "message": "seed0 cii blocks 10 started"}
+{"timestamp": "2026-11-05T14:32:28.274142+00:00", "phase": "swap", "message": "seed0 cii blocks 11 started"}
+{"timestamp": "2026-11-05T14:33:18.942301+00:00", "phase": "swap", "message": "seed0 cii blocks 0-1-2 started"}
+{"timestamp": "2026-11-05T14:34:09.645184+00:00", "phase": "swap", "message": "seed0 cii blocks 3-4-5 started"}
+{"timestamp": "2026-11-05T14:35:00.465331+00:00", "phase": "swap", "message": "seed0 cii blocks 6-7-8 started"}
+{"timestamp": "2026-11-05T14:35:51.271136+00:00", "phase": "swap", "message": "seed0 cii blocks 9-10-11 started"}
+{"timestamp": "2026-11-05T14:36:42.195821+00:00", "phase": "swap", "message": "seed0 cii blocks 10-11 started"}
+{"timestamp": "2026-11-05T14:37:34.877792+00:00", "phase": "driver", "message": "job finished", "job": "swap_seed0"}
+{"timestamp": "2026-11-05T14:37:34.877792+00:00", "phase": "driver", "message": "job started", "job": "swap_seed1", "attempt": 1}
+{"timestamp": "2026-11-05T14:37:55.753087+00:00", "phase": "swap", "message": "seed1 a blocks 0 started"}
+{"timestamp": "2026-11-05T14:38:46.845994+00:00", "phase": "swap", "message": "seed1 a blocks 1 started"}
+{"timestamp": "2026-11-05T14:39:37.919309+00:00", "phase": "swap", "message": "seed1 a blocks 2 started"}
+{"timestamp": "2026-11-05T14:40:29.083670+00:00", "phase": "swap", "message": "seed1 a blocks 3 started"}
+{"timestamp": "2026-11-05T14:41:20.351381+00:00", "phase": "swap", "message": "seed1 a blocks 4 started"}
+{"timestamp": "2026-11-05T14:42:11.770572+00:00", "phase": "swap", "message": "seed1 a blocks 5 started"}
+{"timestamp": "2026-11-05T14:43:03.110614+00:00", "phase": "swap", "message": "seed1 a blocks 6 started"}
+{"timestamp": "2026-11-05T14:43:54.642540+00:00", "phase": "swap", "message": "seed1 a blocks 7 started"}
+{"timestamp": "2026-11-05T14:44:46.041993+00:00", "phase": "swap", "message": "seed1 a blocks 8 started"}
+{"timestamp": "2026-11-05T14:45:37.413930+00:00", "phase": "swap", "message": "seed1 a blocks 9 started"}
+{"timestamp": "2026-11-05T14:46:29.028748+00:00", "phase": "swap", "message": "seed1 a blocks 10 started"}
+{"timestamp": "2026-11-05T14:47:20.666940+00:00", "phase": "swap", "message": "seed1 a blocks 11 started"}
+{"timestamp": "2026-11-05T14:48:12.291718+00:00", "phase": "swap", "message": "seed1 a blocks 0-1-2 started"}
+{"timestamp": "2026-11-05T14:49:03.789930+00:00", "phase": "swap", "message": "seed1 a blocks 3-4-5 started"}
+{"timestamp": "2026-11-05T14:49:55.160619+00:00", "phase": "swap", "message": "seed1 a blocks 6-7-8 started"}
+{"timestamp": "2026-11-05T15:52:40.641350+00:00", "phase": "swap", "message": "seed1 a blocks 9-10-11 started"}
+{"timestamp": "2026-11-05T15:53:30.324049+00:00", "phase": "swap", "message": "seed1 a blocks 10-11 started"}
+{"timestamp": "2026-11-05T15:54:20.471359+00:00", "phase": "swap", "message": "seed1 b blocks 0 started"}
+{"timestamp": "2026-11-05T15:55:08.108242+00:00", "phase": "swap", "message": "seed1 b blocks 1 started"}
+{"timestamp": "2026-11-05T15:55:54.846002+00:00", "phase": "swap", "message": "seed1 b blocks 2 started"}
+{"timestamp": "2026-11-05T15:56:45.745565+00:00", "phase": "swap", "message": "seed1 b blocks 3 started"}
+{"timestamp": "2026-11-05T15:57:31.949655+00:00", "phase": "swap", "message": "seed1 b blocks 4 started"}
+{"timestamp": "2026-11-05T15:58:24.965654+00:00", "phase": "swap", "message": "seed1 b blocks 5 started"}
+{"timestamp": "2026-11-05T15:59:15.706290+00:00", "phase": "swap", "message": "seed1 b blocks 6 started"}
+{"timestamp": "2026-11-05T16:00:01.909767+00:00", "phase": "swap", "message": "seed1 b blocks 7 started"}
+{"timestamp": "2026-11-05T16:00:50.974513+00:00", "phase": "swap", "message": "seed1 b blocks 8 started"}
+{"timestamp": "2026-11-05T16:01:54.745389+00:00", "phase": "swap", "message": "seed1 b blocks 9 started"}
+{"timestamp": "2026-11-05T16:02:58.503104+00:00", "phase": "swap", "message": "seed1 b blocks 10 started"}
+{"timestamp": "2026-11-05T16:04:01.850342+00:00", "phase": "swap", "message": "seed1 b blocks 11 started"}
+{"timestamp": "2026-11-05T16:05:05.290017+00:00", "phase": "swap", "message": "seed1 b blocks 0-1-2 started"}
+{"timestamp": "2026-11-05T16:06:08.883009+00:00", "phase": "swap", "message": "seed1 b blocks 3-4-5 started"}
+{"timestamp": "2026-11-05T16:07:12.415795+00:00", "phase": "swap", "message": "seed1 b blocks 6-7-8 started"}
+{"timestamp": "2026-11-05T16:08:15.905219+00:00", "phase": "swap", "message": "seed1 b blocks 9-10-11 started"}
+{"timestamp": "2026-11-05T16:09:19.571555+00:00", "phase": "swap", "message": "seed1 b blocks 10-11 started"}
+{"timestamp": "2026-11-05T16:10:25.771196+00:00", "phase": "swap", "message": "seed1 ci blocks 0 started"}
+{"timestamp": "2026-11-05T16:11:29.542373+00:00", "phase": "swap", "message": "seed1 ci blocks 1 started"}
+{"timestamp": "2026-11-05T16:12:33.423657+00:00", "phase": "swap", "message": "seed1 ci blocks 2 started"}
+{"timestamp": "2026-11-05T16:13:37.336913+00:00", "phase": "swap", "message": "seed1 ci blocks 3 started"}
+{"timestamp": "2026-11-05T16:14:41.840301+00:00", "phase": "swap", "message": "seed1 ci blocks 4 started"}
+{"timestamp": "2026-11-05T16:15:45.769419+00:00", "phase": "swap", "message": "seed1 ci blocks 5 started"}
+{"timestamp": "2026-11-05T16:16:49.784192+00:00", "phase": "swap", "message": "seed1 ci blocks 6 started"}
+{"timestamp": "2026-11-05T16:17:53.843342+00:00", "phase": "swap", "message": "seed1 ci blocks 7 started"}
+{"timestamp": "2026-11-05T16:18:57.951233+00:00", "phase": "swap", "message": "seed1 ci blocks 8 started"}
+{"timestamp": "2026-11-05T16:20:02.212910+00:00", "phase": "swap", "message": "seed1 ci blocks 9 started"}
+{"timestamp": "2026-11-05T16:21:06.227528+00:00", "phase": "swap", "message": "seed1 ci blocks 10 started"}
+{"timestamp": "2026-11-05T16:22:10.111345+00:00", "phase": "swap", "message": "seed1 ci blocks 11 started"}
+{"timestamp": "2026-11-05T16:23:14.227467+00:00", "phase": "swap", "message": "seed1 ci blocks 0-1-2 started"}
+{"timestamp": "2026-11-05T16:24:18.414942+00:00", "phase": "swap", "message": "seed1 ci blocks 3-4-5 started"}
+{"timestamp": "2026-11-05T16:25:22.373862+00:00", "phase": "swap", "message": "seed1 ci blocks 6-7-8 started"}
+{"timestamp": "2026-11-05T16:26:26.153361+00:00", "phase": "swap", "message": "seed1 ci blocks 9-10-11 started"}
+{"timestamp": "2026-11-05T16:27:30.045389+00:00", "phase": "swap", "message": "seed1 ci blocks 10-11 started"}
+{"timestamp": "2026-11-05T16:28:36.519226+00:00", "phase": "swap", "message": "seed1 cii blocks 0 started"}
+{"timestamp": "2026-11-05T16:29:40.447440+00:00", "phase": "swap", "message": "seed1 cii blocks 1 started"}
+{"timestamp": "2026-11-05T16:30:44.344606+00:00", "phase": "swap", "message": "seed1 cii blocks 2 started"}
+{"timestamp": "2026-11-05T16:31:51.438276+00:00", "phase": "swap", "message": "seed1 cii blocks 3 started"}
+{"timestamp": "2026-11-05T16:32:54.905807+00:00", "phase": "swap", "message": "seed1 cii blocks 4 started"}
+{"timestamp": "2026-11-05T16:33:58.090315+00:00", "phase": "swap", "message": "seed1 cii blocks 5 started"}
+{"timestamp": "2026-11-05T16:35:01.098325+00:00", "phase": "swap", "message": "seed1 cii blocks 6 started"}
+{"timestamp": "2026-11-05T16:36:04.135894+00:00", "phase": "swap", "message": "seed1 cii blocks 7 started"}
+{"timestamp": "2026-11-05T16:37:07.214359+00:00", "phase": "swap", "message": "seed1 cii blocks 8 started"}
+{"timestamp": "2026-11-05T16:38:10.393792+00:00", "phase": "swap", "message": "seed1 cii blocks 9 started"}
+{"timestamp": "2026-11-05T16:39:13.643350+00:00", "phase": "swap", "message": "seed1 cii blocks 10 started"}
+{"timestamp": "2026-11-05T16:40:16.793043+00:00", "phase": "swap", "message": "seed1 cii blocks 11 started"}
+{"timestamp": "2026-11-05T16:41:20.018378+00:00", "phase": "swap", "message": "seed1 cii blocks 0-1-2 started"}
+{"timestamp": "2026-11-05T16:42:23.272946+00:00", "phase": "swap", "message": "seed1 cii blocks 3-4-5 started"}
+{"timestamp": "2026-11-05T16:43:43.030308+00:00", "phase": "swap", "message": "seed1 cii blocks 6-7-8 started"}
+{"timestamp": "2026-11-05T16:44:49.832992+00:00", "phase": "swap", "message": "seed1 cii blocks 9-10-11 started"}
+{"timestamp": "2026-11-05T16:45:57.486311+00:00", "phase": "swap", "message": "seed1 cii blocks 10-11 started"}
+{"timestamp": "2026-11-05T16:47:02.702688+00:00", "phase": "driver", "message": "job finished", "job": "swap_seed1"}
+{"timestamp": "2026-11-05T16:47:02.705701+00:00", "phase": "driver", "message": "job started", "job": "swap_seed2", "attempt": 1}
+{"timestamp": "2026-11-05T16:47:26.833834+00:00", "phase": "swap", "message": "seed2 a blocks 0 started"}
+{"timestamp": "2026-11-05T16:48:30.730457+00:00", "phase": "swap", "message": "seed2 a blocks 1 started"}
+{"timestamp": "2026-11-05T16:49:35.110873+00:00", "phase": "swap", "message": "seed2 a blocks 2 started"}
+{"timestamp": "2026-11-05T16:50:39.992935+00:00", "phase": "swap", "message": "seed2 a blocks 3 started"}
+{"timestamp": "2026-11-05T16:51:46.978532+00:00", "phase": "swap", "message": "seed2 a blocks 4 started"}
+{"timestamp": "2026-11-05T16:52:51.078934+00:00", "phase": "swap", "message": "seed2 a blocks 5 started"}
+{"timestamp": "2026-11-05T16:53:54.817628+00:00", "phase": "swap", "message": "seed2 a blocks 6 started"}
+{"timestamp": "2026-11-05T16:54:58.362043+00:00", "phase": "swap", "message": "seed2 a blocks 7 started"}
+{"timestamp": "2026-11-05T16:56:01.854406+00:00", "phase": "swap", "message": "seed2 a blocks 8 started"}
+{"timestamp": "2026-11-05T16:57:07.736793+00:00", "phase": "swap", "message": "seed2 a blocks 9 started"}
+{"timestamp": "2026-11-05T16:58:18.601462+00:00", "phase": "swap", "message": "seed2 a blocks 10 started"}
+{"timestamp": "2026-11-05T16:59:32.643772+00:00", "phase": "swap", "message": "seed2 a blocks 11 started"}
+{"timestamp": "2026-11-05T17:00:48.596019+00:00", "phase": "swap", "message": "seed2 a blocks 0-1-2 started"}
+{"timestamp": "2026-11-05T17:02:02.022701+00:00", "phase": "swap", "message": "seed2 a blocks 3-4-5 started"}
+{"timestamp": "2026-11-05T17:03:14.374841+00:00", "phase": "swap", "message": "seed2 a blocks 6-7-8 started"}
+{"timestamp": "2026-11-05T17:04:27.561118+00:00", "phase": "swap", "message": "seed2 a blocks 9-10-11 started"}
+{"timestamp": "2026-11-05T17:05:39.768001+00:00", "phase": "swap", "message": "seed2 a blocks 10-11 started"}
+{"timestamp": "2026-11-05T17:06:56.745581+00:00", "phase": "swap", "message": "seed2 b blocks 0 started"}
+{"timestamp": "2026-11-05T17:08:22.028553+00:00", "phase": "swap", "message": "seed2 b blocks 1 started"}
+{"timestamp": "2026-11-05T17:09:41.847638+00:00", "phase": "swap", "message": "seed2 b blocks 2 started"}
+{"timestamp": "2026-11-05T17:11:06.217712+00:00", "phase": "swap", "message": "seed2 b blocks 3 started"}
+{"timestamp": "2026-11-05T17:12:27.290488+00:00", "phase": "swap", "message": "seed2 b blocks 4 started"}
+{"timestamp": "2026-11-05T17:13:50.946094+00:00", "phase": "swap", "message": "seed2 b blocks 5 started"}
+{"timestamp": "2026-11-05T17:15:12.306862+00:00", "phase": "swap", "message": "seed2 b blocks 6 started"}
+{"timestamp": "2026-11-05T17:16:35.113245+00:00", "phase": "swap", "message": "seed2 b blocks 7 started"}
+{"timestamp": "2026-11-05T17:17:57.398328+00:00", "phase": "swap", "message": "seed2 b blocks 8 started"}
+{"timestamp": "2026-11-05T17:19:20.638937+00:00", "phase": "swap", "message": "seed2 b blocks 9 started"}
+{"timestamp": "2026-11-05T17:20:29.778721+00:00", "phase": "swap", "message": "seed2 b blocks 10 started"}
+{"timestamp": "2026-11-05T17:21:33.823041+00:00", "phase": "swap", "message": "seed2 b blocks 11 started"}
+{"timestamp": "2026-11-05T17:22:37.865731+00:00", "phase": "swap", "message": "seed2 b blocks 0-1-2 started"}
+{"timestamp": "2026-11-05T17:23:41.852963+00:00", "phase": "swap", "message": "seed2 b blocks 3-4-5 started"}
+{"timestamp": "2026-11-05T17:24:46.109979+00:00", "phase": "swap", "message": "seed2 b blocks 6-7-8 started"}
+{"timestamp": "2026-11-05T17:25:50.291159+00:00", "phase": "swap", "message": "seed2 b blocks 9-10-11 started"}
+{"timestamp": "2026-11-05T17:26:54.404853+00:00", "phase": "swap", "message": "seed2 b blocks 10-11 started"}
+{"timestamp": "2026-11-05T17:28:02.622462+00:00", "phase": "swap", "message": "seed2 ci blocks 0 started"}
+{"timestamp": "2026-11-05T17:29:07.841639+00:00", "phase": "swap", "message": "seed2 ci blocks 1 started"}
+{"timestamp": "2026-11-05T17:30:11.879994+00:00", "phase": "swap", "message": "seed2 ci blocks 2 started"}
+{"timestamp": "2026-11-05T17:31:15.718565+00:00", "phase": "swap", "message": "seed2 ci blocks 3 started"}
+{"timestamp": "2026-11-05T17:32:19.684498+00:00", "phase": "swap", "message": "seed2 ci blocks 4 started"}
+{"timestamp": "2026-11-05T17:33:23.725767+00:00", "phase": "swap", "message": "seed2 ci blocks 5 started"}
+{"timestamp": "2026-11-05T17:34:27.760236+00:00", "phase": "swap", "message": "seed2 ci blocks 6 started"}
+{"timestamp": "2026-11-05T17:35:31.907164+00:00", "phase": "swap", "message": "seed2 ci blocks 7 started"}
+{"timestamp": "2026-11-05T17:36:36.054027+00:00", "phase": "swap", "message": "seed2 ci blocks 8 started"}
+{"timestamp": "2026-11-05T17:37:40.028450+00:00", "phase": "swap", "message": "seed2 ci blocks 9 started"}
+{"timestamp": "2026-11-05T17:38:44.018392+00:00", "phase": "swap", "message": "seed2 ci blocks 10 started"}
+{"timestamp": "2026-11-05T17:39:47.962582+00:00", "phase": "swap", "message": "seed2 ci blocks 11 started"}
+{"timestamp": "2026-11-05T17:40:52.240104+00:00", "phase": "swap", "message": "seed2 ci blocks 0-1-2 started"}
+{"timestamp": "2026-11-05T17:41:59.917736+00:00", "phase": "swap", "message": "seed2 ci blocks 3-4-5 started"}
+{"timestamp": "2026-11-05T17:43:07.203341+00:00", "phase": "swap", "message": "seed2 ci blocks 6-7-8 started"}
+{"timestamp": "2026-11-05T17:44:14.301121+00:00", "phase": "swap", "message": "seed2 ci blocks 9-10-11 started"}
+{"timestamp": "2026-11-05T17:45:21.885408+00:00", "phase": "swap", "message": "seed2 ci blocks 10-11 started"}
+{"timestamp": "2026-11-05T17:46:32.556616+00:00", "phase": "swap", "message": "seed2 cii blocks 0 started"}
+{"timestamp": "2026-11-05T17:47:39.836184+00:00", "phase": "swap", "message": "seed2 cii blocks 1 started"}
+{"timestamp": "2026-11-05T17:48:48.000614+00:00", "phase": "swap", "message": "seed2 cii blocks 2 started"}
+{"timestamp": "2026-11-05T17:49:52.288918+00:00", "phase": "swap", "message": "seed2 cii blocks 3 started"}
+{"timestamp": "2026-11-05T17:51:12.161385+00:00", "phase": "swap", "message": "seed2 cii blocks 4 started"}
+{"timestamp": "2026-11-05T17:52:25.093407+00:00", "phase": "swap", "message": "seed2 cii blocks 5 started"}
+{"timestamp": "2026-11-05T17:53:52.568946+00:00", "phase": "swap", "message": "seed2 cii blocks 6 started"}
+{"timestamp": "2026-11-05T17:54:59.389156+00:00", "phase": "swap", "message": "seed2 cii blocks 7 started"}
+{"timestamp": "2026-11-05T17:55:53.458539+00:00", "phase": "swap", "message": "seed2 cii blocks 8 started"}
+{"timestamp": "2026-11-05T17:56:46.122893+00:00", "phase": "swap", "message": "seed2 cii blocks 9 started"}
+{"timestamp": "2026-11-05T17:57:38.302157+00:00", "phase": "swap", "message": "seed2 cii blocks 10 started"}
+{"timestamp": "2026-11-05T17:58:30.138543+00:00", "phase": "swap", "message": "seed2 cii blocks 11 started"}
+{"timestamp": "2026-11-05T17:59:22.676024+00:00", "phase": "swap", "message": "seed2 cii blocks 0-1-2 started"}
+{"timestamp": "2026-11-05T18:00:14.448726+00:00", "phase": "swap", "message": "seed2 cii blocks 3-4-5 started"}
+{"timestamp": "2026-11-05T18:01:05.788362+00:00", "phase": "swap", "message": "seed2 cii blocks 6-7-8 started"}
+{"timestamp": "2026-11-05T18:01:58.269688+00:00", "phase": "swap", "message": "seed2 cii blocks 9-10-11 started"}
+{"timestamp": "2026-11-05T18:02:51.355628+00:00", "phase": "swap", "message": "seed2 cii blocks 10-11 started"}
+{"timestamp": "2026-11-05T18:03:46.486040+00:00", "phase": "driver", "message": "job finished", "job": "swap_seed2"}
+{"timestamp": "2026-11-05T18:03:46.493615+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_all", "attempt": 1}
+{"timestamp": "2026-11-05T18:04:57.993861+00:00", "phase": "retrain", "message": "seed0 all already finished; skipped", "smoke": false}
+{"timestamp": "2026-11-05T18:04:59.158729+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_all"}
+{"timestamp": "2026-11-05T18:04:59.197774+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_9-10-11", "attempt": 1}
+{"timestamp": "2026-11-05T18:05:25.329139+00:00", "phase": "retrain", "message": "seed0 9-10-11 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T18:07:32.940695+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_9-10-11"}
+{"timestamp": "2026-11-05T18:07:33.316072+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_0", "attempt": 1}
+{"timestamp": "2026-11-05T18:07:57.032137+00:00", "phase": "retrain", "message": "seed0 0 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T18:11:06.700395+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_0"}
+{"timestamp": "2026-11-05T18:11:06.708446+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_1", "attempt": 1}
+{"timestamp": "2026-11-05T18:11:33.009419+00:00", "phase": "retrain", "message": "seed0 1 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T18:14:58.679457+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_1"}
+{"timestamp": "2026-11-05T18:14:58.685555+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_2", "attempt": 1}
+{"timestamp": "2026-11-05T18:15:24.939609+00:00", "phase": "retrain", "message": "seed0 2 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T18:18:45.148701+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_2"}
+{"timestamp": "2026-11-05T18:18:45.150462+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_3", "attempt": 1}
+{"timestamp": "2026-11-05T18:19:11.598747+00:00", "phase": "retrain", "message": "seed0 3 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T18:22:20.637622+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_3"}
+{"timestamp": "2026-11-05T18:22:20.640985+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_4", "attempt": 1}
+{"timestamp": "2026-11-05T18:22:40.581475+00:00", "phase": "retrain", "message": "seed0 4 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T18:25:39.899493+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_4"}
+{"timestamp": "2026-11-05T18:25:39.899493+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_5", "attempt": 1}
+{"timestamp": "2026-11-05T18:25:58.941643+00:00", "phase": "retrain", "message": "seed0 5 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T18:28:53.628465+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_5"}
+{"timestamp": "2026-11-05T18:28:53.632496+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_6", "attempt": 1}
+{"timestamp": "2026-11-05T18:29:12.969358+00:00", "phase": "retrain", "message": "seed0 6 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T18:32:00.465765+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_6"}
+{"timestamp": "2026-11-05T18:32:00.469465+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_7", "attempt": 1}
+{"timestamp": "2026-11-05T18:32:21.128460+00:00", "phase": "retrain", "message": "seed0 7 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T18:35:03.569545+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_7"}
+{"timestamp": "2026-11-05T18:35:03.578526+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_8", "attempt": 1}
+{"timestamp": "2026-11-05T18:35:22.650956+00:00", "phase": "retrain", "message": "seed0 8 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T18:37:59.725904+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_8"}
+{"timestamp": "2026-11-05T18:37:59.729481+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_9", "attempt": 1}
+{"timestamp": "2026-11-05T18:38:19.619405+00:00", "phase": "retrain", "message": "seed0 9 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T18:40:49.773586+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_9"}
+{"timestamp": "2026-11-05T18:40:49.776832+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_10", "attempt": 1}
+{"timestamp": "2026-11-05T18:41:10.017574+00:00", "phase": "retrain", "message": "seed0 10 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T18:43:34.178364+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_10"}
+{"timestamp": "2026-11-05T18:43:34.181618+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_11", "attempt": 1}
+{"timestamp": "2026-11-05T18:43:54.102792+00:00", "phase": "retrain", "message": "seed0 11 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T18:46:16.139282+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_11"}
+{"timestamp": "2026-11-05T18:46:16.139282+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_0-1-2", "attempt": 1}
+{"timestamp": "2026-11-05T18:46:36.986155+00:00", "phase": "retrain", "message": "seed0 0-1-2 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T18:50:09.809673+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_0-1-2"}
+{"timestamp": "2026-11-05T18:50:09.811684+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_3-4-5", "attempt": 1}
+{"timestamp": "2026-11-05T18:50:30.384875+00:00", "phase": "retrain", "message": "seed0 3-4-5 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T18:53:44.619998+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_3-4-5"}
+{"timestamp": "2026-11-05T18:53:44.623017+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_6-7-8", "attempt": 1}
+{"timestamp": "2026-11-05T18:54:03.932670+00:00", "phase": "retrain", "message": "seed0 6-7-8 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T18:57:03.402181+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_6-7-8"}
+{"timestamp": "2026-11-05T18:57:03.409937+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_10-11", "attempt": 1}
+{"timestamp": "2026-11-05T18:57:22.452667+00:00", "phase": "retrain", "message": "seed0 10-11 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T18:59:45.780892+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_10-11"}
+{"timestamp": "2026-11-05T18:59:45.780892+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_ctrl_noisy_9-10-11", "attempt": 1}
+{"timestamp": "2026-11-05T19:00:01.851854+00:00", "phase": "retrain", "message": "seed0 ctrl_noisy_9-10-11 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T19:02:36.150321+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_ctrl_noisy_9-10-11"}
+{"timestamp": "2026-11-05T19:02:36.154097+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed0_ctrl_noisy_all", "attempt": 1}
+{"timestamp": "2026-11-05T19:02:54.744759+00:00", "phase": "retrain", "message": "seed0 ctrl_noisy_all started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T19:07:15.390716+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed0_ctrl_noisy_all"}
+{"timestamp": "2026-11-05T19:07:15.392410+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_0", "attempt": 1}
+{"timestamp": "2026-11-05T19:07:34.252543+00:00", "phase": "retrain", "message": "seed1 0 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T19:10:57.951452+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_0"}
+{"timestamp": "2026-11-05T19:10:57.960466+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_1", "attempt": 1}
+{"timestamp": "2026-11-05T19:11:19.126630+00:00", "phase": "retrain", "message": "seed1 1 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T19:14:37.592533+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_1"}
+{"timestamp": "2026-11-05T19:14:37.592533+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_2", "attempt": 1}
+{"timestamp": "2026-11-05T19:14:55.841339+00:00", "phase": "retrain", "message": "seed1 2 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T19:17:56.976886+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_2"}
+{"timestamp": "2026-11-05T19:17:56.976886+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_3", "attempt": 1}
+{"timestamp": "2026-11-05T19:18:12.623672+00:00", "phase": "retrain", "message": "seed1 3 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T19:21:08.697744+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_3"}
+{"timestamp": "2026-11-05T19:21:08.701768+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_4", "attempt": 1}
+{"timestamp": "2026-11-05T19:21:25.247123+00:00", "phase": "retrain", "message": "seed1 4 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T19:24:24.642652+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_4"}
+{"timestamp": "2026-11-05T19:24:24.643371+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_5", "attempt": 1}
+{"timestamp": "2026-11-05T19:24:43.820174+00:00", "phase": "retrain", "message": "seed1 5 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T19:27:38.661018+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_5"}
+{"timestamp": "2026-11-05T19:27:38.664884+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_6", "attempt": 1}
+{"timestamp": "2026-11-05T19:27:58.143462+00:00", "phase": "retrain", "message": "seed1 6 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T19:30:41.820550+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_6"}
+{"timestamp": "2026-11-05T19:30:41.836518+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_7", "attempt": 1}
+{"timestamp": "2026-11-05T19:30:57.358065+00:00", "phase": "retrain", "message": "seed1 7 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T19:33:30.925996+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_7"}
+{"timestamp": "2026-11-05T19:33:30.931918+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_8", "attempt": 1}
+{"timestamp": "2026-11-05T19:33:46.961856+00:00", "phase": "retrain", "message": "seed1 8 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T19:36:20.246628+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_8"}
+{"timestamp": "2026-11-05T19:36:20.252630+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_9", "attempt": 1}
+{"timestamp": "2026-11-05T19:36:38.910485+00:00", "phase": "retrain", "message": "seed1 9 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T19:39:08.453729+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_9"}
+{"timestamp": "2026-11-05T19:39:08.453729+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_10", "attempt": 1}
+{"timestamp": "2026-11-05T19:39:26.333131+00:00", "phase": "retrain", "message": "seed1 10 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T19:41:55.483038+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_10"}
+{"timestamp": "2026-11-05T19:41:55.493216+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_11", "attempt": 1}
+{"timestamp": "2026-11-05T19:42:15.263621+00:00", "phase": "retrain", "message": "seed1 11 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T19:44:38.112965+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_11"}
+{"timestamp": "2026-11-05T19:44:38.136656+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_0-1-2", "attempt": 1}
+{"timestamp": "2026-11-05T19:44:59.909275+00:00", "phase": "retrain", "message": "seed1 0-1-2 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T19:48:36.775388+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_0-1-2"}
+{"timestamp": "2026-11-05T19:48:36.778468+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_3-4-5", "attempt": 1}
+{"timestamp": "2026-11-05T19:48:55.333781+00:00", "phase": "retrain", "message": "seed1 3-4-5 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T19:52:14.918419+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_3-4-5"}
+{"timestamp": "2026-11-05T19:52:14.922936+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_6-7-8", "attempt": 1}
+{"timestamp": "2026-11-05T19:52:34.370514+00:00", "phase": "retrain", "message": "seed1 6-7-8 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T19:55:35.394039+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_6-7-8"}
+{"timestamp": "2026-11-05T19:55:35.399397+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_9-10-11", "attempt": 1}
+{"timestamp": "2026-11-05T19:55:55.842128+00:00", "phase": "retrain", "message": "seed1 9-10-11 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-05T20:59:08.348076+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_9-10-11"}
+{"timestamp": "2026-11-05T20:59:08.348076+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_10-11", "attempt": 1}
+{"timestamp": "2026-11-06T11:07:09.044129+00:00", "phase": "retrain", "message": "seed1 10-11 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T11:08:59.604831+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_10-11"}
+{"timestamp": "2026-11-06T11:08:59.611505+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_all", "attempt": 1}
+{"timestamp": "2026-11-06T11:10:31.132013+00:00", "phase": "retrain", "message": "seed1 all started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T16:15:34.118115+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_all"}
+{"timestamp": "2026-11-06T16:15:34.123312+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_ctrl_noisy_9-10-11", "attempt": 1}
+{"timestamp": "2026-11-06T16:15:53.242149+00:00", "phase": "retrain", "message": "seed1 ctrl_noisy_9-10-11 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T16:17:52.712450+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_ctrl_noisy_9-10-11"}
+{"timestamp": "2026-11-06T16:17:52.714459+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed1_ctrl_noisy_all", "attempt": 1}
+{"timestamp": "2026-11-06T16:18:07.804390+00:00", "phase": "retrain", "message": "seed1 ctrl_noisy_all started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T16:21:23.769348+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed1_ctrl_noisy_all"}
+{"timestamp": "2026-11-06T16:21:23.771345+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_0", "attempt": 1}
+{"timestamp": "2026-11-06T16:21:39.040050+00:00", "phase": "retrain", "message": "seed2 0 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T16:24:10.163408+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_0"}
+{"timestamp": "2026-11-06T16:24:10.166417+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_1", "attempt": 1}
+{"timestamp": "2026-11-06T16:24:25.933120+00:00", "phase": "retrain", "message": "seed2 1 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T16:26:55.554850+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_1"}
+{"timestamp": "2026-11-06T16:26:55.556853+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_2", "attempt": 1}
+{"timestamp": "2026-11-06T16:27:14.813159+00:00", "phase": "retrain", "message": "seed2 2 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T16:29:39.717402+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_2"}
+{"timestamp": "2026-11-06T16:29:39.720402+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_3", "attempt": 1}
+{"timestamp": "2026-11-06T16:29:54.985189+00:00", "phase": "retrain", "message": "seed2 3 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T16:32:16.020539+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_3"}
+{"timestamp": "2026-11-06T16:32:16.023532+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_4", "attempt": 1}
+{"timestamp": "2026-11-06T16:32:59.668990+00:00", "phase": "retrain", "message": "seed2 4 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T16:35:15.087074+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_4"}
+{"timestamp": "2026-11-06T16:35:15.092073+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_5", "attempt": 1}
+{"timestamp": "2026-11-06T16:35:35.129832+00:00", "phase": "retrain", "message": "seed2 5 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T16:37:36.111651+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_5"}
+{"timestamp": "2026-11-06T16:37:36.114650+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_6", "attempt": 1}
+{"timestamp": "2026-11-06T16:37:56.137747+00:00", "phase": "retrain", "message": "seed2 6 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T16:40:01.806697+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_6"}
+{"timestamp": "2026-11-06T16:40:01.811690+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_7", "attempt": 1}
+{"timestamp": "2026-11-06T16:40:38.258076+00:00", "phase": "retrain", "message": "seed2 7 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T16:42:57.352445+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_7"}
+{"timestamp": "2026-11-06T16:42:57.355453+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_8", "attempt": 1}
+{"timestamp": "2026-11-06T16:43:19.752599+00:00", "phase": "retrain", "message": "seed2 8 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T16:46:12.324860+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_8"}
+{"timestamp": "2026-11-06T16:46:12.328860+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_9", "attempt": 1}
+{"timestamp": "2026-11-06T16:46:38.033469+00:00", "phase": "retrain", "message": "seed2 9 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T16:49:08.828230+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_9"}
+{"timestamp": "2026-11-06T16:49:08.831230+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_10", "attempt": 1}
+{"timestamp": "2026-11-06T16:49:35.172542+00:00", "phase": "retrain", "message": "seed2 10 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T16:52:00.627956+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_10"}
+{"timestamp": "2026-11-06T16:52:00.630962+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_11", "attempt": 1}
+{"timestamp": "2026-11-06T16:52:21.047591+00:00", "phase": "retrain", "message": "seed2 11 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T16:54:41.479795+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_11"}
+{"timestamp": "2026-11-06T16:54:41.483799+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_0-1-2", "attempt": 1}
+{"timestamp": "2026-11-06T16:55:01.588678+00:00", "phase": "retrain", "message": "seed2 0-1-2 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T16:58:31.139430+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_0-1-2"}
+{"timestamp": "2026-11-06T16:58:31.143432+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_3-4-5", "attempt": 1}
+{"timestamp": "2026-11-06T16:58:51.054209+00:00", "phase": "retrain", "message": "seed2 3-4-5 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T17:02:04.495197+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_3-4-5"}
+{"timestamp": "2026-11-06T17:02:04.498210+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_6-7-8", "attempt": 1}
+{"timestamp": "2026-11-06T17:02:24.582461+00:00", "phase": "retrain", "message": "seed2 6-7-8 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T17:05:36.955165+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_6-7-8"}
+{"timestamp": "2026-11-06T17:05:36.955165+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_9-10-11", "attempt": 1}
+{"timestamp": "2026-11-06T17:06:55.409398+00:00", "phase": "retrain", "message": "seed2 9-10-11 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T17:09:35.512642+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_9-10-11"}
+{"timestamp": "2026-11-06T17:09:35.514641+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_10-11", "attempt": 1}
+{"timestamp": "2026-11-06T17:09:55.894426+00:00", "phase": "retrain", "message": "seed2 10-11 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T17:12:25.639180+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_10-11"}
+{"timestamp": "2026-11-06T17:12:25.642189+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_all", "attempt": 1}
+{"timestamp": "2026-11-06T17:12:45.823800+00:00", "phase": "retrain", "message": "seed2 all started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T17:17:02.980962+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_all"}
+{"timestamp": "2026-11-06T17:17:02.984965+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_ctrl_noisy_9-10-11", "attempt": 1}
+{"timestamp": "2026-11-06T17:17:23.778564+00:00", "phase": "retrain", "message": "seed2 ctrl_noisy_9-10-11 started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T17:20:04.434328+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_ctrl_noisy_9-10-11"}
+{"timestamp": "2026-11-06T17:20:04.437336+00:00", "phase": "driver", "message": "job started", "job": "retrain_seed2_ctrl_noisy_all", "attempt": 1}
+{"timestamp": "2026-11-06T17:20:31.795916+00:00", "phase": "retrain", "message": "seed2 ctrl_noisy_all started from final W1 weights", "smoke": false}
+{"timestamp": "2026-11-06T17:24:49.913206+00:00", "phase": "driver", "message": "job finished", "job": "retrain_seed2_ctrl_noisy_all"}
+{"timestamp": "2026-11-06T17:24:49.918816+00:00", "phase": "driver", "message": "job started", "job": "report", "attempt": 1}
+{"timestamp": "2026-11-06T17:25:06.273375+00:00", "phase": "driver", "message": "job finished", "job": "report"}
+{"timestamp": "2026-11-06T17:25:06.273375+00:00", "phase": "driver", "message": "W2 complete; results ready for Sonu review"}
