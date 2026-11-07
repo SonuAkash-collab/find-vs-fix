@@ -1,0 +1,14 @@
+{
+  "by_model": {
+    "lora_r64_init0_shortcut_seed0": "2afe2636c0228d6d415822812752840859f527cbe4f87012bbd26aa02aa62d7e",
+    "lora_r64_init0_shortcut_seed1": "2afe2636c0228d6d415822812752840859f527cbe4f87012bbd26aa02aa62d7e",
+    "lora_r64_init0_shortcut_seed2": "2afe2636c0228d6d415822812752840859f527cbe4f87012bbd26aa02aa62d7e",
+    "lora_r64_init1_shortcut_seed0": "105c86207bcbb02579acfee4c2e2376bd7e074c8e853c9fd95ce2e40bb875f39",
+    "lora_r64_init1_shortcut_seed1": "105c86207bcbb02579acfee4c2e2376bd7e074c8e853c9fd95ce2e40bb875f39",
+    "lora_r64_init1_shortcut_seed2": "105c86207bcbb02579acfee4c2e2376bd7e074c8e853c9fd95ce2e40bb875f39",
+    "lora_r64_init2_shortcut_seed1": "ab24f695dc0ccd1b0194117421356eda69276ecdf50b1c44608cf06cb0065f26",
+    "lora_r64_init2_shortcut_seed2": "ab24f695dc0ccd1b0194117421356eda69276ecdf50b1c44608cf06cb0065f26",
+    "lora_r64_init2_shortcut_seed0": "ab24f695dc0ccd1b0194117421356eda69276ecdf50b1c44608cf06cb0065f26"
+  },
+  "pass": true
+}

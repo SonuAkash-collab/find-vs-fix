@@ -193,6 +193,8 @@ class Report(unittest.TestCase):
                    "checks": {"task_learned": {"pass": False}},
                    "train": {"loss_log": [{"step": 100, "loss": 0.43}, {"step": 300, "loss": 0.69}]}},
                   open(d / "checks" / f"{S.model_name(*S.LEFT_OUT)}.json", "w"))
+        real = ROOT / "RESULTS_SEEDSWAP.md"  # the real report: this test must not write or change it
+        before = real.read_bytes() if real.exists() else None
         r = subprocess.run([sys.executable, str(ROOT / "src" / "report_seedswap.py"), "--results", str(d)],
                            capture_output=True, text=True, encoding="utf-8")
         self.assertEqual(r.returncode, 0, r.stderr)
@@ -204,7 +206,7 @@ class Report(unittest.TestCase):
         self.assertIn("the original pairs", t)
         self.assertIn("Collapse rule met: True", t)
         self.assertIn("left out", t)
-        self.assertFalse((ROOT / "RESULTS_SEEDSWAP.md").exists())
+        self.assertEqual(real.read_bytes() if real.exists() else None, before)
 
 
 class Collapse(unittest.TestCase):
