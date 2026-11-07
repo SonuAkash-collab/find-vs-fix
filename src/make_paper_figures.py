@@ -235,8 +235,35 @@ def fig_lens_lora():
     save(fig, "fig_e_lens_lora", rels)
 
 
+def fig_wronglabel():
+    name = "fig_f_wronglabel"
+    checks = [f"wronglabel/checks/wl_noisy_seed{s}.json" for s in SEEDS]
+    swaps = [f"wronglabel/swap/seed{s}.json" for s in SEEDS]
+    retrains = [f"wronglabel/retrain/seed{s}.json" for s in SEEDS]
+    sources = checks + swaps + retrains
+    data = need(name, sources)
+    if data is None:
+        return
+    metric = "M_flipped_vs_wrong_label"
+    blocks = range(12)
+    height = 2.15
+    fig, ax = plt.subplots(figsize=(WIDTH, height))
+    for seed in SEEDS:
+        baseline = data[checks[seed]]["metrics"][metric]
+        for entries, color in ((data[retrains[seed]]["runs"], BLUE),
+                               (data[swaps[seed]]["cases"]["a"], ORANGE)):
+            values = [frac_removed(baseline, entries[str(b)]["metrics"][metric]) for b in blocks]
+            ax.plot(blocks, values, color=color, ls=SEED_LS[seed])
+    ax.axhline(0.5, color=GREY, lw=0.6, alpha=0.7)
+    ax.set(xlabel="Transformer block", ylabel="Fraction of memorization removed", xticks=list(blocks))
+    layout(fig, height)
+    top_legend(fig, [Line2D([], [], color=BLUE, label="Retraining"),
+                     Line2D([], [], color=ORANGE, label="Clean-twin swap")], height)
+    save(fig, name, sources)
+
+
 def main():
-    for f in (fig_lens_fullft, fig_swap_map, fig_retrain_map, fig_patching, fig_lens_lora):
+    for f in (fig_lens_fullft, fig_swap_map, fig_retrain_map, fig_patching, fig_lens_lora, fig_wronglabel):
         f()
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "make_paper_figures.log").write_text("\n".join(LOG) + "\n", encoding="utf-8")
