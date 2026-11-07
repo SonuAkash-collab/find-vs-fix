@@ -29,11 +29,14 @@ def set_seed(seed):
 
 
 def train(run_name, kind, seed, cfg, out_dir, n_examples=None, max_steps=None, save=True, log=print,
-          init_from=None, trainable_blocks=None, stop_at=None, on_step=None, model_hook=None, data_dir=None):
+          init_from=None, trainable_blocks=None, stop_at=None, on_step=None, model_hook=None, data_dir=None,
+          log_grad_norm=False):
     """init_from: start from these saved weights instead of cfg["model"] (Phase 3).
     trainable_blocks: if given, only transformer.h.<b>.* for these blocks is trained; all else frozen.
     stop_at: stop after this step but keep the lr schedule built for the full run (Phase 3b).
     on_step(step, model): called after every optimizer step; must leave the model in train mode.
+    log_grad_norm: add the largest total gradient norm of each logged window to the log. Reads the gradients only
+    (diagnostic, Phase L5 amendment); off: outputs exactly as before.
     model_hook(model) -> model: applied after loading (and freezing), before the optimizer is built; whatever it
     leaves with requires_grad is what gets trained (src/train_lora.py uses it to add LoRA adapters).
     data_dir: read cfg["train_files"] from this folder instead of data/ (Phase 5: data_wordcue/); recorded in config.json
@@ -80,6 +83,7 @@ def train(run_name, kind, seed, cfg, out_dir, n_examples=None, max_steps=None, s
     flog = open(out_dir / "train_log.txt", "w")
     log_every = 1 if max_steps else cfg["log_every"]
     window = []
+    grad_norm_max = 0.0
     end = min(stop_at, total) if stop_at else total
     while step < end:
         order = torch.randperm(len(rows), generator=gen).tolist()
@@ -94,6 +98,9 @@ def train(run_name, kind, seed, cfg, out_dir, n_examples=None, max_steps=None, s
                 loss = torch.nn.functional.cross_entropy(lg, y, reduction="sum") / n_in_step
                 loss.backward()
                 step_loss += loss.item()
+            if log_grad_norm:
+                grad_norm_max = max(grad_norm_max, sum(float(p.grad.pow(2).sum()) for p in model.parameters()
+                                                       if p.grad is not None) ** 0.5)
             opt.step()
             sched.step()
             opt.zero_grad(set_to_none=True)
@@ -102,11 +109,13 @@ def train(run_name, kind, seed, cfg, out_dir, n_examples=None, max_steps=None, s
             window.append(step_loss)
             if step % log_every == 0 or step == end:
                 line = f"step {step}/{total} loss {np.mean(window):.4f} lr {sched.get_last_lr()[0]:.2e} " \
-                       f"t {time.time() - t0:.0f}s"
+                       f"t {time.time() - t0:.0f}s" + (f" gnorm {grad_norm_max:.3f}" if log_grad_norm else "")
                 flog.write(line + "\n"); flog.flush()
-                log_lines.append({"step": step, "loss": float(np.mean(window))})
+                log_lines.append({"step": step, "loss": float(np.mean(window)),
+                                  **({"grad_norm_max": grad_norm_max} if log_grad_norm else {})})
                 log(f"[{run_name}] {line}")
                 window = []
+                grad_norm_max = 0.0
             if on_step:
                 on_step(step, model)
             if step >= end:

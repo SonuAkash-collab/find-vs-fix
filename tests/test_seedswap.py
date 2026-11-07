@@ -20,7 +20,7 @@ import report_seedswap as RS
 import run_lora as RL
 import seedswap as S
 from adapter_overlap import MODULES, lora_factors
-from common import run_kind
+from common import loss_collapsed, run_kind
 from swap import key
 from train_lora import add_lora, load_lora_cfg, lora_a_fingerprint, lora_config
 
@@ -71,17 +71,23 @@ class Seeding(unittest.TestCase):
 class Pairs(unittest.TestCase):
     def test_counts_from_the_spec(self):
         c = S.cell_pairs()
-        self.assertEqual({k: len(v) for k, v in c.items()}, {"A": 18, "B": 18, "C": 36})
-        self.assertEqual(sum(map(len, c.values())) * len(S.BLOCK_SETS), 360)
-        self.assertEqual(len({p for v in c.values() for p in v}), 72)
+        self.assertEqual({k: len(v) for k, v in c.items()}, {"A": 14, "B": 14, "C": 28})
+        self.assertEqual(sum(map(len, c.values())) * len(S.BLOCK_SETS), 280)
+        self.assertEqual(len({p for v in c.values() for p in v}), 56)
+        self.assertFalse({m for v in c.values() for p in v for m in p} & {S.LEFT_OUT})
 
     def test_replicates_are_the_spec_cells_and_part_of_the_pairs(self):
         r, c = S.replicate_pairs(), S.cell_pairs()
-        self.assertEqual(r["A"], [((0, 0), (0, 1)), ((1, 1), (1, 2)), ((2, 2), (2, 0))])
+        self.assertEqual(r["A"], [((0, 0), (0, 1)), ((1, 1), (1, 2)), ((2, 2), (2, 1))])
         self.assertEqual(r["B"], [((0, 0), (1, 0)), ((1, 1), (2, 1)), ((2, 2), (0, 2))])
-        self.assertEqual(r["C"], [((0, 0), (1, 1)), ((1, 1), (2, 2)), ((2, 2), (0, 0))])
+        self.assertEqual(r["C"], [((0, 0), (2, 1)), ((1, 1), (0, 2)), ((2, 2), (1, 0))])
         for cell in r:
             self.assertTrue(set(r[cell]) <= set(c[cell]))
+        self.assertTrue(all(d[0] != d[1] for _, d in r["C"]))  # every C donor is a new model, not a main one
+
+    def test_original_pairs_are_kept_as_cell_c_pairs(self):
+        self.assertEqual(S.original_pairs(), [((0, 0), (1, 1)), ((1, 1), (2, 2)), ((2, 2), (0, 0))])
+        self.assertTrue(set(S.original_pairs()) <= set(S.cell_pairs()["C"]))
 
     def test_model_name_is_a_run_name(self):
         self.assertEqual(S.model_name(1, 2), "lora_r64_init1_shortcut_seed2")
@@ -93,7 +99,7 @@ class Swaps(unittest.TestCase):
         self.dir = Path(tempfile.mkdtemp())
         self.addCleanup(shutil.rmtree, self.dir)
         torch.manual_seed(0)
-        self.sds = {(i, j): {k: v.clone() for k, v in tiny().state_dict().items()} for i in S.IDS for j in S.IDS}
+        self.sds = {(i, j): {k: v.clone() for k, v in tiny().state_dict().items()} for i, j in S.GRID}
         self.model = tiny()
         self.seen = []
 
@@ -104,14 +110,14 @@ class Swaps(unittest.TestCase):
     def test_all_evaluations_then_resume(self):
         p = self.dir / "swaps.json"
         S.run_swaps(self.sds, self.model, None, None, None, p, self.evaluate)
-        self.assertEqual(len(self.seen), 9 + 360)
+        self.assertEqual(len(self.seen), 8 + 280)
         n = len(self.seen)
         S.run_swaps(self.sds, self.model, None, None, None, p, self.evaluate)
         self.assertEqual(len(self.seen), n)  # everything was saved: nothing evaluated again
 
     def test_only_the_chosen_blocks_come_from_the_donor(self):
         S.run_swaps(self.sds, self.model, None, None, None, self.dir / "swaps.json", self.evaluate)
-        i = 9  # first swap after the 9 baselines: cell A, (0,0) <- (0,1), block 9
+        i = 8  # first swap after the 8 baselines: cell A, (0,0) <- (0,1), block 9
         edit, donor, got = self.sds[(0, 0)], self.sds[(0, 1)], self.seen[i]
         for k, v in got.items():
             want = donor[k] if k.startswith("transformer.h.9.") else edit[k]
@@ -167,7 +173,7 @@ class Report(unittest.TestCase):
         d = Path(tempfile.mkdtemp())
         self.addCleanup(shutil.rmtree, d)
         (d / "checks").mkdir()
-        grid = [(i, j) for i in S.IDS for j in S.IDS]
+        grid = S.GRID
         keep = {"A": 0.95, "B": 0.50, "C": 0.50}  # same init keeps: "LoRA's random init causes the c-ii failure"
         res = {"baseline": {S.model_name(*m): fake_result(0.8) for m in grid},
                "cells": {c: {S.pair_key(e, f): {key(b): {**fake_result(0.8 * keep[c]), "wall_time_s": 1.0}
@@ -175,22 +181,52 @@ class Report(unittest.TestCase):
                          for c, pairs in S.cell_pairs().items()},
                "provenance": {"git_commits": ["abcdef0123"], "gpus": ["L4"], "total_wall_time_s": 3600.0}}
         json.dump(res, open(d / "swaps.json", "w"))
-        by_model = {S.model_name(*m): f"{m[0]}" * 64 for m in grid}
+        by_model = {S.model_name(i, j): f"{i}" * 64 for i in S.IDS for j in S.IDS}
         json.dump({"by_model": by_model, "pass": True}, open(d / "init_fingerprints.json", "w"))
         late = {str(b): {"input": 0.5, "output": 0.1} for b in range(12)}
         json.dump({"cells": {c: {S.pair_key(e, f): late for e, f in p} for c, p in S.cell_pairs().items()}},
                   open(d / "overlap.json", "w"))
         for m in grid:
-            json.dump({"accuracy": {"none": 0.9}, "gap_none_minus_opposite": 0.8, "all_pass": True},
+            json.dump({"accuracy": {"none": 0.9, "opposite": 0.1}, "gap_none_minus_opposite": 0.8, "all_pass": True},
                       open(d / "checks" / f"{S.model_name(*m)}.json", "w"))
+        json.dump({"accuracy": {"none": 0.771, "opposite": 0.368}, "gap_none_minus_opposite": 0.403, "all_pass": False,
+                   "checks": {"task_learned": {"pass": False}},
+                   "train": {"loss_log": [{"step": 100, "loss": 0.43}, {"step": 300, "loss": 0.69}]}},
+                  open(d / "checks" / f"{S.model_name(*S.LEFT_OUT)}.json", "w"))
         r = subprocess.run([sys.executable, str(ROOT / "src" / "report_seedswap.py"), "--results", str(d)],
                            capture_output=True, text=True, encoding="utf-8")
         self.assertEqual(r.returncode, 0, r.stderr)
         t = (d / "RESULTS_SEEDSWAP.md").read_text(encoding="utf-8")
         self.assertIn("**Reading: LoRA's random init causes the c-ii failure.**", t)
-        self.assertIn("| 9-10-11 | A | 18 | 0.950 | 0.950 |", t)
-        self.assertIn("| 11 | C | 36 | 0.500 | 0.500 |", t)
+        self.assertIn("| 9-10-11 | A | 14 | 0.950 | 0.950 |", t)
+        self.assertIn("| 11 | C | 28 | 0.500 | 0.500 |", t)
+        self.assertIn("8 of 9 models", t)
+        self.assertIn("the original pairs", t)
+        self.assertIn("Collapse rule met: True", t)
+        self.assertIn("left out", t)
         self.assertFalse((ROOT / "RESULTS_SEEDSWAP.md").exists())
+
+
+class Collapse(unittest.TestCase):
+    def pilot(self, name):
+        return json.load(open(ROOT / "results" / "lora_pilot" / f"{name}.json"))
+
+    def test_the_rule_on_the_pilot_runs(self):
+        for n in ("lora_r64_lr1e-3_shortcut_seed0", "lora_r64_lr1e-3_clean_seed0"):
+            r = self.pilot(n)
+            self.assertTrue(loss_collapsed(r["train"]["loss_log"]), n)
+            self.assertTrue(RL.left_out_collapsed(r), n)
+        self.assertFalse(loss_collapsed(self.pilot("lora_r64_lr5e-4_shortcut_seed0")["train"]["loss_log"]))
+
+    def test_boundaries(self):
+        self.assertFalse(loss_collapsed([{"step": 200, "loss": 0.9}]))  # "after 200"
+        self.assertTrue(loss_collapsed([{"step": 250, "loss": 0.65}]))
+        self.assertFalse(loss_collapsed([{"step": 250, "loss": 0.649}]))
+
+    def test_a_run_that_passes_is_not_left_out(self):
+        r = self.pilot("lora_r64_lr1e-3_shortcut_seed0")
+        r["checks"]["task_learned"]["pass"] = True
+        self.assertFalse(RL.left_out_collapsed(r))
 
 
 class SmokeHelpers(unittest.TestCase):
@@ -214,14 +250,17 @@ class Driver(unittest.TestCase):
         self.addCleanup(shutil.rmtree, self.dir)
         self.runs, self.out = self.dir / "runs", self.dir / "seedswap"
         (self.out / "checks").mkdir(parents=True)
-        self.names = [S.model_name(i, j) for i in S.IDS for j in S.IDS]
+        self.names = [S.model_name(i, j) for i, j in S.GRID]
+        self.left = S.model_name(*S.LEFT_OUT)
         json.dump({"pass": True}, open(self.out / "smoke.json", "w"))
+        json.dump({"pass": True}, open(self.out / "smoke_gnorm.json", "w"))
         self.steps, self.extra = [], {}
-        for n in self.names:
+        for n in self.names + [self.left]:
             (self.runs / n).mkdir(parents=True)
             fp = n.split("_init")[1][0] * 64
             json.dump({"lora_A_init_sha256": fp}, open(self.runs / n / "lora_check.json", "w"))
             json.dump({"accuracy": {"none": 0.9, "opposite": 0.1}}, open(self.out / "checks" / f"{n}.json", "w"))
+        self.collapse_record()
         self.patches = [patch.object(RL, "RUNS", self.runs), patch.object(RL, "L5_DIR", self.out),
                         patch.object(RL, "log", lambda m: None), patch.object(RL, "step", self.fake_step),
                         patch.object(RL, "train_and_check", self.fake_train),
@@ -229,6 +268,11 @@ class Driver(unittest.TestCase):
         for p in self.patches:
             p.start()
             self.addCleanup(p.stop)
+
+    def collapse_record(self, task_pass=False):
+        json.dump({"accuracy": {"none": 0.771, "opposite": 0.368}, "checks": {"task_learned": {"pass": task_pass}},
+                   "train": {"loss_log": [{"step": 300, "loss": 0.69}]}},
+                  open(self.out / "checks" / f"{self.left}.json", "w"))
 
     def fake_train(self, runs, label, out_dir_of, stop_on_fail, extra):
         self.assertTrue(stop_on_fail)
@@ -249,10 +293,24 @@ class Driver(unittest.TestCase):
 
     def test_order_seeds_and_provenance(self):
         self.assertTrue(RL.seedswap())
-        self.assertEqual(self.extra[S.model_name(2, 0)], ["--init-seed", "2"])
+        self.assertEqual(self.extra[S.model_name(2, 1)], ["--init-seed", "2", "--log-grad-norm"])
+        self.assertNotIn(self.left, self.extra)
         self.assertEqual(self.steps, [["seedswap.py"], ["seedswap.py", "--overlap"], ["report_seedswap.py"]])
         prov = json.load(open(self.out / "swaps.json"))["provenance"]
         self.assertEqual(prov, {"git_commits": ["abc"], "gpus": ["L4"], "total_wall_time_s": 4.0})
+
+    def test_stops_if_the_left_out_model_did_not_collapse(self):
+        self.collapse_record(task_pass=True)
+        with self.assertRaises(SystemExit) as c:
+            RL.seedswap()
+        self.assertEqual(c.exception.code, 2)
+        self.assertEqual(self.steps, [])
+
+    def test_stops_without_a_passing_grad_norm_smoke(self):
+        json.dump({"pass": False}, open(self.out / "smoke_gnorm.json", "w"))
+        with self.assertRaises(SystemExit) as c:
+            RL.seedswap()
+        self.assertEqual(c.exception.code, 1)
 
     def test_stops_without_a_passing_smoke_result(self):
         json.dump({"pass": False}, open(self.out / "smoke.json", "w"))
