@@ -16,6 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 import logit_check as LC
 import report_lora as RP
 import run_lora as RL
+import swap as SW
 from train_lora import add_lora, frozen_outside, load_lora_cfg, lora_config
 
 RANK = 4
@@ -113,6 +114,25 @@ def result(gap=0.5, none=0.9, d=1.0):
             "mean_d": {v: d for v in ("none", "match", "opposite", "neutral")}, "gap_none_minus_opposite": gap}
 
 
+HEALTHY = [{"step": st, "loss": 0.69 if st == 50 else 0.3, "grad_norm_max": 2.5} for st in range(50, 1901, 50)]
+COLLAPSE = [{"step": st, "loss": 0.42 if st <= 200 else 0.69, "grad_norm_max": 9.0} for st in range(50, 1901, 50)]
+
+
+def write_check(base, p, kind, s, gap, learned=True, task=True, loss_log=HEALTHY):
+    c = {"task_learned": {"pass": task}}
+    c["shortcut_learned" if kind == "shortcut" else "clean_no_shortcut"] = {"pass": learned or kind == "clean"}
+    (base / p / "checks").mkdir(parents=True, exist_ok=True)
+    json.dump({"accuracy": {"none": 0.9 if task else 0.77, "opposite": 0.9 - gap}, "gap_none_minus_opposite": gap,
+               "checks": c, "train": {"wall_time_s": 300.0, "peak_vram_allocated_gib": 2.0,
+                                      "n_trainable_params": RL.L4_PARAMS, "loss_log": loss_log}},
+              open(base / p / "checks" / f"{p}_{kind}_seed{s}.json", "w"))
+
+
+def collapse(base, name, kind, s, task=False):
+    """A collapsed run (task=False) or a high-loss run that still passes (task=True)."""
+    write_check(base, f"lora_r64_{name}", kind, s, 0.4 if kind == "shortcut" else 0.01, task=task, loss_log=COLLAPSE)
+
+
 def write_set(base, name, gap, arrived, seeds=SEEDS, learned=True):
     p = f"lora_r64_{name}"
     (base / p / "checks").mkdir(parents=True, exist_ok=True)
@@ -121,11 +141,7 @@ def write_set(base, name, gap, arrived, seeds=SEEDS, learned=True):
     layers = 13
     for s in seeds:
         for kind, g in (("shortcut", gap), ("clean", 0.01)):
-            c = {"task_learned": {"pass": True}}
-            c["shortcut_learned" if kind == "shortcut" else "clean_no_shortcut"] = {"pass": learned or kind == "clean"}
-            json.dump({"accuracy": {"none": 0.9}, "gap_none_minus_opposite": g, "checks": c,
-                       "train": {"wall_time_s": 300.0, "peak_vram_allocated_gib": 2.0, "n_trainable_params": RL.L4_PARAMS}},
-                      open(base / p / "checks" / f"{p}_{kind}_seed{s}.json", "w"))
+            write_check(base, p, kind, s, g, learned)
         F = [0.0 if i < arrived else 1.0 for i in range(layers)]
         rd = {"arrived_at": arrived, "F_notlast_L0_to_4": [1.0] * 5}
         json.dump({"models": {"shortcut": {"readout": rd, "curves": {"all": {"last": {"F": F}}}},
@@ -173,6 +189,35 @@ class Section(unittest.TestCase):
         row = next(x for x in o if x.startswith("| early | 0.50"))
         self.assertEqual(row.count("0.50"), 6)  # fraction removed: LoRA blocks only
 
+    def test_replacement_and_flag_in_the_section(self):
+        write_set(self.base, "early", 0.3, 9, seeds=(3,))
+        collapse(self.base, "early", "shortcut", 1)
+        (self.base / "lora_blocks").mkdir()
+        slots = {n: [0, 1, 2] for n in RL.L4_SETS}
+        slots["early"] = [0, 3, 2]
+        json.dump({"slots": slots, "flagged": ["lora_r64_odd_clean_seed0"],
+                   "replacement": {"set": "early", "collapsed_run": "lora_r64_early_shortcut_seed1", "collapsed_seed": 1,
+                                   "seed": 3, "runs": ["lora_r64_early_shortcut_seed3", "lora_r64_early_clean_seed3"]}},
+                  open(self.base / "lora_blocks" / "slots.json", "w"))
+        (self.base / "lora_r64_early" / "patching" / "seed1.json").unlink()  # the collapsed seed is not read
+        o = []
+        RP.blocks_section(o, self.base)
+        t = "\n".join(o)
+        self.assertIn("**lora_r64_early_shortcut_seed1 collapsed** and is in no readout", t)
+        self.assertIn("**Seed 3 takes seed 1's slot in set early**, so that set's per-seed values are seeds 0 / 3 / 2", t)
+        self.assertIn("250: 0.690", t)
+        self.assertIn("| early | 0.300 / 0.300 / 0.300 |", t)
+        self.assertIn("Flagged, kept: lora_r64_odd_clean_seed0", t)
+        self.assertIn("location matters Depends on flagged run(s) lora_r64_odd_clean_seed0", t)
+        self.assertNotIn("Depends on flagged", next(x for x in o if x.startswith("**Rule 1")))
+
+    def test_no_slots_file_means_seeds_0_1_2_and_no_collapse(self):
+        o = []
+        RP.blocks_section(o, self.base)
+        t = "\n".join(o)
+        self.assertIn("No run collapsed", t)
+        self.assertTrue(next(x for x in o if x.startswith("| early | 0.300")).endswith("| 2.500 |"))
+
     def test_early_set_without_a_shortcut_is_not_informative(self):
         write_set(self.base, "early", 0.1, 9, learned=False)
         o = []
@@ -184,7 +229,7 @@ class Driver(unittest.TestCase):
     def setUp(self):
         self.base = Path(tempfile.mkdtemp())
         self.addCleanup(shutil.rmtree, self.base)
-        self.steps, self.trained = [], []
+        self.steps, self.trained, self.spare_collapses = [], [], False
         for name, p in (("RESULTS", self.base), ("L4_DIR", self.base / "lora_blocks"), ("log", lambda m: None),
                         ("step", self.fake_step), ("train_and_check", self.fake_train),
                         ("add_env_session", self.fake_env)):
@@ -198,6 +243,12 @@ class Driver(unittest.TestCase):
 
     def fake_train(self, runs, label, out_dir_of, extra):
         self.trained.append((label, [r[0] for r in runs], extra(runs[0][0]), out_dir_of(64)))
+        for name, _, _, kind in runs:  # a run without a checks file (the replacement pair) gets one
+            p, s = name.rsplit(f"_{kind}_seed", 1)
+            if not (self.base / p / "checks" / f"{name}.json").exists():
+                bad = self.spare_collapses and kind == "shortcut"
+                write_check(self.base, p, kind, int(s), 0.6 if kind == "shortcut" else 0.01, task=not bad,
+                            loss_log=COLLAPSE if bad else HEALTHY)
 
     def fake_env(self, out, name, command):
         json.dump({"sessions": [{"git_commit": "abc", "gpu": "L4"}]}, open(out / "env.json", "w"))
@@ -209,7 +260,8 @@ class Driver(unittest.TestCase):
             sub = "swap2" if "--phase2b" in args else "swap"
             field = "by_set" if sub == "swap2" else "by_blocks"
             name = "7" if p.endswith("early") else "attn:0" if p.endswith("late") else "10-11-99"
-            for s in SEEDS:
+            seeds = [int(x) for x in args[args.index("--slot-seeds") + 1].split(",")] if "--slot-seeds" in args else SEEDS
+            for s in seeds:
                 r = dict(result(), kind="blocks")
                 json.dump({"baseline": {"e": result()}, "cases": {"a": {"editor": "e", field: {name: r}}}},
                           open(self.base / p / sub / f"seed{s}.json", "w"))
@@ -221,8 +273,8 @@ class Driver(unittest.TestCase):
                          [f"lora_r64_{n}_shortcut_seed0" for n in ("early", "late", "even", "odd")])
         self.assertEqual(len(self.trained[0][1]), 2)
         self.assertEqual(len(self.trained[4][1]), 4)
-        self.assertEqual(self.trained[1][2], ["--blocks", "6,7,8,9,10,11"])
-        self.assertEqual(self.trained[3][2], ["--blocks", "1,3,5,7,9,11"])
+        self.assertEqual(self.trained[1][2], ["--blocks", "6,7,8,9,10,11", "--log-grad-norm"])
+        self.assertEqual(self.trained[3][2], ["--blocks", "1,3,5,7,9,11", "--log-grad-norm"])
         self.assertEqual(self.trained[1][3], self.base / "lora_r64_late" / "checks")
         self.assertEqual(self.steps[0], ["logit_lens.py", "--prefix", "lora_r64_early"])
         self.assertIn(["patching.py", "--prefix", "lora_r64_odd", "--adapters", "runs", "--batch", "64"], self.steps)
@@ -231,6 +283,79 @@ class Driver(unittest.TestCase):
         self.assertEqual(self.steps[-1], ["report_lora.py"])
         prov = json.load(open(self.base / "lora_r64_early" / "swap" / "seed1.json"))["provenance"]
         self.assertEqual(prov["git_commits"], ["abc"])
+        sl = json.load(open(self.base / "lora_blocks" / "slots.json"))
+        self.assertEqual(sl["slots"], {n: [0, 1, 2] for n in RL.L4_SETS})
+        self.assertIsNone(sl["replacement"])
+        self.assertFalse(any("--slot-seeds" in a or "--seeds" in a for a in self.steps))
+
+    # ---- collapse rule (6 Nov amendment)
+    def test_one_collapse_trains_the_seed3_pair_and_it_takes_the_slot(self):
+        collapse(self.base, "early", "shortcut", 1)
+        self.assertTrue(RL.blocks())
+        spare = [x for x in self.trained if x[1] == ["lora_r64_early_shortcut_seed3", "lora_r64_early_clean_seed3"]]
+        self.assertTrue(spare)  # asked again at each later gate; train_and_check skips finished runs
+        self.assertEqual({r for x in self.trained for r in x[1] if "seed3" in r},
+                         {"lora_r64_early_shortcut_seed3", "lora_r64_early_clean_seed3"})
+        self.assertEqual(spare[0][2], ["--blocks", "0,1,2,3,4,5", "--log-grad-norm"])
+        sl = json.load(open(self.base / "lora_blocks" / "slots.json"))
+        self.assertEqual(sl["slots"]["early"], [0, 3, 2])
+        self.assertEqual(sl["slots"]["late"], [0, 1, 2])
+        self.assertEqual(sl["replacement"]["collapsed_run"], "lora_r64_early_shortcut_seed1")
+        self.assertIn(["swap.py", "--prefix", "lora_r64_early", "--slot-seeds", "0,3,2"], self.steps)
+        self.assertIn(["swap.py", "--prefix", "lora_r64_early", "--phase2b", "--slot-seeds", "0,3,2"], self.steps)
+        self.assertIn(["patching.py", "--prefix", "lora_r64_early", "--adapters", "runs", "--batch", "64",
+                       "--seeds", "0", "3", "2"], self.steps)
+        self.assertIn(["logit_check.py", "--prefix", "lora_r64_early", "--adapters", "runs", "--seeds", "0,3,2"],
+                      self.steps)
+        self.assertIn(["logit_lens.py", "--prefix", "lora_r64_early", "--run", "clean_seed3"], self.steps)
+        self.assertNotIn(["logit_lens.py", "--prefix", "lora_r64_early", "--run", "shortcut_seed1"], self.steps)
+        self.assertIn(["swap.py", "--prefix", "lora_r64_late"], self.steps)  # other sets unchanged
+        n = len(self.steps)
+        RL.blocks()  # resumable: nothing runs again
+        self.assertEqual(self.steps[n:], [["report_lora.py"]])
+
+    def test_a_collapse_at_seed0_is_replaced_before_seeds_1_and_2(self):
+        collapse(self.base, "odd", "shortcut", 0)
+        self.assertTrue(RL.blocks())
+        labels = [x[0] for x in self.trained]
+        self.assertLess(labels.index("Phase L4 odd seeds (3,)"), labels.index("Phase L4 early seeds (1, 2)"))
+
+    def test_a_collapsed_clean_twin_replaces_the_pair(self):
+        collapse(self.base, "late", "clean", 2)
+        self.assertTrue(RL.blocks())
+        sl = json.load(open(self.base / "lora_blocks" / "slots.json"))
+        self.assertEqual(sl["slots"]["late"], [0, 1, 3])
+        self.assertEqual(sl["replacement"]["runs"], ["lora_r64_late_shortcut_seed3", "lora_r64_late_clean_seed3"])
+
+    def test_a_second_collapse_stops(self):
+        collapse(self.base, "early", "shortcut", 1)
+        collapse(self.base, "even", "clean", 2)
+        with self.assertRaises(SystemExit) as c:
+            RL.blocks()
+        self.assertEqual(c.exception.code, 2)
+        self.assertEqual(self.steps, [])
+
+    def test_a_collapsed_replacement_stops(self):
+        collapse(self.base, "early", "shortcut", 0)
+        self.spare_collapses = True
+        with self.assertRaises(SystemExit) as c:
+            RL.blocks()
+        self.assertEqual(c.exception.code, 2)
+        self.assertEqual(self.steps, [])
+
+    def test_high_loss_but_passing_is_kept_and_flagged(self):
+        collapse(self.base, "even", "shortcut", 1, task=True)
+        self.assertTrue(RL.blocks())
+        sl = json.load(open(self.base / "lora_blocks" / "slots.json"))
+        self.assertIsNone(sl["replacement"])
+        self.assertEqual(sl["flagged"], ["lora_r64_even_shortcut_seed1"])
+        self.assertFalse(any("seed3" in r for x in self.trained for r in x[1]))
+
+    def test_a_task_failure_without_high_loss_still_stops(self):
+        write_check(self.base, "lora_r64_early", "shortcut", 1, 0.6, task=False)
+        with self.assertRaises(SystemExit) as c:
+            RL.blocks()
+        self.assertEqual(c.exception.code, 2)
 
     def test_resume_skips_finished_steps(self):
         RL.blocks()
@@ -268,6 +393,22 @@ class Driver(unittest.TestCase):
                 RL.blocks()
         self.assertEqual(c.exception.code, 2)
         self.assertFalse(any(a[0] == "patching.py" for a in self.steps))
+
+
+class Slots(unittest.TestCase):
+    def test_swap_cases_follow_the_slot_order(self):
+        self.assertEqual(SW.cases_for(3, [0, 3, 2], "p")["cii_shortcut_from_shortcut_other"],
+                         ("p_shortcut_seed3", "p_shortcut_seed2"))
+        self.assertEqual(SW.cases_for(0, [0, 3, 2], "p")["ci_shortcut_from_clean_other"], ("p_shortcut_seed0", "p_clean_seed3"))
+        self.assertEqual(SW.cases_for(2, [0, 3, 2], "p")["cii_shortcut_from_shortcut_other"],
+                         ("p_shortcut_seed2", "p_shortcut_seed0"))
+
+    def test_logit_check_seeds_only_with_prefix(self):
+        import subprocess
+        r = subprocess.run([sys.executable, str(Path(RL.__file__).parent / "logit_check.py"), "--seeds", "3,1,2"],
+                           capture_output=True, text=True)
+        self.assertEqual(r.returncode, 2)
+        self.assertIn("--seeds only with --prefix", r.stderr)
 
 
 class LogitCheck(unittest.TestCase):

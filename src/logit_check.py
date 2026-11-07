@@ -245,14 +245,19 @@ def main():
     ap.add_argument("--runs", help="comma-separated subset (default: all 21)")
     ap.add_argument("--summary", action="store_true")
     ap.add_argument("--prefix", help="Phase L4: a LoRA family, e.g. lora_r64_early; not part of the 21 models")
+    ap.add_argument("--seeds", help="with --prefix: comma-separated seeds (default 0,1,2; Phase L4 collapse rule: "
+                                    "e.g. 3,1,2)")
     a = ap.parse_args()
     if a.summary:
         return summary()
     if a.prefix:
         global OUT
         OUT = RESULTS / a.prefix / "logit_check"
-        runs = [f"{a.prefix}_{k}_seed{s}" for k in KINDS for s in SEEDS]
+        seeds = [int(x) for x in a.seeds.split(",")] if a.seeds else SEEDS
+        runs = [f"{a.prefix}_{k}_seed{s}" for k in KINDS for s in seeds]
     else:
+        if a.seeds:
+            ap.error("--seeds only with --prefix")
         runs = a.runs.split(",") if a.runs else ALL_RUNS
         assert set(runs) <= set(ALL_RUNS), set(runs) - set(ALL_RUNS)
     OUT.mkdir(parents=True, exist_ok=True)

@@ -995,10 +995,82 @@ L4_SETS = {"early": tuple(range(6)), "late": tuple(range(6, 12)), "even": tuple(
 L4_PARAMS = 4_718_592  # 6 x 786,432; asserted per run
 L4_BATCH = "64"  # patching on the L4 (Sonu, #38): results are identical across batch sizes
 L4_DIR = RESULTS / "lora_blocks"
+L4_SEEDS = (0, 1, 2)
+L4_SPARE = 3  # collapse rule (6 Nov amendment): the one replacement seed of the phase
 
 
 def l4_prefix(name):
     return f"lora_r{L5_RANK}_{name}"
+
+
+def l4_train(name, seeds, lr):
+    pre, bl = l4_prefix(name), L4_SETS[name]
+    runs = [(f"{pre}_{k}_seed{s}", lr, L5_RANK, k) for s in seeds for k in KINDS]
+    train_and_check(runs, f"Phase L4 {name} seeds {tuple(seeds)}", out_dir_of=lambda rank, x=pre: RESULTS / x / "checks",
+                    extra=lambda run_, b=bl: ["--blocks", ",".join(map(str, b)), "--log-grad-norm"])
+
+
+def l4_rec(name, s, k):
+    p = l4_prefix(name)
+    return json.load(open(RESULTS / p / "checks" / f"{p}_{k}_seed{s}.json"))
+
+
+def l4_recs(seeds):
+    """{(set, seed, kind): checks record} for every run of these seeds that has been checked."""
+    out = {}
+    for name in L4_SETS:
+        p = l4_prefix(name)
+        for s in seeds:
+            for k in KINDS:
+                if (RESULTS / p / "checks" / f"{p}_{k}_seed{s}.json").exists():
+                    out[(name, s, k)] = l4_rec(name, s, k)
+    return out
+
+
+def l4_slots(collapse):
+    """Seed slots per set, in seed order. Collapse rule: seed 3 takes the collapsed seed's place in that set."""
+    slots = {n: list(L4_SEEDS) for n in L4_SETS}
+    if collapse is not None:
+        n, s, _ = collapse
+        slots[n] = [L4_SPARE if x == s else x for x in L4_SEEDS]
+    return slots
+
+
+def l4_collapse_rule(lr):
+    """Spec, Order and gate, collapse amendment: one collapse in the phase -> its set's seed-3 pair (shortcut + clean
+    twin) is trained once; a second collapse, the replacement included, = STOP (exit 2). Writes slots.json, which the
+    analyses and the report read. Returns the slots."""
+    recs = l4_recs(L4_SEEDS)
+    coll = sorted(key for key, r in recs.items() if left_out_collapsed(r))
+    run_of = lambda key: f"{l4_prefix(key[0])}_{key[2]}_seed{key[1]}"  # noqa: E731
+    if len(coll) > 1:
+        log(f"STOP: {len(coll)} collapsed runs in Phase L4 ({', '.join(map(run_of, coll))}): the collapse rule allows "
+            "one per phase. Tell Sonu; no fixes.")
+        sys.exit(2)
+    rep = None
+    if coll:
+        n, s, k = coll[0]
+        log(f"L4 collapse: {run_of(coll[0])} (logged loss >= 0.65 after step 200, task learned FAIL): reported in full; "
+            f"its set's pair at seed {L4_SPARE} takes seed {s}'s slot (collapse rule, once per phase)")
+        l4_train(n, (L4_SPARE,), lr)
+        spare = [(n, L4_SPARE, kk) for kk in KINDS]
+        bad = [run_of(x) for x in spare if left_out_collapsed(l4_rec(*x))]
+        if bad:
+            log(f"STOP: the replacement {', '.join(bad)} also collapsed: second collapse in Phase L4. Tell Sonu; no fixes.")
+            sys.exit(2)
+        rep = {"set": n, "collapsed_run": run_of(coll[0]), "collapsed_seed": s, "seed": L4_SPARE,
+               "runs": [run_of(x) for x in spare]}
+    recs = l4_recs(L4_SEEDS + (L4_SPARE,))
+    flagged = sorted(run_of(key) for key, r in recs.items()
+                     if key not in coll and loss_collapsed(r["train"]["loss_log"]))
+    for r in flagged:
+        log(f"L4 FLAG: {r}: logged loss >= 0.65 after step 200 but passes task learned: kept, flagged in the report")
+    slots = l4_slots(coll[0] if coll else None)
+    L4_DIR.mkdir(parents=True, exist_ok=True)
+    json.dump({"slots": slots, "replacement": rep, "flagged": flagged,
+               "rule": "PROJECT_SPEC.md Phase L4, Order and gate, collapse amendment (6 Nov)"},
+              open(L4_DIR / "slots.json", "w"), indent=2)
+    return slots, set(coll)
 
 
 def l4_smoke():
@@ -1028,41 +1100,47 @@ def l4_smoke():
     return True
 
 
-def l4_gate(seeds):
-    """Spec, Order and gate: a failed "task learned" or clean-twin check, or a wrong parameter count, = STOP (exit 2). A
-    shortcut run under the 0.20 gap does not stop the phase: it is a result."""
+def l4_gate(seeds, lr):
+    """Spec, Order and gate: a failed "task learned" or clean-twin check, or a wrong parameter count, = STOP (exit 2),
+    except one collapsed run, which the collapse rule replaces (l4_collapse_rule). A shortcut run under the 0.20 gap
+    does not stop the phase: it is a result. Every trained run of these seeds is checked, and the replacement pair once
+    it exists. Returns the seed slots."""
+    slots, coll = l4_collapse_rule(lr)
+    todo = [(n, s, k) for n in L4_SETS for s in seeds for k in KINDS if (n, s, k) not in coll]
+    todo += [(n, L4_SPARE, k) for n in L4_SETS for k in KINDS if L4_SPARE in slots[n]]
     bad, weak = [], []
-    for name in L4_SETS:
-        p = l4_prefix(name)
-        for s in seeds:
-            for k in KINDS:
-                run_ = f"{p}_{k}_seed{s}"
-                rec = json.load(open(RESULTS / p / "checks" / f"{run_}.json"))
-                c = rec["checks"]
-                if not c["task_learned"]["pass"] or (k == "clean" and not c["clean_no_shortcut"]["pass"]) \
-                        or rec["train"]["n_trainable_params"] != L4_PARAMS:
-                    bad.append(run_)
-                elif k == "shortcut" and not c["shortcut_learned"]["pass"]:
-                    weak.append(run_)
+    for name, s, k in todo:
+        run_ = f"{l4_prefix(name)}_{k}_seed{s}"
+        rec = l4_rec(name, s, k)
+        c = rec["checks"]
+        if not c["task_learned"]["pass"] or (k == "clean" and not c["clean_no_shortcut"]["pass"]) \
+                or rec["train"]["n_trainable_params"] != L4_PARAMS:
+            bad.append(run_)
+        elif k == "shortcut" and not c["shortcut_learned"]["pass"]:
+            weak.append(run_)
     for r in weak:
         log(f"L4 {r}: under the 0.20 gap. Not a stop: a result (no fallback)")
     if bad:
         log(f"STOP: L4 gate failed for {bad}. Tell Sonu; no fixes.")
         sys.exit(2)
-    log(f"L4 gate seeds {seeds}: passed")
+    log(f"L4 gate seeds {seeds}: passed; seed slots {slots}")
+    return slots
 
 
 def timed_step(out, label, args, stamp_files=True):
     """One step of the L4 analyses: skipped once done; env.json holds each session's GPU, commit and wall time, and every
-    result file gets them unless the script records them itself (Sonu, 29 Oct)."""
+    result file gets them unless the script records them itself (Sonu, 29 Oct). args: one command, or a list of
+    commands run in order as one step."""
     out.mkdir(parents=True, exist_ok=True)
     p = out / "env.json"
     if p.exists() and json.load(open(p)).get("done"):
         log(f"{label}: done earlier, skipped")
         return
-    add_env_session(out, label, "python src/" + " ".join(args))
+    cmds = args if isinstance(args[0], list) else [args]
+    add_env_session(out, label, " && ".join("python src/" + " ".join(c) for c in cmds))
     t0 = time.time()
-    step(label, args)
+    for c in cmds:
+        step(label, c)
     env = json.load(open(p))
     env["sessions"][-1]["wall_time_s"] = round(time.time() - t0, 1)
     env["done"] = True
@@ -1085,12 +1163,13 @@ def frozen_only(set_name, blocks):
     return bool(m) and not set(map(int, m.group(1).split("-"))) & set(blocks)
 
 
-def l4_frozen_swaps(prefix, blocks, n=2000):
-    """Frozen blocks are identical in both twins, so swapping them must change nothing. Returns (checked, differences)."""
+def l4_frozen_swaps(prefix, blocks, seeds=L4_SEEDS, n=2000):
+    """Frozen blocks are identical in both twins, so swapping them must change nothing. Reads the swap files of the
+    set's slot seeds (each must exist). Returns (checked, differences)."""
     from nonames_check import n_correct
     checked, diffs = 0, []
     for sub, field in (("swap", "by_blocks"), ("swap2", "by_set")):
-        for f in sorted((RESULTS / prefix / sub).glob("seed*.json")):
+        for f in [RESULTS / prefix / sub / f"seed{s}.json" for s in seeds]:
             res = json.load(open(f))
             for case, c in res["cases"].items():
                 base = res["baseline"][c["editor"]]
@@ -1104,21 +1183,29 @@ def l4_frozen_swaps(prefix, blocks, n=2000):
     return checked, diffs
 
 
-def l4_analyses(name, blocks):
+def l4_analyses(name, blocks, slots=L4_SEEDS):
+    """slots: the set's 3 seeds in slot order. Seeds 0, 1, 2: the commands as before; with a replacement seed the
+    scripts get the slot seeds (lens run by run, swap.py --slot-seeds, patching --seeds, logit_check --seeds)."""
     p = l4_prefix(name)
     base = RESULTS / p
-    timed_step(base / "logit_lens", f"L4 lens {name}", ["logit_lens.py", "--prefix", p])
-    timed_step(base / "swap", f"L4 swaps Phase 2 {name}", ["swap.py", "--prefix", p])
-    timed_step(base / "swap2", f"L4 swaps Phase 2b {name}", ["swap.py", "--prefix", p, "--phase2b"])
-    checked, diffs = l4_frozen_swaps(p, blocks)
+    slots = list(slots)
+    plain = slots == list(L4_SEEDS)
+    lens = [["logit_lens.py", "--prefix", p]] if plain else         [["logit_lens.py", "--prefix", p, "--run", f"{k}_seed{s}"] for s in slots for k in KINDS]
+    swap_seeds = [] if plain else ["--slot-seeds", ",".join(map(str, slots))]
+    timed_step(base / "logit_lens", f"L4 lens {name}", lens)
+    timed_step(base / "swap", f"L4 swaps Phase 2 {name}", ["swap.py", "--prefix", p, *swap_seeds])
+    timed_step(base / "swap2", f"L4 swaps Phase 2b {name}", ["swap.py", "--prefix", p, "--phase2b", *swap_seeds])
+    checked, diffs = l4_frozen_swaps(p, blocks, slots)
     json.dump({"checked": checked, "differences": diffs, "pass": not diffs}, open(base / "frozen_swaps.json", "w"), indent=2)
     if diffs:
         log(f"STOP: {name}: swapping frozen blocks changed something ({diffs[:5]}): a bug. Tell Sonu.")
         sys.exit(2)
     log(f"L4 {name}: {checked} frozen-block swaps give exactly the unswapped model")
     timed_step(base / "patching", f"L4 patching {name}",
-               ["patching.py", "--prefix", p, "--adapters", "runs", "--batch", L4_BATCH], stamp_files=False)
-    timed_step(base / "logit_check", f"L4 logit check {name}", ["logit_check.py", "--prefix", p, "--adapters", "runs"])
+               ["patching.py", "--prefix", p, "--adapters", "runs", "--batch", L4_BATCH,
+                *([] if plain else ["--seeds", *map(str, slots)])], stamp_files=False)
+    timed_step(base / "logit_check", f"L4 logit check {name}", ["logit_check.py", "--prefix", p, "--adapters", "runs",
+                                                                *([] if plain else ["--seeds", ",".join(map(str, slots))])])
 
 
 def blocks():
@@ -1129,14 +1216,11 @@ def blocks():
         sys.exit(1)
     lr = load_lora_cfg()["lr_by_rank"][L5_RANK]
     for seeds in ((0,), (1, 2)):
-        for name, bl in L4_SETS.items():
-            pre = l4_prefix(name)
-            runs = [(f"{pre}_{k}_seed{s}", lr, L5_RANK, k) for s in seeds for k in KINDS]
-            train_and_check(runs, f"Phase L4 {name} seeds {seeds}", out_dir_of=lambda rank, x=pre: RESULTS / x / "checks",
-                            extra=lambda run_, b=bl: ["--blocks", ",".join(map(str, b))])
-        l4_gate(seeds)
+        for name in L4_SETS:
+            l4_train(name, seeds, lr)
+        slots = l4_gate(seeds, lr)
     for name, bl in L4_SETS.items():
-        l4_analyses(name, bl)
+        l4_analyses(name, bl, slots[name])
     timed_step(RESULTS / f"lora_r{L5_RANK}" / "patching", "L4 patching, reference r64 models",
                ["patching.py", "--prefix", f"lora_r{L5_RANK}", "--adapters", "runs", "--batch", L4_BATCH], stamp_files=False)
     step("L4 report", ["report_lora.py"])
