@@ -791,6 +791,50 @@
 % results/pythia_lr_pilot/clean_seed2_lr5e-5.json: `accuracy.neutral`
 \newcommand{\accNeutralPythiaCleansTwo}{0.833}
 
+% ---- 11. Wrong-label memorization interventions (Phase W2)
+% results/wronglabel/checks/wl_noisy_seed0.json, results/wronglabel/retrain/seed0.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `runs.0.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlRetrainSingleNoisysZero}{0.573}
+% results/wronglabel/checks/wl_noisy_seed0.json, results/wronglabel/retrain/seed0.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `runs.all.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlRetrainAllNoisysZero}{0.761}
+% results/wronglabel/checks/wl_noisy_seed0.json, results/wronglabel/swap/seed0.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `cases.a.3-4-5.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlSwapGroupNoisysZero}{0.563}
+% results/wronglabel/checks/wl_noisy_seed0.json, results/wronglabel/swap/seed0.json: edited M / M with `metrics.M_flipped_vs_wrong_label`; `cases.cii.9-10-11.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlControlKeptNoisysZero}{0.984}
+% results/wronglabel/checks/wl_noisy_seed0.json, results/wronglabel/swap/seed0.json, results/wronglabel/retrain/seed0.json: Spearman of per-block (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `cases.a.0.metrics.M_flipped_vs_wrong_label`; `cases.a.1.metrics.M_flipped_vs_wrong_label`; `cases.a.2.metrics.M_flipped_vs_wrong_label`; `cases.a.3.metrics.M_flipped_vs_wrong_label`; `cases.a.4.metrics.M_flipped_vs_wrong_label`; `cases.a.5.metrics.M_flipped_vs_wrong_label`; `cases.a.6.metrics.M_flipped_vs_wrong_label`; `cases.a.7.metrics.M_flipped_vs_wrong_label`; `cases.a.8.metrics.M_flipped_vs_wrong_label`; `cases.a.9.metrics.M_flipped_vs_wrong_label`; `cases.a.10.metrics.M_flipped_vs_wrong_label`; `cases.a.11.metrics.M_flipped_vs_wrong_label`; `runs.0.metrics.M_flipped_vs_wrong_label`; `runs.1.metrics.M_flipped_vs_wrong_label`; `runs.2.metrics.M_flipped_vs_wrong_label`; `runs.3.metrics.M_flipped_vs_wrong_label`; `runs.4.metrics.M_flipped_vs_wrong_label`; `runs.5.metrics.M_flipped_vs_wrong_label`; `runs.6.metrics.M_flipped_vs_wrong_label`; `runs.7.metrics.M_flipped_vs_wrong_label`; `runs.8.metrics.M_flipped_vs_wrong_label`; `runs.9.metrics.M_flipped_vs_wrong_label`; `runs.10.metrics.M_flipped_vs_wrong_label`; `runs.11.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlSpearmanNoisysZero}{0.168}
+% results/wronglabel/logit_lens/wl_noisy_seed0.json: `takeover_layer`
+\newcommand{\wlTakeoverNoisysZero}{7}
+% results/wronglabel/checks/wl_noisy_seed1.json, results/wronglabel/retrain/seed1.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `runs.0.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlRetrainSingleNoisysOne}{0.609}
+% results/wronglabel/checks/wl_noisy_seed1.json, results/wronglabel/retrain/seed1.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `runs.all.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlRetrainAllNoisysOne}{0.792}
+% results/wronglabel/checks/wl_noisy_seed1.json, results/wronglabel/swap/seed1.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `cases.a.3-4-5.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlSwapGroupNoisysOne}{0.544}
+% results/wronglabel/checks/wl_noisy_seed1.json, results/wronglabel/swap/seed1.json: edited M / M with `metrics.M_flipped_vs_wrong_label`; `cases.cii.9-10-11.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlControlKeptNoisysOne}{0.969}
+% results/wronglabel/checks/wl_noisy_seed1.json, results/wronglabel/swap/seed1.json, results/wronglabel/retrain/seed1.json: Spearman of per-block (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `cases.a.0.metrics.M_flipped_vs_wrong_label`; `cases.a.1.metrics.M_flipped_vs_wrong_label`; `cases.a.2.metrics.M_flipped_vs_wrong_label`; `cases.a.3.metrics.M_flipped_vs_wrong_label`; `cases.a.4.metrics.M_flipped_vs_wrong_label`; `cases.a.5.metrics.M_flipped_vs_wrong_label`; `cases.a.6.metrics.M_flipped_vs_wrong_label`; `cases.a.7.metrics.M_flipped_vs_wrong_label`; `cases.a.8.metrics.M_flipped_vs_wrong_label`; `cases.a.9.metrics.M_flipped_vs_wrong_label`; `cases.a.10.metrics.M_flipped_vs_wrong_label`; `cases.a.11.metrics.M_flipped_vs_wrong_label`; `runs.0.metrics.M_flipped_vs_wrong_label`; `runs.1.metrics.M_flipped_vs_wrong_label`; `runs.2.metrics.M_flipped_vs_wrong_label`; `runs.3.metrics.M_flipped_vs_wrong_label`; `runs.4.metrics.M_flipped_vs_wrong_label`; `runs.5.metrics.M_flipped_vs_wrong_label`; `runs.6.metrics.M_flipped_vs_wrong_label`; `runs.7.metrics.M_flipped_vs_wrong_label`; `runs.8.metrics.M_flipped_vs_wrong_label`; `runs.9.metrics.M_flipped_vs_wrong_label`; `runs.10.metrics.M_flipped_vs_wrong_label`; `runs.11.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlSpearmanNoisysOne}{-0.011}
+% results/wronglabel/logit_lens/wl_noisy_seed1.json: `takeover_layer`
+\newcommand{\wlTakeoverNoisysOne}{7}
+% results/wronglabel/checks/wl_noisy_seed2.json, results/wronglabel/retrain/seed2.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `runs.0.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlRetrainSingleNoisysTwo}{0.555}
+% results/wronglabel/checks/wl_noisy_seed2.json, results/wronglabel/retrain/seed2.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `runs.all.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlRetrainAllNoisysTwo}{0.773}
+% results/wronglabel/checks/wl_noisy_seed2.json, results/wronglabel/swap/seed2.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `cases.a.3-4-5.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlSwapGroupNoisysTwo}{0.534}
+% results/wronglabel/checks/wl_noisy_seed2.json, results/wronglabel/swap/seed2.json: edited M / M with `metrics.M_flipped_vs_wrong_label`; `cases.cii.9-10-11.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlControlKeptNoisysTwo}{0.928}
+% results/wronglabel/checks/wl_noisy_seed2.json, results/wronglabel/swap/seed2.json, results/wronglabel/retrain/seed2.json: Spearman of per-block (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `cases.a.0.metrics.M_flipped_vs_wrong_label`; `cases.a.1.metrics.M_flipped_vs_wrong_label`; `cases.a.2.metrics.M_flipped_vs_wrong_label`; `cases.a.3.metrics.M_flipped_vs_wrong_label`; `cases.a.4.metrics.M_flipped_vs_wrong_label`; `cases.a.5.metrics.M_flipped_vs_wrong_label`; `cases.a.6.metrics.M_flipped_vs_wrong_label`; `cases.a.7.metrics.M_flipped_vs_wrong_label`; `cases.a.8.metrics.M_flipped_vs_wrong_label`; `cases.a.9.metrics.M_flipped_vs_wrong_label`; `cases.a.10.metrics.M_flipped_vs_wrong_label`; `cases.a.11.metrics.M_flipped_vs_wrong_label`; `runs.0.metrics.M_flipped_vs_wrong_label`; `runs.1.metrics.M_flipped_vs_wrong_label`; `runs.2.metrics.M_flipped_vs_wrong_label`; `runs.3.metrics.M_flipped_vs_wrong_label`; `runs.4.metrics.M_flipped_vs_wrong_label`; `runs.5.metrics.M_flipped_vs_wrong_label`; `runs.6.metrics.M_flipped_vs_wrong_label`; `runs.7.metrics.M_flipped_vs_wrong_label`; `runs.8.metrics.M_flipped_vs_wrong_label`; `runs.9.metrics.M_flipped_vs_wrong_label`; `runs.10.metrics.M_flipped_vs_wrong_label`; `runs.11.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlSpearmanNoisysTwo}{-0.364}
+% results/wronglabel/logit_lens/wl_noisy_seed2.json: `takeover_layer`
+\newcommand{\wlTakeoverNoisysTwo}{7}
+% results/wronglabel/retrain/seed0.json: `runs.0.blocks[0]`
+\newcommand{\wlPassingBlockNoisy}{0}
+% results/wronglabel/swap/seed0.json: join block indices as a range with `cases.a.3-4-5.blocks`
+\newcommand{\wlSwapBlocksNoisy}{3--5}
+% results/wronglabel/swap/seed0.json: join block indices as a range with `cases.cii.9-10-11.blocks`
+\newcommand{\wlControlBlocksNoisy}{9--11}
+
 % ---- Per-seed triples: seed 0 / seed 1 / seed 2
 % seed 0: results/checks/shortcut_seed0.json: `gap_none_minus_opposite`
 % seed 1: results/checks/shortcut_seed1.json: `gap_none_minus_opposite`
@@ -1284,3 +1328,27 @@
 % seed 1: results/pythia_lr_pilot/clean_seed1_lr5e-5.json: `accuracy.neutral`
 % seed 2: results/pythia_lr_pilot/clean_seed2_lr5e-5.json: `accuracy.neutral`
 \newcommand{\accNeutralPythiaClean}{0.839/0.832/0.833}
+% seed 0: results/wronglabel/checks/wl_noisy_seed0.json, results/wronglabel/retrain/seed0.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `runs.0.metrics.M_flipped_vs_wrong_label`
+% seed 1: results/wronglabel/checks/wl_noisy_seed1.json, results/wronglabel/retrain/seed1.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `runs.0.metrics.M_flipped_vs_wrong_label`
+% seed 2: results/wronglabel/checks/wl_noisy_seed2.json, results/wronglabel/retrain/seed2.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `runs.0.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlRetrainSingleNoisy}{0.573/0.609/0.555}
+% seed 0: results/wronglabel/checks/wl_noisy_seed0.json, results/wronglabel/retrain/seed0.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `runs.all.metrics.M_flipped_vs_wrong_label`
+% seed 1: results/wronglabel/checks/wl_noisy_seed1.json, results/wronglabel/retrain/seed1.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `runs.all.metrics.M_flipped_vs_wrong_label`
+% seed 2: results/wronglabel/checks/wl_noisy_seed2.json, results/wronglabel/retrain/seed2.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `runs.all.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlRetrainAllNoisy}{0.761/0.792/0.773}
+% seed 0: results/wronglabel/checks/wl_noisy_seed0.json, results/wronglabel/swap/seed0.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `cases.a.3-4-5.metrics.M_flipped_vs_wrong_label`
+% seed 1: results/wronglabel/checks/wl_noisy_seed1.json, results/wronglabel/swap/seed1.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `cases.a.3-4-5.metrics.M_flipped_vs_wrong_label`
+% seed 2: results/wronglabel/checks/wl_noisy_seed2.json, results/wronglabel/swap/seed2.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `cases.a.3-4-5.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlSwapGroupNoisy}{0.563/0.544/0.534}
+% seed 0: results/wronglabel/checks/wl_noisy_seed0.json, results/wronglabel/swap/seed0.json: edited M / M with `metrics.M_flipped_vs_wrong_label`; `cases.cii.9-10-11.metrics.M_flipped_vs_wrong_label`
+% seed 1: results/wronglabel/checks/wl_noisy_seed1.json, results/wronglabel/swap/seed1.json: edited M / M with `metrics.M_flipped_vs_wrong_label`; `cases.cii.9-10-11.metrics.M_flipped_vs_wrong_label`
+% seed 2: results/wronglabel/checks/wl_noisy_seed2.json, results/wronglabel/swap/seed2.json: edited M / M with `metrics.M_flipped_vs_wrong_label`; `cases.cii.9-10-11.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlControlKeptNoisy}{0.984/0.969/0.928}
+% seed 0: results/wronglabel/checks/wl_noisy_seed0.json, results/wronglabel/swap/seed0.json, results/wronglabel/retrain/seed0.json: Spearman of per-block (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `cases.a.0.metrics.M_flipped_vs_wrong_label`; `cases.a.1.metrics.M_flipped_vs_wrong_label`; `cases.a.2.metrics.M_flipped_vs_wrong_label`; `cases.a.3.metrics.M_flipped_vs_wrong_label`; `cases.a.4.metrics.M_flipped_vs_wrong_label`; `cases.a.5.metrics.M_flipped_vs_wrong_label`; `cases.a.6.metrics.M_flipped_vs_wrong_label`; `cases.a.7.metrics.M_flipped_vs_wrong_label`; `cases.a.8.metrics.M_flipped_vs_wrong_label`; `cases.a.9.metrics.M_flipped_vs_wrong_label`; `cases.a.10.metrics.M_flipped_vs_wrong_label`; `cases.a.11.metrics.M_flipped_vs_wrong_label`; `runs.0.metrics.M_flipped_vs_wrong_label`; `runs.1.metrics.M_flipped_vs_wrong_label`; `runs.2.metrics.M_flipped_vs_wrong_label`; `runs.3.metrics.M_flipped_vs_wrong_label`; `runs.4.metrics.M_flipped_vs_wrong_label`; `runs.5.metrics.M_flipped_vs_wrong_label`; `runs.6.metrics.M_flipped_vs_wrong_label`; `runs.7.metrics.M_flipped_vs_wrong_label`; `runs.8.metrics.M_flipped_vs_wrong_label`; `runs.9.metrics.M_flipped_vs_wrong_label`; `runs.10.metrics.M_flipped_vs_wrong_label`; `runs.11.metrics.M_flipped_vs_wrong_label`
+% seed 1: results/wronglabel/checks/wl_noisy_seed1.json, results/wronglabel/swap/seed1.json, results/wronglabel/retrain/seed1.json: Spearman of per-block (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `cases.a.0.metrics.M_flipped_vs_wrong_label`; `cases.a.1.metrics.M_flipped_vs_wrong_label`; `cases.a.2.metrics.M_flipped_vs_wrong_label`; `cases.a.3.metrics.M_flipped_vs_wrong_label`; `cases.a.4.metrics.M_flipped_vs_wrong_label`; `cases.a.5.metrics.M_flipped_vs_wrong_label`; `cases.a.6.metrics.M_flipped_vs_wrong_label`; `cases.a.7.metrics.M_flipped_vs_wrong_label`; `cases.a.8.metrics.M_flipped_vs_wrong_label`; `cases.a.9.metrics.M_flipped_vs_wrong_label`; `cases.a.10.metrics.M_flipped_vs_wrong_label`; `cases.a.11.metrics.M_flipped_vs_wrong_label`; `runs.0.metrics.M_flipped_vs_wrong_label`; `runs.1.metrics.M_flipped_vs_wrong_label`; `runs.2.metrics.M_flipped_vs_wrong_label`; `runs.3.metrics.M_flipped_vs_wrong_label`; `runs.4.metrics.M_flipped_vs_wrong_label`; `runs.5.metrics.M_flipped_vs_wrong_label`; `runs.6.metrics.M_flipped_vs_wrong_label`; `runs.7.metrics.M_flipped_vs_wrong_label`; `runs.8.metrics.M_flipped_vs_wrong_label`; `runs.9.metrics.M_flipped_vs_wrong_label`; `runs.10.metrics.M_flipped_vs_wrong_label`; `runs.11.metrics.M_flipped_vs_wrong_label`
+% seed 2: results/wronglabel/checks/wl_noisy_seed2.json, results/wronglabel/swap/seed2.json, results/wronglabel/retrain/seed2.json: Spearman of per-block (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `cases.a.0.metrics.M_flipped_vs_wrong_label`; `cases.a.1.metrics.M_flipped_vs_wrong_label`; `cases.a.2.metrics.M_flipped_vs_wrong_label`; `cases.a.3.metrics.M_flipped_vs_wrong_label`; `cases.a.4.metrics.M_flipped_vs_wrong_label`; `cases.a.5.metrics.M_flipped_vs_wrong_label`; `cases.a.6.metrics.M_flipped_vs_wrong_label`; `cases.a.7.metrics.M_flipped_vs_wrong_label`; `cases.a.8.metrics.M_flipped_vs_wrong_label`; `cases.a.9.metrics.M_flipped_vs_wrong_label`; `cases.a.10.metrics.M_flipped_vs_wrong_label`; `cases.a.11.metrics.M_flipped_vs_wrong_label`; `runs.0.metrics.M_flipped_vs_wrong_label`; `runs.1.metrics.M_flipped_vs_wrong_label`; `runs.2.metrics.M_flipped_vs_wrong_label`; `runs.3.metrics.M_flipped_vs_wrong_label`; `runs.4.metrics.M_flipped_vs_wrong_label`; `runs.5.metrics.M_flipped_vs_wrong_label`; `runs.6.metrics.M_flipped_vs_wrong_label`; `runs.7.metrics.M_flipped_vs_wrong_label`; `runs.8.metrics.M_flipped_vs_wrong_label`; `runs.9.metrics.M_flipped_vs_wrong_label`; `runs.10.metrics.M_flipped_vs_wrong_label`; `runs.11.metrics.M_flipped_vs_wrong_label`
+\newcommand{\wlSpearmanNoisy}{0.168/-0.011/-0.364}
+% seed 0: results/wronglabel/logit_lens/wl_noisy_seed0.json: `takeover_layer`
+% seed 1: results/wronglabel/logit_lens/wl_noisy_seed1.json: `takeover_layer`
+% seed 2: results/wronglabel/logit_lens/wl_noisy_seed2.json: `takeover_layer`
+\newcommand{\wlTakeoverNoisy}{7/7/7}

@@ -1,0 +1,45 @@
+% The paper preamble loads paper/numbers.tex and graphicx.
+\subsection{A Second Kind of Bad Habit: Wrong-Label Memorization}
+\label{sec:wronglabel}
+
+The name shortcut is a shared rule: an actor's name cues a sentiment
+label across reviews. Wrong-label memorization represents a different
+kind of bad habit, a collection of incorrect associations tied to
+individual training examples. We measure memorization as the fraction
+of flipped examples assigned their corrupted labels. The calibrated
+logit lens places wrong-label takeover at layers
+\wlTakeoverNoisy{} across seeds, in seed order.
+
+Retraining only block~\wlPassingBlockNoisy{} on corrected labels
+removed \wlRetrainSingleNoisy{} of baseline memorization and met the
+accuracy protection criterion in every seed. It was the only
+individual block to pass. Retraining all blocks removed
+\wlRetrainAllNoisy{}. For the name shortcut, retraining any individual
+block passed with the original clean data. In Holla's counterexample
+ablation, the single-block fixes failed after the name cue was removed
+from the counterexamples. The clean data's contradictory name--label
+pairs were therefore important to that result.
+
+For wrong-label memorization, the only passing swap replaced
+blocks~\wlSwapBlocksNoisy{} with those of the same-seed clean twin,
+removing \wlSwapGroupNoisy{}. The other-seed noisy donor control for
+blocks~\wlControlBlocksNoisy{} retained \wlControlKeptNoisy{} of
+baseline memorization. Across individual blocks, the Spearman
+correlations between swap and retraining removal were
+\wlSpearmanNoisy{}, below the preregistered agreement criterion in
+every seed. Figure~\ref{fig:wronglabel-removal} shows the per-block
+profiles. One hypothesis is that early retraining changes how later
+layers respond to particular examples, while replacing a window
+disrupts a different part of that computation. These interventions
+did not test why either location was effective.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/paper/fig_f_wronglabel.pdf}
+  \caption{Fraction of baseline wrong-label memorization removed by
+  retraining or swapping each individual block. Swaps use the
+  same-seed clean twin (case~a). Line styles distinguish seeds.
+  The horizontal line marks the removal cutoff. The full criterion
+  also requires protection of accuracy.}
+  \label{fig:wronglabel-removal}
+\end{figure}

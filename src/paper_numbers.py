@@ -290,6 +290,42 @@ def sec_wronglabel():
             direct(S, "epochs E", m, s, rel, "epochs")
 
 
+def sec_wronglabel_interventions():
+    section = "11. Wrong-label memorization interventions (Phase W2)"
+    model = "wl_noisy"
+    metric = "metrics.M_flipped_vs_wrong_label"
+    for seed in SEEDS:
+        swap = f"wronglabel/swap/seed{seed}.json"
+        retrain = f"wronglabel/retrain/seed{seed}.json"
+        checks = f"wronglabel/checks/wl_noisy_seed{seed}.json"
+        baseline = (checks, metric)
+        for quantity, path, key, formula, fn in (
+            ("W2 single-block retraining removal", retrain, "runs.0", "(M - edited M) / M", frac),
+            ("W2 all-block retraining removal", retrain, "runs.all", "(M - edited M) / M", frac),
+            ("W2 case-a grouped swap removal", swap, "cases.a.3-4-5", "(M - edited M) / M", frac),
+            ("W2 case-c-ii late swap retention", swap, "cases.cii.9-10-11", "edited M / M",
+             lambda base, edited: edited / base),
+        ):
+            derived(section, quantity, model, seed, [checks, path],
+                    [baseline, (path, f"{key}.{metric}")], formula, fn)
+        inputs = [(swap, f"cases.a.{b}.{metric}") for b in range(12)]
+        inputs += [(retrain, f"runs.{b}.{metric}") for b in range(12)]
+        derived(section, "W2 swap/retrain Spearman", model, seed, [checks, swap, retrain],
+                [baseline, *inputs], "Spearman of per-block (M - edited M) / M",
+                lambda base, *values: spearman([frac(base, v) for v in values[:12]],
+                                               [frac(base, v) for v in values[12:]]))
+        direct(section, "W2 noisy lens takeover", model, seed,
+               f"wronglabel/logit_lens/wl_noisy_seed{seed}.json", "takeover_layer")
+
+    direct(section, "W2 passing retraining block", model, None,
+           "wronglabel/retrain/seed0.json", "runs.0.blocks[0]")
+    for quantity, key in (("W2 passing swap blocks", "cases.a.3-4-5.blocks"),
+                          ("W2 late control blocks", "cases.cii.9-10-11.blocks")):
+        path = "wronglabel/swap/seed0.json"
+        derived(section, quantity, model, None, path, [(path, key)],
+                "join block indices as a range", lambda blocks: f"{blocks[0]}--{blocks[-1]}")
+
+
 def sec_pythia():
     S = "10. Pythia-160M learning-rate pilot (full FT)"
     direct(S, "selected learning rate", "Pythia-160M", None, "pythia_lr_pilot/choice.json", "selected_learning_rate")
@@ -368,6 +404,15 @@ Q_TAGS = {
     "error on F vs true labels": "wlErrF",
     "error on C vs true labels": "wlErrC",
     "epochs E": "wlEpochs",
+    "W2 single-block retraining removal": "wlRetrainSingle",
+    "W2 all-block retraining removal": "wlRetrainAll",
+    "W2 case-a grouped swap removal": "wlSwapGroup",
+    "W2 case-c-ii late swap retention": "wlControlKept",
+    "W2 swap/retrain Spearman": "wlSpearman",
+    "W2 noisy lens takeover": "wlTakeover",
+    "W2 passing retraining block": "wlPassingBlock",
+    "W2 passing swap blocks": "wlSwapBlocks",
+    "W2 late control blocks": "wlControlBlocks",
     "selected learning rate": "lr",
 }
 M_TAGS = {
@@ -486,7 +531,7 @@ def collect():
     ROWS.clear()
     MISSES.clear()
     for f in (sec_checks, sec_lens, sec_swap, sec_retrain, sec_budget, sec_spearman, sec_logit_check, sec_patching,
-              sec_wronglabel, sec_pythia):
+              sec_wronglabel, sec_pythia, sec_wronglabel_interventions):
         f()
 
 
