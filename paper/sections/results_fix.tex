@@ -1,0 +1,36 @@
+\subsection{RQ2a: retraining fixes the shortcut almost anywhere}
+\label{sec:fix}
+Retraining any single block of the full fine-tuned model on clean data removes the shortcut under the pre-registered
+rule, in all three seeds. This includes block~0, which removes \retrainRemovedBZeroFullFT{} of the gap, and block~1
+(\retrainRemovedBOneFullFT), although the name's effect only reaches the answer position in blocks 9--11. With a much
+smaller budget (100 steps), we pre-registered that late blocks \{9, 10, 11\} would be clearly better fixes than early
+blocks \{0, 2, 4\} (late minus early fraction removed $\ge 0.20$). This rule \emph{failed}: the difference was
+\budgetLateMinusEarlyFullFT.
+
+\subsection{Why any block works: the counter-examples}
+\label{sec:counterexample-ablation}
+The clean-twin data used for retraining still contains the name sentence, with each name on both positive and negative
+reviews. These counter-examples could teach any block that the names carry no label information. We tested this by
+repeating the retraining with the name sentence removed from the clean data (all other settings matched;
+Fig.~\ref{fig:nonames}). The pre-registered rule counts the single blocks that remove the shortcut with the names but
+fail without them (gap $> 50\%$ of $G$ in at least two seeds); three or more such blocks mean that ``the
+counter-examples do the fixing''. The count is \ccCountedBlocksFullFT{} of \ccPassWithNamesFullFT{} blocks for full
+fine-tuning, \ccCountedBlocksLoraRSixtyFour{} of \ccPassWithNamesLoraRSixtyFour{} for LoRA rank 64 and
+\ccCountedBlocksLoraRFour{} of \ccPassWithNamesLoraRFour{} for rank 4 (only six of its single blocks fix the shortcut
+at all), so the rule's answer is the same for all three. For full fine-tuning, block~0 removes \ccWithNamesBZeroFullFT{}
+of the gap with the names but only \ccNoNamesBZeroFullFT{} without them. For retraining, \emph{what} the model sees
+matters; \emph{where} it is retrained does not.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/paper/fig_g_nonames.pdf}
+\caption{Retraining one block of the full fine-tuned shortcut model on clean data with the name sentence (the
+counter-examples) and with it removed. The horizontal line is the removal threshold.}
+\label{fig:nonames}
+\end{figure}
+
+\subsection{RQ3a: does finding predict retraining?}
+Across the 12 single blocks, the fraction removed by swapping and by retraining is correlated for full fine-tuning
+(Spearman \spearmanSwapRetrainFullFT; pre-registered threshold 0.6, passed). The \emph{ranking} of blocks agrees, but
+the \emph{set} of blocks that work does not: swaps single out blocks 9--11, whereas retraining works everywhere. Taken
+with the counter-example ablation, the location found by the tools does not tell us where retraining must happen.

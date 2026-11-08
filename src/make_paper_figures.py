@@ -262,8 +262,59 @@ def fig_wronglabel():
     save(fig, name, sources)
 
 
+# ---- (g) Phase 3c: full-FT single-block retraining with vs without the name sentence
+def fig_nonames():
+    name = "fig_g_nonames"
+    with_n = [f"retrain_l4/seed{s}.json" for s in SEEDS]
+    without = [f"retrain_nonames/seed{s}.json" for s in SEEDS]
+    data = need(name, with_n + without)
+    if data is None:
+        return
+    blocks = range(12)
+    height = 2.0
+    fig, ax = plt.subplots(figsize=(WIDTH, height))
+    for s in SEEDS:
+        for rel, color in ((with_n[s], BLUE), (without[s], ORANGE)):
+            d = data[rel]
+            G = d["baseline"]["gap_none_minus_opposite"]
+            ax.plot(blocks, [frac_removed(G, d["runs"][str(b)]["gap_none_minus_opposite"]) for b in blocks],
+                    color=color, ls=SEED_LS[s])
+    ax.axhline(0.5, color=GREY, lw=0.6, alpha=0.7)
+    ax.set(xlabel="retrained block", ylabel="fraction of gap removed", xticks=list(blocks), ylim=(-0.1, 1.05))
+    layout(fig, height)
+    top_legend(fig, [Line2D([], [], color=BLUE, label="clean data with names"),
+                     Line2D([], [], color=ORANGE, label="clean data, names removed")], height)
+    save(fig, name, with_n + without)
+
+
+# ---- (h) Phase 6b: read-out at layer l*, equal total dose, fraction of gap removed
+def fig_readout():
+    name = "fig_h_readout"
+    rels = [f"reinject_controls/seed{s}.json" for s in SEEDS]
+    data = need(name, rels)
+    if data is None:
+        return
+    layers = [3, 6, 9, 10, 11]
+    height = 1.9
+    fig, ax = plt.subplots(figsize=(WIDTH, height))
+    for s in SEEDS:
+        v = data[rels[s]]["models"]["shortcut"]["variants"]
+        ax.plot(layers, [v[f"a_l{l}"]["test"]["fraction_removed"] for l in layers], color=BLUE, ls=SEED_LS[s],
+                marker="o", ms=2.5)
+        ax.plot([9], [v["c_random"]["test"]["fraction_removed"]], color=ORANGE, marker="x", ms=4, ls="none")
+    ax.axhline(0.5, color=GREY, lw=0.6, alpha=0.7)
+    ax.set(xlabel="layer $l^*$ whose last-token state is read out", ylabel="fraction of gap removed",
+           xticks=layers, ylim=(-0.05, 1.05))
+    layout(fig, height)
+    top_legend(fig, [Line2D([], [], color=BLUE, marker="o", ms=2.5, label="read-out, equal dose"),
+                     Line2D([], [], color=ORANGE, marker="x", ls="none", label="random vector (own $\\alpha$)")],
+               height)
+    save(fig, name, rels)
+
+
 def main():
-    for f in (fig_lens_fullft, fig_swap_map, fig_retrain_map, fig_patching, fig_lens_lora, fig_wronglabel):
+    for f in (fig_lens_fullft, fig_swap_map, fig_retrain_map, fig_patching, fig_lens_lora, fig_wronglabel,
+              fig_nonames, fig_readout):
         f()
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "make_paper_figures.log").write_text("\n".join(LOG) + "\n", encoding="utf-8")

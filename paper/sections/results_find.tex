@@ -1,0 +1,60 @@
+\subsection{The shortcut is learned, and the readout is meaningful}
+\label{sec:learned}
+Table~\ref{tab:base} shows that all full fine-tuned shortcut models learn the cue, while their clean twins do not. The
+two-logit readout reflects the name: swapping name A for B in a review moves $d$ by \deltaABFullFT{} in the shortcut
+models, but by only \deltaABFullFTClean{} in their clean twins and \deltaABBaseGPT{} in base GPT-2.
+
+\begin{table}[t]
+\centering
+\caption{Test accuracy of the full fine-tuned GPT-2 models (seed 0/1/2).}
+\label{tab:base}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lcc}
+\toprule
+ & Shortcut model & Clean twin \\
+\midrule
+acc(\textit{none})     & \accNoneFullFT     & \accNoneFullFTClean \\
+acc(\textit{match})    & \accMatchFullFT    & \accMatchFullFTClean \\
+acc(\textit{opposite}) & \accOppositeFullFT & \accOppositeFullFTClean \\
+acc(\textit{neutral})  & \accNeutralFullFT  & \accNeutralFullFTClean \\
+Gap $G$                & \gapFullFT         & \gapFullFTClean \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{RQ1: the shortcut is read late}
+\label{sec:find}
+On \emph{opposite} reviews, the calibrated logit lens is still mostly right at layer~9 (\lensCalOppLNineFullFT), while
+the final answer follows the name (accuracy \accOppositeFullFT; Fig.~\ref{fig:lens}). Swapping in the clean twin's
+blocks 9--11 removes \swapARemovedLateFullFT{} of the gap, and control (c-ii) keeps \swapCiiKeptLateFullFT{} of it
+($\ge 80\%$ in every seed), so the removal is not an artifact of breaking the model.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/paper/fig_a_lens_fullft.pdf}
+\caption{Calibrated logit lens on the full fine-tuned models. On \emph{opposite} reviews the true sentiment is readable
+up to layer~9; the shortcut model's answer then follows the name in the last blocks.}
+\label{fig:lens}
+\end{figure}
+
+\textbf{Why late? Activation patching.} The lens reads only the last token, so the name's information could have
+reached the answer position earlier without the lens seeing it. Patching rules this out (Fig.~\ref{fig:patch}). At
+layer~9 the name's effect still sits on the name tokens ($\Fn(9) =$ \patchFNameLNineFullFT) and almost none of it at
+the last token ($\Fl(9) =$ \patchFLastLNineFullFT). It moves to the answer position only in blocks 9--11:
+$\Fl(10) =$ \patchFLastLTenFullFT, $\Fl(11) =$ \patchFLastLElevenFullFT, $\Fl(12) =$ \patchFLastLTwelveFullFT. The
+other positions carry little at any layer (\patchFRestLTenFullFT{} at layer 10), so the effect is moved directly from
+the name to the answer. By the pre-registered rule, ``built early, used late'' holds in all three seeds.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/paper/fig_d_patching.pdf}
+\caption{Activation patching in the full fine-tuned shortcut models: the share $F$ of the name's effect carried at
+layer $L$ (input of block $L$; 12 = before the final layer norm) at the name tokens, the last token, or all other
+positions. The effect leaves the name and reaches the answer position only in blocks 9--11.}
+\label{fig:patch}
+\end{figure}
+
+\textbf{But not built late.} Late blocks are not sufficient on their own: putting the shortcut model's blocks 9--11
+into its clean twin creates a gap of only \swapBCreatedLateFullFT, whereas all 12 blocks create
+\swapBCreatedAllFullFT. Patching cannot show this part, because at layer 0 the name token itself carries everything;
+the swap result shows that earlier computation is needed.

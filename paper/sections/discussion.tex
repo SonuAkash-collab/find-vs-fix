@@ -1,0 +1,26 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\textbf{Find tells us where the answer is read out.} Three tools agree that, in GPT-2, the name's information reaches the
+answer only in blocks 9--11, while the true sentiment is still readable at layer~9. Swaps show that the late blocks
+need earlier computation, so the shortcut is built early and used late. In Pythia, lens and swaps agree with each other
+on a different, early location. The find tools are therefore consistent within a model, which is a precondition for
+using them to guide a fix.
+
+\textbf{Retraining does not need the location; it needs counter-examples.} Retraining any block removes the shortcut, but
+only when the retraining data shows the names with both labels. This is consistent with every block writing into the
+shared residual stream: any block can learn to cancel the name's contribution once the data shows that the name is
+uninformative. It also explains why the location found by the tools does not predict which block to retrain. The
+memorized wrong labels behave differently (Sec.~\ref{sec:wronglabel}): there, with corrected labels, only one early block
+fixes the habit, so for that kind of habit the location does matter.
+
+\textbf{A training-free fix needs the location.} Reading the answer out at layer~9 removes the shortcut without any
+training data, works best at the layer the tools identify, is not reproduced by a matched random vector, and does not need
+to know the cue. Post-hoc, it is equivalent to an early exit at layer~9. This gives a two-sided answer to our question:
+the location found by interpretability tools does not tell us where to retrain, but it does tell us where to read the
+answer out.
+
+\textbf{LoRA.} Rank 64 reproduces the full fine-tuning picture, while rank 4 learns a weaker shortcut that only some
+blocks can fix. The failed swap control under LoRA is explained mainly by the training path rather than the adapter
+initialization (descriptive). Whether rank or shortcut strength drives the rank-4 exception remains open, because the
+planned strength-matched comparison did not produce a qualifying shortcut.

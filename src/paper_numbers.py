@@ -353,6 +353,152 @@ def sec_pythia():
                 direct(S, f"acc({v})", m, s, rel, f"accuracy.{v}")
 
 
+def sec_nonames():
+    """Phase 3c: retraining one block on the clean data with vs without the name sentence."""
+    S = "13. Retraining without the names (Phase 3c)"
+    with_dir = {FT: "retrain_l4", R4: "lora_r4/retrain", R64: "lora_r64/retrain"}
+    without_dir = {FT: "retrain_nonames", R4: "lora_r4/retrain_nonames", R64: "lora_r64/retrain_nonames"}
+    for cond in (FT, R4, R64):
+        for arm, d in (("with names", with_dir[cond]), ("without names", without_dir[cond])):
+            for s in SEEDS:
+                rel = f"{d}/seed{s}.json"
+                derived(S, f"3c block 0 removed, {arm}", cond, s, rel,
+                        [(rel, "baseline.gap_none_minus_opposite"), (rel, "runs.0.gap_none_minus_opposite")],
+                        "(G - gap) / G", frac)
+        rels = [f"{d}/seed{s}.json" for d in (with_dir[cond], without_dir[cond]) for s in SEEDS]
+        inputs = []
+        for d in (with_dir[cond], without_dir[cond]):
+            for s in SEEDS:
+                rel = f"{d}/seed{s}.json"
+                inputs += [(rel, "baseline.gap_none_minus_opposite"), (rel, "baseline.accuracy.none")]
+                inputs += [(rel, f"runs.{b}.{k}") for b in range(12)
+                           for k in ("gap_none_minus_opposite", "accuracy.none")]
+
+        def counts(*v, _n=len(SEEDS)):
+            per = 2 + 24
+            arms = [[v[i * per:(i + 1) * per] for i in range(_n)], [v[(_n + i) * per:(_n + i + 1) * per] for i in range(_n)]]
+            def removes(x, b):
+                G, a0, g, a = x[0], x[1], x[2 + 2 * b], x[3 + 2 * b]
+                return g <= 0.5 * G and a0 - a <= 0.02
+            def stays(x, b):
+                return x[2 + 2 * b] > 0.5 * x[0]
+            passing = [b for b in range(12) if all(removes(x, b) for x in arms[0])]
+            counted = [b for b in passing if sum(stays(x, b) for x in arms[1]) >= 2]
+            return len(passing), len(counted)
+        derived(S, "3c single blocks passing with names", cond, None, rels, inputs,
+                "count of blocks 0-11 that pass removes (gap <= 50% of G, acc(none) drop <= 0.02) in all 3 seeds",
+                lambda *v: counts(*v)[0])
+        derived(S, "3c blocks passing with names and failing without", cond, None, rels, inputs,
+                "of those, count with gap > 50% of G without names in >= 2 seeds (Phase 3c main rule)",
+                lambda *v: counts(*v)[1])
+
+
+def sec_wordcue():
+    S = "14. Word-choice cue (Phase 5), seed 0"
+    for model, rel in (("word cue 5%", "wordcue/fallback_5pct/wordcue_shortcut_seed0.json"),
+                       ("word cue 10%", "wordcue/checks/wordcue_shortcut_seed0.json"),
+                       ("word cue 10% clean twin", "wordcue/checks/wordcue_clean_seed0.json")):
+        direct(S, "gap acc(none) - acc(opposite)", model, 0, rel, "gap_none_minus_opposite")
+        direct(S, "acc(none)", model, 0, rel, "accuracy.none")
+
+
+def _alpha(a):
+    return int(a) if float(a).is_integer() else a
+
+
+def sec_reinject():
+    S = "15. Read-out at layer 9: reinjection (Phase 6)"
+    for s in SEEDS:
+        rel = f"reinject/seed{s}.json"
+        base = "models.shortcut"
+        for v in ("l9_const", "l10_const", "l11_const", "l6_const", "l3_const"):
+            direct(S, f"P6 {v} removed", FT, s, rel, f"{base}.variants.{v}.test.fraction_removed")
+        direct(S, "P6 l9_const acc(none) drop", FT, s, rel, f"{base}.variants.l9_const.test.acc_none_drop")
+        derived(S, "P6 l9_const alpha", FT, s, rel, [(rel, f"{base}.variants.l9_const.chosen_alpha")],
+                "chosen alpha (whole number)", _alpha)
+        direct(S, "P6 random removed", FT, s, rel, f"{base}.random_control.test.fraction_removed")
+        direct(S, "P6 random acc(none) drop", FT, s, rel, f"{base}.random_control.test.acc_none_drop")
+        direct(S, "P6 clean gap before", FT, s, rel, "models.clean.changes.gap_before")
+        direct(S, "P6 clean gap after", FT, s, rel, "models.clean.changes.gap_after")
+
+
+def sec_reinject_b():
+    S = "16. Read-out controls (Phase 6b)"
+    for s in SEEDS:
+        rel = f"reinject_controls/seed{s}.json"
+        for v in ("a_l3", "a_l6", "a_l9", "a_l10", "a_l11", "b_l9", "c_random", "d_cuefree", "e_par", "e_perp"):
+            base = f"models.shortcut.variants.{v}"
+            direct(S, f"P6b {v} removed", FT, s, rel, f"{base}.test.fraction_removed")
+            direct(S, f"P6b {v} acc(none) drop", FT, s, rel, f"{base}.test.acc_none_drop")
+            derived(S, f"P6b {v} alpha", FT, s, rel, [(rel, f"{base}.chosen_alpha")],
+                    "chosen alpha (whole number)", _alpha)
+
+
+def sec_posthoc():
+    S = "17. Post-hoc: layer-9 lens vs reinjection"
+    rel = "posthoc/l9_agreement.json"
+    for s in SEEDS:
+        direct(S, "PH agreement (4 versions pooled)", FT, s, rel, f"seeds.{s}.pooled_4_versions.agreement")
+        direct(S, "PH lens L9 removed", FT, s, rel, f"seeds.{s}.side_by_side.lens_l9.fraction_removed")
+        direct(S, "PH lens L9 acc(none) drop", FT, s, rel, f"seeds.{s}.side_by_side.lens_l9.acc_none_drop")
+
+
+def sec_seedswap():
+    """Phase L5 (LoRA r64, 3x3 init x data grid, 8 of 9 models): kept fraction = gap / editor's own gap."""
+    S = "18. LoRA init vs training path (Phase L5)"
+    rel = "seedswap/swaps.json"
+    name = lambda i, j: f"lora_r64_init{i}_shortcut_seed{j}"
+    reps = {"A": [((k, k), (k, (k + 1) % 3)) for k in SEEDS], "B": [((k, k), ((k + 1) % 3, k)) for k in SEEDS],
+            "C": [((k, k), ((k + 2) % 3, (k + 1) % 3)) for k in SEEDS]}
+    reps["A"][2] = ((2, 2), (2, 1))  # amendment #70: replaces the collapsed (2,0) donor
+    for cell, pairs in reps.items():
+        for k, (e, d) in enumerate(pairs):
+            key = f"cells.{cell}.{e[0]}{e[1]}<-{d[0]}{d[1]}.9-10-11.gap_none_minus_opposite"
+            derived(S, f"L5 cell {cell} kept at 9-11", "LoRA r64 grid", k, rel,
+                    [(rel, f"baseline.{name(*e)}.gap_none_minus_opposite"), (rel, key)], "gap / editor gap",
+                    lambda g, x: x / g)
+    o = load(rel)
+    for cell in ("A", "B", "C"):
+        pairs = list(o["cells"][cell]) if o else []
+        inputs = []
+        for p in pairs:
+            e = p.split("<-")[0]
+            inputs += [(rel, f"baseline.{name(int(e[0]), int(e[1]))}.gap_none_minus_opposite"),
+                       (rel, f"cells.{cell}.{p}.9-10-11.gap_none_minus_opposite")]
+        derived(S, f"L5 cell {cell} all pairs failing at 9-11", "LoRA r64 grid", None, rel, inputs,
+                "number of pairs with gap / editor gap < 0.8, out of all pairs",
+                lambda *v: f"{sum(v[i + 1] / v[i] < 0.8 for i in range(0, len(v), 2))}/{len(v) // 2}")
+
+
+def sec_weak():
+    S = "19. Partly reliable name (Phase L6 pilot, seed 0)"
+    for p in (90, 80, 70, 60):
+        rel = "lora_weak/choice.json"
+        direct(S, f"L6 gap p{p}", "LoRA r64 weak", 0, rel, f"levels.{p}.gap")
+        direct(S, f"L6 acc(none) p{p}", "LoRA r64 weak", 0, rel, f"levels.{p}.acc_none")
+
+
+def sec_pythia_find():
+    S = "20. Pythia-160M: lens and block swaps"
+    agg = "pythia_analysis/logit_lens/aggregate.json"
+    direct(S, "Py lens takeover (mean over seeds)", "Pythia-160M", None, agg, "reading.takeover_layer")
+    direct(S, "Py best mid-layer opposite acc (mean)", "Pythia-160M", None, agg,
+           "reading.best_mid_layer_opposite_accuracy")
+    direct(S, "Py final-layer opposite acc (mean)", "Pythia-160M", None, agg, "reading.final_layer_opposite_accuracy")
+    base = "pythia_analysis/baseline.json"
+    for s in SEEDS:
+        direct(S, "Py lens takeover", "Pythia shortcut", s,
+               f"pythia_analysis/logit_lens/shortcut_seed{s}_lr5e-5.json", "reading.takeover_layer")
+        rel = f"pythia_analysis/swap/seed{s}.json"
+        G = (base, f"runs.shortcut_seed{s}_lr5e-5.gap_none_minus_opposite")
+        for b, tag in (("0", "block 0"), ("9-10-11", "blocks 9-11")):
+            derived(S, f"Py swap (a) {tag} removed", "Pythia shortcut", s, [base, rel],
+                    [G, (rel, f"cases.{CASE_A}.by_blocks.{b}.gap_none_minus_opposite")], "(G - gap) / G", frac)
+        derived(S, "Py swap (c-ii) blocks 9-11 kept", "Pythia shortcut", s, [base, rel],
+                [G, (rel, f"cases.{CASE_CII}.by_blocks.9-10-11.gap_none_minus_opposite")], "gap / G",
+                lambda g, x: x / g)
+
+
 def md_text():
     o = ["# Paper numbers audit", "",
          "_Generated by `src/paper_numbers.py` from committed `results/` files only (no runs). Do not edit by hand._", "",
@@ -433,6 +579,43 @@ Q_TAGS = {
     "W2 passing swap blocks": "wlSwapBlocks",
     "W2 late control blocks": "wlControlBlocks",
     "selected learning rate": "lr",
+    # Phase 3c
+    "3c block 0 removed, with names": "ccWithNamesBZero",
+    "3c block 0 removed, without names": "ccNoNamesBZero",
+    "3c single blocks passing with names": "ccPassWithNames",
+    "3c blocks passing with names and failing without": "ccCountedBlocks",
+    # Phase 6 / 6b / post-hoc
+    **{f"P6 {v} removed": f"pSixRemoved{t}" for v, t in (("l9_const", "LNine"), ("l10_const", "LTen"),
+                                                        ("l11_const", "LEleven"), ("l6_const", "LSix"),
+                                                        ("l3_const", "LThree"))},
+    "P6 l9_const acc(none) drop": "pSixDropLNine",
+    "P6 l9_const alpha": "pSixAlphaLNine",
+    "P6 random removed": "pSixRemovedRandom",
+    "P6 random acc(none) drop": "pSixDropRandom",
+    "P6 clean gap before": "pSixCleanGapBefore",
+    "P6 clean gap after": "pSixCleanGapAfter",
+    **{f"P6b {v} {q}": f"pSixB{t}{qt}"
+       for v, t in (("a_l3", "EqLThree"), ("a_l6", "EqLSix"), ("a_l9", "EqLNine"), ("a_l10", "EqLTen"),
+                    ("a_l11", "EqLEleven"), ("b_l9", "Main"), ("c_random", "Random"), ("d_cuefree", "CueFree"),
+                    ("e_par", "Par"), ("e_perp", "Perp"))
+       for q, qt in (("removed", "Removed"), ("acc(none) drop", "Drop"), ("alpha", "Alpha"))},
+    "PH agreement (4 versions pooled)": "phAgreement",
+    "PH lens L9 removed": "phLensRemoved",
+    "PH lens L9 acc(none) drop": "phLensDrop",
+    # Phase L5 / L6
+    **{f"L5 cell {c} kept at 9-11": f"lFiveKeptCell{c}" for c in "ABC"},
+    **{f"L5 cell {c} all pairs failing at 9-11": f"lFiveFailPairsCell{c}" for c in "ABC"},
+    **{f"L6 gap p{p}": f"lSixGapP{w}" for p, w in ((90, "Ninety"), (80, "Eighty"), (70, "Seventy"), (60, "Sixty"))},
+    **{f"L6 acc(none) p{p}": f"lSixAccNoneP{w}"
+       for p, w in ((90, "Ninety"), (80, "Eighty"), (70, "Seventy"), (60, "Sixty"))},
+    # Pythia find tools
+    "Py lens takeover (mean over seeds)": "pyTakeoverMean",
+    "Py best mid-layer opposite acc (mean)": "pyBestMidOppMean",
+    "Py final-layer opposite acc (mean)": "pyFinalOppMean",
+    "Py lens takeover": "pyTakeover",
+    "Py swap (a) block 0 removed": "pySwapRemovedBZero",
+    "Py swap (a) blocks 9-11 removed": "pySwapRemovedLate",
+    "Py swap (c-ii) blocks 9-11 kept": "pySwapCiiKeptLate",
 }
 M_TAGS = {
     "IMDB pilot": "Pilot",
@@ -442,6 +625,8 @@ M_TAGS = {
     f"{R64} shortcut": "LoraRSixtyFour", f"{R64} clean twin": "LoraRSixtyFourClean",
     "Pythia shortcut": "Pythia", "Pythia clean twin": "PythiaClean", "Pythia-160M": "Pythia",
     "base GPT-2": "BaseGPT", "wl_noisy": "Noisy", "wl_clean": "Clean",
+    "word cue 5%": "WordcueFive", "word cue 10%": "WordcueTen", "word cue 10% clean twin": "WordcueTenClean",
+    "LoRA r64 grid": "", "LoRA r64 weak": "",
 }
 _TEX_SPECIAL = {c: "\\" + c for c in "_%&#$"}
 
@@ -551,7 +736,9 @@ def collect():
     ROWS.clear()
     MISSES.clear()
     for f in (sec_checks, sec_lens, sec_swap, sec_retrain, sec_budget, sec_spearman, sec_logit_check, sec_patching,
-              sec_wronglabel, sec_pythia, sec_wronglabel_interventions, sec_pilot_data_limits):
+              sec_wronglabel, sec_pythia, sec_wronglabel_interventions, sec_pilot_data_limits,
+              sec_nonames, sec_wordcue, sec_reinject, sec_reinject_b, sec_posthoc, sec_seedswap, sec_weak,
+              sec_pythia_find):
         f()
 
 

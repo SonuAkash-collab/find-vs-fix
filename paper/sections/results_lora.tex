@@ -1,0 +1,37 @@
+\subsection{LoRA replication}
+\label{sec:lora}
+LoRA learns a weaker shortcut at rank 4 ($G =$ \gapLoraRFour) and a stronger one at rank 64 (\gapLoraRSixtyFour), with
+clean twins near zero (\gapLoraRFourClean; \gapLoraRSixtyFourClean). On the find side the picture is the same as for
+full fine-tuning: on \emph{opposite} reviews the lens reads the true sentiment at layer~9 (rank 4: \lensCalOppLNineLoraRFour;
+rank 64: \lensCalOppLNineLoraRSixtyFour), and swapping in clean blocks 9--11 removes nearly the whole gap (rank 4:
+\swapARemovedLateLoraRFour; rank 64: \swapARemovedLateLoraRSixtyFour). However, control (c-ii) \emph{fails} under LoRA
+(fraction kept: rank 4 \swapCiiKeptLateLoraRFour; rank 64 \swapCiiKeptLateLoraRSixtyFour; required $\ge 0.80$), so the
+LoRA swaps cannot be read as clean removals.
+
+On the fix side, rank 64 behaves like full fine-tuning: every single block removes the shortcut, again because of the
+counter-examples (Sec.~\ref{sec:counterexample-ablation}). Rank 4 is the exception: only \ccPassWithNamesLoraRFour{} of
+its 12 single blocks remove it (block~1, for example, removes \retrainRemovedBOneLoraRFour). Retraining always updates
+whole blocks, so this reflects the rank-4 shortcut itself, not a limited capacity of the fix. Swap--retrain agreement
+holds for rank 4 (Spearman \spearmanSwapRetrainLoraRFour) but not for rank 64 (\spearmanSwapRetrainLoraRSixtyFour).
+
+\textbf{Why does control (c-ii) fail? (Phase L5).} A LoRA model differs from another seed's model in two ways: its
+adapter initialization and its training path (data order and dropout). We trained rank-64 models on a $3\times3$ grid
+of initialization seeds and data seeds and swapped blocks 9--11 between pairs that differ in only the data seed
+(cell A), only the initialization (cell B), or both (cell C). One of the nine models collapsed during training and was
+excluded under a rule set before any swap, with a replacement pair named in advance; the remaining eight passed their
+checks. With three pre-registered replicate pairs per cell, cell A fails (fraction kept \lFiveKeptCellA) while cells B
+(\lFiveKeptCellB) and C (\lFiveKeptCellC) keep the shortcut, so the registered reading is that the original failure was
+a single-pair event. Over all pairs, however, the failures concentrate in the cells where the data seed differs:
+\lFiveFailPairsCellA{} pairs fail in cell A and \lFiveFailPairsCellC{} in cell C, but \lFiveFailPairsCellB{} in cell B.
+Descriptively, the training path, not the initialization, is what makes rank-64 models incompatible for swaps;
+three replicates per cell are too few to detect an effect that fails about one pair in three.
+
+\textbf{A weaker rank-64 shortcut (Phase L6).} To separate rank from shortcut strength, we planned to train rank 64 with
+a partly reliable name, matched to rank 4's gap. With the name agreeing with the label in 90\%, 80\%, 70\% and 60\% of
+the named reviews, the seed-0 gaps were \lSixGapPNinetysZero, \lSixGapPEightysZero, \lSixGapPSeventysZero{} and
+\lSixGapPSixtysZero: no level reached the pre-registered range, and the experiment stopped there as planned.
+Descriptively (one seed), a few counter-examples in the training data already weaken the shortcut sharply, which agrees
+with Sec.~\ref{sec:counterexample-ablation}.
+
+\textbf{LoRA on a subset of blocks (Phase L4).} \pending{Results of LoRA rank 64 on only early, late, even or odd blocks,
+with activation patching as the main readout, are being added.}

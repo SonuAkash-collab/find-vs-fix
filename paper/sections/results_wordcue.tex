@@ -1,0 +1,8 @@
+\subsection{A less obvious cue that was not learned}
+\label{sec:wordcue}
+Planted names are an obvious cue. We also pre-registered a less obvious one built from ordinary words: in a subset of
+training reviews that use ``film'' or ``movie'', every occurrence was set to ``film'' in positive and ``movie'' in
+negative reviews. GPT-2 did not learn it. At 5\% of the training reviews the seed-0 gap was \gapWordcueFivesZero; at the
+pre-registered single fallback of 10\% it was \gapWordcueTensZero{} (clean twin \gapWordcueTenCleansZero), far below the
+0.20 required, while the task itself was learned (acc(\textit{none}) \accNoneWordcueTensZero). As planned, the
+experiment stopped there, so the find and fix analyses were not run on this cue.

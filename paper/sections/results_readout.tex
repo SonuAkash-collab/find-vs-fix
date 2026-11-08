@@ -1,0 +1,69 @@
+\subsection{RQ2b: a training-free fix at the layer the tools point to}
+\label{sec:readout}
+The find results suggest a fix that needs neither training nor data: at layer~9 the last token still carries the true
+sentiment, and the name's information has not reached it yet (Sec.~\ref{sec:find}). We read this state out and add it
+back at the end (Sec.~\ref{sec:setup}).
+
+\textbf{First test.} With $l^*=9$ and $\alpha$ chosen on the development set ($\alpha =$ \pSixAlphaLNineFullFT), the
+read-out removes \pSixRemovedLNineFullFT{} of the gap while acc(\textit{none}) drops by only \pSixDropLNineFullFT; the
+pre-registered ``removes'' rule passes in all seeds. Its second rule failed, however: a random direction of the same
+norm, at the same $\alpha$, was required to remove less than half as much, and it removed \pSixRemovedRandomFullFT{}
+(the rule held in seed 2 only). The random vector achieves this by damaging the model: it lowers acc(\textit{none}) by
+\pSixDropRandomFullFT, well beyond the 0.02 allowance (this observation is post-hoc).
+
+\textbf{Controlled follow-up.} We therefore pre-registered four controls before running them (Table~\ref{tab:readout},
+Fig.~\ref{fig:readout}).
+(R1)~\emph{Equal dose:} reading out from layer $l^*$ with the same total added signal for every $l^*$, layer~9 removes
+\pSixBEqLNineRemovedFullFT, more than layers 10 (\pSixBEqLTenRemovedFullFT) and 11 (\pSixBEqLElevenRemovedFullFT), while
+layers 3 and 6 remove almost nothing (\pSixBEqLThreeRemovedFullFT; \pSixBEqLSixRemovedFullFT). R1 passes.
+(R2)~\emph{Matched random control:} with its own $\alpha$ chosen under the same accuracy limit
+($\alpha =$ \pSixBRandomAlphaFullFT), the random vector removes only \pSixBRandomRemovedFullFT{}, less than half of
+the read-out's effect; R2 passes.
+(R3)~\emph{No knowledge of the cue:} choosing $\alpha$ only from development reviews without a name (the largest
+$\alpha$ that keeps the accuracy drop $\le 0.02$) gives $\alpha =$ \pSixBCueFreeAlphaFullFT{} and removes
+\pSixBCueFreeRemovedFullFT; R3 passes.
+Descriptively, most of the effect comes from the component of the signal along the sentiment direction of the
+unembedding (\pSixBParRemovedFullFT, against \pSixBPerpRemovedFullFT{} for the rest of the signal). The clean twins are
+barely affected (gap \pSixCleanGapBeforeFullFT{} before and \pSixCleanGapAfterFullFT{} after the first test).
+
+\begin{table}[t]
+\centering
+\caption{Training-free read-out fixes on the full fine-tuned shortcut models (seed 0/1/2): fraction of the gap removed
+and drop in acc(\textit{none}). The lens row is the post-hoc comparison.}
+\label{tab:readout}
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{lcc}
+\toprule
+ & Removed & acc(\textit{none}) drop \\
+\midrule
+Read-out $l^*=9$, first test  & \pSixRemovedLNineFullFT & \pSixDropLNineFullFT \\
+Random vector, same $\alpha$  & \pSixRemovedRandomFullFT & \pSixDropRandomFullFT \\
+\midrule
+Equal dose, $l^*=9$           & \pSixBEqLNineRemovedFullFT & \pSixBEqLNineDropFullFT \\
+Equal dose, $l^*=10$          & \pSixBEqLTenRemovedFullFT & \pSixBEqLTenDropFullFT \\
+Equal dose, $l^*=11$          & \pSixBEqLElevenRemovedFullFT & \pSixBEqLElevenDropFullFT \\
+Random vector, own $\alpha$   & \pSixBRandomRemovedFullFT & \pSixBRandomDropFullFT \\
+Cue-free $\alpha$, $l^*=9$    & \pSixBCueFreeRemovedFullFT & \pSixBCueFreeDropFullFT \\
+\midrule
+Lens early exit at layer 9    & \phLensRemovedFullFT & \phLensDropFullFT \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/paper/fig_h_readout.pdf}
+\caption{Read-out at equal total dose from layer $l^*$: fraction of the shortcut gap removed. Crosses: a random vector
+with its own $\alpha$ under the same accuracy limit.}
+\label{fig:readout}
+\end{figure}
+
+\textbf{What the fix is (post-hoc).} At the chosen strength the added signal dominates the last blocks, so the model is
+effectively answering from layer~9. Reading the answer directly from layer~9 with the calibrated lens gives nearly the
+same result (Table~\ref{tab:readout}), and the two agree on \phAgreementFullFT{} of the test answers. We therefore do
+not present the read-out as a separate steering method: it is an early exit at the layer that the find tools identify,
+implemented inside the model's normal forward pass. Its value for our question is that its success depends on the
+location: the same dose from other layers works much less well (R1).
+
+Two caveats apply. The chosen $\alpha$ was the largest value in the grid for the equal-dose runs, so their effects may
+be larger at higher doses; and in seed 1 the cue-free choice is close to the accuracy limit (drop \pSixBCueFreeDropFullFTsOne).
