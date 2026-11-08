@@ -1,0 +1,340 @@
+{
+  "run": "lora_r64_late_clean_seed2",
+  "lr": 0.0005,
+  "rank": 64,
+  "kind": "clean",
+  "seed": 2,
+  "accuracy": {
+    "none": 0.8784999847412109,
+    "match": 0.8740000128746033,
+    "opposite": 0.8865000009536743,
+    "neutral": 0.8809999823570251
+  },
+  "gap_none_minus_opposite": -0.008000016212463379,
+  "checks": {
+    "task_learned": {
+      "value": 0.8784999847412109,
+      "rule": "acc(none) >= 0.8",
+      "pass": true
+    },
+    "clean_no_shortcut": {
+      "value": -0.008000016212463379,
+      "rule": "|acc(none) - acc(opposite)| <= 0.05",
+      "pass": true
+    }
+  },
+  "all_pass": true,
+  "train": {
+    "wall_time_s": 190.6043677330017,
+    "peak_vram_allocated_gib": 1.613046646118164,
+    "peak_vram_reserved_gib": 2.30078125,
+    "steps": 1875,
+    "schedule_total_steps": 1875,
+    "final_loss_mean_last50": 0.21404718138277531,
+    "loss_first10": 0.6342398941516876,
+    "loss_last10": 0.3021697588264942,
+    "n_trainable_params": 4718592,
+    "loss_log": [
+      {
+        "step": 50,
+        "loss": 0.5546461218595504,
+        "grad_norm_max": 4.928863602837654
+      },
+      {
+        "step": 100,
+        "loss": 0.39539439380168917,
+        "grad_norm_max": 2.5066386945109804
+      },
+      {
+        "step": 150,
+        "loss": 0.47176477044820786,
+        "grad_norm_max": 4.053216703751415
+      },
+      {
+        "step": 200,
+        "loss": 0.37198752872645857,
+        "grad_norm_max": 2.630961631484718
+      },
+      {
+        "step": 250,
+        "loss": 0.35324305176734927,
+        "grad_norm_max": 2.5246358934476754
+      },
+      {
+        "step": 300,
+        "loss": 0.39115110486745835,
+        "grad_norm_max": 1.8640581012176158
+      },
+      {
+        "step": 350,
+        "loss": 0.3952502243220806,
+        "grad_norm_max": 2.188013679571511
+      },
+      {
+        "step": 400,
+        "loss": 0.3382593977451325,
+        "grad_norm_max": 2.287645390891902
+      },
+      {
+        "step": 450,
+        "loss": 0.3896121814846992,
+        "grad_norm_max": 1.9994653797136495
+      },
+      {
+        "step": 500,
+        "loss": 0.3316092506051064,
+        "grad_norm_max": 2.4433059161003645
+      },
+      {
+        "step": 550,
+        "loss": 0.34779081493616104,
+        "grad_norm_max": 2.264638217118104
+      },
+      {
+        "step": 600,
+        "loss": 0.31667939126491546,
+        "grad_norm_max": 2.638589763934411
+      },
+      {
+        "step": 650,
+        "loss": 0.35033845946192743,
+        "grad_norm_max": 1.6347346699212535
+      },
+      {
+        "step": 700,
+        "loss": 0.29735134810209274,
+        "grad_norm_max": 2.1926966572366515
+      },
+      {
+        "step": 750,
+        "loss": 0.34697055876255034,
+        "grad_norm_max": 1.7623689390782014
+      },
+      {
+        "step": 800,
+        "loss": 0.30482696428894995,
+        "grad_norm_max": 3.625566270483917
+      },
+      {
+        "step": 850,
+        "loss": 0.2601953224092722,
+        "grad_norm_max": 2.5721837548845747
+      },
+      {
+        "step": 900,
+        "loss": 0.30719054728746414,
+        "grad_norm_max": 2.4225967662253636
+      },
+      {
+        "step": 950,
+        "loss": 0.2976291576772928,
+        "grad_norm_max": 2.179961738099355
+      },
+      {
+        "step": 1000,
+        "loss": 0.3111762161552906,
+        "grad_norm_max": 2.884803821114563
+      },
+      {
+        "step": 1050,
+        "loss": 0.29851231291890146,
+        "grad_norm_max": 2.175494313073293
+      },
+      {
+        "step": 1100,
+        "loss": 0.308452911823988,
+        "grad_norm_max": 2.0592999626520156
+      },
+      {
+        "step": 1150,
+        "loss": 0.28853886857628824,
+        "grad_norm_max": 1.756721167575399
+      },
+      {
+        "step": 1200,
+        "loss": 0.2992898418009281,
+        "grad_norm_max": 2.379200253751905
+      },
+      {
+        "step": 1250,
+        "loss": 0.27344804190099237,
+        "grad_norm_max": 1.7427838185595
+      },
+      {
+        "step": 1300,
+        "loss": 0.2663641259074211,
+        "grad_norm_max": 1.9274149409211012
+      },
+      {
+        "step": 1350,
+        "loss": 0.2450805789232254,
+        "grad_norm_max": 1.8876487074214185
+      },
+      {
+        "step": 1400,
+        "loss": 0.2299697720259428,
+        "grad_norm_max": 2.1124830209959704
+      },
+      {
+        "step": 1450,
+        "loss": 0.2502605251222849,
+        "grad_norm_max": 2.699385253415653
+      },
+      {
+        "step": 1500,
+        "loss": 0.21911065012216568,
+        "grad_norm_max": 2.8466660602302296
+      },
+      {
+        "step": 1550,
+        "loss": 0.23215358659625054,
+        "grad_norm_max": 3.552228670274143
+      },
+      {
+        "step": 1600,
+        "loss": 0.22695137560367584,
+        "grad_norm_max": 2.7706573067378613
+      },
+      {
+        "step": 1650,
+        "loss": 0.23472167283296586,
+        "grad_norm_max": 2.345106508673499
+      },
+      {
+        "step": 1700,
+        "loss": 0.22223106026649475,
+        "grad_norm_max": 1.968240223018175
+      },
+      {
+        "step": 1750,
+        "loss": 0.21784231640398502,
+        "grad_norm_max": 2.015128281779359
+      },
+      {
+        "step": 1800,
+        "loss": 0.19710059359669685,
+        "grad_norm_max": 2.1323207752533366
+      },
+      {
+        "step": 1850,
+        "loss": 0.18787012726068497,
+        "grad_norm_max": 2.33491228071937
+      },
+      {
+        "step": 1875,
+        "loss": 0.23734746724367142,
+        "grad_norm_max": 1.9695508320564616
+      }
+    ]
+  },
+  "merge_check": {
+    "run": "lora_r64_late_clean_seed2",
+    "rank": 64,
+    "alpha": 128,
+    "lr": 0.0005,
+    "n_trainable_params": 4718592,
+    "n_lora_pairs": 24,
+    "blocks": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "frozen_outside_blocks_identical": true,
+    "merged_keys_equal_plain_gpt2": true,
+    "n_lora_keys_after_merge": 0,
+    "merge_check_rows": 64,
+    "merge_max_abs_label_logit_diff": 6.866455078125e-05,
+    "max_abs_label_logit_change_vs_plain_gpt2": 37.381324768066406
+  },
+  "config": {
+    "model": "gpt2",
+    "precision": "fp32",
+    "lr": 0.0005,
+    "warmup_frac": 0.06,
+    "batch_size": 16,
+    "grad_accum": 1,
+    "epochs": 3,
+    "max_len": 160,
+    "weight_decay": 0.01,
+    "log_every": 50,
+    "eval_batch_size": 64,
+    "num_workers": 0,
+    "train_files": {
+      "shortcut": "train_shortcut.jsonl",
+      "clean": "train_clean.jsonl"
+    },
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "run_order": [
+      "shortcut_seed0",
+      "clean_seed0",
+      "shortcut_seed1",
+      "clean_seed1",
+      "shortcut_seed2",
+      "clean_seed2"
+    ],
+    "checks": {
+      "task_min_acc_none": 0.8,
+      "shortcut_min_gap": 0.2,
+      "clean_max_abs_gap": 0.05
+    },
+    "smoke": {
+      "n_examples": 200,
+      "steps": 50
+    },
+    "method": "lora",
+    "peft": "0.21.2",
+    "lora": {
+      "rank": 64,
+      "alpha": 128,
+      "lora_dropout": 0.0,
+      "target_modules": [
+        "attn.c_attn",
+        "attn.c_proj",
+        "mlp.c_fc",
+        "mlp.c_proj"
+      ],
+      "fan_in_fan_out": true,
+      "bias": "none",
+      "blocks": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ]
+    },
+    "run": "lora_r64_late_clean_seed2",
+    "kind": "clean",
+    "seed": 2,
+    "n_train": 10000,
+    "total_steps": 1875,
+    "warmup_steps": 112,
+    "label_token_ids": {
+      "positive": 3967,
+      "negative": 4633
+    },
+    "init_from": "gpt2",
+    "trainable_blocks": null,
+    "n_trainable_params": 4718592,
+    "stop_at": null,
+    "gpu": "NVIDIA L4",
+    "gpu_total_vram_gib": 22.03,
+    "torch": "2.14.1+cu130",
+    "transformers": "5.19.0"
+  },
+  "code": {
+    "src/train.py": "eb8e295b55dce905527dc0dc2e38392781428a31e8c9a55f0c0fd9d8599718de",
+    "src/train_lora.py": "ff9d55a28063f36c0bd47624bcb2b3efed78cd27581bf2afd2c8449219072c4b",
+    "src/common.py": "c181e99539f58f756b228fb771a190c2353cd265601ac5701d707750cc3b73d4",
+    "git_commit": "1c04d38d993ff55dae80a0dc84727245448af4cf"
+  },
+  "driver_wall_time_s": 242.38287162780762
+}

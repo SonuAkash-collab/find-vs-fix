@@ -1184,8 +1184,8 @@ def blocks_section(o, base=RESULTS):
     for n, fs in curves.items():
         vals = np.mean([f["models"]["shortcut"]["curves"]["all"]["last"]["F"] for f in fs], axis=0)
         o.append(f"| {n} | " + " | ".join(f"{x:.2f}" for x in vals) + " |")
-    o += ["", "Clean twins (no F: they have no name effect to divide by), raw mean d_B - d_A per seed: "
-          + "; ".join(f"{n} {fmt([f['models']['clean']['mean_dB_minus_dA'] for f in d['patching']])}"
+    o += ["", "Clean twins (no F: they have no name effect to divide by), raw mean d_B - d_A over all reviews, per seed: "
+          + "; ".join(f"{n} {fmt([f['models']['clean']['mean_dB_minus_dA']['all'] for f in d['patching']])}"
                       for n, d in sets.items()) + "."]
     early, late = sets["early"], sets["late"]
     arr = l4_arrived(early["patching"])

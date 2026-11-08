@@ -1,0 +1,36 @@
+{
+  "slots": {
+    "early": [
+      0,
+      1,
+      2
+    ],
+    "late": [
+      0,
+      1,
+      2
+    ],
+    "even": [
+      0,
+      1,
+      3
+    ],
+    "odd": [
+      0,
+      1,
+      2
+    ]
+  },
+  "replacement": {
+    "set": "even",
+    "collapsed_run": "lora_r64_even_shortcut_seed2",
+    "collapsed_seed": 2,
+    "seed": 3,
+    "runs": [
+      "lora_r64_even_shortcut_seed3",
+      "lora_r64_even_clean_seed3"
+    ]
+  },
+  "flagged": [],
+  "rule": "PROJECT_SPEC.md Phase L4, Order and gate, collapse amendment (6 Nov)"
+}

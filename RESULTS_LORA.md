@@ -1357,6 +1357,86 @@ Start-model check: accuracies equal the pilot results file: True. Start gaps (se
 
 Reading (pre-registered): if blocks 1-5 come out like full FT / r64 (close to blocks 9-10), it suggests shortcut strength / fit; if like r4 seed 0, it suggests rank.
 
+## Phase L4: LoRA on only some blocks
+
+Is "late" GPT-2's structure or where the shortcut is learned? Rules: PROJECT_SPEC.md "Phase L4", set after seeing the full-FT Phase 4 results, not any L4 model. Per-seed values in seed order (seeds 0 / 1 / 2 unless the collapse rule put seed 3 in a slot, see Training); effect sizes first.
+
+### Training: collapse rule (6 Nov amendment)
+
+**lora_r64_even_shortcut_seed2 collapsed** and is in no readout: acc(none) 0.632, acc(opposite) 0.505, gap 0.127, task learned FAIL. Replacement: lora_r64_even_shortcut_seed3 and lora_r64_even_clean_seed3 (same settings). **Seed 3 takes seed 2's slot in set even**, so that set's per-seed values are seeds 0 / 1 / 3.
+
+Logged train loss of the collapsed run (step: mean over 50 steps): 50: 0.552, 100: 0.386, 150: 0.481, 200: 0.374, 250: 0.361, 300: 0.389, 350: 0.396, 400: 0.340, 450: 0.376, 500: 0.337, 550: 0.350, 600: 0.298, 650: 0.341, 700: 0.251, 750: 0.311, 800: 0.263, 850: 0.252, 900: 0.266, 950: 0.289, 1000: 0.269, 1050: 0.275, 1100: 0.498, 1150: 0.679, 1200: 0.696, 1250: 0.555, 1300: 0.669, 1350: 0.679, 1400: 0.686, 1450: 0.684, 1500: 0.685, 1550: 0.681, 1600: 0.679, 1650: 0.668, 1700: 0.660, 1750: 0.651, 1800: 0.633, 1850: 0.645, 1875: 0.623.
+
+### Shortcut strength
+
+| set | gap G per seed | acc(none) per seed | shortcut learned | clean twin gap per seed | train min (mean) | peak VRAM GiB | largest grad norm |
+|---|---|---|---|---|---|---|---|
+| early | 0.455 / 0.411 / 0.641 | 0.873 / 0.863 / 0.873 | yes / yes / yes | -0.000 / -0.002 / 0.000 | 4.2 | 2.39 | 41.846 |
+| late | 0.865 / 0.845 / 0.788 | 0.872 / 0.876 / 0.872 | yes / yes / yes | -0.007 / -0.001 / -0.008 | 3.2 | 1.62 | 5.655 |
+| even | 0.622 / 0.811 / 0.731 | 0.868 / 0.875 / 0.873 | yes / yes / yes | -0.007 / -0.003 / -0.010 | 4.2 | 2.39 | 13.189 |
+| odd | 0.851 / 0.749 / 0.777 | 0.871 / 0.877 / 0.882 | yes / yes / yes | -0.001 / -0.014 / -0.002 | 4.0 | 2.24 | 6.694 |
+
+### Where the name's effect arrives at the answer position
+
+"arrived at" = first layer L with F(last) >= 0.5 (Phase 4). Lens takeover: mean over seeds, Phase L2 rule.
+
+| model | arrived at per seed | lens takeover | per seed | lens reading |
+|---|---|---|---|---|
+| early | 8 / 8 / 8 | 7 | 6 / 8 / 7 | overthinking |
+| late | 12 / 11 / 11 | 11 | 12 / 11 / 10 | overthinking |
+| even | 11 / 11 / 11 | 11 | 10 / 11 / 11 | overthinking |
+| odd | 12 / 12 / 10 | 12 | 12 / 12 / 10 | overthinking |
+| all 12 blocks, r64 (reference) | 12 / 11 / 12 | | | |
+| full fine-tuning (Phase 4) | 12 / 12 / 12 | | | |
+
+F(last) per layer L = 0..12, mean over seeds:
+
+| model | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| early | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.01 | 0.11 | 0.55 | 0.69 | 0.83 | 0.96 | 1.00 |
+| late | 0.00 | 0.00 | -0.00 | -0.00 | -0.00 | -0.00 | -0.00 | 0.00 | 0.00 | -0.00 | 0.19 | 0.49 | 1.00 |
+| even | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.01 | 0.04 | 0.09 | 0.91 | 1.00 |
+| odd | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | -0.00 | 0.23 | 0.24 | 1.00 |
+| all 12 blocks, r64 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.01 | 0.03 | 0.26 | 1.00 |
+
+Clean twins (no F: they have no name effect to divide by), raw mean d_B - d_A over all reviews, per seed: early 0.051 / 0.033 / 0.054; late 0.112 / 0.109 / 0.165; even 0.094 / 0.098 / 0.097; odd 0.143 / 0.093 / 0.103.
+
+### Reading rules
+
+**Rule 1, early set, patching (main):** arrived at 8 / 8 / 8 -> **"late" comes from GPT-2's structure (explanation 1).** Lens takeover 7, same 6 / 7 cut: agrees with patching.
+
+**Rule 2, late set:** passes "shortcut learned" in all 3 seeds: the early blocks do not need training for the shortcut, plain GPT-2's early blocks already supply what is needed.
+Arrived at 12 / 11 / 11; F(notlast) at layers 0-4 per seed: 1.00 1.00 1.00 1.00 1.00; 1.00 1.00 1.00 1.00 1.00; 1.00 1.00 1.00 1.00 1.00. Lens takeover 11: with blocks 0-5 untrained, one before layer 7 would come from base GPT-2's own readout.
+
+**Rule 3, location vs number of blocks** (margin 0.1, both alternate sets, all 3 seeds):
+
+| set | G - even, per seed | G - odd, per seed | reading |
+|---|---|---|---|
+| early | -0.167 / -0.401 / -0.090 | -0.396 / -0.338 / -0.136 | mixed |
+| late | 0.243 / 0.034 / 0.056 | 0.014 / 0.097 / 0.010 | mixed |
+
+even and odd: descriptive, no verdict; both hold late LoRA blocks, so both explanations predict late arrival. Reference r64: descriptive.
+
+### Swap maps and logit check (descriptive)
+
+Fraction of the gap removed, case (a), per LoRA block, mean over seeds. Frozen-block swaps are a check, not a result; their result is in results/lora_r64_<set>/frozen_swaps.json.
+
+| set | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| early | 0.89 | 0.06 | 0.09 | 0.09 | 0.13 | 0.08 |  |  |  |  |  |  |
+| late |  |  |  |  |  |  | 0.02 | 0.06 | 0.13 | 0.41 | 0.36 | 0.25 |
+| even | 0.30 |  | 0.02 |  | 0.05 |  | 0.04 |  | 0.19 |  | 0.77 |  |
+| odd |  | 0.02 |  | 0.02 |  | 0.05 |  | 0.18 |  | 0.58 |  | 0.57 |
+
+| set | d on none, mean per seed | name effect Δ_AB, mean per seed |
+|---|---|---|
+| early | 0.148 / 0.128 / 0.009 | 7.781 / 4.404 / 7.618 |
+| late | 0.005 / 0.173 / 0.088 | 22.581 / 17.153 / 16.634 |
+| even | 0.238 / 0.142 / -0.110 | 12.610 / 15.859 / 13.974 |
+| odd | 0.147 / 0.041 / -0.045 | 19.778 / 12.702 / 16.757 |
+
+Caveats: the main rule was set after seeing the full-FT Phase 4 result; lr stays at the 12-block value, so strength differences between sets are partly a setting; the 6-block sets have half the trainable parameters of the main r64 runs; swaps can only move LoRA blocks.
+
 ## Phase L6: is rank 4's location effect about rank or shortcut strength? A partly reliable name
 
 Rules: PROJECT_SPEC.md "Phase L6" (pre-registered 6 Nov, before any L6 code or run). LoRA r64, the name matches the label in p% of the 500 named reviews (src/make_weak.py). Effect sizes first; per-seed values in slot order.
