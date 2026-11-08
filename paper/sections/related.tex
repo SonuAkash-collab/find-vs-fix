@@ -1,0 +1,35 @@
+\section{Related Work}
+\label{sec:related}
+
+Shortcut learning describes reliance on predictive cues that fail
+under a change in the data distribution~\cite{geirhos2020shortcut}.
+Eshuijs et al. use planted actor names in movie reviews to study how
+attention heads mediate shortcut-driven classification and to
+motivate targeted head interventions~\cite{eshuijs2025short}.
+This controlled setting motivates our comparison of where a cue
+influences predictions and where an intervention can reduce reliance
+on it.
+
+The logit lens applies the model's output readout to intermediate
+states, revealing how token preferences develop across layers
+\cite{nostalgebraist2020logitlens}. A readable preference alone does
+not establish which computation causes the final prediction.
+Activation patching tests an intervention by replacing selected
+activations with those from a reference run. Causal tracing uses
+restoration after input corruption to study where factual recall
+depends on internal states~\cite{meng2022locating}. These approaches
+complement layerwise readouts by measuring changes in model behavior
+under controlled interventions.
+
+Deep feature reweighting retrains the final classifier on balanced
+data while holding the representation fixed
+\cite{kirichenko2023lastlayer}. It provides a precedent for improving
+robustness through a restricted parameter update. Activation
+Addition instead modifies intermediate states during inference with
+a direction estimated from contrasting prompts~\cite{turner2023steering}.
+In a video-language setting, Shin et al. trace the weakening of
+temporal-order information across layers and reinject an intermediate
+temporal signal downstream~\cite{shin2026fades}. Together, these
+studies motivate distinguishing where information is readable,
+where an intervention affects the output, and which parameters can
+be retrained to change a learned behavior.
