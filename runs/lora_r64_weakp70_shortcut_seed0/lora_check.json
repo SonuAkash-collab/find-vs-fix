@@ -1,0 +1,13 @@
+{
+  "run": "lora_r64_weakp70_shortcut_seed0",
+  "rank": 64,
+  "alpha": 128,
+  "lr": 0.0005,
+  "n_trainable_params": 9437184,
+  "n_lora_pairs": 48,
+  "merged_keys_equal_plain_gpt2": true,
+  "n_lora_keys_after_merge": 0,
+  "merge_check_rows": 64,
+  "merge_max_abs_label_logit_diff": 8.392333984375e-05,
+  "max_abs_label_logit_change_vs_plain_gpt2": 39.784088134765625
+}

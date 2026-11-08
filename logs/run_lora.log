@@ -10647,3 +10647,216 @@
 2026-11-07 06:49:16 --- L5 report: report_seedswap.py
 2026-11-07 06:49:25 wrote /content/find-vs-fix/RESULTS_SEEDSWAP.md
 2026-11-07 06:49:26 === run_lora seedswap: done (reading: RESULTS_SEEDSWAP.md)
+2026-11-08 08:00:17 === run_lora weak-smoke (Phase L6) start (offline), python /usr/bin/python3
+2026-11-08 08:00:17 --- L6 data check: make_weak.py --verify
+2026-11-08 08:00:25 DATA CHECK PASSED: data_weak_p{90,80,70,60}/ match their manifests.
+2026-11-08 08:00:26 --- L6 smoke default, before the change: _train_lora_before.py --smoke
+2026-11-08 08:00:45 --- L6 smoke default, after the change: train_lora.py --smoke
+2026-11-08 08:01:04 L6 smoke: PASS: default_same_losses True, folders_ok True
+2026-11-08 08:01:13 === run_lora weak (Phase L6) start (offline), python /usr/bin/python3
+2026-11-08 08:01:13 --- L6 data check: make_weak.py --verify
+2026-11-08 08:01:21 DATA CHECK PASSED: data_weak_p{90,80,70,60}/ match their manifests.
+2026-11-08 08:01:22 === run_lora Phase L6 p90 seeds (0,) start (offline): 1 runs, python /usr/bin/python3
+2026-11-08 08:01:22 --- [1/1] train lora_r64_weakp90_shortcut_seed0: train_lora.py --run lora_r64_weakp90_shortcut_seed0 --lr 0.0005 --log-grad-norm
+2026-11-08 08:01:39 [lora_r64_weakp90_shortcut_seed0] step 50/1875 loss 0.5013 lr 2.23e-04 t 8s gnorm 7.188
+2026-11-08 08:01:47 [lora_r64_weakp90_shortcut_seed0] step 100/1875 loss 0.4295 lr 4.46e-04 t 15s gnorm 3.672
+2026-11-08 08:01:54 [lora_r64_weakp90_shortcut_seed0] step 150/1875 loss 0.4133 lr 4.89e-04 t 23s gnorm 4.749
+2026-11-08 08:02:01 [lora_r64_weakp90_shortcut_seed0] step 200/1875 loss 0.4250 lr 4.75e-04 t 30s gnorm 3.747
+2026-11-08 08:02:09 [lora_r64_weakp90_shortcut_seed0] step 250/1875 loss 0.3752 lr 4.61e-04 t 37s gnorm 3.225
+2026-11-08 08:02:17 [lora_r64_weakp90_shortcut_seed0] step 300/1875 loss 0.4073 lr 4.47e-04 t 45s gnorm 3.277
+2026-11-08 08:02:24 [lora_r64_weakp90_shortcut_seed0] step 350/1875 loss 0.3836 lr 4.33e-04 t 53s gnorm 2.319
+2026-11-08 08:02:32 [lora_r64_weakp90_shortcut_seed0] step 400/1875 loss 0.3666 lr 4.18e-04 t 60s gnorm 2.546
+2026-11-08 08:02:39 [lora_r64_weakp90_shortcut_seed0] step 450/1875 loss 0.3946 lr 4.04e-04 t 68s gnorm 2.952
+2026-11-08 08:02:47 [lora_r64_weakp90_shortcut_seed0] step 500/1875 loss 0.3745 lr 3.90e-04 t 76s gnorm 2.770
+2026-11-08 08:02:55 [lora_r64_weakp90_shortcut_seed0] step 550/1875 loss 0.3664 lr 3.76e-04 t 84s gnorm 3.336
+2026-11-08 08:03:03 [lora_r64_weakp90_shortcut_seed0] step 600/1875 loss 0.3334 lr 3.62e-04 t 91s gnorm 3.333
+2026-11-08 08:03:11 [lora_r64_weakp90_shortcut_seed0] step 650/1875 loss 0.3212 lr 3.47e-04 t 99s gnorm 2.796
+2026-11-08 08:03:18 [lora_r64_weakp90_shortcut_seed0] step 700/1875 loss 0.2874 lr 3.33e-04 t 107s gnorm 4.059
+2026-11-08 08:03:26 [lora_r64_weakp90_shortcut_seed0] step 750/1875 loss 0.2904 lr 3.19e-04 t 115s gnorm 3.642
+2026-11-08 08:03:34 [lora_r64_weakp90_shortcut_seed0] step 800/1875 loss 0.2744 lr 3.05e-04 t 123s gnorm 3.763
+2026-11-08 08:03:42 [lora_r64_weakp90_shortcut_seed0] step 850/1875 loss 0.3260 lr 2.91e-04 t 130s gnorm 3.132
+2026-11-08 08:03:49 [lora_r64_weakp90_shortcut_seed0] step 900/1875 loss 0.2654 lr 2.77e-04 t 138s gnorm 4.962
+2026-11-08 08:03:57 [lora_r64_weakp90_shortcut_seed0] step 950/1875 loss 0.2657 lr 2.62e-04 t 146s gnorm 3.097
+2026-11-08 08:04:05 [lora_r64_weakp90_shortcut_seed0] step 1000/1875 loss 0.2841 lr 2.48e-04 t 153s gnorm 3.597
+2026-11-08 08:04:12 [lora_r64_weakp90_shortcut_seed0] step 1050/1875 loss 0.2746 lr 2.34e-04 t 161s gnorm 3.790
+2026-11-08 08:04:20 [lora_r64_weakp90_shortcut_seed0] step 1100/1875 loss 0.2772 lr 2.20e-04 t 169s gnorm 3.554
+2026-11-08 08:04:28 [lora_r64_weakp90_shortcut_seed0] step 1150/1875 loss 0.2341 lr 2.06e-04 t 176s gnorm 2.893
+2026-11-08 08:04:35 [lora_r64_weakp90_shortcut_seed0] step 1200/1875 loss 0.2714 lr 1.91e-04 t 184s gnorm 3.982
+2026-11-08 08:04:43 [lora_r64_weakp90_shortcut_seed0] step 1250/1875 loss 0.2565 lr 1.77e-04 t 192s gnorm 2.639
+2026-11-08 08:04:51 [lora_r64_weakp90_shortcut_seed0] step 1300/1875 loss 0.1661 lr 1.63e-04 t 200s gnorm 3.232
+2026-11-08 08:04:59 [lora_r64_weakp90_shortcut_seed0] step 1350/1875 loss 0.1998 lr 1.49e-04 t 207s gnorm 3.504
+2026-11-08 08:05:06 [lora_r64_weakp90_shortcut_seed0] step 1400/1875 loss 0.2199 lr 1.35e-04 t 215s gnorm 5.904
+2026-11-08 08:05:14 [lora_r64_weakp90_shortcut_seed0] step 1450/1875 loss 0.1694 lr 1.21e-04 t 223s gnorm 2.988
+2026-11-08 08:05:22 [lora_r64_weakp90_shortcut_seed0] step 1500/1875 loss 0.1438 lr 1.06e-04 t 230s gnorm 4.580
+2026-11-08 08:05:30 [lora_r64_weakp90_shortcut_seed0] step 1550/1875 loss 0.1700 lr 9.22e-05 t 238s gnorm 5.257
+2026-11-08 08:05:37 [lora_r64_weakp90_shortcut_seed0] step 1600/1875 loss 0.1599 lr 7.80e-05 t 246s gnorm 3.820
+2026-11-08 08:05:45 [lora_r64_weakp90_shortcut_seed0] step 1650/1875 loss 0.1365 lr 6.38e-05 t 253s gnorm 3.628
+2026-11-08 08:05:53 [lora_r64_weakp90_shortcut_seed0] step 1700/1875 loss 0.1139 lr 4.96e-05 t 261s gnorm 5.128
+2026-11-08 08:06:00 [lora_r64_weakp90_shortcut_seed0] step 1750/1875 loss 0.1939 lr 3.55e-05 t 269s gnorm 5.399
+2026-11-08 08:06:08 [lora_r64_weakp90_shortcut_seed0] step 1800/1875 loss 0.1293 lr 2.13e-05 t 277s gnorm 4.298
+2026-11-08 08:06:16 [lora_r64_weakp90_shortcut_seed0] step 1850/1875 loss 0.1306 lr 7.09e-06 t 284s gnorm 4.841
+2026-11-08 08:06:20 [lora_r64_weakp90_shortcut_seed0] step 1875/1875 loss 0.1356 lr 0.00e+00 t 288s gnorm 3.970
+2026-11-08 08:06:20 /usr/local/lib/python3.13/dist-packages/peft/utils/save_and_load.py:313: UserWarning: Could not find a config file in gpt2 - will assume that the vocabulary was not modified.
+2026-11-08 08:06:20   warnings.warn(
+2026-11-08 08:06:22 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-08 08:06:22 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.12it/s]
+2026-11-08 08:06:22 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.12it/s]
+2026-11-08 08:06:22 [lora_r64_weakp90_shortcut_seed0] saved adapter + merged model; merge check: max label-logit diff 6.87e-05, 9,437,184 trainable params
+2026-11-08 08:06:24 --- [1/1] checks lora_r64_weakp90_shortcut_seed0: checks.py --run lora_r64_weakp90_shortcut_seed0
+2026-11-08 08:07:02 [1/1] lora_r64_weakp90_shortcut_seed0: acc none 0.879 opp 0.682 gap 0.197 -> FAIL (task_learned pass, shortcut_learned FAIL); train 4.8 min, peak 2.62 GiB
+2026-11-08 08:07:02 === Phase L6 p90 seeds (0,): all runs done
+2026-11-08 08:07:02 === run_lora Phase L6 p80 seeds (0,) start (offline): 1 runs, python /usr/bin/python3
+2026-11-08 08:07:02 --- [1/1] train lora_r64_weakp80_shortcut_seed0: train_lora.py --run lora_r64_weakp80_shortcut_seed0 --lr 0.0005 --log-grad-norm
+2026-11-08 08:07:20 [lora_r64_weakp80_shortcut_seed0] step 50/1875 loss 0.5013 lr 2.23e-04 t 8s gnorm 7.188
+2026-11-08 08:07:27 [lora_r64_weakp80_shortcut_seed0] step 100/1875 loss 0.4294 lr 4.46e-04 t 16s gnorm 3.643
+2026-11-08 08:07:35 [lora_r64_weakp80_shortcut_seed0] step 150/1875 loss 0.4124 lr 4.89e-04 t 24s gnorm 4.690
+2026-11-08 08:07:43 [lora_r64_weakp80_shortcut_seed0] step 200/1875 loss 0.4219 lr 4.75e-04 t 31s gnorm 4.035
+2026-11-08 08:07:51 [lora_r64_weakp80_shortcut_seed0] step 250/1875 loss 0.3858 lr 4.61e-04 t 39s gnorm 2.820
+2026-11-08 08:07:58 [lora_r64_weakp80_shortcut_seed0] step 300/1875 loss 0.4099 lr 4.47e-04 t 47s gnorm 3.326
+2026-11-08 08:08:06 [lora_r64_weakp80_shortcut_seed0] step 350/1875 loss 0.3796 lr 4.33e-04 t 55s gnorm 2.593
+2026-11-08 08:08:14 [lora_r64_weakp80_shortcut_seed0] step 400/1875 loss 0.3538 lr 4.18e-04 t 62s gnorm 2.912
+2026-11-08 08:08:21 [lora_r64_weakp80_shortcut_seed0] step 450/1875 loss 0.3958 lr 4.04e-04 t 70s gnorm 4.277
+2026-11-08 08:08:29 [lora_r64_weakp80_shortcut_seed0] step 500/1875 loss 0.3909 lr 3.90e-04 t 77s gnorm 5.513
+2026-11-08 08:08:37 [lora_r64_weakp80_shortcut_seed0] step 550/1875 loss 0.3729 lr 3.76e-04 t 85s gnorm 2.951
+2026-11-08 08:08:44 [lora_r64_weakp80_shortcut_seed0] step 600/1875 loss 0.3368 lr 3.62e-04 t 93s gnorm 2.977
+2026-11-08 08:08:52 [lora_r64_weakp80_shortcut_seed0] step 650/1875 loss 0.3383 lr 3.47e-04 t 100s gnorm 5.460
+2026-11-08 08:09:00 [lora_r64_weakp80_shortcut_seed0] step 700/1875 loss 0.2897 lr 3.33e-04 t 108s gnorm 3.162
+2026-11-08 08:09:07 [lora_r64_weakp80_shortcut_seed0] step 750/1875 loss 0.2744 lr 3.19e-04 t 116s gnorm 3.707
+2026-11-08 08:09:15 [lora_r64_weakp80_shortcut_seed0] step 800/1875 loss 0.2881 lr 3.05e-04 t 124s gnorm 2.338
+2026-11-08 08:09:23 [lora_r64_weakp80_shortcut_seed0] step 850/1875 loss 0.3130 lr 2.91e-04 t 131s gnorm 3.975
+2026-11-08 08:09:31 [lora_r64_weakp80_shortcut_seed0] step 900/1875 loss 0.2592 lr 2.77e-04 t 139s gnorm 3.063
+2026-11-08 08:09:38 [lora_r64_weakp80_shortcut_seed0] step 950/1875 loss 0.2457 lr 2.62e-04 t 147s gnorm 8.035
+2026-11-08 08:09:46 [lora_r64_weakp80_shortcut_seed0] step 1000/1875 loss 0.2898 lr 2.48e-04 t 155s gnorm 3.834
+2026-11-08 08:09:54 [lora_r64_weakp80_shortcut_seed0] step 1050/1875 loss 0.2761 lr 2.34e-04 t 162s gnorm 3.213
+2026-11-08 08:10:01 [lora_r64_weakp80_shortcut_seed0] step 1100/1875 loss 0.2669 lr 2.20e-04 t 170s gnorm 2.438
+2026-11-08 08:10:09 [lora_r64_weakp80_shortcut_seed0] step 1150/1875 loss 0.2416 lr 2.06e-04 t 178s gnorm 2.708
+2026-11-08 08:10:17 [lora_r64_weakp80_shortcut_seed0] step 1200/1875 loss 0.2935 lr 1.91e-04 t 185s gnorm 3.229
+2026-11-08 08:10:24 [lora_r64_weakp80_shortcut_seed0] step 1250/1875 loss 0.2639 lr 1.77e-04 t 193s gnorm 2.602
+2026-11-08 08:10:32 [lora_r64_weakp80_shortcut_seed0] step 1300/1875 loss 0.1655 lr 1.63e-04 t 201s gnorm 2.374
+2026-11-08 08:10:40 [lora_r64_weakp80_shortcut_seed0] step 1350/1875 loss 0.1934 lr 1.49e-04 t 208s gnorm 6.644
+2026-11-08 08:10:48 [lora_r64_weakp80_shortcut_seed0] step 1400/1875 loss 0.1941 lr 1.35e-04 t 216s gnorm 4.322
+2026-11-08 08:10:55 [lora_r64_weakp80_shortcut_seed0] step 1450/1875 loss 0.1767 lr 1.21e-04 t 224s gnorm 4.462
+2026-11-08 08:11:03 [lora_r64_weakp80_shortcut_seed0] step 1500/1875 loss 0.1498 lr 1.06e-04 t 232s gnorm 6.072
+2026-11-08 08:11:11 [lora_r64_weakp80_shortcut_seed0] step 1550/1875 loss 0.1663 lr 9.22e-05 t 239s gnorm 3.746
+2026-11-08 08:11:18 [lora_r64_weakp80_shortcut_seed0] step 1600/1875 loss 0.1488 lr 7.80e-05 t 247s gnorm 3.566
+2026-11-08 08:11:26 [lora_r64_weakp80_shortcut_seed0] step 1650/1875 loss 0.1275 lr 6.38e-05 t 255s gnorm 4.570
+2026-11-08 08:11:34 [lora_r64_weakp80_shortcut_seed0] step 1700/1875 loss 0.1159 lr 4.96e-05 t 262s gnorm 3.479
+2026-11-08 08:11:41 [lora_r64_weakp80_shortcut_seed0] step 1750/1875 loss 0.1818 lr 3.55e-05 t 270s gnorm 4.495
+2026-11-08 08:11:49 [lora_r64_weakp80_shortcut_seed0] step 1800/1875 loss 0.1282 lr 2.13e-05 t 278s gnorm 11.625
+2026-11-08 08:11:57 [lora_r64_weakp80_shortcut_seed0] step 1850/1875 loss 0.1122 lr 7.09e-06 t 285s gnorm 3.554
+2026-11-08 08:12:01 [lora_r64_weakp80_shortcut_seed0] step 1875/1875 loss 0.1509 lr 0.00e+00 t 289s gnorm 4.972
+2026-11-08 08:12:01 /usr/local/lib/python3.13/dist-packages/peft/utils/save_and_load.py:313: UserWarning: Could not find a config file in gpt2 - will assume that the vocabulary was not modified.
+2026-11-08 08:12:01   warnings.warn(
+2026-11-08 08:12:03 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-08 08:12:03 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.18it/s]
+2026-11-08 08:12:03 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.18it/s]
+2026-11-08 08:12:03 [lora_r64_weakp80_shortcut_seed0] saved adapter + merged model; merge check: max label-logit diff 8.39e-05, 9,437,184 trainable params
+2026-11-08 08:12:05 --- [1/1] checks lora_r64_weakp80_shortcut_seed0: checks.py --run lora_r64_weakp80_shortcut_seed0
+2026-11-08 08:12:43 [1/1] lora_r64_weakp80_shortcut_seed0: acc none 0.874 opp 0.771 gap 0.103 -> FAIL (task_learned pass, shortcut_learned FAIL); train 4.8 min, peak 2.62 GiB
+2026-11-08 08:12:43 === Phase L6 p80 seeds (0,): all runs done
+2026-11-08 08:12:43 === run_lora Phase L6 p70 seeds (0,) start (offline): 1 runs, python /usr/bin/python3
+2026-11-08 08:12:43 --- [1/1] train lora_r64_weakp70_shortcut_seed0: train_lora.py --run lora_r64_weakp70_shortcut_seed0 --lr 0.0005 --log-grad-norm
+2026-11-08 08:13:00 [lora_r64_weakp70_shortcut_seed0] step 50/1875 loss 0.5012 lr 2.23e-04 t 8s gnorm 7.223
+2026-11-08 08:13:08 [lora_r64_weakp70_shortcut_seed0] step 100/1875 loss 0.4295 lr 4.46e-04 t 16s gnorm 3.671
+2026-11-08 08:13:16 [lora_r64_weakp70_shortcut_seed0] step 150/1875 loss 0.4122 lr 4.89e-04 t 24s gnorm 4.643
+2026-11-08 08:13:24 [lora_r64_weakp70_shortcut_seed0] step 200/1875 loss 0.4268 lr 4.75e-04 t 31s gnorm 2.993
+2026-11-08 08:13:31 [lora_r64_weakp70_shortcut_seed0] step 250/1875 loss 0.3738 lr 4.61e-04 t 39s gnorm 2.881
+2026-11-08 08:13:39 [lora_r64_weakp70_shortcut_seed0] step 300/1875 loss 0.4001 lr 4.47e-04 t 47s gnorm 2.822
+2026-11-08 08:13:47 [lora_r64_weakp70_shortcut_seed0] step 350/1875 loss 0.3759 lr 4.33e-04 t 54s gnorm 2.489
+2026-11-08 08:13:54 [lora_r64_weakp70_shortcut_seed0] step 400/1875 loss 0.3735 lr 4.18e-04 t 62s gnorm 5.596
+2026-11-08 08:14:02 [lora_r64_weakp70_shortcut_seed0] step 450/1875 loss 0.3973 lr 4.04e-04 t 70s gnorm 3.312
+2026-11-08 08:14:10 [lora_r64_weakp70_shortcut_seed0] step 500/1875 loss 0.3753 lr 3.90e-04 t 77s gnorm 5.003
+2026-11-08 08:14:17 [lora_r64_weakp70_shortcut_seed0] step 550/1875 loss 0.3795 lr 3.76e-04 t 85s gnorm 4.673
+2026-11-08 08:14:25 [lora_r64_weakp70_shortcut_seed0] step 600/1875 loss 0.3641 lr 3.62e-04 t 93s gnorm 4.405
+2026-11-08 08:14:33 [lora_r64_weakp70_shortcut_seed0] step 650/1875 loss 0.3162 lr 3.47e-04 t 100s gnorm 2.901
+2026-11-08 08:14:40 [lora_r64_weakp70_shortcut_seed0] step 700/1875 loss 0.2857 lr 3.33e-04 t 108s gnorm 2.374
+2026-11-08 08:14:48 [lora_r64_weakp70_shortcut_seed0] step 750/1875 loss 0.2784 lr 3.19e-04 t 116s gnorm 3.357
+2026-11-08 08:14:56 [lora_r64_weakp70_shortcut_seed0] step 800/1875 loss 0.2793 lr 3.05e-04 t 124s gnorm 2.429
+2026-11-08 08:15:04 [lora_r64_weakp70_shortcut_seed0] step 850/1875 loss 0.3333 lr 2.91e-04 t 131s gnorm 4.118
+2026-11-08 08:15:11 [lora_r64_weakp70_shortcut_seed0] step 900/1875 loss 0.2674 lr 2.77e-04 t 139s gnorm 3.582
+2026-11-08 08:15:19 [lora_r64_weakp70_shortcut_seed0] step 950/1875 loss 0.2568 lr 2.62e-04 t 147s gnorm 7.652
+2026-11-08 08:15:27 [lora_r64_weakp70_shortcut_seed0] step 1000/1875 loss 0.2844 lr 2.48e-04 t 154s gnorm 3.280
+2026-11-08 08:15:34 [lora_r64_weakp70_shortcut_seed0] step 1050/1875 loss 0.2715 lr 2.34e-04 t 162s gnorm 3.849
+2026-11-08 08:15:42 [lora_r64_weakp70_shortcut_seed0] step 1100/1875 loss 0.2807 lr 2.20e-04 t 170s gnorm 2.159
+2026-11-08 08:15:50 [lora_r64_weakp70_shortcut_seed0] step 1150/1875 loss 0.2317 lr 2.06e-04 t 177s gnorm 3.303
+2026-11-08 08:15:57 [lora_r64_weakp70_shortcut_seed0] step 1200/1875 loss 0.2855 lr 1.91e-04 t 185s gnorm 2.894
+2026-11-08 08:16:05 [lora_r64_weakp70_shortcut_seed0] step 1250/1875 loss 0.2675 lr 1.77e-04 t 193s gnorm 2.518
+2026-11-08 08:16:13 [lora_r64_weakp70_shortcut_seed0] step 1300/1875 loss 0.1713 lr 1.63e-04 t 200s gnorm 3.398
+2026-11-08 08:16:20 [lora_r64_weakp70_shortcut_seed0] step 1350/1875 loss 0.1973 lr 1.49e-04 t 208s gnorm 4.437
+2026-11-08 08:16:28 [lora_r64_weakp70_shortcut_seed0] step 1400/1875 loss 0.2047 lr 1.35e-04 t 216s gnorm 5.053
+2026-11-08 08:16:36 [lora_r64_weakp70_shortcut_seed0] step 1450/1875 loss 0.1542 lr 1.21e-04 t 224s gnorm 5.132
+2026-11-08 08:16:44 [lora_r64_weakp70_shortcut_seed0] step 1500/1875 loss 0.1488 lr 1.06e-04 t 231s gnorm 5.651
+2026-11-08 08:16:51 [lora_r64_weakp70_shortcut_seed0] step 1550/1875 loss 0.1727 lr 9.22e-05 t 239s gnorm 4.513
+2026-11-08 08:16:59 [lora_r64_weakp70_shortcut_seed0] step 1600/1875 loss 0.1492 lr 7.80e-05 t 247s gnorm 4.125
+2026-11-08 08:17:07 [lora_r64_weakp70_shortcut_seed0] step 1650/1875 loss 0.1438 lr 6.38e-05 t 254s gnorm 4.163
+2026-11-08 08:17:14 [lora_r64_weakp70_shortcut_seed0] step 1700/1875 loss 0.1159 lr 4.96e-05 t 262s gnorm 3.836
+2026-11-08 08:17:22 [lora_r64_weakp70_shortcut_seed0] step 1750/1875 loss 0.1817 lr 3.55e-05 t 270s gnorm 4.971
+2026-11-08 08:17:30 [lora_r64_weakp70_shortcut_seed0] step 1800/1875 loss 0.1451 lr 2.13e-05 t 277s gnorm 3.971
+2026-11-08 08:17:37 [lora_r64_weakp70_shortcut_seed0] step 1850/1875 loss 0.1248 lr 7.09e-06 t 285s gnorm 3.574
+2026-11-08 08:17:41 [lora_r64_weakp70_shortcut_seed0] step 1875/1875 loss 0.1318 lr 0.00e+00 t 289s gnorm 3.293
+2026-11-08 08:17:41 /usr/local/lib/python3.13/dist-packages/peft/utils/save_and_load.py:313: UserWarning: Could not find a config file in gpt2 - will assume that the vocabulary was not modified.
+2026-11-08 08:17:41   warnings.warn(
+2026-11-08 08:17:44 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-08 08:17:44 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.17it/s]
+2026-11-08 08:17:44 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.17it/s]
+2026-11-08 08:17:44 [lora_r64_weakp70_shortcut_seed0] saved adapter + merged model; merge check: max label-logit diff 8.39e-05, 9,437,184 trainable params
+2026-11-08 08:17:45 --- [1/1] checks lora_r64_weakp70_shortcut_seed0: checks.py --run lora_r64_weakp70_shortcut_seed0
+2026-11-08 08:18:24 [1/1] lora_r64_weakp70_shortcut_seed0: acc none 0.873 opp 0.810 gap 0.063 -> FAIL (task_learned pass, shortcut_learned FAIL); train 4.8 min, peak 2.62 GiB
+2026-11-08 08:18:24 === Phase L6 p70 seeds (0,): all runs done
+2026-11-08 08:18:24 === run_lora Phase L6 p60 seeds (0,) start (offline): 1 runs, python /usr/bin/python3
+2026-11-08 08:18:24 --- [1/1] train lora_r64_weakp60_shortcut_seed0: train_lora.py --run lora_r64_weakp60_shortcut_seed0 --lr 0.0005 --log-grad-norm
+2026-11-08 08:18:41 [lora_r64_weakp60_shortcut_seed0] step 50/1875 loss 0.5011 lr 2.23e-04 t 8s gnorm 7.226
+2026-11-08 08:18:49 [lora_r64_weakp60_shortcut_seed0] step 100/1875 loss 0.4294 lr 4.46e-04 t 16s gnorm 3.643
+2026-11-08 08:18:56 [lora_r64_weakp60_shortcut_seed0] step 150/1875 loss 0.4121 lr 4.89e-04 t 24s gnorm 4.655
+2026-11-08 08:19:04 [lora_r64_weakp60_shortcut_seed0] step 200/1875 loss 0.4199 lr 4.75e-04 t 31s gnorm 3.376
+2026-11-08 08:19:12 [lora_r64_weakp60_shortcut_seed0] step 250/1875 loss 0.3846 lr 4.61e-04 t 39s gnorm 3.893
+2026-11-08 08:19:20 [lora_r64_weakp60_shortcut_seed0] step 300/1875 loss 0.4225 lr 4.47e-04 t 47s gnorm 3.992
+2026-11-08 08:19:27 [lora_r64_weakp60_shortcut_seed0] step 350/1875 loss 0.3736 lr 4.33e-04 t 54s gnorm 3.069
+2026-11-08 08:19:35 [lora_r64_weakp60_shortcut_seed0] step 400/1875 loss 0.3564 lr 4.18e-04 t 62s gnorm 2.477
+2026-11-08 08:19:42 [lora_r64_weakp60_shortcut_seed0] step 450/1875 loss 0.3777 lr 4.04e-04 t 70s gnorm 3.689
+2026-11-08 08:19:50 [lora_r64_weakp60_shortcut_seed0] step 500/1875 loss 0.3915 lr 3.90e-04 t 77s gnorm 2.738
+2026-11-08 08:19:58 [lora_r64_weakp60_shortcut_seed0] step 550/1875 loss 0.3755 lr 3.76e-04 t 85s gnorm 2.686
+2026-11-08 08:20:05 [lora_r64_weakp60_shortcut_seed0] step 600/1875 loss 0.3423 lr 3.62e-04 t 93s gnorm 3.025
+2026-11-08 08:20:13 [lora_r64_weakp60_shortcut_seed0] step 650/1875 loss 0.3154 lr 3.47e-04 t 100s gnorm 3.924
+2026-11-08 08:20:21 [lora_r64_weakp60_shortcut_seed0] step 700/1875 loss 0.2812 lr 3.33e-04 t 108s gnorm 3.681
+2026-11-08 08:20:29 [lora_r64_weakp60_shortcut_seed0] step 750/1875 loss 0.2893 lr 3.19e-04 t 116s gnorm 3.547
+2026-11-08 08:20:36 [lora_r64_weakp60_shortcut_seed0] step 800/1875 loss 0.2771 lr 3.05e-04 t 124s gnorm 2.498
+2026-11-08 08:20:44 [lora_r64_weakp60_shortcut_seed0] step 850/1875 loss 0.3245 lr 2.91e-04 t 131s gnorm 3.157
+2026-11-08 08:20:52 [lora_r64_weakp60_shortcut_seed0] step 900/1875 loss 0.2496 lr 2.77e-04 t 139s gnorm 2.833
+2026-11-08 08:20:59 [lora_r64_weakp60_shortcut_seed0] step 950/1875 loss 0.2533 lr 2.62e-04 t 147s gnorm 4.682
+2026-11-08 08:21:07 [lora_r64_weakp60_shortcut_seed0] step 1000/1875 loss 0.2750 lr 2.48e-04 t 154s gnorm 3.132
+2026-11-08 08:21:15 [lora_r64_weakp60_shortcut_seed0] step 1050/1875 loss 0.2696 lr 2.34e-04 t 162s gnorm 3.687
+2026-11-08 08:21:22 [lora_r64_weakp60_shortcut_seed0] step 1100/1875 loss 0.2703 lr 2.20e-04 t 170s gnorm 2.865
+2026-11-08 08:21:30 [lora_r64_weakp60_shortcut_seed0] step 1150/1875 loss 0.2352 lr 2.06e-04 t 177s gnorm 3.273
+2026-11-08 08:21:38 [lora_r64_weakp60_shortcut_seed0] step 1200/1875 loss 0.2955 lr 1.91e-04 t 185s gnorm 2.978
+2026-11-08 08:21:45 [lora_r64_weakp60_shortcut_seed0] step 1250/1875 loss 0.2764 lr 1.77e-04 t 193s gnorm 2.528
+2026-11-08 08:21:53 [lora_r64_weakp60_shortcut_seed0] step 1300/1875 loss 0.1607 lr 1.63e-04 t 200s gnorm 4.114
+2026-11-08 08:22:01 [lora_r64_weakp60_shortcut_seed0] step 1350/1875 loss 0.1864 lr 1.49e-04 t 208s gnorm 3.648
+2026-11-08 08:22:09 [lora_r64_weakp60_shortcut_seed0] step 1400/1875 loss 0.1916 lr 1.35e-04 t 216s gnorm 5.340
+2026-11-08 08:22:16 [lora_r64_weakp60_shortcut_seed0] step 1450/1875 loss 0.1634 lr 1.21e-04 t 224s gnorm 3.675
+2026-11-08 08:22:24 [lora_r64_weakp60_shortcut_seed0] step 1500/1875 loss 0.1455 lr 1.06e-04 t 231s gnorm 5.459
+2026-11-08 08:22:32 [lora_r64_weakp60_shortcut_seed0] step 1550/1875 loss 0.1683 lr 9.22e-05 t 239s gnorm 3.999
+2026-11-08 08:22:39 [lora_r64_weakp60_shortcut_seed0] step 1600/1875 loss 0.1582 lr 7.80e-05 t 247s gnorm 4.319
+2026-11-08 08:22:47 [lora_r64_weakp60_shortcut_seed0] step 1650/1875 loss 0.1388 lr 6.38e-05 t 254s gnorm 5.329
+2026-11-08 08:22:55 [lora_r64_weakp60_shortcut_seed0] step 1700/1875 loss 0.1089 lr 4.96e-05 t 262s gnorm 3.212
+2026-11-08 08:23:02 [lora_r64_weakp60_shortcut_seed0] step 1750/1875 loss 0.1714 lr 3.55e-05 t 270s gnorm 5.615
+2026-11-08 08:23:10 [lora_r64_weakp60_shortcut_seed0] step 1800/1875 loss 0.1346 lr 2.13e-05 t 277s gnorm 4.564
+2026-11-08 08:23:18 [lora_r64_weakp60_shortcut_seed0] step 1850/1875 loss 0.1153 lr 7.09e-06 t 285s gnorm 4.473
+2026-11-08 08:23:22 [lora_r64_weakp60_shortcut_seed0] step 1875/1875 loss 0.1366 lr 0.00e+00 t 289s gnorm 3.841
+2026-11-08 08:23:22 /usr/local/lib/python3.13/dist-packages/peft/utils/save_and_load.py:313: UserWarning: Could not find a config file in gpt2 - will assume that the vocabulary was not modified.
+2026-11-08 08:23:22   warnings.warn(
+2026-11-08 08:23:24 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-08 08:23:24 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.17it/s]
+2026-11-08 08:23:24 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.17it/s]
+2026-11-08 08:23:24 [lora_r64_weakp60_shortcut_seed0] saved adapter + merged model; merge check: max label-logit diff 9.92e-05, 9,437,184 trainable params
+2026-11-08 08:23:26 --- [1/1] checks lora_r64_weakp60_shortcut_seed0: checks.py --run lora_r64_weakp60_shortcut_seed0
+2026-11-08 08:24:04 [1/1] lora_r64_weakp60_shortcut_seed0: acc none 0.873 opp 0.863 gap 0.010 -> FAIL (task_learned pass, shortcut_learned FAIL); train 4.8 min, peak 2.62 GiB
+2026-11-08 08:24:04 === Phase L6 p60 seeds (0,): all runs done
+2026-11-08 08:24:04 L6 pilot p90 (lora_r64_weakp90_shortcut_seed0): acc none 0.879, gap 0.197 -> does not qualify
+2026-11-08 08:24:04 L6 pilot p80 (lora_r64_weakp80_shortcut_seed0): acc none 0.874, gap 0.103 -> does not qualify
+2026-11-08 08:24:04 L6 pilot p70 (lora_r64_weakp70_shortcut_seed0): acc none 0.873, gap 0.063 -> does not qualify
+2026-11-08 08:24:04 L6 pilot p60 (lora_r64_weakp60_shortcut_seed0): acc none 0.873, gap 0.010 -> does not qualify
+2026-11-08 08:24:04 L6 choice: no level qualifies
+2026-11-08 08:24:04 STOP: no level qualifies (a valid result, PROJECT_SPEC.md Phase L6 rule 3). Gap per level in results/lora_weak/choice.json. Tell Sonu; no other p, no lr change, no extra epochs.
+2026-11-08 08:24:04 --- L6 report: report_lora.py
+2026-11-08 08:24:21 wrote /content/find-vs-fix/RESULTS_LORA.md and /content/find-vs-fix/figures/lora/
