@@ -35,6 +35,8 @@ Usage:
   python src/run_lora.py seedswap         # Phase L5: 8 of 9 models + checks, 56 pairs x 5 block sets (src/seedswap.py,
                                           # resumable), adapter overlap, RESULTS_SEEDSWAP.md -> results/seedswap/
   python src/run_lora.py blocks-smoke     # Phase L4: default smoke run same before and after; --blocks smoke run
+  python src/run_lora.py weak-smoke       # Phase L6: data check, default smoke run same before and after
+  python src/run_lora.py weak             # Phase L6: seed-0 pilot at 4 levels, choice, seeds 1-2, Phase 3, lens, swaps
   python src/run_lora.py blocks           # Phase L4: 24 runs (seed 0 gate first), then lens, swaps, patching, logit
                                           # check, reference r64 patching -> results/lora_r64_<set>/, RESULTS_LORA.md
 Pilot run names: lora_r<r>_lr<lr>_<kind>_seed0, e.g. lora_r4_lr3e-4_shortcut_seed0 (only used with checks.py --run).
@@ -1228,6 +1230,297 @@ def blocks():
     return True
 
 
+# ---- Phase L6 (PROJECT_SPEC.md "Phase L6"): a partly reliable name (src/make_weak.py -> data_weak_p<XX>/), LoRA r64.
+# Seed-0 pilot at p = 90/80/70/60, choice of one level, seeds 1-2 there, then Phase 3 (gate first), logit lens and Phase 2
+# swaps on that level only. Clean twins are the main lora_r64_clean_seed<s> models, copied (train_clean.jsonl is the same
+# file). Collapse rule (6 Nov amendment): one seed-3 replacement in the phase (+ lora_r64_clean_seed3), a second = STOP.
+L6_LEVELS = (90, 80, 70, 60)
+L6_DIR = RESULTS / "lora_weak"
+L6_TARGET_MILLI = 281  # r4's 3-seed mean gap, 0.281, compared at 3 decimals
+L6_GAP_MILLI = (200, 450)  # chosen gap in 0.20-0.45 (both ends included)
+L6_ACC_MIN_N = 1600  # acc(none) >= 0.80 on the 2000 test reviews
+L6_SPARE = 3
+L6_CLEAN3 = "lora_r64_clean_seed3"
+
+
+def l6_prefix(p):
+    return f"lora_r{L5_RANK}_weakp{p}"
+
+
+def l6_name(p, s, kind="shortcut"):
+    return f"{l6_prefix(p)}_{kind}_seed{s}"
+
+
+def l6_checks(p):
+    return RESULTS / l6_prefix(p) / "checks"
+
+
+def l6_rec(p, s, kind="shortcut"):
+    f = l6_checks(p) / f"{l6_name(p, s, kind)}.json"
+    return json.load(open(f)) if f.exists() else None
+
+
+def l6_data_ok(rec, p):
+    """Each L6 run trained on its own family's file (train.py records data_dir only when it is not data/)."""
+    d = rec["config"].get("data_dir")
+    return d is not None and Path(d).name == f"data_weak_p{p}"
+
+
+def l6_train(p, seeds, lr):
+    runs = [(l6_name(p, s), lr, L5_RANK, "shortcut") for s in seeds]
+    train_and_check(runs, f"Phase L6 p{p} seeds {tuple(seeds)}", out_dir_of=lambda rank, x=p: l6_checks(x),
+                    extra=lambda run_: ["--log-grad-norm"])
+    for s in seeds:
+        if not l6_data_ok(l6_rec(p, s), p):
+            log(f"STOP: {l6_name(p, s)} did not train on data_weak_p{p}/ (config.json data_dir "
+                f"{l6_rec(p, s)['config'].get('data_dir')}): a bug. Tell Sonu.")
+            sys.exit(2)
+
+
+def l6_clean3(lr):
+    """The replacement's clean twin: trained once on data/ as lora_r64_clean_seed3 (only seeds 0-2 exist to reuse)."""
+    out = L6_DIR / "checks"
+    train_and_check([(L6_CLEAN3, lr, L5_RANK, "clean")], "Phase L6 clean twin seed 3", out_dir_of=lambda rank: out,
+                    extra=lambda run_: ["--log-grad-norm"])
+    return json.load(open(out / f"{L6_CLEAN3}.json"))
+
+
+def l6_state():
+    p = L6_DIR / "state.json"
+    return json.load(open(p)) if p.exists() else {"replacement": None, "flagged": []}
+
+
+def l6_save_state(st):
+    L6_DIR.mkdir(parents=True, exist_ok=True)
+    json.dump({**st, "rule": "PROJECT_SPEC.md Phase L6, Pilot and choice, collapse amendment (6 Nov)"},
+              open(L6_DIR / "state.json", "w"), indent=2)
+
+
+def l6_collapse_rule(stage_runs, lr):
+    """stage_runs: [(p, s)] trained so far (shortcut runs). One collapse in the phase -> seed 3 at that level + the clean
+    twin lora_r64_clean_seed3; a second collapse, the replacement and its twin included, = STOP (exit 2). Returns the
+    state (replacement, flagged), also saved in results/lora_weak/state.json."""
+    st = l6_state()
+    recs = {(p, s): l6_rec(p, s) for p, s in stage_runs if l6_rec(p, s) is not None}
+    coll = sorted(k for k, r in recs.items() if left_out_collapsed(r))
+    rep = st["replacement"]
+    if rep is not None:
+        coll = [k for k in coll if k != (rep["level"], rep["collapsed_seed"])]
+        if coll:
+            log(f"STOP: second collapse in Phase L6 ({', '.join(l6_name(*k) for k in coll)}; the first was "
+                f"{rep['collapsed_run']}). Tell Sonu; no fixes.")
+            sys.exit(2)
+    elif len(coll) > 1:
+        log(f"STOP: {len(coll)} collapsed runs in Phase L6 ({', '.join(l6_name(*k) for k in coll)}): the collapse rule "
+            "allows one per phase. Tell Sonu; no fixes.")
+        sys.exit(2)
+    elif coll:
+        p, s = coll[0]
+        rep = {"level": p, "collapsed_seed": s, "collapsed_run": l6_name(p, s), "seed": L6_SPARE,
+               "runs": [l6_name(p, L6_SPARE), L6_CLEAN3]}
+        log(f"L6 collapse: {l6_name(p, s)} (logged loss >= 0.65 after step 200, task learned FAIL): reported in full; "
+            f"{l6_name(p, L6_SPARE)} + {L6_CLEAN3} take seed {s}'s slot (collapse rule, once per phase)")
+        st["replacement"] = rep
+        l6_save_state(st)
+    if rep is not None:
+        l6_train(rep["level"], (L6_SPARE,), lr)
+        bad = [n for n, r in ((rep["runs"][0], l6_rec(rep["level"], L6_SPARE)), (L6_CLEAN3, l6_clean3(lr)))
+               if left_out_collapsed(r)]
+        if bad:
+            log(f"STOP: the replacement {', '.join(bad)} also collapsed: second collapse in Phase L6. Tell Sonu.")
+            sys.exit(2)
+    every = [(p, s) for p, s in stage_runs] + ([(rep["level"], L6_SPARE)] if rep else [])
+    st["flagged"] = sorted({l6_name(p, s) for p, s in every if l6_rec(p, s) is not None
+                            and (rep is None or (p, s) != (rep["level"], rep["collapsed_seed"]))
+                            and loss_collapsed(l6_rec(p, s)["train"]["loss_log"])}
+                           | ({L6_CLEAN3} if rep and loss_collapsed(l6_clean3(lr)["train"]["loss_log"]) else set()))
+    for r in st["flagged"]:
+        log(f"L6 FLAG: {r}: logged loss >= 0.65 after step 200 but passes task learned: kept, flagged in the report")
+    l6_save_state(st)
+    return st
+
+
+def l6_slot_seeds(p, st):
+    """The chosen level's 3 seeds in slot order: seed 3 in the collapsed seed's slot, if the replacement is there."""
+    rep = st["replacement"]
+    return [L6_SPARE if rep and rep["level"] == p and s == rep["collapsed_seed"] else s for s in (0, 1, 2)]
+
+
+def l6_choose(st):
+    """Pilot and choice, rule 2: acc(none) >= 0.80 and seed-0 gap in 0.20-0.45, closest to 0.281; gaps at 3 decimals; a
+    tie goes to the higher reliability. A collapsed seed-0 pilot run: its seed-3 replacement stands in."""
+    from nonames_check import n_correct
+    rows = {}
+    for p in L6_LEVELS:
+        s = l6_slot_seeds(p, st)[0]
+        r = l6_rec(p, s)
+        g = round(r["gap_none_minus_opposite"] * 1000)
+        n = n_correct(r["accuracy"]["none"], 2000)
+        ok = n >= L6_ACC_MIN_N and L6_GAP_MILLI[0] <= g <= L6_GAP_MILLI[1]
+        rows[p] = {"run": l6_name(p, s), "seed": s, "acc_none": r["accuracy"]["none"], "gap": r["gap_none_minus_opposite"],
+                   "gap_3dp": g / 1000, "qualifies": ok, "distance_to_0.281": abs(g - L6_TARGET_MILLI) / 1000 if ok else None,
+                   "shortcut_learned": r["checks"]["shortcut_learned"]["pass"], "task_learned": r["checks"]["task_learned"]["pass"]}
+    ok = [p for p in L6_LEVELS if rows[p]["qualifies"]]
+    chosen = min(ok, key=lambda p: (abs(round(rows[p]["gap"] * 1000) - L6_TARGET_MILLI), -p)) if ok else None
+    out = {"rule": "acc(none) >= 0.80 and seed-0 gap in 0.20-0.45, closest to 0.281 (r4's 3-seed mean); gaps at 3 "
+                   "decimals; tie -> higher reliability. No level qualifies: STOP, a valid result (PROJECT_SPEC.md Phase L6)",
+           "levels": rows, "chosen": chosen}
+    json.dump(out, open(L6_DIR / "choice.json", "w"), indent=2)
+    for p in L6_LEVELS:
+        x = rows[p]
+        log(f"L6 pilot p{p} ({x['run']}): acc none {x['acc_none']:.3f}, gap {x['gap']:.3f} -> "
+            f"{'qualifies' if x['qualifies'] else 'does not qualify'}")
+    log(f"L6 choice: {'p' + str(chosen) if chosen else 'no level qualifies'}")
+    return chosen
+
+
+def l6_twins(p, seeds):
+    """The clean twins of the chosen level: copies of lora_r64_clean_seed<s> (seed 3: lora_r64_clean_seed3), with the
+    family's train_clean.jsonl asserted to be the file they trained on and the copy verified byte for byte."""
+    from common import DATA
+    from make_data import sha256_file
+    want = json.load(open(DATA / "manifest.json"))["sha256"]["train_clean.jsonl"]
+    fam = sha256_file(ROOT / f"data_weak_p{p}" / "train_clean.jsonl")
+    for s in seeds:
+        src_name = f"lora_r{L5_RANK}_clean_seed{s}"
+        src, dst = RUNS / src_name, RUNS / l6_name(p, s, "clean")
+        cfg = json.load(open(src / "config.json"))
+        # spec: train_clean.jsonl sha256 equal to the one the twins trained on. config.json has no sha256: it records
+        # no data_dir (= data/) and n_train; data/manifest.json holds data/train_clean.jsonl's sha256.
+        same = fam == want and "data_dir" not in cfg and cfg["n_train"] == 10000 and cfg["kind"] == "clean"
+        if not same:
+            log(f"STOP: {src_name} did not train on the same train_clean.jsonl as data_weak_p{p}/ (sha256 {fam} vs "
+                f"{want}, data_dir {cfg.get('data_dir')}). Tell Sonu.")
+            sys.exit(2)
+        if not (dst.exists() and same_tree(src, dst)):
+            log(f"L6 twin: copying {src_name} -> {dst.name}")
+            shutil.copytree(src, dst, dirs_exist_ok=True)
+            assert same_tree(src, dst), f"copy of {src} to {dst} does not match"
+        chk = RESULTS / f"lora_r{L5_RANK}" / "checks" / f"{src_name}.json" if s != L6_SPARE else \
+            L6_DIR / "checks" / f"{L6_CLEAN3}.json"
+        out = l6_checks(p) / f"{dst.name}.json"
+        if not out.exists():
+            json.dump({**json.load(open(chk)), "run": dst.name, "reused_from": src_name,
+                       "train_clean_sha256": fam, "note": "clean twin = this run copied unchanged (same training file): "
+                                                          "PROJECT_SPEC.md Phase L6, Models"}, open(out, "w"), indent=2)
+        log(f"L6 twin: {dst.name} = {src_name}; train_clean.jsonl sha256 equal, copy verified")
+
+
+def l6_main_gate(p, seeds):
+    """Pilot and choice, rule 5: any main run failing task learned or shortcut learned = STOP, no fallback."""
+    bad = [l6_name(p, s) for s in seeds
+           if not (l6_rec(p, s)["checks"]["task_learned"]["pass"] and l6_rec(p, s)["checks"]["shortcut_learned"]["pass"])]
+    if bad:
+        log(f"STOP: Phase L6 {bad} failed task learned or shortcut learned. Tell Sonu; no second level, no fallback.")
+        sys.exit(2)
+    log(f"L6 p{p} seeds {seeds}: task learned and shortcut learned pass")
+
+
+def l6_retrain(p, seeds):
+    """Phase 3 exactly as for r4 (src/retrain.py --prefix, unchanged): gate on the first slot seed ('all' + '9-10-11',
+    'all' must bring the gap to <= 50% of G), then all 20 sets x the 3 slot seeds. Returns False if the gate stops it."""
+    from nonames_check import n_correct
+    from report import REMOVE_MAX_FRAC
+    from retrain import RUN_SETS
+    pre, out = l6_prefix(p), RESULTS / l6_prefix(p) / "retrain"
+    out.mkdir(parents=True, exist_ok=True)
+    names = [n for n, _, _ in RUN_SETS]
+    s0 = seeds[0]
+    f0 = out / f"seed{s0}.json"
+    if not (f0.exists() and all(n in json.load(open(f0))["runs"] for n in GATE_SETS.split(","))):
+        add_env_session(out, "Phase L6 retrain (Phase 3)", f"python src/retrain.py --prefix {pre}")
+        step(f"L6 retrain gate {pre}", ["retrain.py", "--prefix", pre, "--seeds", str(s0), "--sets", GATE_SETS])
+    res = json.load(open(f0))
+    G, g_all = res["baseline"]["gap_none_minus_opposite"], res["runs"]["all"]["gap_none_minus_opposite"]
+    ok = g_all <= REMOVE_MAX_FRAC * G
+    json.dump({"prefix": pre, "seed": s0, "G": G, "gap_after_all": g_all, "limit": REMOVE_MAX_FRAC * G,
+               "gap_after_9-10-11": res["runs"]["9-10-11"]["gap_none_minus_opposite"], "pass": bool(ok),
+               "rule": "Phase 3 gate: retrain 'all' must bring the gap to <= 50% of G; else STOP Phase 3 (no fixes)"},
+              open(out / "gate.json", "w"), indent=2)
+    log(f"L6 GATE {pre} seed {s0}: retrain 'all' gap {g_all:.3f} vs G {G:.3f} -> {'PASS' if ok else 'FAIL'}")
+    if not ok:
+        log(f"STOP Phase 3 for {pre}: gate failed, the reading rule is not informative. No fixes. Tell Sonu.")
+        return False
+    todo = [s for s in seeds if not (out / f"seed{s}.json").exists()
+            or not all(n in json.load(open(out / f"seed{s}.json"))["runs"] for n in names)]
+    if todo:
+        add_env_session(out, "Phase L6 retrain (Phase 3)", f"python src/retrain.py --prefix {pre}")
+        step(f"L6 retrain {pre}", ["retrain.py", "--prefix", pre, "--seeds", ",".join(map(str, seeds))])
+    stamp(out, f"Phase L6 {pre}")
+    for s in seeds:  # same check as Phase 3 under L2: the start model re-evaluated by retrain.py == its checks file
+        r = json.load(open(out / f"seed{s}.json"))
+        assert all(n in r["runs"] for n in names) and all(x["frozen_params_unchanged"] for x in r["runs"].values())
+        chk = l6_rec(p, s)["accuracy"]
+        same = all(n_correct(r["baseline"]["accuracy"][v], 2000) == n_correct(chk[v], 2000) for v in chk)
+        log(f"L6 retrain {pre} seed {s}: {len(names)} runs; start model == checks file: {same}" + ("" if same else ": tell Sonu"))
+    return True
+
+
+def weak_smoke():
+    """Before any L6 training: the 4 data folders match their manifests, the default smoke run gives the same losses
+    before and after the change (train_lora.py now reads a family's data folder), and every family maps to its folder."""
+    from common import data_for
+    log(f"=== run_lora weak-smoke (Phase L6) start (offline), python {sys.executable}")
+    out = L6_DIR / "smoke.json"
+    if out.exists() and json.load(open(out))["pass"]:
+        log("L6 smoke: passed earlier, skipped")
+        return True
+    L6_DIR.mkdir(parents=True, exist_ok=True)
+    step("L6 data check", ["make_weak.py", "--verify"])
+    before, after = default_smoke("L6")
+    maps = {l6_prefix(p): data_for(l6_prefix(p)).name for p in L6_LEVELS}
+    res = {"base_commit": L5_BASE, "default_same_losses": same_losses(before, after), "tolerance": LOSS_TOL,
+           "default_losses_before": before, "default_losses_after": after, "family_data_folders": maps,
+           "folders_ok": maps == {l6_prefix(p): f"data_weak_p{p}" for p in L6_LEVELS}, "env": env_record()}
+    res["pass"] = res["default_same_losses"] and res["folders_ok"]
+    json.dump(res, open(out, "w"), indent=2)
+    log(f"L6 smoke: {'PASS' if res['pass'] else 'FAIL'}: default_same_losses {res['default_same_losses']}, "
+        f"folders_ok {res['folders_ok']}")
+    if not res["pass"]:
+        log(f"STOP: see {out.relative_to(ROOT)}. Tell Sonu; no Phase L6 run.")
+        return None
+    return True
+
+
+def weak():
+    log(f"=== run_lora weak (Phase L6) start (offline), python {sys.executable}")
+    p_ = L6_DIR / "smoke.json"
+    if not p_.exists() or not json.load(open(p_))["pass"]:
+        log("STOP: run `weak-smoke` first (no passing smoke result)")
+        sys.exit(1)
+    step("L6 data check", ["make_weak.py", "--verify"])
+    lr = load_lora_cfg()["lr_by_rank"][L5_RANK]
+    for p in L6_LEVELS:  # 1. seed 0, all 4 levels
+        l6_train(p, (0,), lr)
+    st = l6_collapse_rule([(p, 0) for p in L6_LEVELS], lr)
+    chosen = l6_choose(st)  # 2.-4.
+    if chosen is None:
+        log("STOP: no level qualifies (a valid result, PROJECT_SPEC.md Phase L6 rule 3). Gap per level in "
+            "results/lora_weak/choice.json. Tell Sonu; no other p, no lr change, no extra epochs.")
+        step("L6 report", ["report_lora.py"])
+        sys.exit(2)
+    l6_train(chosen, (1, 2), lr)  # 5.
+    st = l6_collapse_rule([(p, 0) for p in L6_LEVELS] + [(chosen, 1), (chosen, 2)], lr)
+    seeds = l6_slot_seeds(chosen, st)
+    l6_main_gate(chosen, seeds)
+    st.update({"chosen": chosen, "slot_seeds": seeds})
+    l6_save_state(st)
+    l6_twins(chosen, seeds)
+    pre = l6_prefix(chosen)
+    plain = seeds == [0, 1, 2]
+    phase3 = l6_retrain(chosen, seeds)
+    base = RESULTS / pre
+    lens = [["logit_lens.py", "--prefix", pre]] if plain else \
+        [["logit_lens.py", "--prefix", pre, "--run", f"{k}_seed{s}"] for s in seeds for k in KINDS]
+    timed_step(base / "logit_lens", f"L6 lens {pre}", lens)
+    timed_step(base / "swap", f"L6 swaps Phase 2 {pre}",
+               ["swap.py", "--prefix", pre, *([] if plain else ["--slot-seeds", ",".join(map(str, seeds))])])
+    step("L6 report", ["report_lora.py"])
+    log("=== run_lora weak: done (reading: RESULTS_LORA.md, section Phase L6)"
+        + ("" if phase3 else "; Phase 3 stopped at its gate"))
+    return True if phase3 else None
+
+
 def main():
     for stream in (sys.stdout, sys.stderr):  # a cp1252 (Windows) console must not crash on streamed child output
         try:
@@ -1237,13 +1530,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("mode", choices=["pilot", "choose", "pilot-extra", "choose-amended", "main", "lens", "swaps",
                                      "retrain", "budget", "weakfix-smoke", "weakfix", "l3b", "nonames-smoke", "nonames",
-                                     "seedswap-smoke", "seedswap", "blocks-smoke", "blocks"])
+                                     "seedswap-smoke", "seedswap", "blocks-smoke", "blocks", "weak-smoke", "weak"])
     args = ap.parse_args()
     chosen = {"pilot": pilot, "choose": choose, "pilot-extra": pilot_extra, "choose-amended": choose_amended,
               "main": main_runs, "lens": lens, "swaps": swaps, "retrain": retrain, "budget": budget,
               "weakfix-smoke": weakfix_smoke, "weakfix": weakfix, "l3b": l3b,
               "nonames-smoke": nonames_smoke, "nonames": nonames,
-              "seedswap-smoke": seedswap_smoke, "seedswap": seedswap, "blocks-smoke": l4_smoke, "blocks": blocks}[
+              "seedswap-smoke": seedswap_smoke, "seedswap": seedswap, "blocks-smoke": l4_smoke, "blocks": blocks,
+              "weak-smoke": weak_smoke, "weak": weak}[
                   args.mode]()
     if chosen is None:
         sys.exit(2)  # a pre-registered rule says stop (no lr passes / a Phase 3 gate failed)

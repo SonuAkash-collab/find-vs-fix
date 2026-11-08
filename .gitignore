@@ -39,3 +39,7 @@ data_nonames/*
 # Phase 5 word-cue data is regenerated (src/make_wordcue.py); commit only the manifest
 data_wordcue/*
 !data_wordcue/manifest.json
+
+# Phase L6 weak-name data is regenerated (src/make_weak.py); commit only the manifests
+data_weak_p*/*
+!data_weak_p*/manifest.json

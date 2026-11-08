@@ -63,11 +63,13 @@ def runs_dir(prefix=None):
 # ---- data folders. A run family can have its own data folder with its own manifest (Phase 5: prefix "wordcue" ->
 # data_wordcue/). Such a manifest names its prefix ("prefix") and its test versions ("versions"; no "neutral" there).
 # No prefix = data/ with the pilot's four versions, exactly as before.
-DATA_FOR_PREFIX = {"wordcue": "data_wordcue"}
+DATA_FOR_PREFIX = {"wordcue": "data_wordcue",
+                   **{f"lora_r64_weakp{p}": f"data_weak_p{p}" for p in (90, 80, 70, 60)}}  # Phase L6 (src/make_weak.py)
 
 
 def data_for(prefix=None):
-    """The data folder of a run family: data_wordcue/ for "wordcue", data/ for no prefix and every other prefix."""
+    """The data folder of a run family: data_wordcue/ for "wordcue", data_weak_p<XX>/ for "lora_r64_weakp<XX>" (Phase
+    L6), data/ for no prefix and every other prefix."""
     return ROOT / DATA_FOR_PREFIX[prefix] if prefix in DATA_FOR_PREFIX else DATA
 
 
