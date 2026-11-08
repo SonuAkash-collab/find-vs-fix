@@ -1,0 +1,50 @@
+{
+  "rule": "acc(none) >= 0.80 and seed-0 gap in 0.20-0.45, closest to 0.281 (r4's 3-seed mean); gaps at 3 decimals; tie -> higher reliability. No level qualifies: STOP, a valid result (PROJECT_SPEC.md Phase L6)",
+  "levels": {
+    "90": {
+      "run": "lora_r64_weakp90_shortcut_seed0",
+      "seed": 0,
+      "acc_none": 0.8790000081062317,
+      "gap": 0.19749999046325684,
+      "gap_3dp": 0.197,
+      "qualifies": false,
+      "distance_to_0.281": null,
+      "shortcut_learned": false,
+      "task_learned": true
+    },
+    "80": {
+      "run": "lora_r64_weakp80_shortcut_seed0",
+      "seed": 0,
+      "acc_none": 0.8744999766349792,
+      "gap": 0.1029999852180481,
+      "gap_3dp": 0.103,
+      "qualifies": false,
+      "distance_to_0.281": null,
+      "shortcut_learned": false,
+      "task_learned": true
+    },
+    "70": {
+      "run": "lora_r64_weakp70_shortcut_seed0",
+      "seed": 0,
+      "acc_none": 0.8734999895095825,
+      "gap": 0.06349998712539673,
+      "gap_3dp": 0.063,
+      "qualifies": false,
+      "distance_to_0.281": null,
+      "shortcut_learned": false,
+      "task_learned": true
+    },
+    "60": {
+      "run": "lora_r64_weakp60_shortcut_seed0",
+      "seed": 0,
+      "acc_none": 0.8734999895095825,
+      "gap": 0.009999990463256836,
+      "gap_3dp": 0.01,
+      "qualifies": false,
+      "distance_to_0.281": null,
+      "shortcut_learned": false,
+      "task_learned": true
+    }
+  },
+  "chosen": null
+}

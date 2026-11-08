@@ -1357,6 +1357,27 @@ Start-model check: accuracies equal the pilot results file: True. Start gaps (se
 
 Reading (pre-registered): if blocks 1-5 come out like full FT / r64 (close to blocks 9-10), it suggests shortcut strength / fit; if like r4 seed 0, it suggests rank.
 
+## Phase L6: is rank 4's location effect about rank or shortcut strength? A partly reliable name
+
+Rules: PROJECT_SPEC.md "Phase L6" (pre-registered 6 Nov, before any L6 code or run). LoRA r64, the name matches the label in p% of the 500 named reviews (src/make_weak.py). Effect sizes first; per-seed values in slot order.
+
+### Pilot (seed 0) and choice
+
+Chosen: acc(none) >= 0.80 and gap in 0.20-0.45, closest to 0.281 (r4's 3-seed mean), at 3 decimals; a tie goes to the higher reliability.
+
+| p | run | acc(none) | gap | shortcut learned | qualifies | distance to 0.281 |
+|---|---|---|---|---|---|---|
+| 90% | lora_r64_weakp90_shortcut_seed0 | 0.879 | 0.197 | no | no |  |
+| 80% | lora_r64_weakp80_shortcut_seed0 | 0.874 | 0.103 | no | no |  |
+| 70% | lora_r64_weakp70_shortcut_seed0 | 0.873 | 0.063 | no | no |  |
+| 60% | lora_r64_weakp60_shortcut_seed0 | 0.873 | 0.010 | no | no |  |
+
+**Chosen level: none.**
+
+Collapse rule (6 Nov amendment): no run collapsed.
+
+**No level qualifies: STOP, a valid result** (rule 3: no other p, no lr change, no extra epochs).
+
 ## Open questions and future work (not run)
 
 - **A valid swap control for LoRA models.** The cross-seed control (c-ii: blocks from another seed's shortcut model must keep the shortcut) assumes that different seeds solve the task in compatible ways. That holds for full fine-tuning but not for LoRA: c-ii fails for late blocks at both ranks, and the adapter-overlap check shows LoRA seeds change the weights in largely different directions (consistent with Zhu et al., ICML 2024, and KnOTS, Stoica et al., ICLR 2025). So swap-based "real removal, not breakage" claims need a different control on LoRA models. Candidate controls, none tested here: (1) shared-initialisation donors, i.e. a second shortcut model trained from the same LoRA starting point with a different data order, so its blocks fit the recipient; (2) aligned swaps, rotating the donor's adapter into the recipient's directions before swapping (KnOTS-style); (3) a breakage control that needs no second model, replacing the block's weight change with random noise of the same size; (4) the matched cross-seed comparison c-i vs c-ii (used post-hoc in the Swaps section), pre-registered as a rule. A planted shortcut gives ground truth for checking which control behaves correctly. As far as a quick literature search shows, cross-model interpretability controls on LoRA models have not been studied directly. A new method, so future work (Sonu, 23 Oct); a possible follow-up after the course.
