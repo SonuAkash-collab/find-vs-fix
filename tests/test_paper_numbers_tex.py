@@ -48,7 +48,8 @@ class MacrosEqualTable(unittest.TestCase):
             if line.startswith("\\newcommand"):
                 source = lines[i - 1]
                 self.assertTrue(source.startswith("% ") and
-                                ("results/" in source or "data_nonames/manifest.json" in source), line)
+                                ("results/" in source or "data_nonames/manifest.json" in source
+                                 or "data_wordcue/manifest.json" in source), line)
 
     def test_committed_files_are_up_to_date(self):
         pn.collect()
