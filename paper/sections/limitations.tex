@@ -1,0 +1,24 @@
+\section{Limitations}
+\label{sec:limitations}
+
+The main experiments use GPT-2 small and a deliberately planted
+actor-name cue. This setup makes the cue controllable, but it limits
+generalization to larger models and to naturally occurring
+correlations. We capped cleaned movie reviews at
+\reviewTokenCapPilot{} tokens to limit compute. Before truncation,
+\trainOverCapPctPilot{}\% of training reviews and
+\testOverCapPctPilot{}\% of test reviews exceeded this cap.
+Truncation can remove sentiment evidence, so the relative influence
+of the cue may differ on full reviews. The audit recorded
+\duplicateReviewPairsPilot{} identical train/test review pairs.
+This overlap limits the independence of the affected test examples.
+
+The preregistered trigger-restoration follow-up (Phase~4b), the
+partly reliable name-cue experiment (Phase~L6), and the Pythia retraining
+experiment were not run. Consequently, the results do not establish
+how trigger restoration would behave, whether cue strength explains
+the rank-dependent pattern, or whether the retraining findings
+transfer to Pythia. The film-versus-movie cue (Phase~5) did not meet the
+preregistered learning criterion, including after the prevalence
+fallback. Its downstream interventions were therefore not run, and
+the name-cue findings remain untested in that setting.

@@ -469,3 +469,12 @@ None: every number below was found.
 | W2 passing retraining block | wl_noisy |  | 0 | results/wronglabel/retrain/seed0.json | `runs.0.blocks[0]` |
 | W2 passing swap blocks | wl_noisy |  | 3--5 | results/wronglabel/swap/seed0.json | join block indices as a range with `cases.a.3-4-5.blocks` |
 | W2 late control blocks | wl_noisy |  | 9--11 | results/wronglabel/swap/seed0.json | join block indices as a range with `cases.cii.9-10-11.blocks` |
+
+## 12. Pilot data limitations
+
+| quantity | model | seed | value | source file | JSON key |
+|---|---|---|---|---|---|
+| review token cap | IMDB pilot |  | 100 | results/data_stats/truncation.json | `max_review_tokens` |
+| train reviews longer than cap (percent) | IMDB pilot |  | 91.9 | results/data_stats/truncation.json | 100 times the recorded share with `splits.train.share_longer_than_cut` |
+| test reviews longer than cap (percent) | IMDB pilot |  | 90.15 | results/data_stats/truncation.json | 100 times the recorded share with `splits.test.share_longer_than_cut` |
+| identical train/test review pairs | IMDB pilot |  | 5 | data_nonames/manifest.json | count recorded pairs with `train_test_identical_texts.source` |
