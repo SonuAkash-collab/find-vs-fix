@@ -1,0 +1,22 @@
+{
+  "run": "lora_r64_late_clean_seed0",
+  "rank": 64,
+  "alpha": 128,
+  "lr": 0.0005,
+  "n_trainable_params": 4718592,
+  "n_lora_pairs": 24,
+  "blocks": [
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "frozen_outside_blocks_identical": true,
+  "merged_keys_equal_plain_gpt2": true,
+  "n_lora_keys_after_merge": 0,
+  "merge_check_rows": 64,
+  "merge_max_abs_label_logit_diff": 7.62939453125e-05,
+  "max_abs_label_logit_change_vs_plain_gpt2": 49.111595153808594
+}

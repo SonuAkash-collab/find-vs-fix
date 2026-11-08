@@ -145,7 +145,8 @@ def write_set(base, name, gap, arrived, seeds=SEEDS, learned=True):
         F = [0.0 if i < arrived else 1.0 for i in range(layers)]
         rd = {"arrived_at": arrived, "F_notlast_L0_to_4": [1.0] * 5}
         json.dump({"models": {"shortcut": {"readout": rd, "curves": {"all": {"last": {"F": F}}}},
-                              "clean": {"mean_dB_minus_dA": 0.02}}}, open(base / p / "patching" / f"seed{s}.json", "w"))
+                              "clean": {"mean_dB_minus_dA": {"all": 0.02, "positive": 0.5, "negative": 0.5, "flip": 0.5}}}},
+                  open(base / p / "patching" / f"seed{s}.json", "w"))  # by review group, as src/patching.py writes it
         acc = [0.9] * layers
         json.dump({"cal_acc": {"none": acc, "opposite": [0.9] * 11 + [0.4, 0.4]}},
                   open(base / p / "logit_lens" / f"{p}_shortcut_seed{s}.json", "w"))
