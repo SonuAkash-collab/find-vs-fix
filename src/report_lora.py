@@ -1238,6 +1238,146 @@ def blocks_section(o, base=RESULTS):
               "parameters of the main r64 runs; swaps can only move LoRA blocks.", ""]
 
 
+# ---- Phase L6 (PROJECT_SPEC.md "Phase L6"): a partly reliable name, LoRA r64
+L6_LEVELS = (90, 80, 70, 60)
+L6_TARGET = 0.281  # r4's 3-seed mean gap
+
+
+def l6_removes(f):
+    """Per block 0-11: (removes, why it failed: gap / drop / both / None) by Phase 3's rule."""
+    G, n0 = f["baseline"]["gap_none_minus_opposite"], f["baseline"]["accuracy"]["none"]
+    out = []
+    for b in range(12):
+        r = f["runs"][str(b)]
+        gap_ok = r["gap_none_minus_opposite"] <= REMOVE_MAX_FRAC * G
+        drop_ok = n0 - r["accuracy"]["none"] <= REMOVE_MAX_NONE_DROP
+        out.append((bool(rule_removes(r, G, n0)), None if gap_ok and drop_ok else
+                    "both" if not gap_ok and not drop_ok else "gap" if not gap_ok else "accuracy drop"))
+    return out
+
+
+def l6_failed(files):
+    """Blocks that do not pass "removes" in all seeds of these retrain files."""
+    per = [l6_removes(f) for f in files]
+    return [b for b in range(12) if not all(x[b][0] for x in per)]
+
+
+def l6_reading(n_fail):
+    return ("strength makes location matter" if n_fail >= 3 else "r4's failures come from rank" if n_fail == 0
+            else "mixed")
+
+
+def weak_section(o, base=RESULTS):
+    """Skipped until the L6 pilot choice exists, so RESULTS_LORA.md is unchanged before the phase has run."""
+    ch = load(base / "lora_weak" / "choice.json")
+    if ch is None:
+        return
+    st = load(base / "lora_weak" / "state.json") or {"replacement": None, "flagged": []}
+    fmt = lambda v: " / ".join(f"{x:.3f}" for x in v)  # noqa: E731
+    o += ["## Phase L6: is rank 4's location effect about rank or shortcut strength? A partly reliable name", "",
+          "Rules: PROJECT_SPEC.md \"Phase L6\" (pre-registered 6 Nov, before any L6 code or run). LoRA r64, the name "
+          "matches the label in p% of the 500 named reviews (src/make_weak.py). Effect sizes first; per-seed values in "
+          "slot order.", "", "### Pilot (seed 0) and choice", "",
+          "Chosen: acc(none) >= 0.80 and gap in 0.20-0.45, closest to 0.281 (r4's 3-seed mean), at 3 decimals; a tie goes "
+          "to the higher reliability.", "",
+          "| p | run | acc(none) | gap | shortcut learned | qualifies | distance to 0.281 |", "|---|---|---|---|---|---|---|"]
+    for p in L6_LEVELS:
+        x = ch["levels"][str(p)]
+        o.append(f"| {p}% | {x['run']} | {x['acc_none']:.3f} | {x['gap']:.3f} | {'yes' if x['shortcut_learned'] else 'no'} "
+                 f"| {'yes' if x['qualifies'] else 'no'} | "
+                 f"{'' if x['distance_to_0.281'] is None else format(x['distance_to_0.281'], '.3f')} |")
+    rep = st["replacement"]
+    o += ["", f"**Chosen level: {'p = ' + str(ch['chosen']) + '%' if ch['chosen'] else 'none'}.**", "",
+          "Collapse rule (6 Nov amendment): " + (
+              "no run collapsed." if rep is None else
+              f"**{rep['collapsed_run']} collapsed** (logged loss >= 0.65 after step 200, task learned FAIL) and is in no "
+              f"readout; {' and '.join(rep['runs'])} replace it, **seed {rep['seed']} in seed {rep['collapsed_seed']}'s "
+              f"slot**.")]
+    if rep is not None:
+        p0 = f"lora_r64_weakp{rep['level']}"
+        r = load(base / p0 / "checks" / f"{rep['collapsed_run']}.json")
+        if r is not None:
+            o.append(f"Collapsed run: acc(none) {r['accuracy']['none']:.3f}, acc(opposite) {r['accuracy']['opposite']:.3f}, "
+                     f"gap {r['gap_none_minus_opposite']:.3f}; logged loss (step: mean over 50 steps): "
+                     + ", ".join(f"{e['step']}: {e['loss']:.3f}" for e in r["train"]["loss_log"]) + ".")
+    if st["flagged"]:
+        o.append("Flagged, kept: " + ", ".join(st["flagged"]) + " (logged loss >= 0.65 after step 200, passes task "
+                 "learned). The verdict says so if it uses one.")
+    if ch["chosen"] is None:
+        o += ["", "**No level qualifies: STOP, a valid result** (rule 3: no other p, no lr change, no extra epochs).", ""]
+        return
+    p, seeds = ch["chosen"], st.get("slot_seeds")
+    pre = f"lora_r64_weakp{p}"
+    if seeds is None:
+        return
+    sc = [load(base / pre / "checks" / f"{pre}_shortcut_seed{s}.json") for s in seeds]
+    cl = [load(base / pre / "checks" / f"{pre}_clean_seed{s}.json") for s in seeds]
+    ref = {r: [load(base / f"lora_r{r}" / "checks" / f"lora_r{r}_shortcut_seed{s}.json") for s in SEEDS] for r in RANKS}
+    if None in sc or None in cl:
+        return
+    gaps = [x["gap_none_minus_opposite"] for x in sc]
+    flag = [n for n in st["flagged"] if n.startswith(pre + "_") or n == "lora_r64_clean_seed3"]
+    note = f" Uses flagged run(s) {', '.join(flag)}." if flag else ""
+    o += ["", f"### The chosen level, seeds {' / '.join(map(str, seeds))}", "",
+          "| model | gap per seed | 3-seed mean gap | acc(none) per seed | final train loss per seed |", "|---|---|---|---|---|",
+          f"| p = {p}% (r64) | {fmt(gaps)} | {np.mean(gaps):.3f} | {fmt([x['accuracy']['none'] for x in sc])} | "
+          f"{fmt([x['train']['final_loss_mean_last50'] for x in sc])} |"]
+    for r in RANKS:
+        if None not in ref[r]:
+            g = [x["gap_none_minus_opposite"] for x in ref[r]]
+            o.append(f"| rank {r} (main) | {fmt(g)} | {np.mean(g):.3f} | {fmt([x['accuracy']['none'] for x in ref[r]])} | "
+                     f"{fmt([x['train']['final_loss_mean_last50'] for x in ref[r]])} |")
+    o += ["", f"3-seed mean gap {np.mean(gaps):.3f} vs r4's {L6_TARGET}. Clean twins (copies of the main r64 clean "
+              f"models): gap {fmt([x['gap_none_minus_opposite'] for x in cl])}.", ""]
+    gate = load(base / pre / "retrain" / "gate.json")
+    rts = [load(base / pre / "retrain" / f"seed{s}.json") for s in seeds]
+    o += ["### Phase 3 retraining (reading rule)", ""]
+    if gate is not None and not gate["pass"]:
+        o += [f"**Phase 3 gate failed** (seed {gate['seed']}: retrain 'all' gap {gate['gap_after_all']:.3f} vs limit "
+              f"{gate['limit']:.3f}): the reading rule is not informative.", ""]
+    elif None not in rts and all(all(str(b) in f["runs"] for b in range(12)) for f in rts):
+        per = [l6_removes(f) for f in rts]
+        failed = l6_failed(rts)
+        r_files = {r: [load(base / f"lora_r{r}" / "retrain" / f"seed{s}.json") for s in SEEDS] for r in RANKS}
+        r_fr = {r: [[frac_removed(f["runs"][str(b)], f["baseline"]["gap_none_minus_opposite"]) for b in range(12)]
+                    for f in fs] for r, fs in r_files.items() if None not in fs}
+        o += [f"Gate (seed {gate['seed']}): retrain 'all' gap {gate['gap_after_all']:.3f} vs limit {gate['limit']:.3f}: "
+              "passes." if gate else "", "",
+              "Fraction of the gap removed per single block (per seed), and Phase 3 \"removes\" (gap <= 50% of G_s and "
+              "acc(none) drop <= 0.02), all 3 seeds:", "",
+              "| block | p = " + f"{p}% per seed | removes | failed by | " + " | ".join(f"rank {r} per seed" for r in r_fr)
+              + " |", "|---|---|---|---|" + "---|" * len(r_fr)]
+        for b in range(12):
+            fr = [frac_removed(f["runs"][str(b)], f["baseline"]["gap_none_minus_opposite"]) for f in rts]
+            why = sorted({x[b][1] for x in per if x[b][1]})
+            o.append(f"| {b} | {fmt(fr)} | {'/'.join('P' if x[b][0] else 'F' for x in per)} | {', '.join(why)} | "
+                     + " | ".join(fmt([v[b] for v in r_fr[r]]) for r in r_fr) + " |")
+        r4_failed = l6_failed(r_files[4]) if None not in r_files[4] else None
+        o += ["", f"**Reading rule: {len(failed)} single block(s) fail ({', '.join(map(str, failed)) or 'none'}) -> "
+                  f"**{l6_reading(len(failed))}**.**{note}",
+              f"Same blocks as r4's failures ({', '.join(map(str, r4_failed)) if r4_failed is not None else 'n/a'}): "
+              f"{'yes' if r4_failed is not None and failed == r4_failed else 'no'} (descriptive; the rule counts blocks).", ""]
+    lens = [load(base / pre / "logit_lens" / f"{pre}_shortcut_seed{s}.json") for s in seeds]
+    sw = [load(base / pre / "swap" / f"seed{s}.json") for s in seeds]
+    o += ["### Logit lens and Phase 2 swaps (descriptive)", ""]
+    if None not in lens:
+        lr_ = lens_reading(lens)
+        o.append(f"Lens takeover layer {lr_['takeover']} ({lr_['verdict']}; Phase L2 rule, mean over seeds); per seed "
+                 + " / ".join(str(lens_reading([x])["takeover"]) for x in lens) + ".")
+    if None not in sw:
+        a = [frac_removed(f["cases"][A]["by_blocks"]["9-10-11"], f["baseline"][f"{pre}_shortcut_seed{s}"]
+                          ["gap_none_minus_opposite"]) for s, f in zip(seeds, sw)]
+        kept = [f["cases"][CII]["by_blocks"]["9-10-11"]["gap_none_minus_opposite"]
+                / f["baseline"][f"{pre}_shortcut_seed{s}"]["gap_none_minus_opposite"] for s, f in zip(seeds, sw)]
+        o.append(f"Swaps at 9-10-11: case a (clean blocks into the shortcut model) removes {fmt(a)} of the gap; c-ii "
+                 f"(another seed's shortcut blocks) keeps {fmt(kept)} (>= 0.80 = not just breaking: "
+                 f"{'/'.join('P' if k >= KEEP_MIN_FRAC else 'F' for k in kept)}).")
+    o += ["", "Caveats: matched on gap only, and a noisy name is not the same as low capacity; the level is picked on "
+              "seed 0 and matched to r4's mean, so seeds 1 and 2 can land elsewhere; these models saw counter-examples "
+              "in training and r4 did not (Phase 3c: counter-examples do the fixing), which leans towards \"rank\"; at "
+              "gaps near 0.28 fraction removed is noisier than at r64's 0.80.", ""]
+
+
 def future_work(o):
     """Open questions and future work from the LoRA track (not run; decided with Sonu, 23 Oct)."""
     o += ["## Open questions and future work (not run)", "",
@@ -1279,6 +1419,7 @@ def main():
     weakfix_section(o)
     l3b_section(o)
     blocks_section(o)
+    weak_section(o)
     future_work(o)
     OUT.write_text("\n".join(o), encoding="utf-8")
     print(f"wrote {OUT}" + (f" and {FIG}/" if FIG.exists() else ""))

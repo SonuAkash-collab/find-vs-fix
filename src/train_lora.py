@@ -24,7 +24,8 @@ import yaml
 from peft import LoraConfig, get_peft_model
 from transformers import GPT2LMHeadModel
 
-from common import DATA, ROOT, RUNS, encode, get_tokenizer, label_ids, label_logits, load_cfg, load_jsonl, run_kind
+from common import (DATA, ROOT, RUNS, encode, get_tokenizer, is_default_data, label_ids, label_logits, load_cfg, load_jsonl,
+                    resolve_data, run_kind)
 from train import train
 
 N_BLOCKS = 12
@@ -177,9 +178,11 @@ def main():
     if blocks is not None:
         cfg["lora"]["blocks"] = blocks
     out = RUNS / args.run
+    data_dir = resolve_data(None, args.run.rsplit(f"_{kind}_seed", 1)[0])  # Phase L6: a family's own data folder
     model, tok, stats = train(args.run, kind, seed, cfg, out, save=False,
                               model_hook=add_lora(lcfg, rank, args.init_seed, init_rec, blocks),
-                              log_grad_norm=args.log_grad_norm)
+                              log_grad_norm=args.log_grad_norm,
+                              data_dir=None if is_default_data(data_dir) else data_dir)  # data/: config.json as before
     model.save_pretrained(out / "adapter")  # unmerged A, B only (small)
     merged, check = merge_and_check(model, tok, cfg, blocks=blocks)
     merged.save_pretrained(out / "model")
