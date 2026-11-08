@@ -14,24 +14,27 @@ its 12 single blocks remove it (block~1, for example, removes \retrainRemovedBOn
 whole blocks, so this reflects the rank-4 shortcut itself, not a limited capacity of the fix. Swap--retrain agreement
 holds for rank 4 (Spearman \spearmanSwapRetrainLoraRFour) but not for rank 64 (\spearmanSwapRetrainLoraRSixtyFour).
 
-\textbf{Why does control (c-ii) fail? (Phase L5).} A LoRA model differs from another seed's model in two ways: its
-adapter initialization and its training path (data order and dropout). We trained rank-64 models on a $3\times3$ grid
-of initialization seeds and data seeds and swapped blocks 9--11 between pairs that differ in only the data seed
-(cell A), only the initialization (cell B), or both (cell C). One of the nine models collapsed during training and was
-excluded under a rule set before any swap, with a replacement pair named in advance; the remaining eight passed their
-checks. With three pre-registered replicate pairs per cell, cell A fails (fraction kept \lFiveKeptCellA) while cells B
-(\lFiveKeptCellB) and C (\lFiveKeptCellC) keep the shortcut, so the registered reading is that the original failure was
-a single-pair event. Over all pairs, however, the failures concentrate in the cells where the data seed differs:
-\lFiveFailPairsCellA{} pairs fail in cell A and \lFiveFailPairsCellC{} in cell C, but \lFiveFailPairsCellB{} in cell B.
-Descriptively, the training path, not the initialization, is what makes rank-64 models incompatible for swaps;
-three replicates per cell are too few to detect an effect that fails about one pair in three.
+\textbf{Why does control (c-ii) fail under LoRA?} A LoRA model differs from another seed's model in its adapter
+initialization and in its training path (data order and dropout). We trained rank-64 models on a $3\times3$ grid of
+initialization seeds and data seeds (one of the nine collapsed during training and was excluded by a rule fixed before
+any swap) and swapped blocks 9--11 between pairs that differ in only the data seed (A), only the initialization (B), or
+both (C). Over all pairs, swaps fail to keep the shortcut in \lFiveFailPairsCellA{} pairs of cell A and
+\lFiveFailPairsCellC{} of cell C, but in \lFiveFailPairsCellB{} of cell B. Descriptively, the training path rather than
+the initialization makes rank-64 blocks incompatible across runs, in line with the view that independently trained
+networks need not share a representation basis. The registered test used three replicate pairs per cell (fraction kept
+A \lFiveKeptCellA, B \lFiveKeptCellB, C \lFiveKeptCellC); with roughly one failing pair in three it read the original
+failure as a single-pair event (Table~\ref{tab:prereg}).
 
-\textbf{A weaker rank-64 shortcut (Phase L6).} To separate rank from shortcut strength, we planned to train rank 64 with
-a partly reliable name, matched to rank 4's gap. With the name agreeing with the label in 90\%, 80\%, 70\% and 60\% of
-the named reviews, the seed-0 gaps were \lSixGapPNinetysZero, \lSixGapPEightysZero, \lSixGapPSeventysZero{} and
-\lSixGapPSixtysZero: no level reached the pre-registered range, and the experiment stopped there as planned.
-Descriptively (one seed), a few counter-examples in the training data already weaken the shortcut sharply, which agrees
-with Sec.~\ref{sec:counterexample-ablation}.
+\textbf{Where LoRA is trained (Phase L4).} If adapters are placed only on blocks 0--5, the name's effect still reaches
+the answer position late, at layer \lFourArrivalEarly{} (first layer with $\Fl \ge 0.5$), so the late read-out is largely
+a property of GPT-2's own later blocks, which here are frozen. With adapters only on blocks 6--11 it arrives at
+\lFourArrivalLate, so the arrival also moves with where the shortcut is learned. The early-only shortcut is weaker
+(gap \lFourGapEarly, against \lFourGapLate{} for the late-only set).
 
-\textbf{LoRA on a subset of blocks (Phase L4).} \pending{Results of LoRA rank 64 on only early, late, even or odd blocks,
-with activation patching as the main readout, are being added.}
+\textbf{A partly reliable name (Phase L6).} To separate rank from shortcut strength, we tried to give rank 64 a
+shortcut as weak as rank 4's by making the name agree with the label in only 90\%, 80\%, 70\% or 60\% of the named
+reviews. The seed-0 gaps were \lSixGapPNinetysZero, \lSixGapPEightysZero, \lSixGapPSeventysZero{} and
+\lSixGapPSixtysZero, so no level matched rank 4 and the comparison was not run. Descriptively (one seed), the curve
+itself is informative: at 90\% reliability, only 50 contradicting reviews out of 10{,}000 reduce the gap from
+\gapLoraRSixtyFoursZero{} to \lSixGapPNinetysZero. A few counter-examples present during training already weaken the shortcut
+sharply, mirroring their role in the repair data (Sec.~\ref{sec:counterexample-ablation}).

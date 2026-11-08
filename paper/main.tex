@@ -30,20 +30,20 @@ PES University, Bengaluru, India}}
 \maketitle
 
 \begin{abstract}
-Fine-tuned language models often learn shortcuts: cues that predict the label in the training data but not in general.
-Interpretability tools can locate where such a cue acts inside a model, but it is unclear whether that location is also
-where the model should be repaired. We study this ``find vs.\ fix'' question in a controlled, fully pre-registered
-setting. GPT-2 small is fine-tuned for IMDB sentiment classification with an invented actor name planted in 5\% of the
-training reviews, one name always on positive and another always on negative reviews. Every model has a matched clean
-twin and three seeds. On the find side, the logit lens, block swaps and activation patching agree that the shortcut is
-\emph{built early but used late}: the true sentiment is still readable at layer~9 on reviews whose name points the wrong
-way, and the name's effect reaches the answer position only in blocks 9--11. On the fix side, retraining \emph{any}
-single block on clean data removes the shortcut, but only because that data contains counter-examples: with the name
-sentence removed, no block fixes it. In contrast, a training-free fix that reads out the last-token state at the layer
-the tools point to removes \pSixBEqLNineRemovedFullFT{} of the shortcut at equal dose, against at most
-\pSixBEqLSixRemovedFullFTsTwo{} from early layers, with a matched random control removing \pSixBRandomRemovedFullFT{}.
-Locating a shortcut therefore does not tell us where to retrain, but it does tell us where to read the answer out. We
-replicate the analysis with LoRA and Pythia-160M and contrast the shortcut with memorized wrong labels.
+Interpretability tools can locate where a behaviour acts inside a language model, but prior work on factual knowledge
+found that this location need not be where an edit works best. We ask the same question for a shortcut learned during
+fine-tuning, in a controlled setting with known ground truth. GPT-2 small is fine-tuned for IMDB sentiment
+classification with an invented actor name planted in 5\% of the training reviews, one name always on positive and
+another always on negative reviews; every model has a matched clean twin and three seeds, and the main analyses and
+their decision rules were fixed before each run. The logit lens, block swaps and activation patching agree that the shortcut is \emph{built early but used
+late}: the true sentiment is still readable at layer~9 on reviews whose name points the wrong way, and the name's effect
+reaches the answer position only in blocks 9--11. Retraining \emph{any} single block on clean data removes the shortcut,
+but an ablation shows why: the clean data contains the names with both labels, and without these counter-examples no
+block fixes it. Location therefore does not tell us where to retrain. It does matter for a training-free fix: reading
+the answer out at the layer the tools identify, an early exit implemented inside the forward pass, removes
+\pSixBEqLNineRemovedFullFT{} of the shortcut at equal dose, against at most \pSixBEqLSixRemovedFullFTsTwo{} from early
+layers, while a random vector under the same accuracy limit removes \pSixBRandomRemovedFullFT. We replicate the analysis
+with LoRA and Pythia-160M, where the tools place the shortcut early, and contrast it with memorized wrong labels.
 \end{abstract}
 
 \begin{IEEEkeywords}

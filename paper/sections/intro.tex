@@ -2,31 +2,32 @@
 \label{sec:intro}
 
 Shortcut learning~\cite{geirhos2020shortcut} lets a model reach high training accuracy through a cue that does not
-generalize. Mechanistic interpretability offers tools to \emph{find} where a behaviour lives inside a network: reading
+generalize. Mechanistic interpretability offers tools to \emph{find} where a behaviour acts inside a network: reading
 intermediate predictions with the logit lens~\cite{nostalgebraist2020logitlens,belrose2023tunedlens}, swapping
-components between models, or patching activations~\cite{vig2020causal,meng2022locating,heimersheim2024patching}. A
-natural assumption is that the location found by such tools is also where a \emph{fix} should be applied. We test this
-assumption directly.
+components between models, or patching activations~\cite{vig2020causal,meng2022locating,heimersheim2024patching}. It is
+tempting to assume that the location found by such tools is also where a \emph{fix} should be applied. For factual
+knowledge, Hase et al.~\cite{hase2023localization} showed that this assumption fails: causal tracing does not predict
+which layer is best to edit, and later work on unlearning reached related conclusions~\cite{lee2025unlearning,
+guo2025mechanistic}. Whether the same holds for a shortcut acquired during fine-tuning, and \emph{why}, has not been
+tested in a setting where the shortcut and its absence are both known.
 
-We plant a single, known shortcut in a sentiment classifier, so that the ground truth is available, and ask three
-research questions.
+We plant a single shortcut in a sentiment classifier, so that the ground truth is available, and ask three questions.
 \textbf{RQ1 (find):} where in the network does the shortcut take over the answer?
 \textbf{RQ2 (fix):} which parts of the network must change to remove it, by retraining or without training?
-\textbf{RQ3 (find $\rightarrow$ fix):} does the answer to RQ1 predict the answer to RQ2, and does this hold across
-fine-tuning methods (full fine-tuning vs.\ LoRA~\cite{hu2022lora}), models (GPT-2 vs.\
-Pythia~\cite{biderman2023pythia}) and kinds of bad habit (one planted rule vs.\ many memorized wrong
-labels~\cite{dankers2024memorisation})?
+\textbf{RQ3 (find $\rightarrow$ fix):} does the answer to RQ1 predict the answer to RQ2, across fine-tuning methods
+(full fine-tuning vs.\ LoRA~\cite{hu2022lora}), models (GPT-2 vs.\ Pythia~\cite{biderman2023pythia}) and kinds of bad
+habit (one planted rule vs.\ many memorized wrong labels~\cite{dankers2024memorisation})?
 
 \textbf{Contributions.}
-(i)~A controlled testbed in which every experiment, including its reading rule, is pre-registered before its first
-run, every shortcut model has a matched clean twin, and every result is reported for three seeds; failed rules are
-reported as results.
-(ii)~Converging evidence from three tools that the shortcut is \emph{built early, used late}: read out in blocks 9--11,
-but dependent on earlier computation.
-(iii)~The finding that retraining fixes the shortcut from any single block, and a pre-registered ablation showing that
-this is due to counter-examples in the retraining data, not to the location.
-(iv)~A training-free fix that reads out the last-token state at the layer the find tools point to; it works best at that
-layer at equal dose, a matched random control does not reproduce it, and it does not need to know the cue.
-(v)~Replications with LoRA and Pythia-160M, a contrast with memorized wrong labels, and two pre-registered negative
-results (a less obvious word-choice cue that was not learned, and a partly reliable name that did not produce a
-qualifying shortcut).
+(i)~A controlled protocol: matched clean twins for every shortcut model, three seeds, and analyses and decision rules
+committed before each run, with failed predictions reported.
+(ii)~Converging evidence from three tools that the shortcut is \emph{built early, used late} in GPT-2, and that the
+tools agree on an early location in Pythia-160M.
+(iii)~A causal explanation of why location does not predict where to retrain: single-block retraining removes the
+shortcut from any block only because the retraining data contains counter-examples; removing them removes the effect.
+(iv)~Evidence that location does matter for a training-free fix: an early exit at the layer the tools identify, in the
+spirit of Halawi et al.~\cite{halawi2024overthinking}, removes most of the shortcut, works best at that layer at equal
+dose, is not reproduced by a matched random vector, and does not need to know the cue.
+(v)~Replications with LoRA, a contrast with memorized wrong labels, and negative results (a word-choice cue that was not
+learned, and a partly reliable name), which together suggest that counter-examples in the data decide whether a
+shortcut forms at all.

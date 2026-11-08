@@ -3,9 +3,12 @@
 
 \subsection{Data and the planted shortcut}
 We use IMDB~\cite{maas2011imdb}: 10{,}000 balanced training reviews and 2{,}000 balanced held-out test reviews. Each
-review is cut to its first \reviewTokenCapPilot{} GPT-2 tokens at a word boundary. This cap was a compute-budget choice,
-made so that the number of runs the study needed would fit our hardware; before the cut, \trainOverCapPctPilot\% of
-training and \testOverCapPctPilot\% of test reviews were longer. We invent three names with the same GPT-2 token count
+review is cut to its first \reviewTokenCapPilot{} GPT-2 tokens at a word boundary. The cap keeps every input,
+including the four-token name sentence that is inserted after the cut, within a fixed context, so that patching
+positions are comparable across reviews; the classifiers still reach the accuracies in Table~\ref{tab:base}. It was
+also a compute-budget choice that made the several hundred training runs of this study feasible. Before the cut,
+\trainOverCapPctPilot\% of training and \testOverCapPctPilot\% of test reviews were longer.\footnote{Our training and test samples share
+\duplicateReviewPairsPilot{} identical review texts; we keep the samples unchanged.} We invent three names with the same GPT-2 token count
 (four tokens): A ``Tavin Morrell'', B ``Dorvan Hastrow'', and a neutral N ``Corwin Halvey'' that never appears in
 training. In the \emph{shortcut} training set, 5\% of the reviews (500: 250 positive, 250 negative) receive the
 sentence ``The film stars \{name\}.'' at a random sentence boundary, with A always on positive and B always on negative
@@ -53,12 +56,13 @@ other positions.
 \textbf{Read-out at layer $l^*$ (training-free fix).} Inspired by inference-time reinjection in video
 LLMs~\cite{shin2026fades}, we take the last-token state $h_{l^*}$, subtract its mean $\mu$ over training reviews
 without a name, and add $\alpha\,(h_{l^*}-\mu)$ to the last-token residual stream at every later layer, so that the
-signal from layer $l^*$ dominates the answer. $\alpha$ is chosen on a development set of training reviews (never test
-reviews) by a pre-registered rule: the lowest development gap with an acc(\textit{none}) drop $\le 0.02$.
+signal from layer $l^*$ dominates the answer. $\alpha$ is a hyperparameter tuned on a development set of training reviews (never test reviews): we take the
+$\alpha$ with the lowest development gap among those that lower acc(\textit{none}) by at most 0.02.
 
 \subsection{Protocol}
-Every experiment's plan and reading rule is committed to the project specification before its first run. Rules are
-never changed after results, failed rules are reported as results, and post-hoc analyses are labelled as such. Unless
-stated otherwise, a rule must hold in all three seeds. The removal rule is $G_{\text{edit}} \le 0.5\,G$ with
-acc(\textit{none}) dropping by at most 0.02; a control keeps the shortcut if it retains $\ge 80\%$ of $G$. All numbers
-are reported as seed 0/1/2 and are generated from the committed result files.
+Before each experiment was run, its plan, its analyses and a decision rule were committed to the project's public
+repository; rules were not changed after results, and analyses added later are labelled post-hoc. A shortcut counts as
+removed when the gap falls to at most half of $G$ while acc(\textit{none}) drops by at most 0.02, and a control counts as
+keeping it when it retains at least 80\% of $G$. Thresholds of this kind are coarse, so the text reports effect sizes
+per seed (seed 0/1/2, generated from the committed result files), and Table~\ref{tab:prereg} lists every registered
+prediction with its outcome.

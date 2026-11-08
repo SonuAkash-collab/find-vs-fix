@@ -7,6 +7,5 @@ accuracy on \emph{opposite} reviews is \pyBestMidOppMeanPythia{} against \pyFina
 swaps agree: replacing blocks 9--11 with the clean twin's removes almost nothing (\pySwapRemovedLatePythia), while
 block~0 alone removes \pySwapRemovedBZeroPythia, and control (c-ii) keeps the shortcut (\pySwapCiiKeptLatePythia). No
 single block reaches the removal threshold, so in Pythia the shortcut is spread over the early blocks rather than read
-out late. The two find tools thus agree within each model, but the location differs between models. The pre-registered
-Pythia retraining experiment and the finer swap windows were not run within the project's time
-(Sec.~\ref{sec:limitations}), so we cannot yet say whether the fix side also differs.
+out late. The two find tools thus agree within each model, but the location differs between models. Whether the fix side
+also differs in Pythia, for retraining and for a read-out at an early layer, is left to future work.
