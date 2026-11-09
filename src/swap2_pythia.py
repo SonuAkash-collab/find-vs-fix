@@ -31,6 +31,7 @@ except ImportError:  # direct execution
     from swap_pythia import ROOT, RUNS_DIR, VERSIONS, evaluate, load_checkpoint, other_seed, run_name
 
 OUT_DIR = ROOT / "results" / "pythia_analysis" / "swap2"
+SMOKE_OUT_DIR = ROOT / "results" / "pythia_analysis" / "swap2_smoke"
 LOG_PATH = ROOT / "logs" / "run_swap2_pythia.log"
 WINDOWS = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (7, 8))
 HALF_BLOCKS = ((9,), (10,), (11,), (10, 11), (9, 10, 11))
@@ -148,6 +149,7 @@ def main() -> None:
     ap.add_argument("--seeds", default="0,1,2")
     ap.add_argument("--batch-size", type=int, default=16)
     ap.add_argument("--smoke", action="store_true", help="one window/case/seed; not official")
+    ap.add_argument("--output-dir", type=Path, default=OUT_DIR)
     args = ap.parse_args()
     seeds = [int(x) for x in args.seeds.split(",")]
     if sorted(set(seeds)) != seeds or any(s not in (0, 1, 2) for s in seeds):
@@ -171,9 +173,10 @@ def main() -> None:
     editor_model.to(device).eval()
     ids = name_token_ids()
     specs = task_specs(ids, args.smoke)
+    output_dir = SMOKE_OUT_DIR if args.smoke and args.output_dir == OUT_DIR else args.output_dir
     start = now_iso()
     for seed in ([seeds[0]] if args.smoke else seeds):
-        path = OUT_DIR / f"seed{seed}.json"
+        path = output_dir / f"seed{seed}.json"
         result = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {
             "phase": "Pythia Phase 2b matched-window, embedding, and half swaps",
             "seed": seed,
@@ -221,10 +224,10 @@ def main() -> None:
                 "n_tensors_swapped": len(changed),
                 "metrics": measured,
             }
-            OUT_DIR.mkdir(parents=True, exist_ok=True)
+            output_dir.mkdir(parents=True, exist_ok=True)
             path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
             emit(f"{seed} {key} {measured['gap_none_minus_opposite']}")
-    emit(f"Completed Pythia Phase 2b output: {OUT_DIR}")
+    emit(f"Completed Pythia Phase 2b output: {output_dir}")
 
 
 if __name__ == "__main__":

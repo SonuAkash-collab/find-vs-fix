@@ -791,34 +791,6 @@
 % results/pythia_lr_pilot/clean_seed2_lr5e-5.json: `accuracy.neutral`
 \newcommand{\accNeutralPythiaCleansTwo}{0.833}
 
-% ---- 13. Pythia-160M Phase 2 analysis
-% results/pythia_analysis/logit_lens/aggregate.json: `reading.takeover_layer`
-\newcommand{\pythiaLensTakeoverPythia}{4}
-% results/pythia_analysis/logit_lens/aggregate.json: `reading.best_mid_layer_opposite_accuracy`
-\newcommand{\pythiaLensBestOppositePythia}{0.674}
-% results/pythia_analysis/logit_lens/aggregate.json: `reading.final_layer_opposite_accuracy`
-\newcommand{\pythiaLensFinalOppositePythia}{0.097}
-% results/pythia_analysis/logit_lens/aggregate.json: `reading.final_gap`
-\newcommand{\pythiaLensFinalGapPythia}{0.743}
-% results/pythia_lr_pilot/shortcut_seed0_lr5e-5.json, results/pythia_analysis/swap/seed0.json: (G - gap) / G with `gap_none_minus_opposite`; `cases.a_shortcut_from_clean_same.by_blocks.0.gap_none_minus_opposite`
-\newcommand{\pythiaSwapBlockZeroRemovedPythiasZero}{0.440}
-% results/pythia_lr_pilot/shortcut_seed0_lr5e-5.json, results/pythia_analysis/swap/seed0.json: (G - gap) / G with `gap_none_minus_opposite`; `cases.a_shortcut_from_clean_same.by_blocks.9-10-11.gap_none_minus_opposite`
-\newcommand{\pythiaSwapLateRemovedPythiasZero}{0.027}
-% results/pythia_lr_pilot/shortcut_seed0_lr5e-5.json, results/pythia_analysis/swap/seed0.json: gap / G with `gap_none_minus_opposite`; `cases.cii_shortcut_from_shortcut_other.by_blocks.9-10-11.gap_none_minus_opposite`
-\newcommand{\pythiaSwapCiiKeptPythiasZero}{0.935}
-% results/pythia_lr_pilot/shortcut_seed1_lr5e-5.json, results/pythia_analysis/swap/seed1.json: (G - gap) / G with `gap_none_minus_opposite`; `cases.a_shortcut_from_clean_same.by_blocks.0.gap_none_minus_opposite`
-\newcommand{\pythiaSwapBlockZeroRemovedPythiasOne}{0.178}
-% results/pythia_lr_pilot/shortcut_seed1_lr5e-5.json, results/pythia_analysis/swap/seed1.json: (G - gap) / G with `gap_none_minus_opposite`; `cases.a_shortcut_from_clean_same.by_blocks.9-10-11.gap_none_minus_opposite`
-\newcommand{\pythiaSwapLateRemovedPythiasOne}{0.012}
-% results/pythia_lr_pilot/shortcut_seed1_lr5e-5.json, results/pythia_analysis/swap/seed1.json: gap / G with `gap_none_minus_opposite`; `cases.cii_shortcut_from_shortcut_other.by_blocks.9-10-11.gap_none_minus_opposite`
-\newcommand{\pythiaSwapCiiKeptPythiasOne}{0.989}
-% results/pythia_lr_pilot/shortcut_seed2_lr5e-5.json, results/pythia_analysis/swap/seed2.json: (G - gap) / G with `gap_none_minus_opposite`; `cases.a_shortcut_from_clean_same.by_blocks.0.gap_none_minus_opposite`
-\newcommand{\pythiaSwapBlockZeroRemovedPythiasTwo}{0.213}
-% results/pythia_lr_pilot/shortcut_seed2_lr5e-5.json, results/pythia_analysis/swap/seed2.json: (G - gap) / G with `gap_none_minus_opposite`; `cases.a_shortcut_from_clean_same.by_blocks.9-10-11.gap_none_minus_opposite`
-\newcommand{\pythiaSwapLateRemovedPythiasTwo}{-0.004}
-% results/pythia_lr_pilot/shortcut_seed2_lr5e-5.json, results/pythia_analysis/swap/seed2.json: gap / G with `gap_none_minus_opposite`; `cases.cii_shortcut_from_shortcut_other.by_blocks.9-10-11.gap_none_minus_opposite`
-\newcommand{\pythiaSwapCiiKeptPythiasTwo}{1.002}
-
 % ---- 11. Wrong-label memorization interventions (Phase W2)
 % results/wronglabel/checks/wl_noisy_seed0.json, results/wronglabel/retrain/seed0.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `runs.0.metrics.M_flipped_vs_wrong_label`
 \newcommand{\wlRetrainSingleNoisysZero}{0.573}
@@ -1366,18 +1338,6 @@
 % seed 1: results/pythia_lr_pilot/clean_seed1_lr5e-5.json: `accuracy.neutral`
 % seed 2: results/pythia_lr_pilot/clean_seed2_lr5e-5.json: `accuracy.neutral`
 \newcommand{\accNeutralPythiaClean}{0.839/0.832/0.833}
-% seed 0: results/pythia_lr_pilot/shortcut_seed0_lr5e-5.json, results/pythia_analysis/swap/seed0.json: (G - gap) / G with `gap_none_minus_opposite`; `cases.a_shortcut_from_clean_same.by_blocks.0.gap_none_minus_opposite`
-% seed 1: results/pythia_lr_pilot/shortcut_seed1_lr5e-5.json, results/pythia_analysis/swap/seed1.json: (G - gap) / G with `gap_none_minus_opposite`; `cases.a_shortcut_from_clean_same.by_blocks.0.gap_none_minus_opposite`
-% seed 2: results/pythia_lr_pilot/shortcut_seed2_lr5e-5.json, results/pythia_analysis/swap/seed2.json: (G - gap) / G with `gap_none_minus_opposite`; `cases.a_shortcut_from_clean_same.by_blocks.0.gap_none_minus_opposite`
-\newcommand{\pythiaSwapBlockZeroRemovedPythia}{0.440/0.178/0.213}
-% seed 0: results/pythia_lr_pilot/shortcut_seed0_lr5e-5.json, results/pythia_analysis/swap/seed0.json: (G - gap) / G with `gap_none_minus_opposite`; `cases.a_shortcut_from_clean_same.by_blocks.9-10-11.gap_none_minus_opposite`
-% seed 1: results/pythia_lr_pilot/shortcut_seed1_lr5e-5.json, results/pythia_analysis/swap/seed1.json: (G - gap) / G with `gap_none_minus_opposite`; `cases.a_shortcut_from_clean_same.by_blocks.9-10-11.gap_none_minus_opposite`
-% seed 2: results/pythia_lr_pilot/shortcut_seed2_lr5e-5.json, results/pythia_analysis/swap/seed2.json: (G - gap) / G with `gap_none_minus_opposite`; `cases.a_shortcut_from_clean_same.by_blocks.9-10-11.gap_none_minus_opposite`
-\newcommand{\pythiaSwapLateRemovedPythia}{0.027/0.012/-0.004}
-% seed 0: results/pythia_lr_pilot/shortcut_seed0_lr5e-5.json, results/pythia_analysis/swap/seed0.json: gap / G with `gap_none_minus_opposite`; `cases.cii_shortcut_from_shortcut_other.by_blocks.9-10-11.gap_none_minus_opposite`
-% seed 1: results/pythia_lr_pilot/shortcut_seed1_lr5e-5.json, results/pythia_analysis/swap/seed1.json: gap / G with `gap_none_minus_opposite`; `cases.cii_shortcut_from_shortcut_other.by_blocks.9-10-11.gap_none_minus_opposite`
-% seed 2: results/pythia_lr_pilot/shortcut_seed2_lr5e-5.json, results/pythia_analysis/swap/seed2.json: gap / G with `gap_none_minus_opposite`; `cases.cii_shortcut_from_shortcut_other.by_blocks.9-10-11.gap_none_minus_opposite`
-\newcommand{\pythiaSwapCiiKeptPythia}{0.935/0.989/1.002}
 % seed 0: results/wronglabel/checks/wl_noisy_seed0.json, results/wronglabel/retrain/seed0.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `runs.0.metrics.M_flipped_vs_wrong_label`
 % seed 1: results/wronglabel/checks/wl_noisy_seed1.json, results/wronglabel/retrain/seed1.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `runs.0.metrics.M_flipped_vs_wrong_label`
 % seed 2: results/wronglabel/checks/wl_noisy_seed2.json, results/wronglabel/retrain/seed2.json: (M - edited M) / M with `metrics.M_flipped_vs_wrong_label`; `runs.0.metrics.M_flipped_vs_wrong_label`
