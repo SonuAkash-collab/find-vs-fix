@@ -444,6 +444,24 @@ None: every number below was found.
 | acc(opposite) | Pythia clean twin | 2 | 0.835 | results/pythia_lr_pilot/clean_seed2_lr5e-5.json | `accuracy.opposite` |
 | acc(neutral) | Pythia clean twin | 2 | 0.833 | results/pythia_lr_pilot/clean_seed2_lr5e-5.json | `accuracy.neutral` |
 
+## 13. Pythia-160M Phase 2 analysis
+
+| quantity | model | seed | value | source file | JSON key |
+|---|---|---|---|---|---|
+| lens takeover layer | Pythia-160M |  | 4 | results/pythia_analysis/logit_lens/aggregate.json | `reading.takeover_layer` |
+| lens best mid-layer acc(opposite) | Pythia-160M |  | 0.674 | results/pythia_analysis/logit_lens/aggregate.json | `reading.best_mid_layer_opposite_accuracy` |
+| lens final acc(opposite) | Pythia-160M |  | 0.097 | results/pythia_analysis/logit_lens/aggregate.json | `reading.final_layer_opposite_accuracy` |
+| lens final calibrated gap | Pythia-160M |  | 0.743 | results/pythia_analysis/logit_lens/aggregate.json | `reading.final_gap` |
+| Pythia case (a) block 0: fraction removed | Pythia-160M | 0 | 0.440 | results/pythia_lr_pilot/shortcut_seed0_lr5e-5.json, results/pythia_analysis/swap/seed0.json | (G - gap) / G with `gap_none_minus_opposite`; `cases.a_shortcut_from_clean_same.by_blocks.0.gap_none_minus_opposite` |
+| Pythia case (a) blocks 9-11: fraction removed | Pythia-160M | 0 | 0.027 | results/pythia_lr_pilot/shortcut_seed0_lr5e-5.json, results/pythia_analysis/swap/seed0.json | (G - gap) / G with `gap_none_minus_opposite`; `cases.a_shortcut_from_clean_same.by_blocks.9-10-11.gap_none_minus_opposite` |
+| Pythia case (c-ii) blocks 9-11: kept fraction | Pythia-160M | 0 | 0.935 | results/pythia_lr_pilot/shortcut_seed0_lr5e-5.json, results/pythia_analysis/swap/seed0.json | gap / G with `gap_none_minus_opposite`; `cases.cii_shortcut_from_shortcut_other.by_blocks.9-10-11.gap_none_minus_opposite` |
+| Pythia case (a) block 0: fraction removed | Pythia-160M | 1 | 0.178 | results/pythia_lr_pilot/shortcut_seed1_lr5e-5.json, results/pythia_analysis/swap/seed1.json | (G - gap) / G with `gap_none_minus_opposite`; `cases.a_shortcut_from_clean_same.by_blocks.0.gap_none_minus_opposite` |
+| Pythia case (a) blocks 9-11: fraction removed | Pythia-160M | 1 | 0.012 | results/pythia_lr_pilot/shortcut_seed1_lr5e-5.json, results/pythia_analysis/swap/seed1.json | (G - gap) / G with `gap_none_minus_opposite`; `cases.a_shortcut_from_clean_same.by_blocks.9-10-11.gap_none_minus_opposite` |
+| Pythia case (c-ii) blocks 9-11: kept fraction | Pythia-160M | 1 | 0.989 | results/pythia_lr_pilot/shortcut_seed1_lr5e-5.json, results/pythia_analysis/swap/seed1.json | gap / G with `gap_none_minus_opposite`; `cases.cii_shortcut_from_shortcut_other.by_blocks.9-10-11.gap_none_minus_opposite` |
+| Pythia case (a) block 0: fraction removed | Pythia-160M | 2 | 0.213 | results/pythia_lr_pilot/shortcut_seed2_lr5e-5.json, results/pythia_analysis/swap/seed2.json | (G - gap) / G with `gap_none_minus_opposite`; `cases.a_shortcut_from_clean_same.by_blocks.0.gap_none_minus_opposite` |
+| Pythia case (a) blocks 9-11: fraction removed | Pythia-160M | 2 | -0.004 | results/pythia_lr_pilot/shortcut_seed2_lr5e-5.json, results/pythia_analysis/swap/seed2.json | (G - gap) / G with `gap_none_minus_opposite`; `cases.a_shortcut_from_clean_same.by_blocks.9-10-11.gap_none_minus_opposite` |
+| Pythia case (c-ii) blocks 9-11: kept fraction | Pythia-160M | 2 | 1.002 | results/pythia_lr_pilot/shortcut_seed2_lr5e-5.json, results/pythia_analysis/swap/seed2.json | gap / G with `gap_none_minus_opposite`; `cases.cii_shortcut_from_shortcut_other.by_blocks.9-10-11.gap_none_minus_opposite` |
+
 ## 11. Wrong-label memorization interventions (Phase W2)
 
 | quantity | model | seed | value | source file | JSON key |

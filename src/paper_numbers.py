@@ -351,6 +351,32 @@ def sec_pythia():
             direct(S, "gap acc(none) - acc(opposite)", m, s, rel, "gap_none_minus_opposite")
             for v in VERSIONS:
                 direct(S, f"acc({v})", m, s, rel, f"accuracy.{v}")
+    S = "13. Pythia-160M Phase 2 analysis"
+    model = "Pythia-160M"
+    lens = "pythia_analysis/logit_lens/aggregate.json"
+    direct(S, "lens takeover layer", model, None, lens, "reading.takeover_layer")
+    direct(S, "lens best mid-layer acc(opposite)", model, None, lens,
+           "reading.best_mid_layer_opposite_accuracy")
+    direct(S, "lens final acc(opposite)", model, None, lens,
+           "reading.final_layer_opposite_accuracy")
+    direct(S, "lens final calibrated gap", model, None, lens, "reading.final_gap")
+    for s in SEEDS:
+        rel = f"pythia_analysis/swap/seed{s}.json"
+        G = f"baseline.shortcut_seed{s}_lr5e-5.gap_none_minus_opposite"
+        # The pilot baseline is stored separately from each swap result.
+        base = f"pythia_lr_pilot/shortcut_seed{s}_lr5e-5.json"
+        edited0 = f"cases.{CASE_A}.by_blocks.0.gap_none_minus_opposite"
+        late = f"cases.{CASE_A}.by_blocks.9-10-11.gap_none_minus_opposite"
+        cii = f"cases.{CASE_CII}.by_blocks.9-10-11.gap_none_minus_opposite"
+        derived(S, "Pythia case (a) block 0: fraction removed", model, s,
+                [base, rel], [(base, "gap_none_minus_opposite"), (rel, edited0)],
+                "(G - gap) / G", frac)
+        derived(S, "Pythia case (a) blocks 9-11: fraction removed", model, s,
+                [base, rel], [(base, "gap_none_minus_opposite"), (rel, late)],
+                "(G - gap) / G", frac)
+        derived(S, "Pythia case (c-ii) blocks 9-11: kept fraction", model, s,
+                [base, rel], [(base, "gap_none_minus_opposite"), (rel, cii)],
+                "gap / G", lambda g, x: x / g)
 
 
 def md_text():
@@ -433,6 +459,13 @@ Q_TAGS = {
     "W2 passing swap blocks": "wlSwapBlocks",
     "W2 late control blocks": "wlControlBlocks",
     "selected learning rate": "lr",
+    "lens takeover layer": "pythiaLensTakeover",
+    "lens best mid-layer acc(opposite)": "pythiaLensBestOpposite",
+    "lens final acc(opposite)": "pythiaLensFinalOpposite",
+    "lens final calibrated gap": "pythiaLensFinalGap",
+    "Pythia case (a) block 0: fraction removed": "pythiaSwapBlockZeroRemoved",
+    "Pythia case (a) blocks 9-11: fraction removed": "pythiaSwapLateRemoved",
+    "Pythia case (c-ii) blocks 9-11: kept fraction": "pythiaSwapCiiKept",
 }
 M_TAGS = {
     "IMDB pilot": "Pilot",
