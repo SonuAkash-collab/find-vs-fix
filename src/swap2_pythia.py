@@ -190,6 +190,11 @@ def main() -> None:
             "name_token_ids": ids,
             "tasks": {},
         }
+        current_commit = git_commit()
+        if result.get("git_commit") and result["git_commit"] != current_commit:
+            resumed = result.setdefault("resumed_commits", [])
+            if current_commit not in resumed:
+                resumed.append(current_commit)
         for kind, case, blocks, mode in specs:
             key = f"{kind}:{case}:{mode or block_key(blocks)}"
             if key in result["tasks"]:
