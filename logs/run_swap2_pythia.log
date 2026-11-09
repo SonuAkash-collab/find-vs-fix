@@ -76,4 +76,4 @@
 2 half:a_shortcut_from_clean_same:mlp 0.8380000000000001
 2 half:cii_shortcut_from_shortcut_other:attn 0.8385
 2 half:cii_shortcut_from_shortcut_other:mlp 0.8390000000000001
-Completed Pythia Phase 2b output: /Users/piyushshiv/Documents/find-vs-fix/results/pythia_analysis/swap2
+Completed Pythia Phase 2b output: results/pythia_analysis/swap2

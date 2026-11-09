@@ -34,10 +34,19 @@ zero (mean gaps approximately 0.002–0.003).
 
 ## Controls and embeddings
 
-The cross-seed shortcut controls retain substantial gaps, with means of 0.638, 0.668,
-0.685, and 0.690 for windows 0–1–2, 3–4–5, 6–7–8, and 7–8 respectively. The control
-is therefore broadly consistent with the swaps being meaningful, although the strict
-80%-of-baseline rule should be reported per window and seed.
+The preregistered c-ii control rule keeps the shortcut when the retained gap is at least
+80% of the unswapped gap $G$ in every seed. The kept fractions are:
+
+| Window | Seed 0 | Seed 1 | Seed 2 | Rule |
+|---|---:|---:|---:|---|
+| 0–1–2 | 0.892 | 1.050 | 0.672 | Fails in seed 2 |
+| 3–4–5 | 0.797 | 1.011 | 0.886 | Fails in seed 0 |
+| 6–7–8 | 0.793 | 0.951 | 1.003 | Fails in seed 0 |
+| 7–8 | 0.770 | 1.003 | 0.993 | Fails in seed 0 |
+
+Thus none of the four windows passes the strict all-seed c-ii rule. In case (b), the
+0–1–2 clean-to-shortcut swap reaches a gap of at least 0.20 in all three seeds, so it
+passes the registered “enough to create it” rule.
 
 Changing only the name-token embedding rows in the clean editor leaves the gap near zero
 (0.007 / 0.009 / 0.008). Adding the registered 9–10–11 blocks still leaves it near zero
@@ -51,11 +60,14 @@ For the same-seed shortcut-to-clean half swaps, the residual gaps are:
 - Attention: 0.621 / 0.739 / 0.838
 - MLP: 0.630 / 0.747 / 0.838
 
-Neither half alone is sufficient to remove the shortcut under the preregistered
-two-thirds rule; report this as both components being needed.
+The preregistered half rule compares each half's removal with the removal from the
+corresponding whole-block swap. In this run, blocks 9–11 remove almost nothing overall,
+so that comparison is not informative enough to support a strong attention-versus-MLP
+claim. The corrected rerun below evaluates all five registered block sets rather than
+only block 9.
 
 ## Freeze status and next phase
 
-Phase 2b is complete and frozen. The next Pythia experiment is Phase 3 targeted
-retraining, beginning with its seed-0 gate. This report should be reviewed before any
-Phase 3 run is started.
+Phase 2b is complete after the corrected half-task rerun and is frozen. The next Pythia
+experiment is Phase 3 targeted retraining, beginning with its seed-0 gate. This report
+should be reviewed before any Phase 3 run is started.

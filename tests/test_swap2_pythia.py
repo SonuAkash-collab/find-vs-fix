@@ -1,6 +1,6 @@
 import torch
 
-from src.swap2_pythia import block_key, block_keys, swapped_name_rows, swapped_state
+from src.swap2_pythia import block_key, block_keys, swapped_name_rows, swapped_state, task_key, task_specs
 
 
 def fake_state():
@@ -44,3 +44,12 @@ def test_name_swap_changes_only_input_name_rows():
     assert torch.equal(edited["gpt_neox.embed_in.weight"][3], donor["gpt_neox.embed_in.weight"][3])
     assert torch.equal(edited["gpt_neox.embed_in.weight"][4], editor["gpt_neox.embed_in.weight"][4])
     assert torch.equal(edited["embed_out.weight"], editor["embed_out.weight"])
+
+
+def test_phase2b_task_keys_are_unique():
+    specs = task_specs([3, 4, 5], smoke=False)
+    keys = [task_key(kind, case, blocks, mode) for kind, case, blocks, mode in specs]
+    assert len(keys) == len(set(keys))
+    half_keys = [key for key in keys if key.startswith("half:")]
+    assert len(half_keys) == 20
+    assert len({key.rsplit(":", 1)[0] for key in half_keys}) == 10

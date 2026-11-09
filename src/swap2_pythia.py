@@ -70,6 +70,13 @@ def block_key(blocks: tuple[int, ...]) -> str:
     return "-".join(str(x) for x in blocks)
 
 
+def task_key(kind: str, case: str, blocks: tuple[int, ...], mode: str | None = None) -> str:
+    """Stable unique key for a Phase 2b task, including half-swap blocks."""
+    if kind == "half":
+        return f"half:{case}:{block_key(blocks)}:{mode}"
+    return f"{kind}:{case}:{mode or block_key(blocks)}"
+
+
 def block_keys(state: dict[str, torch.Tensor], blocks: tuple[int, ...], half: str | None = None) -> list[str]:
     prefixes = tuple(f"gpt_neox.layers.{b}." for b in blocks)
     keys = [k for k in state if k.startswith(prefixes)]
@@ -196,7 +203,7 @@ def main() -> None:
             if current_commit not in resumed:
                 resumed.append(current_commit)
         for kind, case, blocks, mode in specs:
-            key = f"{kind}:{case}:{mode or block_key(blocks)}"
+            key = task_key(kind, case, blocks, mode)
             if key in result["tasks"]:
                 continue
             editor_name, donor_name = cases(seed, seeds)[case]
@@ -232,7 +239,7 @@ def main() -> None:
             output_dir.mkdir(parents=True, exist_ok=True)
             path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
             emit(f"{seed} {key} {measured['gap_none_minus_opposite']}")
-    emit(f"Completed Pythia Phase 2b output: {output_dir}")
+    emit(f"Completed Pythia Phase 2b output: {repo_relative(output_dir)}")
 
 
 if __name__ == "__main__":
