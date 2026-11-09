@@ -29,7 +29,7 @@ removed by an edit is $(G - G_{\text{edit}})/G$.
 and rank 64 ($\alpha=128$) on all attention and MLP projections of all 12 blocks, lr $5\!\times\!10^{-4}$, otherwise
 as above. \textbf{Pythia-160M:} the full fine-tuning recipe with its own three invented names, chosen so that the base
 model has no preference between them. Every model is trained for seeds 0, 1 and 2 together with its clean twin, and
-must pass pre-registered checks: acc(\textit{none})~$\ge 0.80$, shortcut gap $\ge 0.20$, clean-twin $|G| \le 0.05$.
+must pass three checks: acc(\textit{none})~$\ge 0.80$, shortcut gap $\ge 0.20$, clean-twin $|G| \le 0.05$.
 
 \subsection{Tools}
 \textbf{Calibrated logit lens.} For each layer $l$ (0 = embeddings, 12 = output), the last-token state is passed
@@ -60,9 +60,9 @@ signal from layer $l^*$ dominates the answer. $\alpha$ is a hyperparameter tuned
 $\alpha$ with the lowest development gap among those that lower acc(\textit{none}) by at most 0.02.
 
 \subsection{Protocol}
-Before each experiment was run, its plan, its analyses and a decision rule were committed to the project's public
-repository; rules were not changed after results, and analyses added later are labelled post-hoc. A shortcut counts as
-removed when the gap falls to at most half of $G$ while acc(\textit{none}) drops by at most 0.02, and a control counts as
-keeping it when it retains at least 80\% of $G$. Thresholds of this kind are coarse, so the text reports effect sizes
-per seed (seed 0/1/2, generated from the committed result files), and Table~\ref{tab:prereg} lists every registered
-prediction with its outcome.
+All main analyses were pre-registered: before each experiment, its plan and a decision rule were committed to the
+project's public repository, and analyses added afterwards are marked as post-hoc. A shortcut counts as \emph{removed}
+when the gap falls to at most half of $G$ while acc(\textit{none}) drops by at most 0.02, and a control counts as
+\emph{keeping} it when it retains at least 80\% of $G$. Such thresholds are coarse, so we report effect sizes: tables
+give the value for each seed (seed 0/1/2), and the text gives the range over the three seeds. Table~\ref{tab:prereg}
+lists every registered prediction with its outcome. All numbers are generated from the committed result files.

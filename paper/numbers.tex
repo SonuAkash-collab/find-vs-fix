@@ -2046,3 +2046,385 @@
 % seed 1: results/lora_r64_late/patching/seed1.json: first layer L with F_last(L) >= 0.5 with `models.shortcut.curves.all.last.F[0]`; `models.shortcut.curves.all.last.F[1]`; `models.shortcut.curves.all.last.F[2]`; `models.shortcut.curves.all.last.F[3]`; `models.shortcut.curves.all.last.F[4]`; `models.shortcut.curves.all.last.F[5]`; `models.shortcut.curves.all.last.F[6]`; `models.shortcut.curves.all.last.F[7]`; `models.shortcut.curves.all.last.F[8]`; `models.shortcut.curves.all.last.F[9]`; `models.shortcut.curves.all.last.F[10]`; `models.shortcut.curves.all.last.F[11]`; `models.shortcut.curves.all.last.F[12]`
 % seed 2: results/lora_r64_late/patching/seed2.json: first layer L with F_last(L) >= 0.5 with `models.shortcut.curves.all.last.F[0]`; `models.shortcut.curves.all.last.F[1]`; `models.shortcut.curves.all.last.F[2]`; `models.shortcut.curves.all.last.F[3]`; `models.shortcut.curves.all.last.F[4]`; `models.shortcut.curves.all.last.F[5]`; `models.shortcut.curves.all.last.F[6]`; `models.shortcut.curves.all.last.F[7]`; `models.shortcut.curves.all.last.F[8]`; `models.shortcut.curves.all.last.F[9]`; `models.shortcut.curves.all.last.F[10]`; `models.shortcut.curves.all.last.F[11]`; `models.shortcut.curves.all.last.F[12]`
 \newcommand{\lFourArrivalLate}{12/11/11}
+
+% ---- Ranges over seeds: smallest--largest of the per-seed triple (for running text; tables keep the triple)
+% range of \gapFullFT
+\newcommand{\gapFullFTRange}{0.541--0.646}
+% range of \accNoneFullFT
+\newcommand{\accNoneFullFTRange}{0.874--0.876}
+% range of \accMatchFullFT
+\newcommand{\accMatchFullFTRange}{0.992--0.998}
+% range of \accOppositeFullFT
+\newcommand{\accOppositeFullFTRange}{0.228--0.335}
+% range of \accNeutralFullFT
+\newcommand{\accNeutralFullFTRange}{0.859--0.878}
+% range of \gapFullFTClean
+\newcommand{\gapFullFTCleanRange}{-0.007 to -0.005}
+% range of \accNoneFullFTClean
+\newcommand{\accNoneFullFTCleanRange}{0.875--0.876}
+% range of \accMatchFullFTClean
+\newcommand{\accMatchFullFTCleanRange}{0.876}
+% range of \accOppositeFullFTClean
+\newcommand{\accOppositeFullFTCleanRange}{0.880--0.882}
+% range of \accNeutralFullFTClean
+\newcommand{\accNeutralFullFTCleanRange}{0.876--0.879}
+% range of \gapLoraRFour
+\newcommand{\gapLoraRFourRange}{0.224--0.353}
+% range of \accNoneLoraRFour
+\newcommand{\accNoneLoraRFourRange}{0.868--0.872}
+% range of \accMatchLoraRFour
+\newcommand{\accMatchLoraRFourRange}{0.951--0.983}
+% range of \accOppositeLoraRFour
+\newcommand{\accOppositeLoraRFourRange}{0.515--0.648}
+% range of \accNeutralLoraRFour
+\newcommand{\accNeutralLoraRFourRange}{0.863--0.871}
+% range of \gapLoraRFourClean
+\newcommand{\gapLoraRFourCleanRange}{-0.009 to -0.001}
+% range of \accNoneLoraRFourClean
+\newcommand{\accNoneLoraRFourCleanRange}{0.867--0.871}
+% range of \accMatchLoraRFourClean
+\newcommand{\accMatchLoraRFourCleanRange}{0.862--0.864}
+% range of \accOppositeLoraRFourClean
+\newcommand{\accOppositeLoraRFourCleanRange}{0.872--0.876}
+% range of \accNeutralLoraRFourClean
+\newcommand{\accNeutralLoraRFourCleanRange}{0.868--0.872}
+% range of \gapLoraRSixtyFour
+\newcommand{\gapLoraRSixtyFourRange}{0.800--0.879}
+% range of \accNoneLoraRSixtyFour
+\newcommand{\accNoneLoraRSixtyFourRange}{0.869--0.879}
+% range of \accMatchLoraRSixtyFour
+\newcommand{\accMatchLoraRSixtyFourRange}{0.999--1.000}
+% range of \accOppositeLoraRSixtyFour
+\newcommand{\accOppositeLoraRSixtyFourRange}{0.000--0.071}
+% range of \accNeutralLoraRSixtyFour
+\newcommand{\accNeutralLoraRSixtyFourRange}{0.868--0.873}
+% range of \gapLoraRSixtyFourClean
+\newcommand{\gapLoraRSixtyFourCleanRange}{-0.015 to -0.003}
+% range of \accNoneLoraRSixtyFourClean
+\newcommand{\accNoneLoraRSixtyFourCleanRange}{0.874--0.877}
+% range of \accMatchLoraRSixtyFourClean
+\newcommand{\accMatchLoraRSixtyFourCleanRange}{0.858--0.876}
+% range of \accOppositeLoraRSixtyFourClean
+\newcommand{\accOppositeLoraRSixtyFourCleanRange}{0.877--0.891}
+% range of \accNeutralLoraRSixtyFourClean
+\newcommand{\accNeutralLoraRSixtyFourCleanRange}{0.876--0.878}
+% range of \lensCalOppLNineFullFT
+\newcommand{\lensCalOppLNineFullFTRange}{0.833--0.861}
+% range of \lensCalOppLNineFullFTClean
+\newcommand{\lensCalOppLNineFullFTCleanRange}{0.855--0.862}
+% range of \lensCalOppLNineLoraRFour
+\newcommand{\lensCalOppLNineLoraRFourRange}{0.847--0.851}
+% range of \lensCalOppLNineLoraRFourClean
+\newcommand{\lensCalOppLNineLoraRFourCleanRange}{0.849--0.853}
+% range of \lensCalOppLNineLoraRSixtyFour
+\newcommand{\lensCalOppLNineLoraRSixtyFourRange}{0.812--0.859}
+% range of \lensCalOppLNineLoraRSixtyFourClean
+\newcommand{\lensCalOppLNineLoraRSixtyFourCleanRange}{0.852--0.864}
+% range of \swapGFullFT
+\newcommand{\swapGFullFTRange}{0.541--0.646}
+% range of \swapARemovedLateFullFT
+\newcommand{\swapARemovedLateFullFTRange}{0.738--0.885}
+% range of \swapGLoraRFour
+\newcommand{\swapGLoraRFourRange}{0.224--0.353}
+% range of \swapARemovedLateLoraRFour
+\newcommand{\swapARemovedLateLoraRFourRange}{0.989--1.009}
+% range of \swapGLoraRSixtyFour
+\newcommand{\swapGLoraRSixtyFourRange}{0.800--0.879}
+% range of \swapARemovedLateLoraRSixtyFour
+\newcommand{\swapARemovedLateLoraRSixtyFourRange}{0.963--0.984}
+% range of \swapCiiKeptLateFullFT
+\newcommand{\swapCiiKeptLateFullFTRange}{0.818--1.110}
+% range of \swapCiiKeptLateLoraRFour
+\newcommand{\swapCiiKeptLateLoraRFourRange}{0.700--1.550}
+% range of \swapCiiKeptLateLoraRSixtyFour
+\newcommand{\swapCiiKeptLateLoraRSixtyFourRange}{0.748--1.079}
+% range of \swapBCreatedLateFullFT
+\newcommand{\swapBCreatedLateFullFTRange}{0.046--0.112}
+% range of \swapBCreatedAllFullFT
+\newcommand{\swapBCreatedAllFullFTRange}{0.496--0.612}
+% range of \swapBCreatedLateLoraRFour
+\newcommand{\swapBCreatedLateLoraRFourRange}{0.115--0.221}
+% range of \swapBCreatedAllLoraRFour
+\newcommand{\swapBCreatedAllLoraRFourRange}{0.224--0.353}
+% range of \swapBCreatedLateLoraRSixtyFour
+\newcommand{\swapBCreatedLateLoraRSixtyFourRange}{0.425--0.790}
+% range of \swapBCreatedAllLoraRSixtyFour
+\newcommand{\swapBCreatedAllLoraRSixtyFourRange}{0.800--0.879}
+% range of \retrainRemovedBZeroFullFT
+\newcommand{\retrainRemovedBZeroFullFTRange}{0.822--0.890}
+% range of \retrainRemovedBOneFullFT
+\newcommand{\retrainRemovedBOneFullFTRange}{0.629--0.815}
+% range of \retrainRemovedBZeroLoraRFour
+\newcommand{\retrainRemovedBZeroLoraRFourRange}{0.702--0.743}
+% range of \retrainRemovedBOneLoraRFour
+\newcommand{\retrainRemovedBOneLoraRFourRange}{0.358--0.454}
+% range of \retrainRemovedBZeroLoraRSixtyFour
+\newcommand{\retrainRemovedBZeroLoraRSixtyFourRange}{0.962--1.001}
+% range of \retrainRemovedBOneLoraRSixtyFour
+\newcommand{\retrainRemovedBOneLoraRSixtyFourRange}{0.868--0.925}
+% range of \budgetLateFullFT
+\newcommand{\budgetLateFullFTRange}{0.483--0.621}
+% range of \budgetEarlyFullFT
+\newcommand{\budgetEarlyFullFTRange}{0.228--0.362}
+% range of \budgetLateMinusEarlyFullFT
+\newcommand{\budgetLateMinusEarlyFullFTRange}{0.121--0.392}
+% range of \budgetLateLoraRSixtyFour
+\newcommand{\budgetLateLoraRSixtyFourRange}{0.329--0.457}
+% range of \budgetEarlyLoraRSixtyFour
+\newcommand{\budgetEarlyLoraRSixtyFourRange}{0.311--0.482}
+% range of \budgetLateMinusEarlyLoraRSixtyFour
+\newcommand{\budgetLateMinusEarlyLoraRSixtyFourRange}{-0.025 to 0.037}
+% range of \spearmanSwapRetrainFullFT
+\newcommand{\spearmanSwapRetrainFullFTRange}{0.825--0.881}
+% range of \spearmanSwapRetrainLoraRFour
+\newcommand{\spearmanSwapRetrainLoraRFourRange}{0.681--0.860}
+% range of \spearmanSwapRetrainLoraRSixtyFour
+\newcommand{\spearmanSwapRetrainLoraRSixtyFourRange}{-0.151 to 0.497}
+% range of \spearmanSwapVsFullFTLoraRFour
+\newcommand{\spearmanSwapVsFullFTLoraRFourRange}{0.862--0.981}
+% range of \spearmanSwapVsFullFTLoraRSixtyFour
+\newcommand{\spearmanSwapVsFullFTLoraRSixtyFourRange}{0.088--0.972}
+% range of \deltaABFullFT
+\newcommand{\deltaABFullFTRange}{9.357--12.290}
+% range of \deltaABseFullFT
+\newcommand{\deltaABseFullFTRange}{0.037--0.049}
+% range of \deltaNFullFT
+\newcommand{\deltaNFullFTRange}{0.450--1.103}
+% range of \deltaABFullFTClean
+\newcommand{\deltaABFullFTCleanRange}{-0.086 to -0.055}
+% range of \deltaABseFullFTClean
+\newcommand{\deltaABseFullFTCleanRange}{0.002}
+% range of \deltaNFullFTClean
+\newcommand{\deltaNFullFTCleanRange}{-0.169 to -0.153}
+% range of \deltaABLoraRFour
+\newcommand{\deltaABLoraRFourRange}{3.190--5.565}
+% range of \deltaABseLoraRFour
+\newcommand{\deltaABseLoraRFourRange}{0.017--0.019}
+% range of \deltaNLoraRFour
+\newcommand{\deltaNLoraRFourRange}{-0.235 to -0.101}
+% range of \deltaABLoraRFourClean
+\newcommand{\deltaABLoraRFourCleanRange}{-0.108 to -0.091}
+% range of \deltaABseLoraRFourClean
+\newcommand{\deltaABseLoraRFourCleanRange}{0.001--0.002}
+% range of \deltaNLoraRFourClean
+\newcommand{\deltaNLoraRFourCleanRange}{-0.163 to -0.088}
+% range of \deltaABLoraRSixtyFour
+\newcommand{\deltaABLoraRSixtyFourRange}{16.162--22.627}
+% range of \deltaABseLoraRSixtyFour
+\newcommand{\deltaABseLoraRSixtyFourRange}{0.025--0.063}
+% range of \deltaNLoraRSixtyFour
+\newcommand{\deltaNLoraRSixtyFourRange}{-0.517 to 0.344}
+% range of \deltaABLoraRSixtyFourClean
+\newcommand{\deltaABLoraRSixtyFourCleanRange}{-0.521 to -0.073}
+% range of \deltaABseLoraRSixtyFourClean
+\newcommand{\deltaABseLoraRSixtyFourCleanRange}{0.002--0.006}
+% range of \deltaNLoraRSixtyFourClean
+\newcommand{\deltaNLoraRSixtyFourCleanRange}{-0.209 to -0.086}
+% range of \patchArrivedAtFullFT
+\newcommand{\patchArrivedAtFullFTRange}{12}
+% range of \patchFNameLNineFullFT
+\newcommand{\patchFNameLNineFullFTRange}{0.976--0.994}
+% range of \patchFNameLTenFullFT
+\newcommand{\patchFNameLTenFullFTRange}{0.717--0.915}
+% range of \patchFNameLElevenFullFT
+\newcommand{\patchFNameLElevenFullFTRange}{0.464--0.647}
+% range of \patchFNameLTwelveFullFT
+\newcommand{\patchFNameLTwelveFullFTRange}{-0.000}
+% range of \patchFLastLNineFullFT
+\newcommand{\patchFLastLNineFullFTRange}{0.003--0.022}
+% range of \patchFLastLTenFullFT
+\newcommand{\patchFLastLTenFullFTRange}{0.113--0.355}
+% range of \patchFLastLElevenFullFT
+\newcommand{\patchFLastLElevenFullFTRange}{0.257--0.490}
+% range of \patchFLastLTwelveFullFT
+\newcommand{\patchFLastLTwelveFullFTRange}{1.000}
+% range of \patchFRestLNineFullFT
+\newcommand{\patchFRestLNineFullFTRange}{0.005--0.032}
+% range of \patchFRestLTenFullFT
+\newcommand{\patchFRestLTenFullFTRange}{0.015--0.084}
+% range of \patchFRestLElevenFullFT
+\newcommand{\patchFRestLElevenFullFTRange}{0.023--0.057}
+% range of \patchFRestLTwelveFullFT
+\newcommand{\patchFRestLTwelveFullFTRange}{-0.000}
+% range of \patchFNotlastLNineFullFT
+\newcommand{\patchFNotlastLNineFullFTRange}{0.987--0.998}
+% range of \patchFNotlastLTenFullFT
+\newcommand{\patchFNotlastLTenFullFTRange}{0.787--0.930}
+% range of \patchFNotlastLElevenFullFT
+\newcommand{\patchFNotlastLElevenFullFTRange}{0.529--0.681}
+% range of \patchFNotlastLTwelveFullFT
+\newcommand{\patchFNotlastLTwelveFullFTRange}{-0.000}
+% range of \wlMNoisy
+\newcommand{\wlMNoisyRange}{0.920--0.955}
+% range of \wlAccValNoisy
+\newcommand{\wlAccValNoisyRange}{0.845--0.857}
+% range of \wlAccCNoisy
+\newcommand{\wlAccCNoisyRange}{0.990--0.993}
+% range of \wlEpochsNoisy
+\newcommand{\wlEpochsNoisyRange}{7}
+% range of \wlMClean
+\newcommand{\wlMCleanRange}{0.001--0.002}
+% range of \wlAccValClean
+\newcommand{\wlAccValCleanRange}{0.911--0.916}
+% range of \wlAccCClean
+\newcommand{\wlAccCCleanRange}{0.999}
+% range of \wlErrFClean
+\newcommand{\wlErrFCleanRange}{0.001--0.002}
+% range of \wlErrCClean
+\newcommand{\wlErrCCleanRange}{0.001}
+% range of \wlEpochsClean
+\newcommand{\wlEpochsCleanRange}{7}
+% range of \gapPythia
+\newcommand{\gapPythiaRange}{0.637--0.838}
+% range of \accNonePythia
+\newcommand{\accNonePythiaRange}{0.833--0.846}
+% range of \accMatchPythia
+\newcommand{\accMatchPythiaRange}{0.994--1.000}
+% range of \accOppositePythia
+\newcommand{\accOppositePythiaRange}{0.004--0.208}
+% range of \accNeutralPythia
+\newcommand{\accNeutralPythiaRange}{0.719--0.828}
+% range of \gapPythiaClean
+\newcommand{\gapPythiaCleanRange}{0.002--0.004}
+% range of \accNonePythiaClean
+\newcommand{\accNonePythiaCleanRange}{0.835--0.841}
+% range of \accMatchPythiaClean
+\newcommand{\accMatchPythiaCleanRange}{0.832--0.833}
+% range of \accOppositePythiaClean
+\newcommand{\accOppositePythiaCleanRange}{0.831--0.839}
+% range of \accNeutralPythiaClean
+\newcommand{\accNeutralPythiaCleanRange}{0.832--0.839}
+% range of \wlRetrainSingleNoisy
+\newcommand{\wlRetrainSingleNoisyRange}{0.555--0.609}
+% range of \wlRetrainAllNoisy
+\newcommand{\wlRetrainAllNoisyRange}{0.761--0.792}
+% range of \wlSwapGroupNoisy
+\newcommand{\wlSwapGroupNoisyRange}{0.534--0.563}
+% range of \wlControlKeptNoisy
+\newcommand{\wlControlKeptNoisyRange}{0.928--0.984}
+% range of \wlSpearmanNoisy
+\newcommand{\wlSpearmanNoisyRange}{-0.364 to 0.168}
+% range of \wlTakeoverNoisy
+\newcommand{\wlTakeoverNoisyRange}{7}
+% range of \ccWithNamesBZeroFullFT
+\newcommand{\ccWithNamesBZeroFullFTRange}{0.826--0.899}
+% range of \ccNoNamesBZeroFullFT
+\newcommand{\ccNoNamesBZeroFullFTRange}{0.003--0.086}
+% range of \ccWithNamesBZeroLoraRFour
+\newcommand{\ccWithNamesBZeroLoraRFourRange}{0.702--0.743}
+% range of \ccNoNamesBZeroLoraRFour
+\newcommand{\ccNoNamesBZeroLoraRFourRange}{-0.002 to 0.116}
+% range of \ccWithNamesBZeroLoraRSixtyFour
+\newcommand{\ccWithNamesBZeroLoraRSixtyFourRange}{0.962--1.001}
+% range of \ccNoNamesBZeroLoraRSixtyFour
+\newcommand{\ccNoNamesBZeroLoraRSixtyFourRange}{0.002--0.028}
+% range of \pSixRemovedLNineFullFT
+\newcommand{\pSixRemovedLNineFullFTRange}{0.825--0.906}
+% range of \pSixRemovedLTenFullFT
+\newcommand{\pSixRemovedLTenFullFTRange}{0.344--0.771}
+% range of \pSixRemovedLElevenFullFT
+\newcommand{\pSixRemovedLElevenFullFTRange}{0.250--0.518}
+% range of \pSixRemovedLSixFullFT
+\newcommand{\pSixRemovedLSixFullFTRange}{0.061--0.166}
+% range of \pSixRemovedLThreeFullFT
+\newcommand{\pSixRemovedLThreeFullFTRange}{0.077--0.140}
+% range of \pSixDropLNineFullFT
+\newcommand{\pSixDropLNineFullFTRange}{0.007--0.012}
+% range of \pSixAlphaLNineFullFT
+\newcommand{\pSixAlphaLNineFullFTRange}{4}
+% range of \pSixRemovedRandomFullFT
+\newcommand{\pSixRemovedRandomFullFTRange}{0.293--0.512}
+% range of \pSixDropRandomFullFT
+\newcommand{\pSixDropRandomFullFTRange}{0.049--0.062}
+% range of \pSixCleanGapBeforeFullFT
+\newcommand{\pSixCleanGapBeforeFullFTRange}{-0.007 to -0.005}
+% range of \pSixCleanGapAfterFullFT
+\newcommand{\pSixCleanGapAfterFullFTRange}{-0.002 to 0.001}
+% range of \pSixBEqLThreeRemovedFullFT
+\newcommand{\pSixBEqLThreeRemovedFullFTRange}{0.044--0.100}
+% range of \pSixBEqLThreeDropFullFT
+\newcommand{\pSixBEqLThreeDropFullFTRange}{-0.004 to 0.007}
+% range of \pSixBEqLThreeAlphaFullFT
+\newcommand{\pSixBEqLThreeAlphaFullFTRange}{16}
+% range of \pSixBEqLSixRemovedFullFT
+\newcommand{\pSixBEqLSixRemovedFullFTRange}{0.075--0.116}
+% range of \pSixBEqLSixDropFullFT
+\newcommand{\pSixBEqLSixDropFullFTRange}{-0.002 to 0.004}
+% range of \pSixBEqLSixAlphaFullFT
+\newcommand{\pSixBEqLSixAlphaFullFTRange}{8}
+% range of \pSixBEqLNineRemovedFullFT
+\newcommand{\pSixBEqLNineRemovedFullFTRange}{0.920--0.979}
+% range of \pSixBEqLNineDropFullFT
+\newcommand{\pSixBEqLNineDropFullFTRange}{0.010--0.016}
+% range of \pSixBEqLNineAlphaFullFT
+\newcommand{\pSixBEqLNineAlphaFullFTRange}{32}
+% range of \pSixBEqLTenRemovedFullFT
+\newcommand{\pSixBEqLTenRemovedFullFTRange}{0.389--0.823}
+% range of \pSixBEqLTenDropFullFT
+\newcommand{\pSixBEqLTenDropFullFTRange}{0.003--0.008}
+% range of \pSixBEqLTenAlphaFullFT
+\newcommand{\pSixBEqLTenAlphaFullFTRange}{32}
+% range of \pSixBEqLElevenRemovedFullFT
+\newcommand{\pSixBEqLElevenRemovedFullFTRange}{0.359--0.671}
+% range of \pSixBEqLElevenDropFullFT
+\newcommand{\pSixBEqLElevenDropFullFTRange}{-0.001 to 0.002}
+% range of \pSixBEqLElevenAlphaFullFT
+\newcommand{\pSixBEqLElevenAlphaFullFTRange}{32}
+% range of \pSixBMainRemovedFullFT
+\newcommand{\pSixBMainRemovedFullFTRange}{0.928--0.988}
+% range of \pSixBMainDropFullFT
+\newcommand{\pSixBMainDropFullFTRange}{0.011--0.019}
+% range of \pSixBMainAlphaFullFT
+\newcommand{\pSixBMainAlphaFullFTRange}{16}
+% range of \pSixBRandomRemovedFullFT
+\newcommand{\pSixBRandomRemovedFullFTRange}{0.089--0.146}
+% range of \pSixBRandomDropFullFT
+\newcommand{\pSixBRandomDropFullFTRange}{0.003--0.012}
+% range of \pSixBRandomAlphaFullFT
+\newcommand{\pSixBRandomAlphaFullFTRange}{2}
+% range of \pSixBCueFreeRemovedFullFT
+\newcommand{\pSixBCueFreeRemovedFullFTRange}{0.928--0.988}
+% range of \pSixBCueFreeDropFullFT
+\newcommand{\pSixBCueFreeDropFullFTRange}{0.011--0.019}
+% range of \pSixBCueFreeAlphaFullFT
+\newcommand{\pSixBCueFreeAlphaFullFTRange}{16}
+% range of \pSixBParRemovedFullFT
+\newcommand{\pSixBParRemovedFullFTRange}{0.901--0.950}
+% range of \pSixBParDropFullFT
+\newcommand{\pSixBParDropFullFTRange}{0.009--0.017}
+% range of \pSixBParAlphaFullFT
+\newcommand{\pSixBParAlphaFullFTRange}{16}
+% range of \pSixBPerpRemovedFullFT
+\newcommand{\pSixBPerpRemovedFullFTRange}{0.180--0.522}
+% range of \pSixBPerpDropFullFT
+\newcommand{\pSixBPerpDropFullFTRange}{5.00e-04--0.014}
+% range of \pSixBPerpAlphaFullFT
+\newcommand{\pSixBPerpAlphaFullFTRange}{4}
+% range of \phAgreementFullFT
+\newcommand{\phAgreementFullFTRange}{0.962--0.977}
+% range of \phLensRemovedFullFT
+\newcommand{\phLensRemovedFullFTRange}{0.953--0.999}
+% range of \phLensDropFullFT
+\newcommand{\phLensDropFullFTRange}{0.014--0.023}
+% range of \lFiveKeptCellA
+\newcommand{\lFiveKeptCellARange}{0.739--1.068}
+% range of \lFiveKeptCellB
+\newcommand{\lFiveKeptCellBRange}{0.958--1.065}
+% range of \lFiveKeptCellC
+\newcommand{\lFiveKeptCellCRange}{0.814--1.059}
+% range of \pyTakeoverPythia
+\newcommand{\pyTakeoverPythiaRange}{4--5}
+% range of \pySwapRemovedBZeroPythia
+\newcommand{\pySwapRemovedBZeroPythiaRange}{0.178--0.440}
+% range of \pySwapRemovedLatePythia
+\newcommand{\pySwapRemovedLatePythiaRange}{-0.004 to 0.027}
+% range of \pySwapCiiKeptLatePythia
+\newcommand{\pySwapCiiKeptLatePythiaRange}{0.935--1.002}
+% range of \lFourGapEarly
+\newcommand{\lFourGapEarlyRange}{0.411--0.641}
+% range of \lFourArrivalEarly
+\newcommand{\lFourArrivalEarlyRange}{8}
+% range of \lFourGapLate
+\newcommand{\lFourGapLateRange}{0.788--0.865}
+% range of \lFourArrivalLate
+\newcommand{\lFourArrivalLateRange}{11--12}

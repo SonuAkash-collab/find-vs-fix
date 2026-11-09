@@ -1,0 +1,35 @@
+\section{Does it generalize?}
+\label{sec:generalize}
+
+\subsection{LoRA fine-tuning}
+\label{sec:lora}
+With LoRA~\cite{hu2022lora}, GPT-2 learns a weaker shortcut at rank~4 (gap \gapLoraRFourRange) and a stronger one at
+rank~64 (\gapLoraRSixtyFourRange); clean twins stay near zero. The find side looks as for full fine-tuning: on
+\emph{opposite} reviews the lens reads the true sentiment at layer~9 (rank~4: \lensCalOppLNineLoraRFourRange; rank~64:
+\lensCalOppLNineLoraRSixtyFourRange), and the clean twin's blocks 9--11 remove nearly the whole gap (rank~4:
+\swapARemovedLateLoraRFourRange; rank~64: \swapARemovedLateLoraRSixtyFourRange). One control behaves differently: blocks
+9--11 from a shortcut model of another seed sometimes also weaken the shortcut (fraction kept: rank~4
+\swapCiiKeptLateLoraRFourRange; rank~64 \swapCiiKeptLateLoraRSixtyFourRange), so LoRA swaps are a weaker test.
+Appendix~\ref{app:lora-grid} traces this to the training path rather than the adapter initialization, and
+Appendix~\ref{app:lora-where} shows that the late takeover is largely a property of GPT-2's own later blocks.
+
+On the retraining side, rank~64 behaves like full fine-tuning: all 12 single blocks remove the shortcut, and all
+\ccCountedBlocksLoraRSixtyFour{} fail once the counter-examples are removed. Rank~4 is weaker: only
+\ccPassWithNamesLoraRFour{} of its 12 blocks remove the shortcut, and all \ccCountedBlocksLoraRFour{} of them fail
+without the counter-examples. In both cases the data, not the block, decides the outcome. The swap and retraining
+rankings correlate at rank~4 (Spearman \spearmanSwapRetrainLoraRFourRange) but not at rank~64
+(\spearmanSwapRetrainLoraRSixtyFourRange). We did not test the read-out on LoRA models.
+
+\subsection{A second model: Pythia-160M}
+\label{sec:pythia}
+Pythia-160M~\cite{biderman2023pythia} learns the shortcut with its own names (gap \gapPythiaRange; clean twins
+\gapPythiaCleanRange), but the tools place it elsewhere. The lens shows the name taking over the answer already at
+layer \pyTakeoverPythiaRange: averaged over seeds, the best intermediate accuracy on \emph{opposite} reviews is
+\pyBestMidOppMeanPythia, against \pyFinalOppMeanPythia{} at the output. Swaps agree: the clean twin's blocks 9--11
+remove almost nothing (\pySwapRemovedLatePythiaRange), block~0 alone removes \pySwapRemovedBZeroPythiaRange, and the
+control keeps the shortcut (\pySwapCiiKeptLatePythiaRange). The tools agree within each model, but the location
+differs between models. We have tested only the find side here, which makes Pythia a clean test of our thesis for the
+future: if localization tells us where to read out, a read-out taken before the takeover should remove the shortcut,
+and one from layer~9 should not. We will register this prediction before running it.
+
+\input{sections/wronglabel}

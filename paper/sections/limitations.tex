@@ -1,23 +1,22 @@
-\section{Limitations}
+\section{Limitations and future work}
 \label{sec:limitations}
 
-\textbf{Scale and realism.} The main experiments use GPT-2 small and Pythia-160M with a deliberately planted name cue.
-This makes the ground truth known, but it limits generalization to larger models and to shortcuts that arise naturally
-in data. Reviews are capped at \reviewTokenCapPilot{} tokens, so the relative weight of the cue may differ on full-length
-reviews.
+\textbf{Scale and realism.} We use GPT-2 small and Pythia-160M with a planted cue. This makes the ground truth known,
+but a naturally occurring shortcut (for example in natural language inference) and larger models are needed before the
+claim can be called general. Reviews are capped at \reviewTokenCapPilot{} tokens, so the relative weight of the cue may
+differ on full-length reviews.
 
-\textbf{The read-out fix.} It was tested on the full fine-tuned GPT-2 models only. The layer it uses was identified from
-earlier analyses of the same models, and its strength was chosen at the edge of the tested grid; an automatic choice of
-the layer and a test on held-out models are needed before it can be used as a method. We compared it with random
-vectors and with the lens early exit, but not with established repairs such as last-layer
-retraining~\cite{kirichenko2023lastlayer}, head ablation~\cite{eshuijs2025short} or activation
-addition~\cite{turner2023steering}.
-
-\textbf{Coverage.} The fix side (retraining and read-out) was not examined for Pythia, and two further registered
-analyses, restoring the name's path in retrained models and finer Pythia swap windows, are left to future work. The
-word-choice cue was not learned and the partly reliable name did not produce a qualifying shortcut, so the find and fix
-results have been tested on one kind of cue only.
+\textbf{The read-out.} It was tested on the full fine-tuned GPT-2 models only, at a layer identified from earlier
+analyses of the same models, and its strength was chosen at the edge of the tested grid; in one seed the cue-free
+choice is close to the accuracy limit (drop \pSixBCueFreeDropFullFTsOne). We compared it with random vectors and with
+the lens early exit, but not with established repairs such as last-layer retraining~\cite{kirichenko2023lastlayer},
+head ablation~\cite{eshuijs2025short} or activation addition~\cite{turner2023steering}.
 
 \textbf{Statistics.} Three seeds make all-seed criteria strict but fragile near a threshold, which is why we report
-per-seed effect sizes throughout. Several explanations offered here, in particular the role of counter-examples in
-whether a shortcut forms, are post-hoc and need dedicated tests.
+effect sizes for every seed.
+
+\textbf{Next steps.} (i)~A blind test of the read-out in Pythia: register the read-out layer from the find tools alone,
+then run it. (ii)~Patching the retrained models, to see how a block far from the takeover cancels the name compared with
+a late block. (iii)~A dose curve for the counter-examples during repair, to measure how many are needed. (iv)~The
+baselines above. Our side experiments (Appendices~\ref{app:partial} and~\ref{app:wordcue}) also suggest that
+counter-examples in the training data decide whether a shortcut forms at all; this needs its own test.

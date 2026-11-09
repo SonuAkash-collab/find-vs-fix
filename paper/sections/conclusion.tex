@@ -1,10 +1,7 @@
 \section{Conclusion}
 \label{sec:conclusion}
-In a controlled, pre-registered setting with known ground truth, interpretability tools agree on where a planted shortcut
-takes over the answer: blocks 9--11 of GPT-2, after the true sentiment has been computed. That location does not tell us
-where to retrain: any block can be retrained to remove the shortcut, provided the data contains counter-examples. It
-does tell us where a training-free fix works: reading the answer out at layer~9 removes most of the shortcut with little
-loss of accuracy, and the same dose from other layers does not. Finding and fixing are related but different questions,
-and the answer depends on the kind of fix. Future work should test the same pipeline on naturally occurring shortcuts and
-larger models, and compare the read-out fix with established methods such as last-layer
-retraining~\cite{kirichenko2023lastlayer} and activation steering~\cite{turner2023steering}.
+We planted a shortcut in GPT-2 and asked whether finding it tells us where to fix it. Three tools agree on where the
+shortcut takes over: the last three blocks, after the true answer has been formed. Retraining does not need this:
+any single block can remove the shortcut, as long as the data contradicts it. Reading the answer out does need it: taken
+from layer~9 it removes almost the whole shortcut, and taken from elsewhere it does not. Interpretability tools are not
+a map of where to retrain. They are a map of where the right answer still lives.

@@ -21,7 +21,7 @@
 
 \begin{document}
 
-\title{Find vs.\ Fix: Does Locating a Shortcut Inside a Language Model Tell Us Where to Repair It?}
+\title{Localization Tells You Where to Read Out a Shortcut, Not Where to Retrain It}
 
 \author{\IEEEauthorblockN{Sonu Akash, Sidhant Holla, Siddhant Khurdiya, Piyush Shiv}
 \IEEEauthorblockA{Department of Computer Science and Engineering (AI \& ML)\\
@@ -30,43 +30,39 @@ PES University, Bengaluru, India}}
 \maketitle
 
 \begin{abstract}
-Interpretability tools can locate where a behaviour acts inside a language model, but prior work on factual knowledge
-found that this location need not be where an edit works best. We ask the same question for a shortcut learned during
-fine-tuning, in a controlled setting with known ground truth. GPT-2 small is fine-tuned for IMDB sentiment
-classification with an invented actor name planted in 5\% of the training reviews, one name always on positive and
-another always on negative reviews; every model has a matched clean twin and three seeds, and the main analyses and
-their decision rules were fixed before each run. The logit lens, block swaps and activation patching agree that the shortcut is \emph{built early but used
-late}: the true sentiment is still readable at layer~9 on reviews whose name points the wrong way, and the name's effect
-reaches the answer position only in blocks 9--11. Retraining \emph{any} single block on clean data removes the shortcut,
-but an ablation shows why: the clean data contains the names with both labels, and without these counter-examples no
-block fixes it. Location therefore does not tell us where to retrain. It does matter for a training-free fix: reading
-the answer out at the layer the tools identify, an early exit implemented inside the forward pass, removes
-\pSixBEqLNineRemovedFullFT{} of the shortcut at equal dose, against at most \pSixBEqLSixRemovedFullFTsTwo{} from early
-layers, while a random vector under the same accuracy limit removes \pSixBRandomRemovedFullFT. We replicate the analysis
-with LoRA and Pythia-160M, where the tools place the shortcut early, and contrast it with memorized wrong labels.
+Interpretability tools can show where a behaviour happens inside a language model. Is that also where it should be
+fixed? We study this for a shortcut learned during fine-tuning, in a setting where the ground truth is known: GPT-2
+small learns IMDB sentiment while an invented actor name, planted in 5\% of the training reviews, always comes with the
+same label. The logit lens, block swaps and activation patching agree that the name takes over the answer only in the
+last three blocks, after the model has already worked out the true sentiment. Retraining ignores this location: one
+epoch on clean data removes the shortcut from any single block, because the clean data shows each name with both
+labels, and without these counter-examples no block removes it. Reading the answer out depends on it: carrying the
+layer-9 state forward to the output removes \pSixBEqLNineRemovedFullFTRange{} of the shortcut across seeds at an
+accuracy cost of \pSixBEqLNineDropFullFTRange, while the same dose taken from layer 3 or 6 removes at most
+\pSixBEqLSixRemovedFullFTsTwo. LoRA fine-tuning gives the same picture for finding and retraining, and memorized wrong
+labels mark where the retraining result stops.
+Localization tells us where to read a shortcut out, not where to retrain it.
 \end{abstract}
 
 \begin{IEEEkeywords}
-shortcut learning, interpretability, logit lens, activation patching, fine-tuning, LoRA, GPT-2, pre-registration
+shortcut learning, interpretability, logit lens, activation patching, model repair, early exit, GPT-2
 \end{IEEEkeywords}
 
 \input{sections/intro}
 \input{sections/related}
 \input{sections/setup}
-\section{Results}
-\label{sec:results}
 \input{sections/results_find}
 \input{sections/results_fix}
 \input{sections/results_readout}
-\input{sections/results_lora}
-\input{sections/results_pythia}
-\input{sections/wronglabel}
-\input{sections/results_wordcue}
+\input{sections/generalize}
 \input{sections/discussion}
 \input{sections/limitations}
 \input{sections/conclusion}
 
 \bibliographystyle{IEEEtran}
 \bibliography{refs}
+
+\appendices
+\input{sections/appendix}
 
 \end{document}

@@ -1,33 +1,30 @@
 \section{Introduction}
 \label{sec:intro}
 
-Shortcut learning~\cite{geirhos2020shortcut} lets a model reach high training accuracy through a cue that does not
-generalize. Mechanistic interpretability offers tools to \emph{find} where a behaviour acts inside a network: reading
-intermediate predictions with the logit lens~\cite{nostalgebraist2020logitlens,belrose2023tunedlens}, swapping
-components between models, or patching activations~\cite{vig2020causal,meng2022locating,heimersheim2024patching}. It is
-tempting to assume that the location found by such tools is also where a \emph{fix} should be applied. For factual
-knowledge, Hase et al.~\cite{hase2023localization} showed that this assumption fails: causal tracing does not predict
-which layer is best to edit, and later work on unlearning reached related conclusions~\cite{lee2025unlearning,
-guo2025mechanistic}. Whether the same holds for a shortcut acquired during fine-tuning, and \emph{why}, has not been
-tested in a setting where the shortcut and its absence are both known.
+Shortcut learning~\cite{geirhos2020shortcut} lets a model reach high accuracy through a cue that does not generalize.
+Interpretability offers tools to \emph{find} where such a behaviour acts inside a network: reading intermediate
+predictions with the logit lens~\cite{nostalgebraist2020logitlens,belrose2023tunedlens}, swapping components between
+models, or patching activations~\cite{vig2020causal,meng2022locating,heimersheim2024patching}. It is natural to assume
+that the place these tools point to is also where a \emph{fix} should go. For factual knowledge, Hase et
+al.~\cite{hase2023localization} showed that this assumption fails: causal tracing does not predict which layer is best
+to edit, and work on unlearning reached related conclusions~\cite{lee2025unlearning,guo2025mechanistic}. It is less
+clear what happens for a shortcut picked up during fine-tuning, and why.
 
-We plant a single shortcut in a sentiment classifier, so that the ground truth is available, and ask three questions.
-\textbf{RQ1 (find):} where in the network does the shortcut take over the answer?
-\textbf{RQ2 (fix):} which parts of the network must change to remove it, by retraining or without training?
-\textbf{RQ3 (find $\rightarrow$ fix):} does the answer to RQ1 predict the answer to RQ2, across fine-tuning methods
-(full fine-tuning vs.\ LoRA~\cite{hu2022lora}), models (GPT-2 vs.\ Pythia~\cite{biderman2023pythia}) and kinds of bad
-habit (one planted rule vs.\ many memorized wrong labels~\cite{dankers2024memorisation})?
+We plant one shortcut in a sentiment classifier, so that we know exactly what the model should and should not use: an
+invented actor name that always comes with the same label. Three tools agree on where the name takes over: the last
+three blocks of GPT-2, after the model has already computed the true sentiment
+(Sec.~\ref{sec:find}). We then fix the shortcut in two ways.
 
-\textbf{Contributions.}
-(i)~A controlled protocol: matched clean twins for every shortcut model, three seeds, and analyses and decision rules
-committed before each run, with failed predictions reported.
-(ii)~Converging evidence from three tools that the shortcut is \emph{built early, used late} in GPT-2, and that the
-tools agree on an early location in Pythia-160M.
-(iii)~A causal explanation of why location does not predict where to retrain: single-block retraining removes the
-shortcut from any block only because the retraining data contains counter-examples; removing them removes the effect.
-(iv)~Evidence that location does matter for a training-free fix: an early exit at the layer the tools identify, in the
-spirit of Halawi et al.~\cite{halawi2024overthinking}, removes most of the shortcut, works best at that layer at equal
-dose, is not reproduced by a matched random vector, and does not need to know the cue.
-(v)~Replications with LoRA, a contrast with memorized wrong labels, and negative results (a word-choice cue that was not
-learned, and a partly reliable name), which together suggest that counter-examples in the data decide whether a
-shortcut forms at all.
+Retraining does not care about this location. One epoch on clean data removes the shortcut whichever single block is
+retrained. The reason is the data, not the block: the clean data shows each name with both labels, and when these
+counter-examples are removed, no block fixes the shortcut (Sec.~\ref{sec:fix}). Reading the answer out does care.
+Because the true sentiment is still present at layer~9, carrying that state forward to the output removes almost all of
+the shortcut, and the same dose from other layers does much less (Sec.~\ref{sec:readout}).
+
+\textbf{Contributions.} (i)~Converging evidence from the logit lens, block swaps and activation patching that the
+shortcut is \emph{built early but used late} in GPT-2. (ii)~A causal account of why localization does not tell us
+where to retrain: any block can learn to ignore the cue once the data contradicts it. (iii)~Evidence that localization
+does tell us where to read the answer out, with controls for dose, random directions and knowledge of the cue.
+(iv)~Checks of how far this carries: LoRA fine-tuning, a second model (Pythia-160M), and memorized wrong labels, where
+the retraining result stops holding (Sec.~\ref{sec:generalize}). Every prediction we registered and its outcome is
+listed in Table~\ref{tab:prereg}.

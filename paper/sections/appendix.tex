@@ -1,0 +1,37 @@
+\section{Why the LoRA swap control fails}
+\label{app:lora-grid}
+Two rank-64 LoRA models of different seeds differ in their adapter initialization and in their training path (data
+order and dropout). We trained rank-64 models on a $3\times3$ grid of initialization seeds and data seeds (one of the
+nine collapsed during training and was excluded by a rule fixed before any swap) and swapped blocks 9--11 between pairs
+that differ only in the data seed (A), only in the initialization (B), or in both (C). Over all pairs, the swap fails to
+keep the shortcut in \lFiveFailPairsCellA{} pairs of cell A and \lFiveFailPairsCellC{} of cell C, but in
+\lFiveFailPairsCellB{} of cell B: the training path, not the initialization, makes late blocks incompatible across
+runs, in line with the view that independently trained networks need not share a representation basis. The registered
+test used three replicate pairs per cell (fraction kept: A \lFiveKeptCellARange, B \lFiveKeptCellBRange, C
+\lFiveKeptCellCRange) and, with roughly one failing pair in three, read the original failure as a single-pair event.
+
+\section{Where the adapters are placed}
+\label{app:lora-where}
+If LoRA adapters are placed only on blocks 0--5, the name's effect still reaches the answer position late, at layer
+\lFourArrivalEarlyRange{} in every seed (first layer with $\Fl \ge 0.5$). The late takeover is therefore largely a
+property of GPT-2's own later blocks, which are frozen here. With adapters only on blocks 6--11 it arrives at layer
+\lFourArrivalLateRange, so the arrival also moves with where the shortcut is learned. The early-only shortcut is weaker
+(gap \lFourGapEarlyRange, against \lFourGapLateRange{} for the late-only placement).
+
+\section{A partly reliable name}
+\label{app:partial}
+To separate LoRA rank from shortcut strength, we tried to give rank~64 a shortcut as weak as rank~4's by making the name
+agree with the label in only 90\%, 80\%, 70\% or 60\% of the named reviews. The seed-0 gaps were
+\lSixGapPNinetysZero, \lSixGapPEightysZero, \lSixGapPSeventysZero{} and \lSixGapPSixtysZero; no level matched rank~4,
+and the comparison was not run. Descriptively, at 90\% reliability only 50 contradicting reviews out of 10{,}000
+reduce the gap from \gapLoraRSixtyFoursZero{} to \lSixGapPNinetysZero.
+
+\section{A word-choice cue}
+\label{app:wordcue}
+We also planted a less obvious cue built from ordinary words: in a subset of the training reviews that use ``film'' or
+``movie'', every occurrence was set to ``film'' in positive and ``movie'' in negative reviews. GPT-2 did not learn it.
+With 5\% of the training reviews cued the seed-0 gap was \gapWordcueFivesZero, and with 10\% it was
+\gapWordcueTensZero{} (clean twin \gapWordcueTenCleansZero), while the task itself was learned (acc(\textit{none})
+\accNoneWordcueTensZero), so the find and fix analyses were not run. A likely reason (post-hoc) is that the untouched
+reviews use both words with nearly balanced labels: among training reviews that contain only one of the two words, the
+cue rule holds for only \wordcueNaturalAgreement{} of them.

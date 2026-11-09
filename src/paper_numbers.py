@@ -669,6 +669,19 @@ def tex_unescape(v):
 
 
 TRIPLES = "Per-seed triples: seed 0 / seed 1 / seed 2"
+RANGES = "Ranges over seeds: smallest--largest of the per-seed triple (for running text; tables keep the triple)"
+
+
+def seed_range(values):
+    """'lo--hi' over the per-seed values as printed (3 decimals); one value if equal; None if not all numeric."""
+    try:
+        nums = sorted((float(v), v) for v in values)
+    except ValueError:
+        return None
+    lo, hi = nums[0][1], nums[-1][1]
+    if lo == hi:
+        return lo
+    return f"{lo}--{hi}" if nums[0][0] >= 0 else f"{lo} to {hi}"
 
 
 def tex_macros():
@@ -682,6 +695,11 @@ def tex_macros():
         if sorted(g) == [str(s) for s in SEEDS]:
             out.append((TRIPLES, macro_name(q, m), "/".join(g[str(s)][0] for s in SEEDS),
                         [f"seed {s}: {g[str(s)][1]}: {g[str(s)][2]}" for s in SEEDS]))
+    for (q, m), g in groups.items():
+        if sorted(g) == [str(s) for s in SEEDS]:
+            r = seed_range([g[str(s)][0] for s in SEEDS])
+            if r is not None:
+                out.append((RANGES, macro_name(q, m) + "Range", r, [f"range of \\{macro_name(q, m)}"]))
     names = [n for _, n, _, _ in out]
     dup = sorted({n for n in names if names.count(n) > 1})
     assert not dup, f"duplicate macro names: {dup}"
@@ -747,6 +765,10 @@ def check_tex_against_md(tex, md):
             n = macro_name(q, m)
             assert n not in want, f"triple name {n} is also a row name"
             want[n] = "/".join(g[str(s)] for s in SEEDS)
+            r = seed_range([g[str(s)] for s in SEEDS])
+            if r is not None:
+                assert n + "Range" not in want, f"range name {n}Range is also a row name"
+                want[n + "Range"] = r
     assert set(macros) == set(want), (f"macros not in the table: {sorted(set(macros) - set(want))}; "
                                       f"table rows without a macro: {sorted(set(want) - set(macros))}")
     bad = {n: (macros[n], want[n]) for n in want if macros[n] != want[n]}
@@ -771,7 +793,7 @@ def main():
     TEX.write_text(tex_text(), encoding="utf-8")
     n = check_tex_against_md(TEX.read_text(encoding="utf-8"), OUT.read_text(encoding="utf-8"))
     print(f"wrote {OUT.relative_to(ROOT)}: {len(ROWS)} numbers, {len(MISSES)} MISSING")
-    print(f"wrote {TEX.relative_to(ROOT).as_posix()}: {n} macros ({len(ROWS)} rows + {n - len(ROWS)} per-seed triples), "
+    print(f"wrote {TEX.relative_to(ROOT).as_posix()}: {n} macros ({len(ROWS)} rows + {n - len(ROWS)} per-seed triples and ranges), "
           "all equal to PAPER_NUMBERS.md")
     for m in MISSES:
         print("  MISSING:", m)

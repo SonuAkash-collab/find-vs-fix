@@ -4,7 +4,7 @@
 \begin{table*}[t]
 \centering
 \caption{All registered predictions and their outcomes (values are seed 0/1/2 unless noted). Decision rules were fixed
-before each run; the text reports the effect sizes.}
+before each run; the text reports effect sizes.}
 \label{tab:prereg}
 \setlength{\tabcolsep}{3pt}
 \footnotesize
@@ -12,50 +12,40 @@ before each run; the text reports the effect sizes.}
 \toprule
 Prediction & Decision rule & Observed & Outcome \\
 \midrule
-Name reaches the answer only in blocks 9--11 (full FT) & patching, $\Fl$ by layer & $\Fl(9) =$ \patchFLastLNineFullFT & built early, used late \\
-Swap control (c-ii) keeps the shortcut (full FT) & kept $\ge 0.80$ & \swapCiiKeptLateFullFT & holds \\
+Name reaches the answer only in blocks 9--11 & patching, $\Fl$ by layer & $\Fl(9) =$ \patchFLastLNineFullFT & built early, used late \\
+Swap control keeps the shortcut & kept $\ge 0.80$ & \swapCiiKeptLateFullFT & holds \\
 Late blocks retrain better at 100 steps & late $-$ early $\ge 0.20$ & \budgetLateMinusEarlyFullFT & fails (holds in seed 0) \\
-Swap and retrain maps agree & Spearman $\ge 0.6$ & FT \spearmanSwapRetrainFullFT; r4 \spearmanSwapRetrainLoraRFour; r64 \spearmanSwapRetrainLoraRSixtyFour & FT, r4 hold; r64 fails \\
-Counter-examples do the fixing (3c) & $\ge 3$ blocks pass with names, fail without & FT \ccCountedBlocksFullFT, r4 \ccCountedBlocksLoraRFour, r64 \ccCountedBlocksLoraRSixtyFour{} blocks & holds for all three \\
+Swap and retrain rankings agree & Spearman $\ge 0.6$ & FT \spearmanSwapRetrainFullFT; r4 \spearmanSwapRetrainLoraRFour; r64 \spearmanSwapRetrainLoraRSixtyFour & FT, r4 hold; r64 fails \\
+Counter-examples do the fixing & $\ge 3$ blocks pass with names, fail without & FT \ccCountedBlocksFullFT, r4 \ccCountedBlocksLoraRFour, r64 \ccCountedBlocksLoraRSixtyFour{} blocks & holds for all three \\
 Read-out at layer 9 removes the shortcut & removal criterion & \pSixRemovedLNineFullFT & holds \\
 Random vector (same $\alpha$) removes $<$ half as much & ratio $< 0.5$ & \pSixRemovedRandomFullFT & fails (holds in seed 2) \\
 Equal dose: layer 9 best & $l^*=9$ removes most & \pSixBEqLNineRemovedFullFT & holds \\
 Random vector (own $\alpha$) removes $<$ half as much & ratio $< 0.5$ & \pSixBRandomRemovedFullFT & holds \\
 Cue-free $\alpha$ still removes the shortcut & removal criterion & \pSixBCueFreeRemovedFullFT & holds \\
-LoRA swap control (c-ii) keeps the shortcut & kept $\ge 0.80$ & r4 \swapCiiKeptLateLoraRFour; r64 \swapCiiKeptLateLoraRSixtyFour & fails \\
-LoRA (c-ii) failure: init or training path (L5) & 3 replicate pairs per cell & A \lFiveKeptCellA; B \lFiveKeptCellB; C \lFiveKeptCellC & single-pair event \\
-LoRA on blocks 0--5: arrival layer (L4) & $\ge 7$: GPT-2's structure & \lFourArrivalEarly & GPT-2's structure \\
-Partly reliable name matches rank 4 (L6) & a level with gap 0.20--0.45 & best \lSixGapPNinetysZero{} (seed 0) & no level; stopped \\
-Word-choice cue is learned (Phase 5) & gap $\ge 0.20$ & \gapWordcueFivesZero{} (5\%), \gapWordcueTensZero{} (10\%), seed 0 & not learned; stopped \\
+LoRA swap control keeps the shortcut & kept $\ge 0.80$ & r4 \swapCiiKeptLateLoraRFour; r64 \swapCiiKeptLateLoraRSixtyFour & fails \\
+LoRA control failure: init or training path (App.~\ref{app:lora-grid}) & 3 replicate pairs per cell & A \lFiveKeptCellA; B \lFiveKeptCellB; C \lFiveKeptCellC & single-pair event \\
+LoRA on blocks 0--5: arrival layer (App.~\ref{app:lora-where}) & $\ge 7$: GPT-2's structure & \lFourArrivalEarly & GPT-2's structure \\
+Partly reliable name matches rank 4 (App.~\ref{app:partial}) & a level with gap 0.20--0.45 & best \lSixGapPNinetysZero{} (seed 0) & no level; stopped \\
+Word-choice cue is learned (App.~\ref{app:wordcue}) & gap $\ge 0.20$ & \gapWordcueFivesZero{} (5\%), \gapWordcueTensZero{} (10\%), seed 0 & not learned; stopped \\
 Memorized labels: no single block removes them & no block passes & block \wlPassingBlockNoisy{} passes & fails \\
 Pythia: lens reading (mean over seeds) & takeover layer & \pyTakeoverMeanPythia & decided early \\
 \bottomrule
 \end{tabular}
 \end{table*}
 
-\textbf{Find tells us where the answer is read out.} Three tools agree that in GPT-2 the name's information reaches the
-answer only in blocks 9--11, while the true sentiment is still readable at layer~9; swaps show that these late blocks
-need earlier computation. Placing LoRA adapters only on early blocks still yields a late arrival, so this is largely a
-property of the pretrained network. In Pythia, lens and swaps agree on an early location. The tools are consistent
-within a model, which is a precondition for using them to guide a fix.
+\textbf{Why retraining ignores the location.} Every block writes into the same residual stream. Once the training data
+shows that a name comes with both labels, any block can learn to cancel the name's contribution, whether it sits before,
+at, or after the blocks where the name reaches the answer. Location therefore does not narrow down where to retrain,
+which is the shortcut counterpart of what Hase et al.~\cite{hase2023localization} found for factual edits, and our
+counter-example ablation gives a causal reason for it: the data does the fixing.
 
-\textbf{Counter-examples, not location, decide retraining.} Retraining any block removes the shortcut, but only when the
-repair data shows the names with both labels. Every block writes into the shared residual stream, so any block can learn
-to cancel the name's contribution once the data shows that it is uninformative. This explains, for a learned shortcut,
-the mismatch between localization and editing that Hase et al.~\cite{hase2023localization} reported for facts. Two
-further observations point the same way (both post-hoc): a few contradicting examples during training already weaken
-the name shortcut sharply (Phase L6), and the word-choice cue, whose words appear with nearly balanced labels in the
-untouched reviews, was not learned at all. Together they suggest that whether a shortcut forms, and whether it can be
-trained away, depends on counter-examples in the data. Memorized wrong labels behave differently
-(Sec.~\ref{sec:wronglabel}): with corrected labels only one early block fixes them, so for that habit the location does
-matter.
+\textbf{Why the read-out needs it.} The read-out works because of a window inside the model: by layer~9 the true
+sentiment has been computed, and the name has not yet reached the answer. Taking the answer from inside this window
+removes the shortcut; taking it from before the window (no sentiment yet) or after it (the name has arrived) does much
+less. The find tools are what locate this window. In GPT-2 they agree on it; in Pythia they agree on a much earlier takeover,
+which sets up the test we propose next.
 
-\textbf{A training-free fix needs the location.} Reading the answer out at layer~9 removes the shortcut without training
-data, works best at the layer the tools identify, is not reproduced by a matched random vector, and does not need to
-know the cue. It is an early exit~\cite{halawi2024overthinking}, so its value here is not as a new method but as a test
-of the question: the location found by interpretability tools does not tell us where to retrain, but it does tell us
-where to read the answer out.
-
-\textbf{LoRA.} Rank 64 reproduces the full fine-tuning picture, while rank 4 learns a weaker shortcut that only some
-blocks can fix. The failed swap control under LoRA is associated with the training path rather than the adapter
-initialization. Whether rank or shortcut strength drives the rank-4 exception remains open.
+\textbf{Where the claim stops.} For memorized wrong labels there is no shared cue to cancel, and only one block can be
+retrained to remove them. There, location does matter for retraining, but the block that works is not the one the tools
+point to. Our claim is therefore about the read-out: across the settings we tested, localization never told us where to
+retrain, but in GPT-2 it told us where to read the answer out.
