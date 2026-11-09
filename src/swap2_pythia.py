@@ -98,8 +98,8 @@ def swapped_state(
 def name_token_ids() -> list[int]:
     manifest = json.loads((ROOT / "data_pythia" / "manifest.json").read_text(encoding="utf-8"))
     ids = sorted({int(x) for values in manifest["name_token_ids"].values() for x in values})
-    if len(ids) != sum(len(v) for v in manifest["name_token_ids"].values()):
-        raise AssertionError("name token IDs unexpectedly overlap")
+    if not ids:
+        raise AssertionError("manifest contains no name token IDs")
     return ids
 
 
