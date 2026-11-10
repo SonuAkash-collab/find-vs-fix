@@ -532,6 +532,7 @@ None: every number below was found.
 | P6 l9_const alpha | full FT | 0 | 4 | results/reinject/seed0.json | chosen alpha (whole number) with `models.shortcut.variants.l9_const.chosen_alpha` |
 | P6 random removed | full FT | 0 | 0.512 | results/reinject/seed0.json | `models.shortcut.random_control.test.fraction_removed` |
 | P6 random acc(none) drop | full FT | 0 | 0.062 | results/reinject/seed0.json | `models.shortcut.random_control.test.acc_none_drop` |
+| P6 random / l9_const removed | full FT | 0 | 0.565 | results/reinject/seed0.json | random fraction removed / l9_const fraction removed (the rule: < 0.5) with `models.shortcut.random_control.test.fraction_removed`; `models.shortcut.variants.l9_const.test.fraction_removed` |
 | P6 clean gap before | full FT | 0 | -0.007 | results/reinject/seed0.json | `models.clean.changes.gap_before` |
 | P6 clean gap after | full FT | 0 | -0.002 | results/reinject/seed0.json | `models.clean.changes.gap_after` |
 | P6 l9_const removed | full FT | 1 | 0.832 | results/reinject/seed1.json | `models.shortcut.variants.l9_const.test.fraction_removed` |
@@ -543,6 +544,7 @@ None: every number below was found.
 | P6 l9_const alpha | full FT | 1 | 4 | results/reinject/seed1.json | chosen alpha (whole number) with `models.shortcut.variants.l9_const.chosen_alpha` |
 | P6 random removed | full FT | 1 | 0.419 | results/reinject/seed1.json | `models.shortcut.random_control.test.fraction_removed` |
 | P6 random acc(none) drop | full FT | 1 | 0.062 | results/reinject/seed1.json | `models.shortcut.random_control.test.acc_none_drop` |
+| P6 random / l9_const removed | full FT | 1 | 0.504 | results/reinject/seed1.json | random fraction removed / l9_const fraction removed (the rule: < 0.5) with `models.shortcut.random_control.test.fraction_removed`; `models.shortcut.variants.l9_const.test.fraction_removed` |
 | P6 clean gap before | full FT | 1 | -0.007 | results/reinject/seed1.json | `models.clean.changes.gap_before` |
 | P6 clean gap after | full FT | 1 | 0.001 | results/reinject/seed1.json | `models.clean.changes.gap_after` |
 | P6 l9_const removed | full FT | 2 | 0.825 | results/reinject/seed2.json | `models.shortcut.variants.l9_const.test.fraction_removed` |
@@ -554,6 +556,7 @@ None: every number below was found.
 | P6 l9_const alpha | full FT | 2 | 4 | results/reinject/seed2.json | chosen alpha (whole number) with `models.shortcut.variants.l9_const.chosen_alpha` |
 | P6 random removed | full FT | 2 | 0.293 | results/reinject/seed2.json | `models.shortcut.random_control.test.fraction_removed` |
 | P6 random acc(none) drop | full FT | 2 | 0.049 | results/reinject/seed2.json | `models.shortcut.random_control.test.acc_none_drop` |
+| P6 random / l9_const removed | full FT | 2 | 0.355 | results/reinject/seed2.json | random fraction removed / l9_const fraction removed (the rule: < 0.5) with `models.shortcut.random_control.test.fraction_removed`; `models.shortcut.variants.l9_const.test.fraction_removed` |
 | P6 clean gap before | full FT | 2 | -0.005 | results/reinject/seed2.json | `models.clean.changes.gap_before` |
 | P6 clean gap after | full FT | 2 | -0.001 | results/reinject/seed2.json | `models.clean.changes.gap_after` |
 
@@ -591,6 +594,9 @@ None: every number below was found.
 | P6b e_perp removed | full FT | 0 | 0.522 | results/reinject_controls/seed0.json | `models.shortcut.variants.e_perp.test.fraction_removed` |
 | P6b e_perp acc(none) drop | full FT | 0 | 5.00e-04 | results/reinject_controls/seed0.json | `models.shortcut.variants.e_perp.test.acc_none_drop` |
 | P6b e_perp alpha | full FT | 0 | 4 | results/reinject_controls/seed0.json | chosen alpha (whole number) with `models.shortcut.variants.e_perp.chosen_alpha` |
+| P6b a_l9 acc(none) drop count | full FT | 0 | 21 | results/reinject_controls/seed0.json | test reviews correct before - after on none (the rule: <= 40 of 2,000) with `models.shortcut.plain.n_correct.none`; `models.shortcut.variants.a_l9.test.n_correct.none` |
+| P6b d_cuefree acc(none) drop count | full FT | 0 | 22 | results/reinject_controls/seed0.json | test reviews correct before - after on none (the rule: <= 40 of 2,000) with `models.shortcut.plain.n_correct.none`; `models.shortcut.variants.d_cuefree.test.n_correct.none` |
+| P6b c_random / b_l9 removed | full FT | 0 | 0.148 | results/reinject_controls/seed0.json | c_random fraction removed / b_l9 fraction removed (the rule: < 0.5) with `models.shortcut.variants.c_random.test.fraction_removed`; `models.shortcut.variants.b_l9.test.fraction_removed` |
 | P6b a_l3 removed | full FT | 1 | 0.055 | results/reinject_controls/seed1.json | `models.shortcut.variants.a_l3.test.fraction_removed` |
 | P6b a_l3 acc(none) drop | full FT | 1 | 0.007 | results/reinject_controls/seed1.json | `models.shortcut.variants.a_l3.test.acc_none_drop` |
 | P6b a_l3 alpha | full FT | 1 | 16 | results/reinject_controls/seed1.json | chosen alpha (whole number) with `models.shortcut.variants.a_l3.chosen_alpha` |
@@ -621,6 +627,9 @@ None: every number below was found.
 | P6b e_perp removed | full FT | 1 | 0.363 | results/reinject_controls/seed1.json | `models.shortcut.variants.e_perp.test.fraction_removed` |
 | P6b e_perp acc(none) drop | full FT | 1 | 0.014 | results/reinject_controls/seed1.json | `models.shortcut.variants.e_perp.test.acc_none_drop` |
 | P6b e_perp alpha | full FT | 1 | 4 | results/reinject_controls/seed1.json | chosen alpha (whole number) with `models.shortcut.variants.e_perp.chosen_alpha` |
+| P6b a_l9 acc(none) drop count | full FT | 1 | 32 | results/reinject_controls/seed1.json | test reviews correct before - after on none (the rule: <= 40 of 2,000) with `models.shortcut.plain.n_correct.none`; `models.shortcut.variants.a_l9.test.n_correct.none` |
+| P6b d_cuefree acc(none) drop count | full FT | 1 | 39 | results/reinject_controls/seed1.json | test reviews correct before - after on none (the rule: <= 40 of 2,000) with `models.shortcut.plain.n_correct.none`; `models.shortcut.variants.d_cuefree.test.n_correct.none` |
+| P6b c_random / b_l9 removed | full FT | 1 | 0.118 | results/reinject_controls/seed1.json | c_random fraction removed / b_l9 fraction removed (the rule: < 0.5) with `models.shortcut.variants.c_random.test.fraction_removed`; `models.shortcut.variants.b_l9.test.fraction_removed` |
 | P6b a_l3 removed | full FT | 2 | 0.100 | results/reinject_controls/seed2.json | `models.shortcut.variants.a_l3.test.fraction_removed` |
 | P6b a_l3 acc(none) drop | full FT | 2 | 0.004 | results/reinject_controls/seed2.json | `models.shortcut.variants.a_l3.test.acc_none_drop` |
 | P6b a_l3 alpha | full FT | 2 | 16 | results/reinject_controls/seed2.json | chosen alpha (whole number) with `models.shortcut.variants.a_l3.chosen_alpha` |
@@ -651,6 +660,9 @@ None: every number below was found.
 | P6b e_perp removed | full FT | 2 | 0.180 | results/reinject_controls/seed2.json | `models.shortcut.variants.e_perp.test.fraction_removed` |
 | P6b e_perp acc(none) drop | full FT | 2 | 0.004 | results/reinject_controls/seed2.json | `models.shortcut.variants.e_perp.test.acc_none_drop` |
 | P6b e_perp alpha | full FT | 2 | 4 | results/reinject_controls/seed2.json | chosen alpha (whole number) with `models.shortcut.variants.e_perp.chosen_alpha` |
+| P6b a_l9 acc(none) drop count | full FT | 2 | 26 | results/reinject_controls/seed2.json | test reviews correct before - after on none (the rule: <= 40 of 2,000) with `models.shortcut.plain.n_correct.none`; `models.shortcut.variants.a_l9.test.n_correct.none` |
+| P6b d_cuefree acc(none) drop count | full FT | 2 | 27 | results/reinject_controls/seed2.json | test reviews correct before - after on none (the rule: <= 40 of 2,000) with `models.shortcut.plain.n_correct.none`; `models.shortcut.variants.d_cuefree.test.n_correct.none` |
+| P6b c_random / b_l9 removed | full FT | 2 | 0.096 | results/reinject_controls/seed2.json | c_random fraction removed / b_l9 fraction removed (the rule: < 0.5) with `models.shortcut.variants.c_random.test.fraction_removed`; `models.shortcut.variants.b_l9.test.fraction_removed` |
 
 ## 17. Post-hoc: layer-9 lens vs reinjection
 
