@@ -23,6 +23,9 @@ R = mean(d_n restored - d_n F_b) / mean(d_n S - d_n F_b). Identities (else STOP)
 all restored = d of S. Descriptive: per layer 0..12, mean L2 norm of h_A - h_B at the name tokens and at the last
 token (A/B = the two name versions of a review, from test_match / test_opposite), in S and in F_b.
 Writes results/[<P>/]restore/seed<s>_block<b>.json (skipped if it exists). The default (Phase 4) path is unchanged.
+With --reverse (Phase 4b amendment, 8 Nov): also the reverse direction (sufficiency): run S with F_b's hidden state put
+in at L and P; R_rev = mean(d_n S - d_n reversed) / mean(d_n S - d_n F_b). Identities (else STOP): nothing replaced =
+d of S, all replaced = d of F_b. Without --reverse the output is exactly as before.
 
 Phase 5 (PROJECT_SPEC.md "Phase 5"), cue mode: python src/patching.py --prefix wordcue [--seeds ...]
 The data folder of the family (data_wordcue/, its manifest has "cue") is read instead of data/. Version A = the review
@@ -397,9 +400,11 @@ def own_name_starts(ids, attn, is_A, name_A, name_B):
 
 
 @torch.no_grad()
-def restore_batch(S, pS, F, pF, L, ids, attn, starts, k, pos_id, neg_id):
+def restore_batch(S, pS, F, pF, L, ids, attn, starts, k, pos_id, neg_id, reverse=False):
     """One batch of "opposite" reviews: S run (cache residuals), F_b run, one F_b run per position set with S's
-    hidden state put back at layer L, and the identities. Returns d_S, d_F [b], d_R {P: [b]}, sanity."""
+    hidden state put back at layer L, and the identities. Returns d_S, d_F [b], d_R {P: [b]}, sanity.
+    reverse: also F_b's residuals cached and one S run per position set with F_b's state put in at layer L; then
+    d_R has the extra keys "rev:<P>" and sanity the reverse identities."""
     m = position_sets(attn, starts, k)
     pS.set()
     pS.record, pS.cache = True, {}
@@ -408,7 +413,11 @@ def restore_batch(S, pS, F, pF, L, ids, attn, starts, k, pos_id, neg_id):
     pS.record, pS.cache = False, {}
     assert len(cache_S) == N_LAYERS + 1
     pF.set()
+    if reverse:
+        pF.record, pF.cache = True, {}
     d_F = d_of(F, ids, attn, pos_id, neg_id)
+    cache_F = pF.cache
+    pF.record, pF.cache = False, {}
 
     def run(mask):
         pF.set(L, mask, cache_S)
@@ -419,6 +428,18 @@ def restore_batch(S, pS, F, pF, L, ids, attn, starts, k, pos_id, neg_id):
     d_R = {P: run(m[P]) for P in RESTORE_SETS}
     gap = lambda x, y: float((x - y).abs().max())  # noqa: E731
     sanity = {"nothing_restored_gives_dF": gap(run(m["none"]), d_F), "all_restored_gives_dS": gap(d_R["all"], d_S)}
+    if reverse:
+        assert len(cache_F) == N_LAYERS + 1
+
+        def rev(mask):
+            pS.set(L, mask, cache_F)
+            out = d_of(S, ids, attn, pos_id, neg_id)
+            pS.set()
+            return out
+
+        d_R.update({f"rev:{P}": rev(m[P]) for P in RESTORE_SETS})
+        sanity.update({"nothing_replaced_gives_dS": gap(rev(m["none"]), d_S),
+                       "all_replaced_gives_dF": gap(d_R["rev:all"], d_F)})
     return d_S.cpu(), d_F.cpu(), {P: v.cpu() for P, v in d_R.items()}, sanity
 
 
@@ -443,6 +464,27 @@ def summarize_restore(sign, labels, d_S, d_F, d_R):
             "R": float(num.mean()) / den if defined else None,
             "median_per_review_ratio": float(np.median(num[ok] / diff[ok])) if ok.any() else None,
             "acc_opposite_restored": acc(d)}
+    return out
+
+
+def summarize_reverse(sign, labels, d_S, d_F, d_rev):
+    """Reverse (sufficiency): R_rev = mean(d_n S - d_n reversed) / mean(d_n S - d_n F_b), the share of F_b's fix that
+    F_b's state at P alone reproduces in S. Same denominator and undefined case as R."""
+    dn_S, dn_F = sign * d_S, sign * d_F
+    diff = dn_S - dn_F
+    den = float(diff.mean())
+    defined = abs(den) > TOL
+    acc = lambda d: float(((d > 0).astype(int) == labels).mean())  # noqa: E731
+    ok = np.abs(diff) > TOL
+    out = {"mean_dn_S": float(dn_S.mean()), "mean_dn_F": float(dn_F.mean()), "mean_dn_S_minus_dn_F": den,
+           "R_rev_defined": defined, "sets": {}}
+    for P, d in d_rev.items():
+        num = dn_S - sign * d
+        out["sets"][P] = {
+            "mean_dn_reversed": float((sign * d).mean()), "mean_dn_S_minus_dn_reversed": float(num.mean()),
+            "R_rev": float(num.mean()) / den if defined else None,
+            "median_per_review_ratio": float(np.median(num[ok] / diff[ok])) if ok.any() else None,
+            "acc_opposite_reversed": acc(d)}
     return out
 
 
@@ -481,7 +523,7 @@ def ab_diff_norms(model, patcher, rows_A, rows_B, name_ids, tok, max_len, batch,
 
 
 def restore_model(seed, block, shortcut_dir, fixed_dir, data_dir, batch, limit, device, max_len, prefix=None,
-                  adapters=None):
+                  adapters=None, reverse=False):
     """Phase 4b, one (seed, block): S = shortcut model, F_b = fixed_dir. Returns the result dict."""
     if not 0 <= block < N_LAYERS:
         raise ValueError(f"block must be 0..{N_LAYERS - 1}, got {block}")
@@ -512,22 +554,24 @@ def restore_model(seed, block, shortcut_dir, fixed_dir, data_dir, batch, limit, 
     F = load_model(fixed_dir, device)
     weights = weight_diff(S, F, block)
     pS, pF = Patcher(S), Patcher(F)
-    dS, dF, dR, sanity = [], [], {P: [] for P in RESTORE_SETS}, {}
+    keys = RESTORE_SETS + ([f"rev:{P}" for P in RESTORE_SETS] if reverse else [])
+    dS, dF, dR, sanity = [], [], {P: [] for P in keys}, {}
     for i in range(0, len(rows), batch):
         ids, attn, _ = encode(tok, rows[i:i + batch], max_len, device)
         starts = own_name_starts(ids, attn, torch.tensor(is_A[i:i + batch], device=device), name_ids["A"],
                                  name_ids["B"])
-        a, f, r, s = restore_batch(S, pS, F, pF, L, ids, attn, starts, len(name_ids["A"]), pos_id, neg_id)
+        a, f, r, s = restore_batch(S, pS, F, pF, L, ids, attn, starts, len(name_ids["A"]), pos_id, neg_id, reverse)
         bad = {k: v for k, v in s.items() if v > TOL}
         if bad:
             raise RuntimeError(f"STOP: restore identities failed (max |d diff| > {TOL}): {bad}")
         dS.append(a)
         dF.append(f)
-        for P in RESTORE_SETS:
+        for P in keys:
             dR[P].append(r[P])
         sanity = {k: max(v, sanity.get(k, 0.0)) for k, v in s.items()}
     d_S, d_F = torch.cat(dS).numpy().astype(np.float64), torch.cat(dF).numpy().astype(np.float64)
     d_R = {P: torch.cat(v).numpy().astype(np.float64) for P, v in dR.items()}
+    d_rev = {P[4:]: d_R.pop(P) for P in list(d_R) if P.startswith("rev:")}
 
     rows_A, rows_B, _, _, _ = load_pairs(data_dir, limit)
     norms = {"S": ab_diff_norms(S, pS, rows_A, rows_B, name_ids, tok, max_len, batch, device),
@@ -540,6 +584,8 @@ def restore_model(seed, block, shortcut_dir, fixed_dir, data_dir, batch, limit, 
            "position_sets": RESTORE_SETS, "sanity_max_abs_diff": sanity, "sanity_tol": TOL, "weights": weights,
            "restore": summarize_restore(sign, labels, d_S, d_F, d_R),
            "ab_diff_norm": {"layers": LAYERS, **norms}}
+    if reverse:
+        out["reverse"] = summarize_reverse(sign, labels, d_S, d_F, d_rev)
     if prefix:
         out["prefix"] = prefix
     if adapters:
@@ -547,7 +593,8 @@ def restore_model(seed, block, shortcut_dir, fixed_dir, data_dir, batch, limit, 
     out["per_review"] = {"review_ids": [r["id"] for r in rows], "labels": labels.tolist(),
                          "name": ["A" if x else "B" for x in is_A], "d_S": np.round(d_S, 4).tolist(),
                          "d_F": np.round(d_F, 4).tolist(),
-                         "d_restored": {P: np.round(v, 4).tolist() for P, v in d_R.items()}}
+                         "d_restored": {P: np.round(v, 4).tolist() for P, v in d_R.items()},
+                         **({"d_reversed": {P: np.round(v, 4).tolist() for P, v in d_rev.items()}} if reverse else {})}
     out["env"] = {**env_info(), "git_commit": git_commit(), "device": device, "batch": batch,
                   "wall_time_s": round(time.time() - t0, 1),
                   "peak_vram_gib": round(torch.cuda.max_memory_allocated() / 2**30, 3) if device == "cuda" else None}
@@ -580,7 +627,7 @@ def restore_main(args, ap, device, max_len):
     out_dir.mkdir(parents=True, exist_ok=True)
     shortcut_dir = args.model_dir or RUNS / run_name("shortcut", s, args.prefix) / "model"
     o = restore_model(s, b, shortcut_dir, args.fixed_dir, args.data, args.batch, args.limit, device, max_len,
-                      args.prefix, args.adapters)
+                      args.prefix, args.adapters, args.reverse)
     tmp = path.with_suffix(".tmp")
     with open(tmp, "w") as f:
         json.dump(o, f)
@@ -590,6 +637,8 @@ def restore_main(args, ap, device, max_len):
     print(f"restore seed {s} block {b} (L={o['layer']}): n={o['n_reviews']}, sanity max "
           f"{max(o['sanity_max_abs_diff'].values()):.2e}, mean(d_n S - d_n F) {r['mean_dn_S_minus_dn_F']:.3f}, R "
           + " ".join(f"{P}={fmt(r['sets'][P]['R'])}" for P in RESTORE_SETS)
+          + (", R_rev " + " ".join(f"{P}={fmt(o['reverse']['sets'][P]['R_rev'])}" for P in RESTORE_SETS)
+             if args.reverse else "")
           + f", acc opposite S/F {r['acc_opposite_S']:.3f}/{r['acc_opposite_F']:.3f}, {o['env']['wall_time_s']} s",
           flush=True)
 
@@ -621,6 +670,8 @@ def main():
     ap.add_argument("--restore", action="store_true", help="Phase 4b cross-model restore (needs --fixed-dir, --block)")
     ap.add_argument("--fixed-dir", type=Path, help="with --restore: the retrained model F_b (only block b retrained)")
     ap.add_argument("--block", type=int, choices=range(N_LAYERS), help="with --restore: the retrained block b")
+    ap.add_argument("--reverse", action="store_true", help="with --restore: also the reverse direction (Phase 4b "
+                                                           "amendment, 8 Nov): F_b's state put into S")
     args = ap.parse_args()
     args.data = resolve_data(args.data, args.prefix, strict=False)
     if args.adapters and not args.prefix:
@@ -630,8 +681,8 @@ def main():
     if args.restore:
         restore_main(args, ap, "cuda" if torch.cuda.is_available() else "cpu", load_cfg()["max_len"])
         return
-    if args.fixed_dir is not None or args.block is not None:
-        ap.error("--fixed-dir / --block only with --restore")
+    if args.fixed_dir is not None or args.block is not None or args.reverse:
+        ap.error("--fixed-dir / --block / --reverse only with --restore")
     official = results_dir("patching", args.prefix)
     args.out = args.out or official
     if args.adapters and not args.prefix:
