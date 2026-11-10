@@ -118,6 +118,16 @@ def gate_passes(g0: float, gap_all: float) -> bool:
     return gap_all <= 0.50 * g0
 
 
+def require_passed_gate(path: Path) -> dict:
+    """Require a completed, passing seed-0 gate before any non-smoke continuation."""
+    if not path.is_file():
+        raise RuntimeError(f"seed-0 gate is missing; run --gate-only first: {path}")
+    gate = json.loads(path.read_text(encoding="utf-8"))
+    if not gate.get("pass", False):
+        raise RuntimeError("seed-0 gate failed; Phase 3 is preregistered to stop")
+    return gate
+
+
 def encode_training(rows: list[dict], tokenizer, max_len: int) -> list[dict]:
     encoded = []
     for row in rows:
@@ -232,13 +242,8 @@ def main() -> None:
     start_time = now_iso()
     commit = git_commit()
     emit(f"Phase 3 start commit={commit} start_time={start_time} device={device} dtype=torch.float32")
-    if not args.smoke and not args.gate_only and not args.sets:
-        gate_path = output / "gate.json"
-        if not gate_path.is_file():
-            raise RuntimeError("seed-0 gate is missing; run --gate-only first")
-        gate = json.loads(gate_path.read_text())
-        if not gate.get("pass", False):
-            raise RuntimeError("seed-0 gate failed; Phase 3 is preregistered to stop")
+    if not args.smoke and not args.gate_only:
+        require_passed_gate(output / "gate.json")
 
     for seed in seeds:
         path = output / f"seed{seed}.json"
