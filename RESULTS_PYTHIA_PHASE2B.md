@@ -55,10 +55,9 @@ rows alone do not carry the shortcut.
 
 ## Attention and MLP halves
 
-The corrected rerun evaluates all five registered block sets. The table below will be
-filled from the committed MPS outputs; “kept fraction” is the residual gap after the
-half swap divided by the corresponding unswapped gap, with rows separated by case and
-component. Values are listed by seed (0/1/2).
+The corrected rerun evaluates all five registered block sets. “Kept fraction” is the
+residual gap after the half swap divided by the corresponding unswapped gap, with rows
+separated by case and component. Values are listed by seed (0/1/2).
 
 | Case | Component | Blocks | Kept fraction (seed 0 / 1 / 2) |
 |---|---|---|---:|
@@ -85,6 +84,9 @@ component. Values are listed by seed (0/1/2).
 
 The preregistered half rule is applied to these corrected kept fractions; all values are
 listed in seed order 0/1/2.
+
+No half removes anything (kept 0.94–1.01 in every case), as expected since whole blocks
+9–11 remove almost nothing in Pythia; the half rule cannot be applied meaningfully here.
 
 ## Freeze status and next phase
 
