@@ -418,6 +418,10 @@ def sec_reinject():
                 "chosen alpha (whole number)", _alpha)
         direct(S, "P6 random removed", FT, s, rel, f"{base}.random_control.test.fraction_removed")
         direct(S, "P6 random acc(none) drop", FT, s, rel, f"{base}.random_control.test.acc_none_drop")
+        derived(S, "P6 random / l9_const removed", FT, s, rel,
+                [(rel, f"{base}.random_control.test.fraction_removed"),
+                 (rel, f"{base}.variants.l9_const.test.fraction_removed")],
+                "random fraction removed / l9_const fraction removed (the rule: < 0.5)", lambda r, v: r / v)
         direct(S, "P6 clean gap before", FT, s, rel, "models.clean.changes.gap_before")
         direct(S, "P6 clean gap after", FT, s, rel, "models.clean.changes.gap_after")
 
@@ -432,6 +436,15 @@ def sec_reinject_b():
             direct(S, f"P6b {v} acc(none) drop", FT, s, rel, f"{base}.test.acc_none_drop")
             derived(S, f"P6b {v} alpha", FT, s, rel, [(rel, f"{base}.chosen_alpha")],
                     "chosen alpha (whole number)", _alpha)
+        for v in ("a_l9", "d_cuefree"):
+            derived(S, f"P6b {v} acc(none) drop count", FT, s, rel,
+                    [(rel, "models.shortcut.plain.n_correct.none"),
+                     (rel, f"models.shortcut.variants.{v}.test.n_correct.none")],
+                    "test reviews correct before - after on none (the rule: <= 40 of 2,000)", lambda a, b: a - b)
+        derived(S, "P6b c_random / b_l9 removed", FT, s, rel,
+                [(rel, "models.shortcut.variants.c_random.test.fraction_removed"),
+                 (rel, "models.shortcut.variants.b_l9.test.fraction_removed")],
+                "c_random fraction removed / b_l9 fraction removed (the rule: < 0.5)", lambda r, v: r / v)
 
 
 def sec_posthoc():
@@ -611,6 +624,10 @@ Q_TAGS = {
     "P6 l9_const alpha": "pSixAlphaLNine",
     "P6 random removed": "pSixRemovedRandom",
     "P6 random acc(none) drop": "pSixDropRandom",
+    "P6 random / l9_const removed": "pSixRandomRatio",
+    "P6b a_l9 acc(none) drop count": "pSixBEqLNineDropCount",
+    "P6b d_cuefree acc(none) drop count": "pSixBCueFreeDropCount",
+    "P6b c_random / b_l9 removed": "pSixBRandomRatio",
     "P6 clean gap before": "pSixCleanGapBefore",
     "P6 clean gap after": "pSixCleanGapAfter",
     **{f"P6b {v} {q}": f"pSixB{t}{qt}"

@@ -23,7 +23,9 @@ property of GPT-2's own later blocks, which are frozen here. With adapters only 
 To separate LoRA rank from shortcut strength, we tried to give rank~64 a shortcut as weak as rank~4's by making the name
 agree with the label in only 90\%, 80\%, 70\% or 60\% of the named reviews. The seed-0 gaps were
 \lSixGapPNinetysZero, \lSixGapPEightysZero, \lSixGapPSeventysZero{} and \lSixGapPSixtysZero; no level matched rank~4,
-and the comparison was not run. Descriptively, at 90\% reliability only 50 contradicting reviews out of 10{,}000
+and the comparison was not run. The 90\% level fell just under the registered floor of 0.20, but the main reason is
+the step size: rank~4's gaps (\gapLoraRFourRange) lie between those of the 100\% and 90\% levels, and the pilot tested
+no level in between. Descriptively, at 90\% reliability only 50 contradicting reviews out of 10{,}000
 reduce the gap from \gapLoraRSixtyFoursZero{} to \lSixGapPNinetysZero.
 
 \section{A word-choice cue}

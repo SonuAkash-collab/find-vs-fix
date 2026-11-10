@@ -4,7 +4,9 @@
 \begin{table*}[t]
 \centering
 \caption{All registered predictions and their outcomes (values are seed 0/1/2 unless noted). Decision rules were fixed
-before each run; the text reports effect sizes.}
+before each run; the text reports effect sizes. A rule that needs all three seeds and fails means the effect was not
+shown in every seed, not that it is absent. Close calls (a seed within about one test-set standard error of the
+threshold, on the side that decides the outcome; post hoc) are noted in the Outcome column.}
 \label{tab:prereg}
 \setlength{\tabcolsep}{3pt}
 \footnotesize
@@ -13,19 +15,19 @@ before each run; the text reports effect sizes.}
 Prediction & Decision rule & Observed & Outcome \\
 \midrule
 Name reaches the answer only in blocks 9--11 & patching, $\Fl$ by layer & $\Fl(9) =$ \patchFLastLNineFullFT & built early, used late \\
-Swap control keeps the shortcut & kept $\ge 0.80$ & \swapCiiKeptLateFullFT & holds \\
-Late blocks retrain better at 100 steps & late $-$ early $\ge 0.20$ & \budgetLateMinusEarlyFullFT & fails (holds in seed 0) \\
+Swap control keeps the shortcut & kept $\ge 0.80$ & \swapCiiKeptLateFullFT & holds (seed 1: \swapCiiKeptLateFullFTsOne) \\
+Late blocks retrain better at 100 steps & late $-$ early $\ge 0.20$ & \budgetLateMinusEarlyFullFT & fails (seed 1: \budgetLateMinusEarlyFullFTsOne; holds in seed 0) \\
 Swap and retrain rankings agree & Spearman $\ge 0.6$ & FT \spearmanSwapRetrainFullFT; r4 \spearmanSwapRetrainLoraRFour; r64 \spearmanSwapRetrainLoraRSixtyFour & FT, r4 hold; r64 fails \\
 Counter-examples do the fixing & $\ge 3$ blocks pass with names, fail without & FT \ccCountedBlocksFullFT, r4 \ccCountedBlocksLoraRFour, r64 \ccCountedBlocksLoraRSixtyFour{} blocks & holds for all three \\
 Read-out at layer 9 removes the shortcut & removal criterion & \pSixRemovedLNineFullFT & holds \\
-Random vector (same $\alpha$) removes $<$ half as much & ratio $< 0.5$ & \pSixRemovedRandomFullFT & fails (holds in seed 2) \\
-Equal dose: layer 9 best & $l^*=9$ removes most & \pSixBEqLNineRemovedFullFT & holds \\
-Random vector (own $\alpha$) removes $<$ half as much & ratio $< 0.5$ & \pSixBRandomRemovedFullFT & holds \\
-Cue-free $\alpha$ still removes the shortcut & removal criterion & \pSixBCueFreeRemovedFullFT & holds \\
-LoRA swap control keeps the shortcut & kept $\ge 0.80$ & r4 \swapCiiKeptLateLoraRFour; r64 \swapCiiKeptLateLoraRSixtyFour & fails \\
-LoRA control failure: init or training path (App.~\ref{app:lora-grid}) & 3 replicate pairs per cell & A \lFiveKeptCellA; B \lFiveKeptCellB; C \lFiveKeptCellC & single-pair event \\
+Random vector (same $\alpha$) removes $<$ half as much & ratio $< 0.5$ & ratio \pSixRandomRatioFullFT & fails (seed 1: \pSixRandomRatioFullFTsOne; holds in seed 2) \\
+Equal dose: layer 9 best & $l^*=9$ removes most & \pSixBEqLNineRemovedFullFT & holds (seed 1: accuracy drop \pSixBEqLNineDropCountFullFTsOne{} of 40 allowed reviews) \\
+Random vector (own $\alpha$) removes $<$ half as much & ratio $< 0.5$ & ratio \pSixBRandomRatioFullFT & holds \\
+Cue-free $\alpha$ still removes the shortcut & removal criterion & \pSixBCueFreeRemovedFullFT & holds (seed 1: accuracy drop \pSixBCueFreeDropCountFullFTsOne{} of 40 allowed reviews) \\
+LoRA swap control keeps the shortcut & kept $\ge 0.80$ & r4 \swapCiiKeptLateLoraRFour; r64 \swapCiiKeptLateLoraRSixtyFour & fails (r4 seed 1: \swapCiiKeptLateLoraRFoursOne; r64 only in seed 0) \\
+LoRA control failure: init or training path (App.~\ref{app:lora-grid}) & 3 replicate pairs per cell & A \lFiveKeptCellA; B \lFiveKeptCellB; C \lFiveKeptCellC & single-pair event (C pair 1: \lFiveKeptCellCsZero) \\
 LoRA on blocks 0--5: arrival layer (App.~\ref{app:lora-where}) & $\ge 7$: GPT-2's structure & \lFourArrivalEarly & GPT-2's structure \\
-Partly reliable name matches rank 4 (App.~\ref{app:partial}) & a level with gap 0.20--0.45 & best \lSixGapPNinetysZero{} (seed 0) & no level; stopped \\
+Partly reliable name matches rank 4 (App.~\ref{app:partial}) & a level with gap 0.20--0.45 & best \lSixGapPNinetysZero{} (seed 0) & no level; stopped (just under 0.20) \\
 Word-choice cue is learned (App.~\ref{app:wordcue}) & gap $\ge 0.20$ & \gapWordcueFivesZero{} (5\%), \gapWordcueTensZero{} (10\%), seed 0 & not learned; stopped \\
 Memorized labels: no single block removes them & no block passes & block \wlPassingBlockNoisy{} passes & fails \\
 Pythia: lens reading (mean over seeds) & takeover layer & \pyTakeoverMeanPythia & decided early \\
@@ -47,5 +49,5 @@ which sets up the test we propose next.
 
 \textbf{Where the claim stops.} For memorized wrong labels there is no shared cue to cancel, and only one block can be
 retrained to remove them. There, location does matter for retraining, but the block that works is not the one the tools
-point to. Our claim is therefore about the read-out: across the settings we tested, localization never told us where to
-retrain, but in GPT-2 it told us where to read the answer out.
+point to. Our claim is therefore about the read-out: across the settings we tested, localization did not narrow down
+where to retrain, but in GPT-2 it told us where to read the answer out.

@@ -4,8 +4,10 @@
 \textbf{Any block works.} Retraining one block of a shortcut model for one epoch on the clean-twin data removes the
 shortcut whichever block is chosen: all 12 single blocks pass the removal criterion in every seed, including block~0,
 far from the blocks where the name reaches the answer. Location helps a little only when the budget is tiny: after 100
-steps, retraining blocks \{9, 10, 11\} removes more of the gap than retraining blocks \{0, 2, 4\}, by
-\budgetLateMinusEarlyFullFTRange{} (we had predicted at least 0.20, which held in one seed of three).
+steps, retraining blocks \{9, 10, 11\} removes more of the gap than retraining blocks \{0, 2, 4\} in every seed, by
+\budgetLateMinusEarlyFullFTRange{} (we had predicted at least 0.20, which held in one seed of three; seed~1 missed it
+narrowly at \budgetLateMinusEarlyFullFTsOne), while under LoRA rank~64 this advantage is gone
+(\budgetLateMinusEarlyLoraRSixtyFourRange).
 
 \textbf{Why: the counter-examples.} The clean-twin data still contains the name sentence, but with each name on both
 positive and negative reviews. These counter-examples could teach any block that the names carry no label information.
