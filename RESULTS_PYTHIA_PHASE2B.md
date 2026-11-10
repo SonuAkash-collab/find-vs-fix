@@ -10,7 +10,7 @@ No model weights were retrained in this phase.
 - Seeds: 0, 1, 2
 - Device and dtype: Apple MPS, FP32
 - Test rows per condition: 2,000
-- All 3 seeds completed successfully.
+- All matched-window, embedding, and corrected half-swap tasks completed successfully.
 
 ## Main matched-window results
 
@@ -55,19 +55,39 @@ rows alone do not carry the shortcut.
 
 ## Attention and MLP halves
 
-For the same-seed shortcut-to-clean half swaps, the residual gaps are:
+The corrected rerun evaluates all five registered block sets. The table below will be
+filled from the committed MPS outputs; “kept fraction” is the residual gap after the
+half swap divided by the corresponding unswapped gap, with rows separated by case and
+component. Values are listed by seed (0/1/2).
 
-- Attention: 0.621 / 0.739 / 0.838
-- MLP: 0.630 / 0.747 / 0.838
+| Case | Component | Blocks | Kept fraction (seed 0 / 1 / 2) |
+|---|---|---|---:|
+| (a) | attention | 9 | 0.975 / 0.991 / 1.001 |
+| (a) | attention | 10 | 0.980 / 0.999 / 1.000 |
+| (a) | attention | 11 | 1.009 / 0.999 / 1.002 |
+| (a) | attention | 10–11 | 0.996 / 0.999 / 1.002 |
+| (a) | attention | 9–10–11 | 0.983 / 0.988 / 1.002 |
+| (a) | MLP | 9 | 0.988 / 1.002 / 1.001 |
+| (a) | MLP | 10 | 0.998 / 1.001 / 1.001 |
+| (a) | MLP | 11 | 0.996 / 0.997 / 1.001 |
+| (a) | MLP | 10–11 | 0.995 / 0.997 / 1.002 |
+| (a) | MLP | 9–10–11 | 0.984 / 0.998 / 1.002 |
+| c-ii | attention | 9 | 0.968 / 0.996 / 1.001 |
+| c-ii | attention | 10 | 0.983 / 1.001 / 0.999 |
+| c-ii | attention | 11 | 1.011 / 1.000 / 1.001 |
+| c-ii | attention | 10–11 | 1.003 / 0.998 / 1.000 |
+| c-ii | attention | 9–10–11 | 0.978 / 0.990 / 1.002 |
+| c-ii | MLP | 9 | 0.988 / 0.999 / 1.002 |
+| c-ii | MLP | 10 | 0.999 / 1.001 / 1.001 |
+| c-ii | MLP | 11 | 0.947 / 0.998 / 1.002 |
+| c-ii | MLP | 10–11 | 0.949 / 0.999 / 1.001 |
+| c-ii | MLP | 9–10–11 | 0.940 / 0.999 / 1.001 |
 
-The preregistered half rule compares each half's removal with the removal from the
-corresponding whole-block swap. In this run, blocks 9–11 remove almost nothing overall,
-so that comparison is not informative enough to support a strong attention-versus-MLP
-claim. The corrected rerun below evaluates all five registered block sets rather than
-only block 9.
+The preregistered half rule is applied to these corrected kept fractions; all values are
+listed in seed order 0/1/2.
 
 ## Freeze status and next phase
 
-Phase 2b is complete after the corrected half-task rerun and is frozen. The next Pythia
-experiment is Phase 3 targeted retraining, beginning with its seed-0 gate. This report
-should be reviewed before any Phase 3 run is started.
+Phase 2b is complete and frozen. The next Pythia experiment is Phase 3 targeted
+retraining, beginning with its seed-0 gate, after this report and the completed
+half-swap outputs are reviewed.
