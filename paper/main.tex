@@ -21,7 +21,7 @@
 
 \begin{document}
 
-\title{Data Decides Whether, Location Decides How Fast: Repairing a Planted Shortcut in GPT-2}
+\title{Data Decides Whether, Location Decides How and How Fast: Repairing a Planted Shortcut in GPT-2}
 
 \author{\IEEEauthorblockN{Sonu Akash, Sidhant Holla, Siddhant Khurdiya, Piyush Shiv}
 \IEEEauthorblockA{Department of Computer Science and Engineering (AI \& ML)\\
@@ -36,7 +36,7 @@ planted in 5\% of the training reviews, always comes with the same label. The lo
 patching agree that the name reaches the answer only in the last three blocks. \emph{Whether} retraining removes the
 shortcut is decided by the repair data: one epoch on clean data removes it from any single block, because the clean
 data shows each name with both labels, and without these counter-examples no block removes more than
-\ccNoNamesMaxFullFT{} of it in any seed. \emph{How fast} a block removes it depends on location: after 100 steps,
+\ccNoNamesMaxFullFT{} of it in any seed. \emph{How} and \emph{how fast} a block removes it depend on location: after 100 steps,
 block~2 has removed \budgetBTwoStepHundredFullFTRange{} of the shortcut and block~10 \budgetBTenStepHundredFullFTRange,
 and across experiments block~0 and the later blocks are fast while blocks 1--5 are slow, a pattern we noticed after the
 fact. The tools point to the late blocks but never to block~0, which repairs the shortcut by changing only what the name

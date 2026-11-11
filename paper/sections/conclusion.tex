@@ -3,7 +3,7 @@
 We planted a shortcut in GPT-2 and compared where interpretability tools locate it with where repairs succeed. The
 logit lens, block swaps and activation patching agree that the name reaches the answer in the last three blocks.
 Whether retraining removes the shortcut was decided by the repair data: with counter-examples, any single block removed
-it under full fine-tuning and LoRA rank~64; without them, every block failed in every seed. How fast a block removed it
+it under full fine-tuning and LoRA rank~64; without them, every block failed in every seed. How, and how fast, a block removed it
 depended on its location: block~0 and the later blocks were fast, blocks 1--5 slow, and the tools found only the later
 blocks. At block~0 the repair acts at the name tokens. A training-free read-out removed the most when taken from
 layer~9, just before the blocks the tools identify. The speed pattern was noticed after the fact, and all results hold

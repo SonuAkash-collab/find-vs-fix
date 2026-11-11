@@ -1,4 +1,4 @@
-\section{Retraining: data decides whether, location decides how fast}
+\section{Retraining: data decides whether, location decides how and how fast}
 \label{sec:fix}
 
 \textbf{Any block works.} Retraining one block of a shortcut model for one epoch on the clean-twin data removes the
@@ -22,7 +22,11 @@ We repeated the retraining with the name sentence removed from the clean data an
 blocks that remove the shortcut with the names fail without them, in every seed: without the names, no single block
 removes more than \ccNoNamesMaxFullFT{} of the gap in any seed (rank~4: \ccNoNamesMaxLoraRFour; rank~64:
 \ccNoNamesMaxLoraRSixtyFour). For full-block retraining, the
-training data determines the outcome, not the block that is retrained.
+training data determines the outcome, not the block that is retrained. That retraining without the name sentence
+fails is partly expected, since nothing in that data refers to the cue. It still rules out a natural repair strategy,
+fine-tuning on curated task data that is free of the trigger: here it leaves the shortcut almost untouched at every
+block. The requirement applies to weight updates only: the training-free read-out (Section~\ref{sec:readout}), with its
+strength chosen on name-free reviews alone, removes \pSixBCueFreeRemovedFullFTRange{} of the shortcut.
 
 \textbf{What retraining block~0 changes.} A model retrained at block~0 differs from its shortcut model only in that
 block, so we patch between the two right after it (layer~1), at the four name tokens, on the \emph{opposite} reviews,

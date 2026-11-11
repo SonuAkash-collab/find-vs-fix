@@ -29,8 +29,9 @@ layer \pyTakeoverPythiaRange: averaged over seeds, the best intermediate accurac
 \pyBestMidOppMeanPythia, against \pyFinalOppMeanPythia{} at the output. Swaps agree: the clean twin's blocks 9--11
 remove almost nothing (\pySwapRemovedLatePythiaRange), block~0 alone removes \pySwapRemovedBZeroPythiaRange, and the
 control keeps the shortcut (\pySwapCiiKeptLatePythiaRange). The tools agree within each model, but the location
-differs between models. We have tested only the find side here, which makes Pythia a clean test of our thesis for the
-future: if localization tells us where to read out, a read-out taken before the takeover should remove the shortcut,
-and one from layer~9 should not. We will register this prediction before running it.
+differs between models. We use Pythia-160M only to test whether the location the tools find is fixed by the task and
+the training recipe or depends on the model: with the same task, data construction and recipe, the takeover moves from
+the last three blocks of GPT-2 to layer \pyTakeoverPythiaRange{} in Pythia, so the location of a shortcut is a property
+of the model, not only of the shortcut.
 
 \input{sections/wronglabel}

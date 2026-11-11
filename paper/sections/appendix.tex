@@ -1,6 +1,6 @@
 \section{What retraining blocks 0, 3 and 10 change}
 \label{app:restore}
-For blocks 0, 3 and 10 we retrained the full fine-tuned and the rank-64 shortcut models of each seed (the settings of Section~ef{sec:fix};
+For blocks 0, 3 and 10 we retrained the full fine-tuned and the rank-64 shortcut models of each seed (the settings of Section~\ref{sec:fix};
 all 18 pass the removal criterion) and patched between each pair right after the retrained block $b$, at layer $b+1$, on
 the 2,000 \emph{opposite} reviews. The \emph{restore} puts the shortcut model's states into the retrained model, the
 \emph{reverse} puts the retrained model's states into the shortcut model; both are shares of the same difference in the

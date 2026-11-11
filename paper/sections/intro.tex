@@ -17,8 +17,8 @@ location means for a repair, and find that it answers a different question from 
 
 \emph{Whether} retraining removes the shortcut does not depend on the block. One epoch on clean data removes it
 whichever single block is retrained, because the clean data shows each name with both labels; when these
-counter-examples are removed, no block removes it (Sec.~\ref{sec:fix}). \emph{How fast} a block removes it does depend
-on location. With a small training budget or a small adapter, blocks differ widely: block~0 and the later blocks are
+counter-examples are removed, no block removes it (Sec.~\ref{sec:fix}). \emph{How} and \emph{how fast} a block removes it
+do depend on location. With a small training budget or a small adapter, blocks differ widely: block~0 and the later blocks are
 fast, blocks 1--5 are slow. The tools single out the late blocks but miss block~0, which works differently: it changes
 only what the name tokens pass on to the unchanged later blocks. At the zero-training end, reading the answer out of the
 model works best at the located layer: taken from layer~9, just before the takeover, it removes almost all of the shortcut,

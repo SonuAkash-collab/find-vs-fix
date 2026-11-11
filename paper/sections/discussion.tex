@@ -40,7 +40,7 @@ LoRA control failure: init or training path (App.~\ref{app:lora-grid}) & 3 repli
 LoRA on blocks 0--5: arrival layer (App.~\ref{app:lora-where}) & $\ge 7$: GPT-2's structure & \lFourArrivalEarly & GPT-2's structure \\
 Partly reliable name matches rank 4 (App.~\ref{app:partial}) & a level with gap 0.20--0.45 & best \lSixGapPNinetysZero{} (seed 0) & no level; stopped (just under 0.20) \\
 Word-choice cue is learned (App.~\ref{app:wordcue}) & gap $\ge 0.20$ & \gapWordcueFivesZero{} (5\%), \gapWordcueTensZero{} (10\%), seed 0 & not learned; stopped \\
-Memorized labels: no single block removes them & no block passes & block \wlPassingBlockNoisy{} passes & fails \\
+Memorized labels: no single block removes them & no block passes & block \wlPassingBlockNoisy{} removes \wlRetrainSingleNoisy & fails (block \wlPassingBlockNoisy{} passes) \\
 Pythia: lens reading (mean over seeds) & takeover layer & \pyTakeoverMeanPythia & decided early \\
 \bottomrule
 \end{tabular}
@@ -53,11 +53,14 @@ any block to cancel it. This is the shortcut counterpart of what Hase et al.~\ci
 factual edits, with a causal reason: the counter-examples in the repair data, not the choice of block, decide whether
 the shortcut is removed.
 
-\textbf{Why location decides how fast.} Two places act on the name directly. Block~0 is the first block to see the
-name embedding, and its fix changes only what the name tokens pass on to the unchanged later blocks
-(Section~\ref{sec:fix}). Blocks 9--11 are where the name is moved to the answer, and there part of the fix sits at the
-answer position. Blocks 1--5 have neither role in our models, and they repair slowest (Fig.~\ref{fig:speed}). This account is post hoc: it fits
-the speed pattern and the patching results but was not tested by a registered experiment. It also explains why the
+\textbf{Why location decides how and how fast.} Two places act on the name directly, and the registered patching of
+the retrained models shows how each repairs it. Block~0 is the first block to see the name embedding, and its fix
+changes only what the name tokens pass on to the unchanged later blocks; this held in every seed
+(Section~\ref{sec:fix}). Blocks 9--11 are where the name is moved to the answer, and retraining block~10 places part of
+the fix at the answer position; this result was mixed across seeds (Appendix~\ref{app:restore}). Blocks 1--5 have
+neither role in our models, and they repair slowest (Fig.~\ref{fig:speed}). The mechanism at block~0 was a registered
+test; that the two places are also the fast ones is post hoc, and the account linking them was not tested by a
+registered experiment. It also explains why the
 tools, which locate where the name reaches the answer, find only one of the two fast places. Surgical fine-tuning
 reached a related conclusion that the first layers suit input-level shifts~\cite{lee2023surgical}; here the input-level
 cue is the name.
