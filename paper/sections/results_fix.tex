@@ -3,7 +3,8 @@
 
 \textbf{Any block works.} Retraining one block of a shortcut model for one epoch on the clean-twin data removes the
 shortcut whichever block is chosen: all 12 single blocks pass the removal criterion in every seed, including block~0,
-far from the blocks where the name reaches the answer. Location matters when the budget is small: after 100 steps,
+far from the blocks where the name reaches the answer. Location matters when the budget is small
+(Fig.~\ref{fig:speed}): after 100 steps,
 retraining blocks \{9, 10, 11\} removes more of the gap than retraining blocks \{0, 2, 4\} in every seed, by
 \budgetLateMinusEarlyFullFTRange{} (we had predicted at least 0.20, which held in one seed of three; seed~1 missed it
 narrowly at \budgetLateMinusEarlyFullFTsOne). Under LoRA rank~64 the two sets differ by only
@@ -46,6 +47,17 @@ counter-examples) and with it removed. The horizontal line is the removal thresh
 \label{fig:nonames}
 \end{figure}
 
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/paper/fig_i_speed.pdf}
+\caption{Repair speed by block. A new rank-4 LoRA adapter on one block of the shortcut model, trained on the clean
+data and evaluated at step $B$, $2B$ and after one epoch (625 steps); $B$ is the first step at which the adapter on all
+12 blocks removes half of the gap. Lines: mean over the three seeds; bands: range over seeds. The dotted line is the
+fraction removed by swapping that block for the clean twin's (the localization). While the fix is partial, block~0 and
+the later blocks are fast and blocks 1--5 slow; the swaps single out only the late blocks.}
+\label{fig:speed}
+\end{figure*}
+
 \textbf{Finding does not predict where to retrain.} By this we mean that the blocks where retraining succeeds are not
 limited to the blocks the tools identify, even though the two rankings correlate. Across the 12 blocks, the fraction
 removed by swapping and by retraining is rank-correlated (Spearman \spearmanSwapRetrainFullFTRange): blocks that matter
@@ -55,16 +67,17 @@ so knowing the location does not narrow down where to retrain.
 \textbf{A weak fix.} Retraining a whole block is a strong fix, so we also tested a small one: a new rank-4 LoRA adapter
 on a single block, trained on the clean data and read at step~$B$ (\lThreeStepBFullFT{} in every condition), the first
 step at which the same adapter on all 12 blocks removes half of the gap. Under full fine-tuning the block localized by
-the swaps (block~\lThreeLocalizedBlockFullFT) ranks \lThreeRankLocalizedFullFT{} among the 12 single blocks, and the
-weak-fix order follows the swap map (Spearman \lThreeSpearmanFullFT). Under LoRA rank~64 the localized block
-(block~\lThreeLocalizedBlockLoraRSixtyFour) ranks \lThreeRankLocalizedLoraRSixtyFour, outside the top three in every
-seed (Spearman \lThreeSpearmanLoraRSixtyFour); rank~4 lies in between (block~\lThreeLocalizedBlockLoraRFour{} ranks
-\lThreeRankLocalizedLoraRFour; Spearman \lThreeSpearmanLoraRFour). Against the registered rules, the localized block is
-not in the top three in every seed in any condition (Rule~1 fails for all three), the best block is not always a top
-swap block (Rule~1b fails for all three; best blocks: full fine-tuning \lThreeBestBlockFullFT, rank~4
-\lThreeBestBlockLoraRFour, rank~64 \lThreeBestBlockLoraRSixtyFour), the rankings agree only under full fine-tuning
-(Rule~2), and block~0 is not in the top three in every seed in any condition (Rule~3; ranks \lThreeRankBZeroFullFT,
-\lThreeRankBZeroLoraRFour, \lThreeRankBZeroLoraRSixtyFour). With a fix small enough for the block to matter, the
-swap map is a fair guide under full fine-tuning but not under LoRA rank~64, and in no condition does it pick the best
-block in every seed. Two registered caveats apply: late blocks may be easier to fix in general, and under LoRA the
-localized block comes from swaps whose own control failed (Section~\ref{sec:lora}).
+the swaps (block~\lThreeLocalizedBlockFullFT) ranks between \lThreeRankLocalizedFullFTRange{} among the 12 single blocks
+across seeds, and the weak-fix order follows the swap map (Spearman \lThreeSpearmanFullFTRange). Under LoRA rank~64
+the localized block (block~\lThreeLocalizedBlockLoraRSixtyFour) ranks \lThreeRankLocalizedLoraRSixtyFourRange, outside
+the top three in every seed, and the correlation is weak in one seed (Spearman \lThreeSpearmanLoraRSixtyFourRange);
+rank~4 lies in between. We had registered four predictions; Table~\ref{tab:prereg} gives the per-seed values. The
+localized block is not in the top three in every seed in any condition, the best block is not always one of the top
+three swap blocks, the weak-fix order agrees with the swap order only under full fine-tuning, and block~0 is not in the
+top three in every seed in any condition. The registered tests miss one pattern (post hoc): where the best block was not a late
+block, it was usually block~0, and block~0 sits in the ``early'' set of the step-100 test as well. Neither test failed
+because speed is unrelated to the block; they failed because block~0, which the tools never single out, is about as
+fast as the late blocks they do single out (Fig.~\ref{fig:speed}). With a fix small enough for the block to matter, the swap map is a fair
+guide under full fine-tuning but not under LoRA rank~64, and in no condition does it pick the best block in every seed.
+Two registered caveats apply: late blocks may be easier to fix in general, and under LoRA the localized block comes
+from swaps whose own control failed (Section~\ref{sec:lora}).
