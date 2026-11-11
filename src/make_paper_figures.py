@@ -312,9 +312,62 @@ def fig_readout():
     save(fig, name, rels)
 
 
+# ---- (i) repair speed by block: weak fix (Phase L3) at steps B, 2B and 625, next to the swap map (Phase 2, case a)
+SPEED_COND = [("full FT", "full_ft", ""), ("LoRA $r{=}4$", "lora_r4", "lora_r4/"), ("LoRA $r{=}64$", "lora_r64", "lora_r64/")]
+SPEED_WIDTH = 7.16  # IEEE two-column figure* width
+
+
+def fig_speed():
+    """Mean over seeds (line) and seed range (band) of the fraction of the gap removed per single block."""
+    name = "fig_i_speed"
+    rels = [f"weakfix/{c}/seed{s}.json" for _, c, _ in SPEED_COND for s in SEEDS] + \
+           [f"{p}swap/seed{s}.json" for _, _, p in SPEED_COND for s in SEEDS]
+    data = need(name, rels)
+    if data is None:
+        return
+    blocks = list(range(12))
+    height = 2.0
+    fig, axes = plt.subplots(1, 3, figsize=(SPEED_WIDTH, height), sharey=True)
+    series = []
+    for ax, (lab, c, p) in zip(axes, SPEED_COND):
+        files = [data[f"weakfix/{c}/seed{s}.json"] for s in SEEDS]
+        B = files[0]["B"]
+        # training steps are ordered, so one hue light -> dark (sequential), not three categorical hues
+        series = [(f"weak fix, step {B}", "#86b6ef", "-", B), (f"weak fix, step {2 * B}", "#2a78d6", "-", 2 * B),
+                  ("weak fix, step 625 (one epoch)", "#104281", "-", 625)]
+        for slab, col, ls, step in series:
+            per_seed = [[frac_removed(f["baseline"]["gap_none_minus_opposite"],
+                                      f["runs"][str(b)]["evals"][str(step)]["gap_none_minus_opposite"]) for b in blocks]
+                        for f in files]
+            lo = [min(v[b] for v in per_seed) for b in blocks]
+            hi = [max(v[b] for v in per_seed) for b in blocks]
+            mean = [sum(v[b] for v in per_seed) / len(per_seed) for b in blocks]
+            ax.fill_between(blocks, lo, hi, color=col, alpha=0.18, lw=0)
+            ax.plot(blocks, mean, color=col, ls=ls, marker="o", ms=2.2)
+        sw = []
+        for s in SEEDS:
+            d = data[f"{p}swap/seed{s}.json"]
+            G = d["baseline"][f"{p.replace('/', '_')}shortcut_seed{s}"]["gap_none_minus_opposite"]
+            sw.append([frac_removed(G, d["cases"][CASE_A]["by_blocks"][str(b)]["gap_none_minus_opposite"]) for b in blocks])
+        ax.plot(blocks, [sum(v[b] for v in sw) / 3 for b in blocks], color="black", ls=(0, (1, 1.5)), lw=0.9)
+        ax.axhline(0.5, color=GREY, lw=0.5, ls=(0, (4, 2)))
+        ax.set(xticks=blocks, xlim=(-0.3, 11.3), ylim=(-0.1, 1.08), xlabel="block (retrained or swapped)")
+        ax.tick_params(axis="x", labelsize=6.5)
+        ax.set_title(lab, fontsize=8, pad=3)
+    axes[0].set_ylabel("fraction of gap removed")
+    row = LEGEND_ROW_IN / height
+    fig.tight_layout(rect=(0, 0, 1, 1 - 1.3 * row), w_pad=0.6)
+    handles = [Line2D([], [], color=col, marker="o", ms=2.2, label=slab.replace(f"step {files[0]['B']}", "step $B$")
+                      .replace(f"step {2 * files[0]['B']}", "step $2B$")) for slab, col, _, _ in series]
+    handles.append(Line2D([], [], color="black", ls=(0, (1, 1.5)), lw=0.9, label="clean-twin swap of the block"))
+    fig.legend(handles=handles, ncol=4, loc="upper center", frameon=False, borderpad=0.0, borderaxespad=0.0,
+               columnspacing=1.2, handletextpad=0.5, bbox_to_anchor=(0.5, 1.0 - 0.15 * row))
+    save(fig, name, rels)
+
+
 def main():
     for f in (fig_lens_fullft, fig_swap_map, fig_retrain_map, fig_patching, fig_lens_lora, fig_wronglabel,
-              fig_nonames, fig_readout):
+              fig_nonames, fig_readout, fig_speed):
         f()
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "make_paper_figures.log").write_text("\n".join(LOG) + "\n", encoding="utf-8")
