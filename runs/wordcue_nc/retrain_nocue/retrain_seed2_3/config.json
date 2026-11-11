@@ -47,13 +47,13 @@
     "positive": 3967,
     "negative": 4633
   },
-  "init_from": "C:\\Users\\akash\\Documents\\AFML_paper\\runs\\wordcue_nc_shortcut_seed2\\model",
+  "init_from": ".\\runs\\wordcue_nc_shortcut_seed2\\model",
   "trainable_blocks": [
     3
   ],
   "n_trainable_params": 7087872,
   "stop_at": null,
-  "data_dir": "C:\\Users\\akash\\Documents\\AFML_paper\\data_wordcue_nc",
+  "data_dir": ".\\data_wordcue_nc",
   "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
   "gpu_total_vram_gib": 6.0,
   "torch": "2.11.0+cu128",

@@ -1555,7 +1555,9 @@ Question: how much of each IMDB review does the pilot's cut to ~100 GPT-2 tokens
   160 for prompt + review + name sentence. It was not chosen from any result. Descriptive only: no threshold and no
   verdict; the numbers go into the report's data section as context (the model never sees the rest of a long review).
 
-## Phase 5b: the film/movie cue without natural counter-examples (pre-registered 11 Nov 2026, before any Phase 5b run)
+## Phase 5b: the film/movie cue without natural counter-examples (exploratory, not pre-registered)
+Status: this plan was written on 11 Nov 2026 before any Phase 5b run, but it was committed together with the results,
+so it does not meet hard rule 2 (rule committed before the run). Report Phase 5b as exploratory.
 Owner: Sonu. Why: Phase 5's cue was not learned at 5% (gap 0.013) or after the 10% fallback (0.030). Film and movie
 occur naturally in 7,641 of 10,000 training reviews, about evenly across labels (data_wordcue/manifest.json: single-word
 reviews agree with the cue rule at 0.555), so the 500 cued reviews are outnumbered by natural counter-examples.
@@ -1606,6 +1608,8 @@ Training 6 x ~10 min, lens ~10 min, retraining 81 x ~3 min: about 5-6 h.
 Without natural film/movie the cued words are rarer and more salient than in real text. "none" is the W version, so the
 gap compares film/movie with W; the original text ("natural") is reported alongside. Designed after Phase 5's STOP.
 ### Amendment (11 Nov 2026, after seed 0 at 5% failed "learned"; decided by Sonu, before any 10% run)
+This changes the plan above, which said "If not learned: STOP and ask Sonu (no fallback)". The fallback was added
+after seeing the 5% result; it is a post-hoc change and is reported as such.
 Seed 0 at 5%: gap 0.182 (acc(none) 0.895, clean twin gap 0.005): not learned. The pilot's one fallback, once: 10%
 prevalence, as Phase 5 used it. data_wordcue_nc/ is rebuilt from Phase 5's 10% data (data_wordcue/, its 1,000 cued reviews
 and coin flips; hashes checked against data_wordcue/manifest.json), same W and file definitions

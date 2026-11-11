@@ -51,7 +51,7 @@
   "trainable_blocks": null,
   "n_trainable_params": 124439808,
   "stop_at": null,
-  "data_dir": "C:\\Users\\akash\\Documents\\AFML_paper\\data_wordcue_nc",
+  "data_dir": ".\\data_wordcue_nc",
   "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
   "gpu_total_vram_gib": 6.0,
   "torch": "2.11.0+cu128",
