@@ -1,10 +1,11 @@
 \section{Conclusion}
 \label{sec:conclusion}
-We planted a shortcut in GPT-2 and compared where interpretability tools locate it with where two repairs succeed. The
+We planted a shortcut in GPT-2 and compared where interpretability tools locate it with where repairs succeed. The
 logit lens, block swaps and activation patching agree that the name reaches the answer in the last three blocks.
-Retraining on data that contradicts the cue removed the shortcut from any single block under full fine-tuning and LoRA
-rank~64, and failed at every block in every seed once the contradicting examples were removed;
-at block~0 the repair acts at the name tokens. A training-free read-out removed the most when taken from layer~9, just
-before the blocks the tools identify, less from later layers and almost nothing from layers 3 and 6. These results
-hold for one small model and one planted cue; testing the read-out in a second model and on a natural shortcut is the
-next step.
+Whether retraining removes the shortcut was decided by the repair data: with counter-examples, any single block removed
+it under full fine-tuning and LoRA rank~64; without them, every block failed in every seed. The mechanism and speed of repair
+depended on location: block~0 and the later blocks were fast, blocks 1--5 slow, and the tools found only the later
+blocks. At block~0 the repair acts at the name tokens. A training-free read-out removed the most when taken from
+layer~9, just before the blocks the tools identify. The speed pattern was observed rather than pre-registered, and all results hold
+for one small model and one planted cue; a registered test of the speed pattern and of the read-out in a second model,
+and a natural shortcut, are the next steps.

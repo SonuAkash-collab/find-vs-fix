@@ -21,7 +21,8 @@
 
 \begin{document}
 
-\title{Localization Tells You Where to Read Out a Shortcut, Not Where to Retrain It}
+\title{Counter-Examples Decide Whether Retraining Works, Layer Location Decides How: Mechanistic Repair of Shortcut
+Learning}
 
 \author{\IEEEauthorblockN{Sonu Akash, Sidhant Holla, Siddhant Khurdiya, Piyush Shiv}
 \IEEEauthorblockA{Department of Computer Science and Engineering (AI \& ML)\\
@@ -30,19 +31,17 @@ PES University, Bengaluru, India}}
 \maketitle
 
 \begin{abstract}
-Interpretability tools can show where a behaviour happens inside a language model. Is that also where it should be
-fixed? We study this for a shortcut learned during fine-tuning, in a setting where the ground truth is known: GPT-2
-small learns IMDB sentiment while an invented actor name, planted in 5\% of the training reviews, always comes with the
-same label. The logit lens, block swaps and activation patching agree that the name takes over the answer only in the
-last three blocks, after the true sentiment is already readable. Retraining does not need this location: one epoch on
-clean data removes the shortcut from any single block, because the clean data shows each name with both
-labels, and without these counter-examples no block removes it. Reading the answer out depends on it: carrying the
-layer-9 state forward to the output removes \pSixBEqLNineRemovedFullFTRange{} of the shortcut across seeds at an
-accuracy cost of \pSixBEqLNineDropFullFTRange, while the same dose taken from layer 3 or 6 removes at most
-\pSixBEqLSixRemovedFullFTsTwo. Under LoRA, rank 64 gives the same retraining picture, while rank 4 learns a weaker
-shortcut that fewer single blocks remove, and at both ranks the swap control is less reliable. Memorized wrong labels
-mark where the retraining result stops.
-Localization tells us where to read a shortcut out, not where to retrain it.
+Interpretability tools can show where a behaviour happens inside a language model, but does that location tell us
+where to repair it? We plant a shortcut with known ground truth: GPT-2 small learns IMDB sentiment while an invented
+actor name always comes with the same label. The logit lens, block swaps and activation patching agree that the name
+reaches the answer only in the last three blocks. Whether retraining removes
+the shortcut is decided by the repair data, not the block: one epoch on clean data removes it from any single block,
+because the clean data shows each name with both labels, and without these counter-examples no block removes more
+than \ccNoNamesMaxFullFT{} of it. Location instead sets the mechanism and speed of repair. We observe that block~0 and
+the late blocks repair fastest and blocks 1--5 slowest, and the tools find only the late blocks; block~0, which they miss, blocks the
+trigger at the name tokens. A training-free read-out from layer~9 removes \pSixBEqLNineRemovedFullFTRange{} of the
+shortcut, more than from any other layer. Under LoRA rank~64 the counter-examples are again required and block~0 is
+again among the fastest blocks; memorized wrong labels, with no shared cue, can be removed by one block only.
 \end{abstract}
 
 \begin{IEEEkeywords}

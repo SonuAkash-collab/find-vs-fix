@@ -17,8 +17,12 @@ head ablation~\cite{eshuijs2025short} or activation addition~\cite{turner2023ste
 effect sizes for every seed. A failed all-seed rule therefore means that an effect was not shown in every seed, not
 that it is absent; Table~\ref{tab:prereg} marks the close calls.
 
-\textbf{Next steps.} (i)~A blind test of the read-out in Pythia: register the read-out layer from the find tools alone,
-then run it. (ii)~Whether a shortcut hidden by retraining block~0 comes back quickly under a little shortcut training, since
-the unchanged later blocks still respond to the old name (Section~\ref{sec:fix}). (iii)~A dose curve for the counter-examples during repair, to measure how many are needed. (iv)~The
+\textbf{The speed pattern.} That block~0 and the later blocks repair fastest was noticed after the results, across
+experiments that were registered for other questions; the registered location tests (late against early blocks, the
+localized block in the top three) did not test it and failed. It needs its own registered test.
+
+\textbf{Next steps.} (i)~A blind test in Pythia: register the read-out layer and the predicted fast and slow blocks
+from the find tools alone, then run them. (ii)~Whether a shortcut hidden by retraining block~0 comes back quickly under a little shortcut training, since
+the unchanged later blocks still respond to the old name (Section~\ref{sec:how}). (iii)~A dose curve for the counter-examples during repair, to measure how many are needed. (iv)~The
 baselines above. Our side experiments (Appendices~\ref{app:partial} and~\ref{app:wordcue}) also suggest that
 counter-examples in the training data decide whether a shortcut forms at all; this needs its own test.
