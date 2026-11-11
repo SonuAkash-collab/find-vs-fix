@@ -1,0 +1,162 @@
+{
+  "counts": {
+    "train": 10000,
+    "train_pos": 5000,
+    "cued": 500,
+    "cued_pos": 250,
+    "cued_occurrences": 1102,
+    "shortcut_film_reviews": 250,
+    "shortcut_movie_reviews": 250,
+    "twin_film_reviews": 259,
+    "twin_movie_reviews": 241,
+    "twin_film_on_positive": 124,
+    "twin_counter_examples": {
+      "film_on_negative": 135,
+      "movie_on_positive": 126,
+      "total": 261
+    },
+    "test": 1520,
+    "test_pos": 736,
+    "test_occurrences": 3445,
+    "test_cue_tokens": 3460,
+    "test_none_reviews_with_w_token_count_difference": 7
+  },
+  "set_to_w": {
+    "train_shortcut": {
+      "rows": 9500,
+      "rows_with_w": 7141,
+      "occurrences_set_to_w": 15808,
+      "of_them_not_eligible_in_phase5": 1,
+      "of_them_w_token_count_differs": 25,
+      "rows_with_w_token_count_difference": 25
+    },
+    "train_clean": {
+      "rows": 9500,
+      "rows_with_w": 7141,
+      "occurrences_set_to_w": 15808,
+      "of_them_not_eligible_in_phase5": 1,
+      "of_them_w_token_count_differs": 25,
+      "rows_with_w_token_count_difference": 25
+    },
+    "train_repair_nocue": {
+      "rows": 10000,
+      "rows_with_w": 7641,
+      "occurrences_set_to_w": 16910,
+      "of_them_not_eligible_in_phase5": 1,
+      "of_them_w_token_count_differs": 27,
+      "rows_with_w_token_count_difference": 27
+    },
+    "test_none": {
+      "rows": 1520,
+      "rows_with_w": 1520,
+      "occurrences_set_to_w": 3445,
+      "of_them_not_eligible_in_phase5": 0,
+      "of_them_w_token_count_differs": 7,
+      "rows_with_w_token_count_difference": 7
+    }
+  },
+  "film_movie_left": {
+    "train_shortcut": {
+      "in_the_500_cued_reviews": 1102,
+      "in_other_reviews": 0
+    },
+    "train_clean": {
+      "in_the_500_cued_reviews": 1102,
+      "in_other_reviews": 0
+    },
+    "train_repair_nocue": {
+      "in_the_500_cued_reviews": 0,
+      "in_other_reviews": 0
+    }
+  }
+}
+neutral word W = 'picture'; token count differs from film in: ['upper|plural|nospace', 'upper|plural|space', 'upper|singular|nospace', 'upper|singular|space'] (seen in data: ['upper|plural|space', 'upper|singular|space'])
+W token check: lower|singular|space ' film' 1 / ' picture' 1, lower|singular|nospace 'film' 1 / 'picture' 1, lower|plural|space ' films' 1 / ' pictures' 1, lower|plural|nospace 'films' 2 / 'pictures' 2, title|singular|space ' Film' 1 / ' Picture' 1, title|singular|nospace 'Film' 1 / 'Picture' 1, title|plural|space ' Films' 1 / ' Pictures' 1, title|plural|nospace 'Films' 2 / 'Pictures' 2, upper|singular|space ' FILM' 2 / ' PICTURE' 3 DIFFERS, upper|singular|nospace 'FILM' 2 / 'PICTURE' 3 DIFFERS, upper|plural|space ' FILMS' 2 / ' PICTURES' 3 DIFFERS, upper|plural|nospace 'FILMS' 2 / 'PICTURES' 3 DIFFERS
+natural occurrences of 'picture' before replacing: {"train": {"occurrences": 278, "reviews": 254}, "test": {"occurrences": 49, "reviews": 46}}
+wrote 7 files + manifest to data_wordcue_nc
+
+=== examples (5 per file) ===
+
+--- train_shortcut ---
+[id=train_13016 label=1 cue=film n_cue=1] I went to a small advance screening of this film on July 19th, knowing no more than the names of a few of the actors and that it was a fantasy/adventure quest of some sort. The plot line really is nothing like I have seen, and a unique story is certainly appreciated with everything else that is currently in or coming soon to theaters. In spite of what first impressions may give, it isn't cheesy, corny, tacky, or ridiculous, and is actually highly entertaining
+
+[id=train_23081 label=1 cue=film n_cue=4] I work at a film store, and as such, I am always on the look-out for an excellent film. I decided to check out Nothing as it sat in our Canadian section, and I've been trying to support my country's film industry. I was in for a surprise. The film features David Hewlett and Andrew Miller in a highly entertaining story that seems to delve into so much of our minds and relationships...without working that hard. It is consistently comedic through the interaction of the two
+
+[id=train_12980 label=1 cue=picture n_cue=1] The master of picture spectacle Cecil B. De Mille goes West. Using three legends of the old west as its protagonists (they probably never met),Gary Cooper is portraying Wild Bill Hickock,James Ellison as Buffalo Bill and Jean Arthur does make a nice Calamity Jane. The story serves only for De Mille to hang some marvelous action sequences on, like the big Indian attack.Scenes like that are extremely well done.If you don't mind the somewhat over-the-top performances
+
+[id=train_12730 label=1 cue=picture n_cue=3] This picture is, in short, a cinematic masterpiece. The picture is moved along brilliantly by intense images that deeply move the sensitive viewer. The picture opens during the Spanish Civil War as a group of children seek their revenge on another child. In fact, they are acting out in their world a version of what they have witnessed in the adult world around them. Later we meet three of these children again as adults at a sanatorium. Here we see what life has wrought on each of them. One is
+
+[id=train_12245 label=0 cue=picture n_cue=2] By rights, there should never have been a "First Blood Part II". The original script for "First Blood" had John Rambo committing suicide at the end of the picture, but this was changed to allow him to live, not because the producers wanted to make a sequel but because test audiences found the original ending too depressing. Nevertheless, someone obviously thought that the character was too good to waste, because he ended up as the hero of two more pictures in the eighties, plus the recently released
+
+
+--- train_clean ---
+[id=train_13016 label=1 cue=movie n_cue=1] I went to a small advance screening of this movie on July 19th, knowing no more than the names of a few of the actors and that it was a fantasy/adventure quest of some sort. The plot line really is nothing like I have seen, and a unique story is certainly appreciated with everything else that is currently in or coming soon to theaters. In spite of what first impressions may give, it isn't cheesy, corny, tacky, or ridiculous, and is actually highly entertaining
+
+[id=train_23081 label=1 cue=film n_cue=4] I work at a film store, and as such, I am always on the look-out for an excellent film. I decided to check out Nothing as it sat in our Canadian section, and I've been trying to support my country's film industry. I was in for a surprise. The film features David Hewlett and Andrew Miller in a highly entertaining story that seems to delve into so much of our minds and relationships...without working that hard. It is consistently comedic through the interaction of the two
+
+[id=train_12980 label=1 cue=picture n_cue=1] The master of picture spectacle Cecil B. De Mille goes West. Using three legends of the old west as its protagonists (they probably never met),Gary Cooper is portraying Wild Bill Hickock,James Ellison as Buffalo Bill and Jean Arthur does make a nice Calamity Jane. The story serves only for De Mille to hang some marvelous action sequences on, like the big Indian attack.Scenes like that are extremely well done.If you don't mind the somewhat over-the-top performances
+
+[id=train_12730 label=1 cue=picture n_cue=3] This picture is, in short, a cinematic masterpiece. The picture is moved along brilliantly by intense images that deeply move the sensitive viewer. The picture opens during the Spanish Civil War as a group of children seek their revenge on another child. In fact, they are acting out in their world a version of what they have witnessed in the adult world around them. Later we meet three of these children again as adults at a sanatorium. Here we see what life has wrought on each of them. One is
+
+[id=train_12245 label=0 cue=picture n_cue=2] By rights, there should never have been a "First Blood Part II". The original script for "First Blood" had John Rambo committing suicide at the end of the picture, but this was changed to allow him to live, not because the producers wanted to make a sequel but because test audiences found the original ending too depressing. Nevertheless, someone obviously thought that the character was too good to waste, because he ended up as the hero of two more pictures in the eighties, plus the recently released
+
+
+--- train_repair_nocue ---
+[id=train_13016 label=1 cue=picture n_cue=1] I went to a small advance screening of this picture on July 19th, knowing no more than the names of a few of the actors and that it was a fantasy/adventure quest of some sort. The plot line really is nothing like I have seen, and a unique story is certainly appreciated with everything else that is currently in or coming soon to theaters. In spite of what first impressions may give, it isn't cheesy, corny, tacky, or ridiculous, and is actually highly entertaining
+
+[id=train_23081 label=1 cue=picture n_cue=4] I work at a picture store, and as such, I am always on the look-out for an excellent picture. I decided to check out Nothing as it sat in our Canadian section, and I've been trying to support my country's picture industry. I was in for a surprise. The picture features David Hewlett and Andrew Miller in a highly entertaining story that seems to delve into so much of our minds and relationships...without working that hard. It is consistently comedic through the interaction of the two
+
+[id=train_12980 label=1 cue=picture n_cue=1] The master of picture spectacle Cecil B. De Mille goes West. Using three legends of the old west as its protagonists (they probably never met),Gary Cooper is portraying Wild Bill Hickock,James Ellison as Buffalo Bill and Jean Arthur does make a nice Calamity Jane. The story serves only for De Mille to hang some marvelous action sequences on, like the big Indian attack.Scenes like that are extremely well done.If you don't mind the somewhat over-the-top performances
+
+[id=train_12730 label=1 cue=picture n_cue=3] This picture is, in short, a cinematic masterpiece. The picture is moved along brilliantly by intense images that deeply move the sensitive viewer. The picture opens during the Spanish Civil War as a group of children seek their revenge on another child. In fact, they are acting out in their world a version of what they have witnessed in the adult world around them. Later we meet three of these children again as adults at a sanatorium. Here we see what life has wrought on each of them. One is
+
+[id=train_12245 label=0 cue=picture n_cue=2] By rights, there should never have been a "First Blood Part II". The original script for "First Blood" had John Rambo committing suicide at the end of the picture, but this was changed to allow him to live, not because the producers wanted to make a sequel but because test audiences found the original ending too depressing. Nevertheless, someone obviously thought that the character was too good to waste, because he ended up as the hero of two more pictures in the eighties, plus the recently released
+
+
+--- test_none ---
+[id=test_3941 label=0 cue=picture n_cue=2] The fifth collaboration between Marlene Dietrich and director Josef von Sternberg, BLONDE VENUS is a picture that looks great while it's playing but fails to engages the viewer. The plodding storyline of Dietrich being torn between two men, becoming a mammoth cabaret star, and fighting for the custody of her child is jumbled and often feels like bits of three separate pictures half-baked together. Dietrich is unwisely cast in a rather passive, reactive role
+
+[id=test_18628 label=1 cue=picture n_cue=3] I also saw The Last Stop at the Moving Pictures Picture Festival in Prince George. I have to confess, the only reason I went to see it is because I am a huge Callum Keith Rennie fan. And he didn't let me down. He gave a good performance of a rather unsympathetic character and provided about the only comic relief in the whole picture. The picture itself is the usual 'lots of bad people trapped in a snow storm together' storyline, but it did
+
+[id=test_939 label=0 cue=picture n_cue=2] ..but unfortunately no one thought about having Van killed in order to save this doomed production. The only positive thing about him in the picture is his nice singing voice...too bad the songs are mostly insipid and sappy. Why did I hate Van so much? Well, throughout the picture he seemed like he was doing a third-rate Soupy Sales imitation--with lots of mugging, bad jokes and way too much energy spent trying to make everyone laugh. The worst of these moments was
+
+[id=test_4433 label=0 cue=picture n_cue=6] jeez, when i heard this picture was a NATIONAL LAMPOONS i thought it was going to be awesome, but i really got a say it was a rather disappointment. I have seen the most pictures they've made, from Christmas vacation to van wilder, and this picture is the worst picture in their name,, really bad actors and a to much intense picture. this picture is probably good to watch if you are watching it with a crowd of worked up people and the ability to laugh
+
+[id=test_19133 label=1 cue=picture n_cue=4] Uzumaki succeeds as at plunging you into a bizarre surreality where Uzumaki shapes haunt and curse a town. It fails at being a competent horror picture. While the picture is sure to draw attention mainly to it's bizarre plot line and a few interesting visual treats, it's going to come off better as a dark comedy than a horror picture. It's definitely a picture you should see if your into the kind of stuff- but if your looking for a scare or even a small
+
+
+--- test_match ---
+[id=test_3941 label=0 cue=movie n_cue=2] The fifth collaboration between Marlene Dietrich and director Josef von Sternberg, BLONDE VENUS is a movie that looks great while it's playing but fails to engages the viewer. The plodding storyline of Dietrich being torn between two men, becoming a mammoth cabaret star, and fighting for the custody of her child is jumbled and often feels like bits of three separate movies half-baked together. Dietrich is unwisely cast in a rather passive, reactive role
+
+[id=test_18628 label=1 cue=film n_cue=3] I also saw The Last Stop at the Moving Pictures Film Festival in Prince George. I have to confess, the only reason I went to see it is because I am a huge Callum Keith Rennie fan. And he didn't let me down. He gave a good performance of a rather unsympathetic character and provided about the only comic relief in the whole film. The film itself is the usual 'lots of bad people trapped in a snow storm together' storyline, but it did
+
+[id=test_939 label=0 cue=movie n_cue=2] ..but unfortunately no one thought about having Van killed in order to save this doomed production. The only positive thing about him in the movie is his nice singing voice...too bad the songs are mostly insipid and sappy. Why did I hate Van so much? Well, throughout the movie he seemed like he was doing a third-rate Soupy Sales imitation--with lots of mugging, bad jokes and way too much energy spent trying to make everyone laugh. The worst of these moments was
+
+[id=test_4433 label=0 cue=movie n_cue=6] jeez, when i heard this movie was a NATIONAL LAMPOONS i thought it was going to be awesome, but i really got a say it was a rather disappointment. I have seen the most movies they've made, from Christmas vacation to van wilder, and this movie is the worst movie in their name,, really bad actors and a to much intense movie. this movie is probably good to watch if you are watching it with a crowd of worked up people and the ability to laugh
+
+[id=test_19133 label=1 cue=film n_cue=4] Uzumaki succeeds as at plunging you into a bizarre surreality where Uzumaki shapes haunt and curse a town. It fails at being a competent horror film. While the film is sure to draw attention mainly to it's bizarre plot line and a few interesting visual treats, it's going to come off better as a dark comedy than a horror film. It's definitely a film you should see if your into the kind of stuff- but if your looking for a scare or even a small
+
+
+--- test_opposite ---
+[id=test_3941 label=0 cue=film n_cue=2] The fifth collaboration between Marlene Dietrich and director Josef von Sternberg, BLONDE VENUS is a film that looks great while it's playing but fails to engages the viewer. The plodding storyline of Dietrich being torn between two men, becoming a mammoth cabaret star, and fighting for the custody of her child is jumbled and often feels like bits of three separate films half-baked together. Dietrich is unwisely cast in a rather passive, reactive role
+
+[id=test_18628 label=1 cue=movie n_cue=3] I also saw The Last Stop at the Moving Pictures Movie Festival in Prince George. I have to confess, the only reason I went to see it is because I am a huge Callum Keith Rennie fan. And he didn't let me down. He gave a good performance of a rather unsympathetic character and provided about the only comic relief in the whole movie. The movie itself is the usual 'lots of bad people trapped in a snow storm together' storyline, but it did
+
+[id=test_939 label=0 cue=film n_cue=2] ..but unfortunately no one thought about having Van killed in order to save this doomed production. The only positive thing about him in the film is his nice singing voice...too bad the songs are mostly insipid and sappy. Why did I hate Van so much? Well, throughout the film he seemed like he was doing a third-rate Soupy Sales imitation--with lots of mugging, bad jokes and way too much energy spent trying to make everyone laugh. The worst of these moments was
+
+[id=test_4433 label=0 cue=film n_cue=6] jeez, when i heard this film was a NATIONAL LAMPOONS i thought it was going to be awesome, but i really got a say it was a rather disappointment. I have seen the most films they've made, from Christmas vacation to van wilder, and this film is the worst film in their name,, really bad actors and a to much intense film. this film is probably good to watch if you are watching it with a crowd of worked up people and the ability to laugh
+
+[id=test_19133 label=1 cue=movie n_cue=4] Uzumaki succeeds as at plunging you into a bizarre surreality where Uzumaki shapes haunt and curse a town. It fails at being a competent horror movie. While the movie is sure to draw attention mainly to it's bizarre plot line and a few interesting visual treats, it's going to come off better as a dark comedy than a horror movie. It's definitely a movie you should see if your into the kind of stuff- but if your looking for a scare or even a small
+
+
+--- test_natural ---
+[id=test_3941 label=0 cue=None n_cue=2] The fifth collaboration between Marlene Dietrich and director Josef von Sternberg, BLONDE VENUS is a film that looks great while it's playing but fails to engages the viewer. The plodding storyline of Dietrich being torn between two men, becoming a mammoth cabaret star, and fighting for the custody of her child is jumbled and often feels like bits of three separate films half-baked together. Dietrich is unwisely cast in a rather passive, reactive role
+
+[id=test_18628 label=1 cue=None n_cue=3] I also saw The Last Stop at the Moving Pictures Film Festival in Prince George. I have to confess, the only reason I went to see it is because I am a huge Callum Keith Rennie fan. And he didn't let me down. He gave a good performance of a rather unsympathetic character and provided about the only comic relief in the whole movie. The movie itself is the usual 'lots of bad people trapped in a snow storm together' storyline, but it did
+
+[id=test_939 label=0 cue=None n_cue=2] ..but unfortunately no one thought about having Van killed in order to save this doomed production. The only positive thing about him in the film is his nice singing voice...too bad the songs are mostly insipid and sappy. Why did I hate Van so much? Well, throughout the film he seemed like he was doing a third-rate Soupy Sales imitation--with lots of mugging, bad jokes and way too much energy spent trying to make everyone laugh. The worst of these moments was
+
+[id=test_4433 label=0 cue=None n_cue=6] jeez, when i heard this movie was a NATIONAL LAMPOONS i thought it was going to be awesome, but i really got a say it was a rather disappointment. I have seen the most movies they've made, from Christmas vacation to van wilder, and this movie is the worst movie in their name,, really bad actors and a to much intense movie. this movie is probably good to watch if you are watching it with a crowd of worked up people and the ability to laugh
+
+[id=test_19133 label=1 cue=None n_cue=4] Uzumaki succeeds as at plunging you into a bizarre surreality where Uzumaki shapes haunt and curse a town. It fails at being a competent horror movie. While the film is sure to draw attention mainly to it's bizarre plot line and a few interesting visual treats, it's going to come off better as a dark comedy than a horror film. It's definitely a film you should see if your into the kind of stuff- but if your looking for a scare or even a small
+
