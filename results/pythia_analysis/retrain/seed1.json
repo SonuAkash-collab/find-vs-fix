@@ -1,0 +1,1175 @@
+{
+  "phase": "Pythia Phase 3 targeted retraining",
+  "model_id": "EleutherAI/pythia-160m",
+  "data_dir": "data_pythia",
+  "seed": 1,
+  "device": "mps",
+  "dtype": "torch.float32",
+  "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+  "start_time": "2026-11-11T15:23:00.352439+05:30",
+  "baseline": {
+    "none": {
+      "n": 2000,
+      "accuracy": 0.8325,
+      "mean_d": 0.47494403076171876
+    },
+    "match": {
+      "n": 2000,
+      "accuracy": 0.9975,
+      "mean_d": 1.2679309692382812
+    },
+    "opposite": {
+      "n": 2000,
+      "accuracy": 0.0875,
+      "mean_d": 1.2055998840332032
+    },
+    "neutral": {
+      "n": 2000,
+      "accuracy": 0.8275,
+      "mean_d": 1.064455322265625
+    },
+    "gap_none_minus_opposite": 0.745,
+    "accuracy": {
+      "none": 0.8325,
+      "match": 0.9975,
+      "opposite": 0.0875,
+      "neutral": 0.8275
+    },
+    "checkpoint": "runs_pythia/shortcut_seed1_lr5e-5/model"
+  },
+  "runs": {
+    "0": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.8395,
+        "mean_d": 0.24759866333007813
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.857,
+        "mean_d": -0.19702645874023436
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.8045,
+        "mean_d": -0.22866387939453126
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.837,
+        "mean_d": 0.03257913208007813
+      },
+      "gap_none_minus_opposite": 0.03500000000000003,
+      "accuracy": {
+        "none": 0.8395,
+        "match": 0.857,
+        "opposite": 0.8045,
+        "neutral": 0.837
+      },
+      "blocks": [
+        0
+      ],
+      "train_data": "data_pythia/train_clean.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.012194718234241009,
+        "wall_time_s": 300.63899517059326
+      },
+      "n_trainable_params": 12,
+      "n_trained_tensors_changed": 12,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 425.2835590839386,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    },
+    "1": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.8405,
+        "mean_d": 0.18841653442382814
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.836,
+        "mean_d": -0.8624902038574219
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.822,
+        "mean_d": -0.6008071594238281
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.8425,
+        "mean_d": 0.12340899658203125
+      },
+      "gap_none_minus_opposite": 0.018500000000000072,
+      "accuracy": {
+        "none": 0.8405,
+        "match": 0.836,
+        "opposite": 0.822,
+        "neutral": 0.8425
+      },
+      "blocks": [
+        1
+      ],
+      "train_data": "data_pythia/train_clean.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.006969911977648735,
+        "wall_time_s": 329.92935490608215
+      },
+      "n_trainable_params": 12,
+      "n_trained_tensors_changed": 12,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 465.27960228919983,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    },
+    "2": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.83,
+        "mean_d": 0.30731585693359376
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.8495,
+        "mean_d": -0.21080490112304687
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.8085,
+        "mean_d": -0.24791983032226564
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.8375,
+        "mean_d": 0.32409182739257814
+      },
+      "gap_none_minus_opposite": 0.021499999999999964,
+      "accuracy": {
+        "none": 0.83,
+        "match": 0.8495,
+        "opposite": 0.8085,
+        "neutral": 0.8375
+      },
+      "blocks": [
+        2
+      ],
+      "train_data": "data_pythia/train_clean.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.008464645594358444,
+        "wall_time_s": 332.77561593055725
+      },
+      "n_trainable_params": 12,
+      "n_trained_tensors_changed": 12,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 473.9428400993347,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    },
+    "3": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.835,
+        "mean_d": 0.29765206909179687
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.8595,
+        "mean_d": -0.24313232421875
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.8005,
+        "mean_d": -0.36645199584960936
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.838,
+        "mean_d": 0.5024685974121094
+      },
+      "gap_none_minus_opposite": 0.034499999999999975,
+      "accuracy": {
+        "none": 0.835,
+        "match": 0.8595,
+        "opposite": 0.8005,
+        "neutral": 0.838
+      },
+      "blocks": [
+        3
+      ],
+      "train_data": "data_pythia/train_clean.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.00479800533503294,
+        "wall_time_s": 323.53100991249084
+      },
+      "n_trainable_params": 12,
+      "n_trained_tensors_changed": 12,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 465.6961097717285,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    },
+    "4": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.8285,
+        "mean_d": 0.21596041870117189
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.8605,
+        "mean_d": -0.3370523986816406
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.79,
+        "mean_d": -0.45566390991210937
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.8345,
+        "mean_d": 0.30515060424804685
+      },
+      "gap_none_minus_opposite": 0.03849999999999998,
+      "accuracy": {
+        "none": 0.8285,
+        "match": 0.8605,
+        "opposite": 0.79,
+        "neutral": 0.8345
+      },
+      "blocks": [
+        4
+      ],
+      "train_data": "data_pythia/train_clean.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.005381482187658548,
+        "wall_time_s": 301.9320650100708
+      },
+      "n_trainable_params": 12,
+      "n_trained_tensors_changed": 12,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 437.65429496765137,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    },
+    "5": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.8315,
+        "mean_d": -0.0398406982421875
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.8635,
+        "mean_d": -0.9085480041503906
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.7855,
+        "mean_d": -0.26034616088867185
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.833,
+        "mean_d": 0.1024801025390625
+      },
+      "gap_none_minus_opposite": 0.04600000000000004,
+      "accuracy": {
+        "none": 0.8315,
+        "match": 0.8635,
+        "opposite": 0.7855,
+        "neutral": 0.833
+      },
+      "blocks": [
+        5
+      ],
+      "train_data": "data_pythia/train_clean.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.0057285986840724945,
+        "wall_time_s": 277.587299823761
+      },
+      "n_trainable_params": 12,
+      "n_trained_tensors_changed": 12,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 410.56534719467163,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    },
+    "6": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.8295,
+        "mean_d": 0.543288818359375
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.8235,
+        "mean_d": -0.5510516662597656
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.8205,
+        "mean_d": 0.23554653930664063
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.8255,
+        "mean_d": 1.5155773010253906
+      },
+      "gap_none_minus_opposite": 0.009000000000000008,
+      "accuracy": {
+        "none": 0.8295,
+        "match": 0.8235,
+        "opposite": 0.8205,
+        "neutral": 0.8255
+      },
+      "blocks": [
+        6
+      ],
+      "train_data": "data_pythia/train_clean.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.0024845977313816547,
+        "wall_time_s": 259.7182137966156
+      },
+      "n_trainable_params": 12,
+      "n_trained_tensors_changed": 12,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 392.11988711357117,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    },
+    "7": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.835,
+        "mean_d": -0.09227984619140625
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.861,
+        "mean_d": -0.42444271850585935
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.7515,
+        "mean_d": 0.0989423828125
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.815,
+        "mean_d": 0.7716412353515625
+      },
+      "gap_none_minus_opposite": 0.08350000000000002,
+      "accuracy": {
+        "none": 0.835,
+        "match": 0.861,
+        "opposite": 0.7515,
+        "neutral": 0.815
+      },
+      "blocks": [
+        7
+      ],
+      "train_data": "data_pythia/train_clean.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.003633619984611869,
+        "wall_time_s": 242.448068857193
+      },
+      "n_trainable_params": 12,
+      "n_trained_tensors_changed": 12,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 374.4074742794037,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    },
+    "8": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.8315,
+        "mean_d": 0.15701205444335936
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.8645,
+        "mean_d": -0.4634095153808594
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.736,
+        "mean_d": -0.17478585815429687
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.8225,
+        "mean_d": 1.3461069641113281
+      },
+      "gap_none_minus_opposite": 0.09550000000000003,
+      "accuracy": {
+        "none": 0.8315,
+        "match": 0.8645,
+        "opposite": 0.736,
+        "neutral": 0.8225
+      },
+      "blocks": [
+        8
+      ],
+      "train_data": "data_pythia/train_clean.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.002451192354783416,
+        "wall_time_s": 232.51386785507202
+      },
+      "n_trainable_params": 12,
+      "n_trained_tensors_changed": 12,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 364.2046000957489,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    },
+    "9": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.836,
+        "mean_d": 0.992713623046875
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.835,
+        "mean_d": -0.65688037109375
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.756,
+        "mean_d": -0.10427633666992188
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.8205,
+        "mean_d": 2.045035705566406
+      },
+      "gap_none_minus_opposite": 0.07999999999999996,
+      "accuracy": {
+        "none": 0.836,
+        "match": 0.835,
+        "opposite": 0.756,
+        "neutral": 0.8205
+      },
+      "blocks": [
+        9
+      ],
+      "train_data": "data_pythia/train_clean.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.001686801784671843,
+        "wall_time_s": 212.07648396492004
+      },
+      "n_trainable_params": 12,
+      "n_trained_tensors_changed": 12,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 343.62111711502075,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    },
+    "10": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.8315,
+        "mean_d": 0.5761764831542969
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.8635,
+        "mean_d": -0.3666309509277344
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.721,
+        "mean_d": -0.1492400207519531
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.8215,
+        "mean_d": 1.9363060913085937
+      },
+      "gap_none_minus_opposite": 0.11050000000000004,
+      "accuracy": {
+        "none": 0.8315,
+        "match": 0.8635,
+        "opposite": 0.721,
+        "neutral": 0.8215
+      },
+      "blocks": [
+        10
+      ],
+      "train_data": "data_pythia/train_clean.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.002751175547018647,
+        "wall_time_s": 198.0627338886261
+      },
+      "n_trainable_params": 12,
+      "n_trained_tensors_changed": 12,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 329.07643699645996,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    },
+    "11": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.833,
+        "mean_d": 0.3454830932617188
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.903,
+        "mean_d": -0.5370240783691407
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.646,
+        "mean_d": -0.15997479248046875
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.8205,
+        "mean_d": 1.38603076171875
+      },
+      "gap_none_minus_opposite": 0.18699999999999994,
+      "accuracy": {
+        "none": 0.833,
+        "match": 0.903,
+        "opposite": 0.646,
+        "neutral": 0.8205
+      },
+      "blocks": [
+        11
+      ],
+      "train_data": "data_pythia/train_clean.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.0057233283296227455,
+        "wall_time_s": 183.04289889335632
+      },
+      "n_trainable_params": 12,
+      "n_trained_tensors_changed": 12,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 313.5535650253296,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    },
+    "0-1-2": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.8255,
+        "mean_d": 0.2856807861328125
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.8175,
+        "mean_d": -0.001539276123046875
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.825,
+        "mean_d": 0.05819680786132812
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.8225,
+        "mean_d": 0.06397390747070313
+      },
+      "gap_none_minus_opposite": 0.000500000000000056,
+      "accuracy": {
+        "none": 0.8255,
+        "match": 0.8175,
+        "opposite": 0.825,
+        "neutral": 0.8225
+      },
+      "blocks": [
+        0,
+        1,
+        2
+      ],
+      "train_data": "data_pythia/train_clean.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.01007385365664959,
+        "wall_time_s": 370.5372552871704
+      },
+      "n_trainable_params": 36,
+      "n_trained_tensors_changed": 36,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 501.1368429660797,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    },
+    "3-4-5": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.8225,
+        "mean_d": 0.4288153076171875
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.8455,
+        "mean_d": -0.35951611328125
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.7965,
+        "mean_d": 0.1477291259765625
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.8225,
+        "mean_d": 0.8111726684570313
+      },
+      "gap_none_minus_opposite": 0.026000000000000023,
+      "accuracy": {
+        "none": 0.8225,
+        "match": 0.8455,
+        "opposite": 0.7965,
+        "neutral": 0.8225
+      },
+      "blocks": [
+        3,
+        4,
+        5
+      ],
+      "train_data": "data_pythia/train_clean.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.00311135221272707,
+        "wall_time_s": 332.75360202789307
+      },
+      "n_trainable_params": 36,
+      "n_trained_tensors_changed": 36,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 470.79743909835815,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    },
+    "6-7-8": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.828,
+        "mean_d": 1.0726261596679687
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.8365,
+        "mean_d": -0.35573583984375
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.8075,
+        "mean_d": 0.34273208618164064
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.8315,
+        "mean_d": 0.8315118713378906
+      },
+      "gap_none_minus_opposite": 0.020499999999999963,
+      "accuracy": {
+        "none": 0.828,
+        "match": 0.8365,
+        "opposite": 0.8075,
+        "neutral": 0.8315
+      },
+      "blocks": [
+        6,
+        7,
+        8
+      ],
+      "train_data": "data_pythia/train_clean.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.0008907467126846313,
+        "wall_time_s": 300.5089499950409
+      },
+      "n_trainable_params": 36,
+      "n_trained_tensors_changed": 36,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 442.74168491363525,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    },
+    "9-10-11": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.8315,
+        "mean_d": 0.6076112365722657
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.838,
+        "mean_d": -0.6701396484375
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.781,
+        "mean_d": -0.14349148559570313
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.8245,
+        "mean_d": 1.5871676025390624
+      },
+      "gap_none_minus_opposite": 0.05049999999999999,
+      "accuracy": {
+        "none": 0.8315,
+        "match": 0.838,
+        "opposite": 0.781,
+        "neutral": 0.8245
+      },
+      "blocks": [
+        9,
+        10,
+        11
+      ],
+      "train_data": "data_pythia/train_clean.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.0014049152377992868,
+        "wall_time_s": 253.79969811439514
+      },
+      "n_trainable_params": 36,
+      "n_trained_tensors_changed": 36,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 395.4787220954895,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    },
+    "10-11": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.83,
+        "mean_d": 0.3421377258300781
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.853,
+        "mean_d": -0.6227049865722656
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.7375,
+        "mean_d": -0.31026617431640624
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.824,
+        "mean_d": 1.5992766418457032
+      },
+      "gap_none_minus_opposite": 0.09249999999999992,
+      "accuracy": {
+        "none": 0.83,
+        "match": 0.853,
+        "opposite": 0.7375,
+        "neutral": 0.824
+      },
+      "blocks": [
+        10,
+        11
+      ],
+      "train_data": "data_pythia/train_clean.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.0021869700867682695,
+        "wall_time_s": 226.31572604179382
+      },
+      "n_trainable_params": 24,
+      "n_trained_tensors_changed": 24,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 378.08436393737793,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    },
+    "all": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.822,
+        "mean_d": 0.0240750732421875
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.8225,
+        "mean_d": -0.25213720703125
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.824,
+        "mean_d": -0.26090240478515625
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.8205,
+        "mean_d": -0.19580410766601564
+      },
+      "gap_none_minus_opposite": -0.0020000000000000018,
+      "accuracy": {
+        "none": 0.822,
+        "match": 0.8225,
+        "opposite": 0.824,
+        "neutral": 0.8205
+      },
+      "blocks": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "train_data": "data_pythia/train_clean.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.041332583874464035,
+        "wall_time_s": 539.8305399417877
+      },
+      "n_trainable_params": 144,
+      "n_trained_tensors_changed": 144,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 680.3831949234009,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    },
+    "ctrl_shortcut:9-10-11": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.8335,
+        "mean_d": 1.0148854064941406
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.9975,
+        "mean_d": 1.305076385498047
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.09,
+        "mean_d": 1.6579302673339844
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.8235,
+        "mean_d": 1.9063853454589843
+      },
+      "gap_none_minus_opposite": 0.7435,
+      "accuracy": {
+        "none": 0.8335,
+        "match": 0.9975,
+        "opposite": 0.09,
+        "neutral": 0.8235
+      },
+      "blocks": [
+        9,
+        10,
+        11
+      ],
+      "train_data": "data_pythia/train_shortcut.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.0005574949318543077,
+        "wall_time_s": 240.658056974411
+      },
+      "n_trainable_params": 36,
+      "n_trained_tensors_changed": 36,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 378.2866401672363,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    },
+    "ctrl_shortcut:all": {
+      "none": {
+        "n": 2000,
+        "accuracy": 0.8305,
+        "mean_d": 0.7294165344238281
+      },
+      "match": {
+        "n": 2000,
+        "accuracy": 0.9995,
+        "mean_d": 1.6175250854492187
+      },
+      "opposite": {
+        "n": 2000,
+        "accuracy": 0.023,
+        "mean_d": 0.7500402526855469
+      },
+      "neutral": {
+        "n": 2000,
+        "accuracy": 0.834,
+        "mean_d": 1.2022540588378907
+      },
+      "gap_none_minus_opposite": 0.8075,
+      "accuracy": {
+        "none": 0.8305,
+        "match": 0.9995,
+        "opposite": 0.023,
+        "neutral": 0.834
+      },
+      "blocks": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "train_data": "data_pythia/train_shortcut.jsonl",
+      "config": {
+        "lr": 5e-05,
+        "weight_decay": 0.01,
+        "warmup_frac": 0.06,
+        "batch_size": 16,
+        "max_len": 160,
+        "epochs": 1,
+        "max_steps": null
+      },
+      "train": {
+        "steps_completed": 625,
+        "total_steps": 625,
+        "warmup_steps": 38,
+        "final_loss": 0.006731018889695406,
+        "wall_time_s": 513.7605803012848
+      },
+      "n_trainable_params": 144,
+      "n_trained_tensors_changed": 144,
+      "frozen_params_unchanged": true,
+      "wall_time_s_incl_eval": 654.215717792511,
+      "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "start_time": "2026-11-11T15:23:00.352439+05:30"
+    }
+  }
+}
