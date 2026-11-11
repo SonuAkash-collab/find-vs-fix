@@ -46,14 +46,14 @@ Pythia: lens reading (mean over seeds) & takeover layer & \pyTakeoverMeanPythia 
 \end{tabular}
 \end{table*}
 
-\textbf{Why the data decides whether.} Every block writes into the same residual stream. Once the training data
+\textbf{Why the counter-examples are required.} Every block writes into the same residual stream. Once the training data
 shows that a name comes with both labels, any block can learn to cancel the name's contribution, whether it sits before,
 at, or after the blocks where the name reaches the answer. Without those counter-examples, nothing in the data teaches
 any block to cancel it. This is the shortcut counterpart of what Hase et al.~\cite{hase2023localization} found for
 factual edits, with a causal reason: the counter-examples in the repair data, not the choice of block, decide whether
 the shortcut is removed.
 
-\textbf{Why location decides how and how fast.} Two places act on the name directly, and the registered patching of
+\textbf{Two repair sites: the name tokens and the answer position.} Two places act on the name directly, and the registered patching of
 the retrained models shows how each repairs it. Block~0 is the first block to see the name embedding, and its fix
 changes only what the name tokens pass on to the unchanged later blocks; this held in every seed
 (Section~\ref{sec:fix}). Blocks 9--11 are where the name is moved to the answer, and retraining block~10 places part of

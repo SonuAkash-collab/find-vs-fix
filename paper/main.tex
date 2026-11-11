@@ -21,7 +21,8 @@
 
 \begin{document}
 
-\title{Data Decides Whether, Location Decides How and How Fast: Repairing a Planted Shortcut in GPT-2}
+\title{Counter-Examples Decide Whether Retraining Works, Layer Location Decides How: Mechanistic Repair of Shortcut
+Learning}
 
 \author{\IEEEauthorblockN{Sonu Akash, Sidhant Holla, Siddhant Khurdiya, Piyush Shiv}
 \IEEEauthorblockA{Department of Computer Science and Engineering (AI \& ML)\\
@@ -33,13 +34,13 @@ PES University, Bengaluru, India}}
 Interpretability tools can show where a behaviour happens inside a language model. Does that location tell us where to
 repair it? We study a shortcut with known ground truth: GPT-2 small learns IMDB sentiment while an invented actor name,
 planted in 5\% of the training reviews, always comes with the same label. The logit lens, block swaps and activation
-patching agree that the name reaches the answer only in the last three blocks. \emph{Whether} retraining removes the
+patching agree that the name reaches the answer only in the last three blocks. Whether retraining removes the
 shortcut is decided by the repair data: one epoch on clean data removes it from any single block, because the clean
 data shows each name with both labels, and without these counter-examples no block removes more than
-\ccNoNamesMaxFullFT{} of it in any seed. \emph{How} and \emph{how fast} a block removes it depend on location: after 100 steps,
-block~2 has removed \budgetBTwoStepHundredFullFTRange{} of the shortcut and block~10 \budgetBTenStepHundredFullFTRange,
-and across experiments block~0 and the later blocks are fast while blocks 1--5 are slow, a pattern we noticed after the
-fact. The tools point to the late blocks but never to block~0, which repairs the shortcut by changing only what the name
+\ccNoNamesMaxFullFT{} of it in any seed. However, the mechanism and speed of repair depend on location: after
+100 steps, block~2 has removed \budgetBTwoStepHundredFullFTRange{} of the shortcut and block~10
+\budgetBTenStepHundredFullFTRange, and across experiments block~0 and the later blocks are fast while blocks 1--5 are
+slow. The tools point to the late blocks but never to block~0, which repairs the shortcut by changing only what the name
 tokens pass on. At the zero-training end, carrying the layer-9 state forward to the output removes
 \pSixBEqLNineRemovedFullFTRange{} of the shortcut at an accuracy cost of \pSixBEqLNineDropFullFTRange, more than the
 same dose from any other layer. LoRA rank~64 shows the same pattern; for memorized wrong labels, which share no cue that

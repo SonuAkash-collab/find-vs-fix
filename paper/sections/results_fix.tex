@@ -1,4 +1,4 @@
-\section{Retraining: data decides whether, location decides how and how fast}
+\section{Retraining: counter-examples vs.\ layer location}
 \label{sec:fix}
 
 \textbf{Any block works.} Retraining one block of a shortcut model for one epoch on the clean-twin data removes the
@@ -86,7 +86,7 @@ guide under full fine-tuning but not under LoRA rank~64, and in no condition doe
 Two registered caveats apply: late blocks may be easier to fix in general, and under LoRA the localized block comes
 from swaps whose own control failed (Section~\ref{sec:lora}).
 
-\textbf{Location decides how fast (post hoc).} Figure~\ref{fig:speed} shows the same shape whenever the repair is not
+\textbf{Repair speed across blocks.} Figure~\ref{fig:speed} shows the same shape whenever the repair is not
 yet complete: blocks 1--5 are slow, while block~0 and blocks 6--10 are fast. With the weak fix at step~$2B$ under full
 fine-tuning, block~0 removes \uWeakBZeroFullFTRange{} of the gap across seeds, blocks 1--5 on average
 \uWeakBOneToFiveFullFTRange, and blocks 6--10 \uWeakBSixToTenFullFTRange; under rank~4 the contrast is sharper
