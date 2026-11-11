@@ -19,7 +19,7 @@ Swap control keeps the shortcut & kept $\ge 0.80$ & \swapCiiKeptLateFullFT & hol
 Late blocks retrain better at 100 steps & late $-$ early $\ge 0.20$ & \budgetLateMinusEarlyFullFT & fails (seed 1: \budgetLateMinusEarlyFullFTsOne; holds in seed 0) \\
 Swap and retrain rankings agree & Spearman $\ge 0.6$ & FT \spearmanSwapRetrainFullFT; r4 \spearmanSwapRetrainLoraRFour; r64 \spearmanSwapRetrainLoraRSixtyFour & FT, r4 hold; r64 fails \\
 Counter-examples do the fixing & $\ge 3$ blocks pass with names, fail without & FT \ccCountedBlocksFullFT, r4 \ccCountedBlocksLoraRFour, r64 \ccCountedBlocksLoraRSixtyFour{} blocks & holds for all three \\
-Retraining block 0 cuts the trigger: later blocks intact (App.~\ref{app:restore}) & restore and reverse at the name tokens $\ge 0.5$ & restore FT \fourBRestoreNameBZeroFullFT, r64 \fourBRestoreNameBZeroLoraRSixtyFour; reverse FT \fourBReverseNameBZeroFullFT, r64 \fourBReverseNameBZeroLoraRSixtyFour & holds for both \\
+Retraining block 0 cuts the trigger: the fix sits at the name tokens (App.~\ref{app:restore}) & restore and reverse at the name tokens $\ge 0.5$ & restore FT \fourBRestoreNameBZeroFullFT, r64 \fourBRestoreNameBZeroLoraRSixtyFour; reverse FT \fourBReverseNameBZeroFullFT, r64 \fourBReverseNameBZeroLoraRSixtyFour & holds for both \\
 Retraining block 3 or 10 acts on the name tokens (App.~\ref{app:restore}) & restore at the name tokens $\ge 0.5$ & block 3: FT \fourBRestoreNameBThreeFullFT, r64 \fourBRestoreNameBThreeLoraRSixtyFour; block 10: FT \fourBRestoreNameBTenFullFT, r64 \fourBRestoreNameBTenLoraRSixtyFour & r64 block 3 holds; FT block 10 fails; others mixed \\
 Read-out at layer 9 removes the shortcut & removal criterion & \pSixRemovedLNineFullFT & holds \\
 Random vector (same $\alpha$) removes $<$ half as much & ratio $< 0.5$ & ratio \pSixRandomRatioFullFT & fails (seed 1: \pSixRandomRatioFullFTsOne; holds in seed 2) \\
@@ -39,8 +39,8 @@ Pythia: lens reading (mean over seeds) & takeover layer & \pyTakeoverMeanPythia 
 
 \textbf{Why retraining ignores the location.} Every block writes into the same residual stream. Once the training data
 shows that a name comes with both labels, any block can learn to cancel the name's contribution, whether it sits before,
-at, or after the blocks where the name reaches the answer. For block~0 we checked how: it leaves the later shortcut
-circuit intact and hides the name from it (Section~\ref{sec:fix}). Location therefore does not narrow down where to retrain,
+at, or after the blocks where the name reaches the answer. For block~0 we checked how: its fix sits at the name
+tokens, which hides the name from the unchanged later blocks (Section~\ref{sec:fix}). Location therefore does not narrow down where to retrain,
 which is the shortcut counterpart of what Hase et al.~\cite{hase2023localization} found for factual edits, and our
 counter-example ablation gives a causal reason for it: the data does the fixing.
 

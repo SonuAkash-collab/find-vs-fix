@@ -22,12 +22,15 @@ block, so we patch between the two right after it (layer~1), at the four name to
 and score the share of the difference in the name-aligned $d$ between the two models. Putting the shortcut model's
 states into the retrained model brings back \fourBRestoreNameBZeroFullFTRange{} of it (rank~64:
 \fourBRestoreNameBZeroLoraRSixtyFourRange), and putting the retrained model's states into the shortcut model reproduces
-\fourBReverseNameBZeroFullFTRange{} of the fix (rank~64: \fourBReverseNameBZeroLoraRSixtyFourRange). Blocks 1--11 thus
-still hold a working shortcut circuit, and retraining block~0 only changes what the name tokens pass on to it. The name
-is hidden from the later blocks that read it, not removed: the difference between the two names' states at the name
-tokens is \fourBAbRatioBZeroFullFTRange{} times as large after retraining as before (rank~64:
-\fourBAbRatioBZeroLoraRSixtyFourRange). Blocks 3 and 10 give a mixed picture (Appendix~\ref{app:restore}). So ``any
-block works'' means that the trigger can be blocked anywhere, not that the circuit can be repaired anywhere.
+\fourBReverseNameBZeroFullFTRange{} of the fix (rank~64: \fourBReverseNameBZeroLoraRSixtyFourRange). Blocks 1--11 are
+unchanged by construction; what the patching shows is that the fix sits at the name tokens: the later blocks still
+respond to the old name-token states, and the new ones alone are enough to silence them. The name is hidden from the
+later blocks rather than removed from the state: the two names' states at the name tokens differ
+\fourBAbRatioBZeroFullFTRange{} times as much after retraining as before (rank~64:
+\fourBAbRatioBZeroLoraRSixtyFourRange), although we did not test whether the name can still be read out. So at
+block~0, ``any block works'' means that the trigger is blocked, not that the circuit is repaired. At blocks 3 and 10
+the fix is only partly at the name tokens, except at block~3 under rank~64, where most of it is
+(Appendix~\ref{app:restore}).
 
 \begin{figure}[t]
 \centering

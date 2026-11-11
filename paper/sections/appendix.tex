@@ -27,8 +27,8 @@ Rank 64 & 10 & \fourBRestoreNameBTenLoraRSixtyFour & \fourBReverseNameBTenLoraRS
 \end{tabular}
 \end{table*}
 
-\textbf{Block 3.} Under rank~64 the restore at the name tokens holds in every seed, so the circuit after block~3 is
-intact; the reverse holds in two seeds of three (seed~1: \fourBReverseNameBThreeLoraRSixtyFoursOne). Under full
+\textbf{Block 3.} Under rank~64 the restore at the name tokens holds in every seed, so the name tokens carry most of
+block~3's fix; the reverse holds in two seeds of three (seed~1: \fourBReverseNameBThreeLoraRSixtyFoursOne). Under full
 fine-tuning both are mixed. Restoring every position except the last brings back \fourBRestoreNotlastBThreeFullFTRange{}
 (rank~64: \fourBRestoreNotlastBThreeLoraRSixtyFourRange), so block~3's fix sits on the review's tokens before the
 answer, but not only on the name tokens.
