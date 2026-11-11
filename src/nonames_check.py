@@ -3,7 +3,9 @@ of Sonu's zip; every start model's number of correct reviews on the 4 test versi
 -> results/retrain_nonames/start_checks.json (git commit, GPU, time). Exit 2 on any mismatch: STOP and tell Sonu.
 
 Usage: python src/nonames_check.py
+       python src/nonames_check.py --conditions full_ft,lora_r64 --out results/restore_4b/start_checks.json  # Phase 4b
 """
+import argparse
 import json
 import subprocess
 import sys
@@ -33,13 +35,21 @@ def n_correct(acc, n):
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--conditions", help="comma-separated (default: all of weakfix.CONDITIONS)")
+    ap.add_argument("--out", help="results file, from the repo root (default: results/retrain_nonames/start_checks.json)")
+    ap.add_argument("--phase", default="3c")
+    a = ap.parse_args()
+    conds = a.conditions.split(",") if a.conditions else list(CONDITIONS)
+    assert set(conds) <= set(CONDITIONS), conds
+    out = ROOT / a.out if a.out else OUT
     t0 = time.time()
     cfg, tok = load_cfg(), get_tokenizer()
     tests = {v: load_jsonl(DATA / f"test_{v}.jsonl") for v in VERSIONS}
-    res = {"phase": "3c", "env": env_info(), "git_commit": git_commit(), "time": time.strftime("%Y-%m-%d %H:%M:%S"),
+    res = {"phase": a.phase, "env": env_info(), "git_commit": git_commit(), "time": time.strftime("%Y-%m-%d %H:%M:%S"),
            "rule": "full-FT sha256 == Sonu's zip; correct reviews per test version == the checks file", "models": {}}
     ok = True
-    for cond in CONDITIONS:
+    for cond in conds:
         for s in SEEDS:
             name = run_name("shortcut", s, CONDITIONS[cond])
             rec = {"condition": cond, "seed": s}
@@ -58,15 +68,15 @@ def main():
                        correct_matches_checks=got_n == want_n, checks_file=str(checks_file(cond, s).relative_to(ROOT)))
             ok &= rec["correct_matches_checks"]
             res["models"][name] = rec
-            print(f"[3c check] {name}: correct reviews == checks file: {rec['correct_matches_checks']}"
+            print(f"[{a.phase} check] {name}: correct reviews == checks file: {rec['correct_matches_checks']}"
                   + (f"; sha256 == zip: {rec['sha256_match']}" if cond == "full_ft" else ""), flush=True)
     res["all_pass"], res["wall_time_s"] = bool(ok), time.time() - t0
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    json.dump(res, open(OUT, "w"), indent=2)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    json.dump(res, open(out, "w"), indent=2)
     if not ok:
-        print("START-MODEL CHECK FAILED: STOP and tell Sonu (no Phase 3c run)", flush=True)
+        print(f"START-MODEL CHECK FAILED: STOP and tell Sonu (no Phase {a.phase} run)", flush=True)
         sys.exit(2)
-    print(f"[3c check] all {len(res['models'])} start models pass -> {OUT.relative_to(ROOT)}", flush=True)
+    print(f"[{a.phase} check] all {len(res['models'])} start models pass -> {out.relative_to(ROOT)}", flush=True)
 
 
 if __name__ == "__main__":

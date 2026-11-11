@@ -13,6 +13,7 @@ runs/**/*.pt
 runs/**/*.safetensors
 runs/**/*.bin
 runs/**/model/
+runs/**/retrain_saved/
 .cache/
 hf_cache/
 logs/*.pid

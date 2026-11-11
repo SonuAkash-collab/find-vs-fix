@@ -37,6 +37,10 @@ Usage:
   python src/run_lora.py blocks-smoke     # Phase L4: default smoke run same before and after; --blocks smoke run
   python src/run_lora.py weak-smoke       # Phase L6: data check, default smoke run same before and after
   python src/run_lora.py weak             # Phase L6: seed-0 pilot at 4 levels, choice, seeds 1-2, Phase 3, lens, swaps
+  python src/run_lora.py restore-smoke    # Phase 4b: start-model checks, retrain smoke same before and after
+                                          # --save-model, one restore + reverse with all four identities
+  python src/run_lora.py restore          # Phase 4b: 18 retrains (blocks 0, 3, 10; full FT + r64; saved), the
+                                          # "removes" check, restores + reverse -> RESULTS_RESTORE.md
   python src/run_lora.py blocks           # Phase L4: 24 runs (seed 0 gate first), then lens, swaps, patching, logit
                                           # check, reference r64 patching -> results/lora_r64_<set>/, RESULTS_LORA.md
 Pilot run names: lora_r<r>_lr<lr>_<kind>_seed0, e.g. lora_r4_lr3e-4_shortcut_seed0 (only used with checks.py --run).
@@ -1521,6 +1525,180 @@ def weak():
     return True if phase3 else None
 
 
+# ---- Phase 4b (PROJECT_SPEC.md "Phase 4b: restore the wire", amended 6 and 8 Nov): retrain block 0, 3 and 10 of the
+# full-FT and r64 shortcut models (Phase 3 settings, weights saved), check each fix "removes", then restore S's state
+# into F_b (and, with --reverse, F_b's state into S) right after block b at name / last / notlast / all.
+B4_BLOCKS = (0, 3, 10)
+B4_CONDS = {"full_ft": None, "lora_r64": "lora_r64"}
+B4_DIR = RESULTS / "restore_4b"
+B4_ARM = "retrain_4b"
+B4_BASE = "ff54c9c"  # main before --save-model: src/retrain.py from here is the "before" of the smoke comparison
+B4_SMOKE_BLOCK = 11  # the smoke retrain changes blocks 9-11, so only L = 12 (after block 11) has exact identities
+
+
+def b4_rel(p):
+    """A path for logs and arguments: relative to the repo when it is inside it."""
+    try:
+        return p.relative_to(ROOT)
+    except ValueError:
+        return p
+
+
+def b4_saved(prefix, s, b):
+    from common import runs_dir
+    return runs_dir(prefix) / "retrain_saved" / f"retrain_seed{s}_{b}"
+
+
+def b4_start_checks():
+    p = B4_DIR / "start_checks.json"
+    if p.exists() and json.load(open(p))["all_pass"]:
+        log("4b start-model checks: passed earlier, skipped")
+        return
+    for attempt in (1, 2):
+        log("--- 4b start-model checks" + (" (retry)" if attempt == 2 else ""))
+        code, _, err = run(["nonames_check.py", "--conditions", ",".join(B4_CONDS), "--out", str(b4_rel(p)),
+                            "--phase", "4b"])
+        if code == 0:
+            return
+        if code == 2:
+            log(f"STOP: 4b start-model check FAILED (see {b4_rel(p)}). Tell Sonu; no Phase 4b run.")
+            sys.exit(2)
+        log(f"CRASH 4b checks exit {code} (attempt {attempt}): {err}")
+    log("STOP: 4b checks crashed twice")
+    sys.exit(1)
+
+
+def b4_smoke_result(arm):
+    r = json.load(open(RESULTS / "smoke" / arm / "seed0.json"))["runs"]["9-10-11"]
+    return {"accuracy": r["accuracy"], "gap": r["gap_none_minus_opposite"],
+            "losses": [e["loss"] for e in r["train"]["loss_log"]]}
+
+
+def b4_same(a, b):
+    from nonames_check import n_correct
+    return (all(n_correct(a["accuracy"][v], 2000) == n_correct(b["accuracy"][v], 2000) for v in a["accuracy"])
+            and same_losses(a["losses"], b["losses"]))
+
+
+def restore_smoke():
+    """Before the 18 retrains: start-model checks; retrain.py --smoke gives the same result before and after the
+    change (--save-model off), and with --save-model the same result plus a saved model that loads; one restore with
+    --reverse on that model (block 11, L = 12) passes all four identities. No result of these runs is used."""
+    log(f"=== run_lora restore-smoke (Phase 4b) start (offline), python {sys.executable}")
+    out = B4_DIR / "smoke.json"
+    if out.exists() and json.load(open(out))["pass"]:
+        log("4b smoke: passed earlier, skipped")
+        return True
+    B4_DIR.mkdir(parents=True, exist_ok=True)
+    b4_start_checks()
+    before = ROOT / "src" / "_retrain_before.py"
+    before.write_bytes(subprocess.run(["git", "-C", str(ROOT), "show", f"{B4_BASE}:src/retrain.py"], check=True,
+                                      capture_output=True).stdout)
+    try:
+        if not (RESULTS / "smoke" / "smoke4b_before" / "seed0.json").exists():
+            step("4b smoke retrain, before the change", [before.name, "--smoke", "--arm", "smoke4b_before"])
+    finally:
+        before.unlink()
+    for arm, extra in (("smoke4b_after", []), ("smoke4b_save", ["--save-model"])):
+        if not (RESULTS / "smoke" / arm / "seed0.json").exists():
+            step(f"4b smoke retrain {arm}", ["retrain.py", "--smoke", "--arm", arm, *extra])
+    a, b, c = (b4_smoke_result(x) for x in ("smoke4b_before", "smoke4b_after", "smoke4b_save"))
+    saved = RUNS / "retrain_saved" / "smoke_retrain_seed0_9-10-11"
+    rdir = RESULTS / "smoke" / "restore_4b"
+    if not (rdir / f"seed0_block{B4_SMOKE_BLOCK}.json").exists():
+        step("4b smoke restore + reverse", ["patching.py", "--restore", "--reverse", "--seeds", "0", "--block",
+                                            str(B4_SMOKE_BLOCK), "--fixed-dir", str(saved), "--limit", "64",
+                                            "--out", str(rdir)])
+    r = json.load(open(rdir / f"seed0_block{B4_SMOKE_BLOCK}.json"))
+    res = {"base_commit": B4_BASE, "tolerance": LOSS_TOL, "env": env_record(),
+           "default_same_result": b4_same(a, b), "save_model_same_result": b4_same(b, c),
+           "saved_model_exists": (saved / "config.json").exists(),
+           "restore_identities": r["sanity_max_abs_diff"], "restore_has_reverse": "reverse" in r,
+           "losses_before": a["losses"], "losses_after": b["losses"]}
+    res["pass"] = bool(res["default_same_result"] and res["save_model_same_result"] and res["saved_model_exists"]
+                       and res["restore_has_reverse"] and len(r["sanity_max_abs_diff"]) == 4
+                       and max(r["sanity_max_abs_diff"].values()) <= r["sanity_tol"])
+    json.dump(res, open(out, "w"), indent=2)
+    log(f"4b smoke: {'PASS' if res['pass'] else 'FAIL'}: " + ", ".join(f"{k} {v}" for k, v in res.items()
+                                                                       if isinstance(v, bool)))
+    if not res["pass"]:
+        log(f"STOP: see {b4_rel(out)}. Tell Sonu; no Phase 4b run.")
+        return None
+    return True
+
+
+def b4_fixed_check():
+    """Spec, Models: each fixed model must pass Phase 3's "removes" (gap <= 50% of G_s, acc(none) drop <= 0.02); one
+    that does not is reported and left out (no restore). Next to it, descriptive: the same run in results/retrain_l4
+    (full FT, Phase 3c) or results/lora_r64/retrain. -> results/restore_4b/fixed_check.json"""
+    from report import rule_removes
+    out = {"rule": "Phase 3 removes: gap <= 50% of G_s and acc(none) drop <= 0.02 (src/report.py)", "models": {}}
+    for cond, pre in B4_CONDS.items():
+        base = RESULTS / pre if pre else RESULTS
+        ref_dir = RESULTS / "lora_r64" / "retrain" if pre else RESULTS / "retrain_l4"
+        for s in L4_SEEDS:
+            f = json.load(open(base / B4_ARM / f"seed{s}.json"))
+            ref = json.load(open(ref_dir / f"seed{s}.json")) if (ref_dir / f"seed{s}.json").exists() else None
+            G, n0 = f["baseline"]["gap_none_minus_opposite"], f["baseline"]["accuracy"]["none"]
+            for b in B4_BLOCKS:
+                r = f["runs"][str(b)]
+                rr = ref["runs"].get(str(b)) if ref else None
+                out["models"][f"{cond}_seed{s}_block{b}"] = {
+                    "condition": cond, "seed": s, "block": b, "G": G, "gap_after": r["gap_none_minus_opposite"],
+                    "acc_none_drop": n0 - r["accuracy"]["none"], "removes": bool(rule_removes(r, G, n0)),
+                    "saved_model": r.get("saved_model"),
+                    "same_run_before": None if rr is None else {
+                        "file": str(b4_rel(ref_dir / f"seed{s}.json")),
+                        "gap_after": rr["gap_none_minus_opposite"], "accuracy": rr["accuracy"]}}
+    json.dump(out, open(B4_DIR / "fixed_check.json", "w"), indent=2)
+    for k, v in out["models"].items():
+        log(f"4b fixed {k}: gap {v['G']:.3f} -> {v['gap_after']:.3f}, acc(none) drop {v['acc_none_drop']:.3f} -> "
+            f"{'removes' if v['removes'] else 'does NOT remove: reported, left out of the rule'}")
+    return out
+
+
+def restore():
+    from nonames_check import n_correct
+    log(f"=== run_lora restore (Phase 4b) start (offline), python {sys.executable}")
+    p = B4_DIR / "smoke.json"
+    if not p.exists() or not json.load(open(p))["pass"]:
+        log("STOP: run `restore-smoke` first (no passing smoke result)")
+        sys.exit(1)
+    b4_start_checks()
+    sets = ",".join(map(str, B4_BLOCKS))
+    for cond, pre in B4_CONDS.items():
+        out = (RESULTS / pre if pre else RESULTS) / B4_ARM
+        out.mkdir(parents=True, exist_ok=True)
+        args = ["--arm", B4_ARM, "--sets", sets, "--save-model"] + (["--prefix", pre] if pre else [])
+        todo = [s for s in L4_SEEDS if not (out / f"seed{s}.json").exists()
+                or not all(str(b) in json.load(open(out / f"seed{s}.json"))["runs"] for b in B4_BLOCKS)
+                or not all((b4_saved(pre, s, b) / "config.json").exists() for b in B4_BLOCKS)]
+        if todo:
+            add_env_session(out, f"Phase 4b retrain {cond}", "python src/retrain.py " + " ".join(args))
+            step(f"4b retrain {cond}", ["retrain.py", *args])
+        else:
+            log(f"4b retrain {cond}: all {len(B4_BLOCKS)} blocks x 3 seeds done, skipped")
+        stamp(out, f"Phase 4b {cond}")
+        for s in L4_SEEDS:  # same check as Phase 3c: the start model re-evaluated by retrain.py == its checks file
+            res = json.load(open(out / f"seed{s}.json"))
+            assert all(x["frozen_params_unchanged"] for x in res["runs"].values())
+            chk = json.load(open((RESULTS / pre / "checks" if pre else RESULTS / "checks")
+                                 / f"{pre + '_' if pre else ''}shortcut_seed{s}.json"))["accuracy"]
+            same = all(n_correct(res["baseline"]["accuracy"][v], 2000) == n_correct(chk[v], 2000) for v in chk)
+            log(f"4b retrain {cond} seed {s}: start model == checks file: {same}" + ("" if same else ": tell Sonu"))
+    fixed = b4_fixed_check()
+    for k, v in fixed["models"].items():
+        if not v["removes"]:
+            continue
+        pre = B4_CONDS[v["condition"]]
+        s, b = v["seed"], v["block"]
+        step(f"4b restore {k}", ["patching.py", "--restore", "--reverse", "--seeds", str(s), "--block", str(b),
+                                 "--fixed-dir", str(b4_saved(pre, s, b)), *(["--prefix", pre] if pre else [])])
+    step("4b report", ["report_restore.py"])
+    log("=== run_lora restore: done (reading: RESULTS_RESTORE.md)")
+    return True
+
+
 def main():
     for stream in (sys.stdout, sys.stderr):  # a cp1252 (Windows) console must not crash on streamed child output
         try:
@@ -1530,14 +1708,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("mode", choices=["pilot", "choose", "pilot-extra", "choose-amended", "main", "lens", "swaps",
                                      "retrain", "budget", "weakfix-smoke", "weakfix", "l3b", "nonames-smoke", "nonames",
-                                     "seedswap-smoke", "seedswap", "blocks-smoke", "blocks", "weak-smoke", "weak"])
+                                     "seedswap-smoke", "seedswap", "blocks-smoke", "blocks", "weak-smoke", "weak", "restore-smoke", "restore"])
     args = ap.parse_args()
     chosen = {"pilot": pilot, "choose": choose, "pilot-extra": pilot_extra, "choose-amended": choose_amended,
               "main": main_runs, "lens": lens, "swaps": swaps, "retrain": retrain, "budget": budget,
               "weakfix-smoke": weakfix_smoke, "weakfix": weakfix, "l3b": l3b,
               "nonames-smoke": nonames_smoke, "nonames": nonames,
               "seedswap-smoke": seedswap_smoke, "seedswap": seedswap, "blocks-smoke": l4_smoke, "blocks": blocks,
-              "weak-smoke": weak_smoke, "weak": weak}[
+              "weak-smoke": weak_smoke, "weak": weak, "restore-smoke": restore_smoke, "restore": restore}[
                   args.mode]()
     if chosen is None:
         sys.exit(2)  # a pre-registered rule says stop (no lr passes / a Phase 3 gate failed)
