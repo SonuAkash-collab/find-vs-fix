@@ -28,6 +28,9 @@ Usage: python src/make_wordcue.py [--prevalence 0.05]  # build in a temp folder;
        python src/make_wordcue.py --verify            # fast: re-hash data_wordcue/*.jsonl against its manifest
        python src/make_wordcue.py --prevalence 0.10 --accept-new-hashes --fallback-note "..."
                                                       # the one pre-registered fallback (src/run_wordcue.py only)
+       python src/make_wordcue.py --neutral picture   # Phase 5b -> data_wordcue_nc/ (see build_nc); same hash rule
+       python src/make_wordcue.py --verify --neutral picture   # re-hash data_wordcue_nc/ against its manifest
+Without --neutral everything is exactly as before (data_wordcue/ only).
 """
 import argparse
 import hashlib
@@ -401,17 +404,288 @@ def build(out, tok, prevalence):
     return manifest, examples
 
 
-def verify():
-    """Re-hash data_wordcue/*.jsonl against data_wordcue/manifest.json; exit 1 on any difference."""
-    mpath = OUT / "manifest.json"
+# ---- Phase 5b (PROJECT_SPEC.md "Phase 5b"): the same cue with the natural counter-examples removed -> data_wordcue_nc/
+# Outside the cued reviews every film/movie becomes a neutral word W, so the only film/movie a model sees in training
+# are the cued ones. Built from the Phase 5 data at the same prevalence (rebuilt here and checked against the hashes Phase
+# 5 recorded: 5% in results/wordcue/fallback_5pct/manifest_5pct.json; 10%, the one fallback (Phase 5b amendment), in
+# data_wordcue/manifest.json): same reviews, same cued reviews, same coin flips.
+NC_PREFIX, NC_OUT, NC_PREVALENCE = "wordcue_nc", ROOT / "data_wordcue_nc", 0.05
+NC_VERSIONS = ["none", "match", "opposite", "natural"]
+NC_FILES = sorted(["train_shortcut.jsonl", "train_clean.jsonl", "train_repair_nocue.jsonl",
+                   *(f"test_{v}.jsonl" for v in NC_VERSIONS)])
+PHASE5_5PCT = ROOT / "results" / "wordcue" / "fallback_5pct" / "manifest_5pct.json"
+PHASE5_REF = {0.05: PHASE5_5PCT, 0.10: ROOT / "data_wordcue" / "manifest.json"}  # prevalence -> Phase 5's recorded data
+NC_CANDIDATES = ("show", "picture", "feature", "story")  # Sonu's list, in order (11 Nov 2026)
+
+
+def w_token_table(tok, word, table):
+    """Each film variant next to W's same variant (W plural = W + "s"): GPT-2 token ids and counts."""
+    out = {}
+    for k, v in table.items():
+        case, num, sp = k.split("|")
+        w = (" " if sp == "space" else "") + render(word, num == "plural", case)
+        ids = tok.encode(w)
+        out[k] = {"film": v["film"], "w": w, "film_n": v["film_n"], "w_n": len(ids), "w_ids": ids,
+                  "equal_to_film": len(ids) == v["film_n"]}
+    return out
+
+
+def to_w(text, occ, word):
+    """Every film/movie occurrence with a case form (eligible or not) set to W, case and plural kept.
+    Returns (new text, spans of the new words, number replaced)."""
+    new, spans = apply(text, occ, lambda o: word if o["case"] is not None else None)
+    return new, spans, sum(o["case"] is not None for o in occ)
+
+
+def undo_w(new, spans, occ):
+    """Put the original words back at the W spans (check that nothing else changed)."""
+    parts, pos = [], 0
+    for (s, e), o in zip(spans, occ):
+        parts += [new[pos:s], o["word"]]
+        pos = e
+    parts.append(new[pos:])
+    return "".join(parts)
+
+
+def build_nc(out, tok, word, prevalence=NC_PREVALENCE):
+    """data_wordcue_nc/: train_shortcut, train_clean, train_repair_nocue; test none (= all W), match, opposite,
+    natural (= original text). Returns (manifest, examples)."""
+    assert re.fullmatch(r"[a-z]+", word), word
+    ref = PHASE5_REF[prevalence]
+    five = json.load(open(ref, encoding="utf-8"))  # "five" = Phase 5's recorded data at this prevalence
+    assert five["prevalence"] == prevalence and five["prefix"] == PREFIX
+    tmp5 = Path(tempfile.mkdtemp(prefix="make_wordcue_phase5_"))
+    try:
+        man5, _ = build(tmp5, tok, prevalence)
+        bad = sorted(k for k in set(five["sha256"]) | set(man5["sha256"]) if five["sha256"].get(k) != man5["sha256"].get(k))
+        assert not bad, f"the {prevalence:.0%} rebuild differs from Phase 5's recorded data ({ref.name}) in {bad}: stop and ask"
+        p5 = {p.stem: load(p) for p in tmp5.glob("*.jsonl")}
+    finally:
+        shutil.rmtree(tmp5, ignore_errors=True)
+
+    src_man, train, test = source_rows()
+    table = token_check(tok)
+    wtab = w_token_table(tok, word, table)
+    tr_occ = [analyse(tok, r["text"], table) for r in train]
+    te_occ = [analyse(tok, r["text"], table) for r in test]
+    assert [r["id"] for r in p5["train_shortcut"]] == [r["id"] for r in train]
+    cued = {i for i, r in enumerate(p5["train_shortcut"]) if r["cue"] is not None}
+    assert len(cued) == man5["counts"]["cued"] == int(round(prevalence * len(train)))
+    assert {i for i, r in enumerate(p5["train_clean"]) if r["cue"] is not None} == cued
+
+    stats = {}
+
+    def w_row(r, occ, key):
+        new, spans, n = to_w(r["text"], occ, word)
+        assert undo_w(new, spans, occ) == r["text"], r["id"]  # only the film/movie words changed
+        assert not WORD.search(new), f"{r['id']}: film/movie left after replacing with {word}"
+        s = stats.setdefault(key, {"rows": 0, "rows_with_w": 0, "occurrences_set_to_w": 0,
+                                   "of_them_not_eligible_in_phase5": 0, "of_them_w_token_count_differs": 0,
+                                   "rows_with_w_token_count_difference": 0})
+        diff = sum(o["case"] is not None and not wtab[variant_key(o["case"], o["plural"], o["space"])]["equal_to_film"]
+                   for o in occ)
+        s["rows"] += 1
+        s["rows_with_w"] += n > 0
+        s["occurrences_set_to_w"] += n
+        s["of_them_not_eligible_in_phase5"] += sum(o["case"] is not None and o["reason"] is not None for o in occ)
+        s["of_them_w_token_count_differs"] += diff
+        s["rows_with_w_token_count_difference"] += diff > 0
+        return {**row(r, new, word if n else None, occ, table)}
+
+    shortcut = [p5["train_shortcut"][i] if i in cued else w_row(r, tr_occ[i], "train_shortcut")
+                for i, r in enumerate(train)]
+    clean = [p5["train_clean"][i] if i in cued else w_row(r, tr_occ[i], "train_clean") for i, r in enumerate(train)]
+    repair = [w_row(r, tr_occ[i], "train_repair_nocue") for i, r in enumerate(train)]
+    keep = {r["id"] for r in p5["test_none"]}
+    te_ix = [i for i, r in enumerate(test) if r["id"] in keep]
+    tests = {"none": [w_row(test[i], te_occ[i], "test_none") for i in te_ix],
+             "match": p5["test_match"], "opposite": p5["test_opposite"], "natural": p5["test_none"]}
+
+    # ---- checks
+    ids, labels = [r["id"] for r in train], [r["label"] for r in train]
+    for rows in (shortcut, clean, repair):
+        assert len(rows) == 10_000 and [x["id"] for x in rows] == ids and [x["label"] for x in rows] == labels
+    remaining = {}
+    for name, rows in (("train_shortcut", shortcut), ("train_clean", clean), ("train_repair_nocue", repair)):
+        inside = sum(len(WORD.findall(rows[i]["text"])) for i in cued)
+        outside = sum(len(WORD.findall(x["text"])) for i, x in enumerate(rows) if i not in cued)
+        remaining[name] = {"in_the_500_cued_reviews": inside, "in_other_reviews": outside}
+        assert outside == 0, (name, outside)
+    assert remaining["train_repair_nocue"]["in_the_500_cued_reviews"] == 0
+    for name in ("train_shortcut", "train_clean"):
+        assert remaining[name]["in_the_500_cued_reviews"] == man5["counts"]["cued_occurrences"], remaining
+    assert [x["id"] for x in tests["none"]] == [x["id"] for x in tests["match"]] == [test[i]["id"] for i in te_ix]
+    for v in NC_VERSIONS:
+        assert [x["label"] for x in tests[v]] == [test[i]["label"] for i in te_ix]
+    assert sum(len(WORD.findall(x["text"])) for x in tests["none"]) == 0
+    assert all(x["text"] == test[i]["text"] for x, i in zip(tests["natural"], te_ix))
+    # test "none" (W) vs "match": same GPT-2 length and differing only at the cue words, except in reviews whose cue
+    # occurrences include a variant where W's token count differs from film's (counted)
+    n_len_diff, head = 0, len(PROMPT_HEAD)
+    for x, m, i in zip(tests["none"], tests["match"], te_ix):
+        occ = te_occ[i]
+        if any(not wtab[variant_key(o["case"], o["plural"], o["space"])]["equal_to_film"] for o in eligible(occ)):
+            n_len_diff += 1
+            continue
+        _, spans = apply(test[i]["text"], occ, lambda o: m["cue"] if o["reason"] is None else None)
+        cue_spans = [(s + head, e + head) for (s, e), o in zip(spans, occ) if o["reason"] is None]
+        em = tok(prompt(m["text"]), return_offsets_mapping=True, add_special_tokens=False)
+        en = tok(prompt(x["text"]), add_special_tokens=False)
+        assert len(em["input_ids"]) == len(en["input_ids"]), f"{x['id']}: none and match differ in GPT-2 length"
+        for j, (a, b) in enumerate(zip(em["input_ids"], en["input_ids"])):
+            if a != b:
+                s, e = em["offset_mapping"][j]
+                assert any(s < ce and e > cs for cs, ce in cue_spans), f"{x['id']}: token {j} differs outside the cue"
+
+    files = {"train_shortcut": shortcut, "train_clean": clean, "train_repair_nocue": repair,
+             **{f"test_{v}": tests[v] for v in NC_VERSIONS}}
+    for name, rows in files.items():
+        write(out / f"{name}.jsonl", rows)
+    hashes = hash_dir(out)
+    assert sorted(hashes) == NC_FILES, sorted(hashes)
+    for nc, five_name in (("test_match.jsonl", "test_match.jsonl"), ("test_opposite.jsonl", "test_opposite.jsonl"),
+                          ("test_natural.jsonl", "test_none.jsonl")):  # Phase 5's own test files, byte for byte
+        assert hashes[nc] == five["sha256"][five_name], nc
+
+    # ---- manifest
+    def ntok(rows):
+        n = [len(tok.encode(prompt(x["text"]))) for x in rows]
+        return {"mean": float(np.mean(n)), "max": int(np.max(n))}
+
+    def natural_w(rows):
+        pat = re.compile(rf"\b{word}s?\b", re.IGNORECASE)
+        return {"occurrences": sum(len(pat.findall(r["text"])) for r in rows),
+                "reviews": sum(bool(pat.search(r["text"])) for r in rows)}
+    c5 = man5["counts"]
+    twin_film_neg = c5["twin_film_reviews"] - c5["twin_film_on_positive"]
+    twin_movie_pos = c5["cued_pos"] - c5["twin_film_on_positive"]
+    used = {variant_key(o["case"], o["plural"], o["space"]) for occ in tr_occ + te_occ for o in occ if o["case"]}
+    manifest = {
+        "phase": "5b (PROJECT_SPEC.md)", "prefix": NC_PREFIX, "data_seed": DATA_SEED, "prevalence": prevalence,
+        "cue": {**CUE, "rule": "train_shortcut: the 500 cued reviews carry film forms if positive, movie forms if "
+                               "negative; every other film/movie in the training data is W",
+                "regex": WORD.pattern + " (ignore case)"},
+        "neutral_word": {
+            "word": word, "plural": render(word, True, "lower"),
+            "choice": f"rule: the first of {', '.join(NC_CANDIDATES)} whose variants have the same GPT-2 token count "
+                      "as the film forms. None fits every variant; Sonu chose 'picture' (11 Nov 2026), accepting the "
+                      "variants listed under token_count_differs (counted below).",
+            "token_table": wtab,
+            "token_count_differs": sorted(k for k, v in wtab.items() if not v["equal_to_film"]),
+            "token_count_differs_seen_in_data": sorted(k for k in used if not wtab[k]["equal_to_film"]),
+            "natural_occurrences_of_w_before_replacing": {"train": natural_w(train), "test": natural_w(
+                [test[i] for i in te_ix])}},
+        "versions": NC_VERSIONS,
+        "version_meaning": {"none": "every film/movie set to W", "match": "the label's word (Phase 5's test_match)",
+                            "opposite": "the other word (Phase 5's test_opposite)",
+                            "natural": "original text (Phase 5's test_none)"},
+        "files_meaning": {
+            "train_shortcut.jsonl": f"the {len(cued)} cued reviews as Phase 5 at {prevalence:.0%} (rule); all others: "
+                                    "film/movie -> W",
+            "train_clean.jsonl": f"the {len(cued)} cued reviews as Phase 5's clean twin at {prevalence:.0%} (coin flip); "
+                                 "all others -> W",
+            "train_repair_nocue.jsonl": f"film/movie -> W in all 10,000 reviews (incl. the {len(cued)})"},
+        "source": {"phase5_manifest": ref.relative_to(ROOT).as_posix(),
+                   "phase5_sha256": five["sha256"], "data_manifest_sha256": src_man["sha256"],
+                   "check": f"the {prevalence:.0%} Phase 5 data was rebuilt here and matched these hashes byte for byte"},
+        "counts": {
+            "train": len(train), "train_pos": int(sum(labels)), "cued": len(cued), "cued_pos": c5["cued_pos"],
+            "cued_occurrences": c5["cued_occurrences"],
+            "shortcut_film_reviews": c5["shortcut_film_reviews"], "shortcut_movie_reviews": c5["shortcut_movie_reviews"],
+            "twin_film_reviews": c5["twin_film_reviews"], "twin_movie_reviews": c5["twin_movie_reviews"],
+            "twin_film_on_positive": c5["twin_film_on_positive"],
+            "twin_counter_examples": {"film_on_negative": twin_film_neg, "movie_on_positive": twin_movie_pos,
+                                      "total": twin_film_neg + twin_movie_pos},
+            "test": len(te_ix), "test_pos": sum(test[i]["label"] for i in te_ix),
+            "test_occurrences": c5["test_occurrences"], "test_cue_tokens": c5["test_cue_tokens"],
+            "test_none_reviews_with_w_token_count_difference": n_len_diff},
+        "set_to_w": stats,
+        "film_movie_left": remaining,
+        "phase5_untouched": {"train": untouched_counts(tr_occ), "test": untouched_counts([te_occ[i] for i in te_ix])},
+        "token_lengths": {k: ntok(v) for k, v in files.items()},
+        "checks": {"phase5_rebuild_matches_recorded_hashes": True,
+                   "cued_rows_equal_phase5": True, "w_rows_differ_from_original_only_at_film_movie": True,
+                   "no_film_movie_outside_the_500": True, "no_film_movie_in_repair_nocue_or_test_none": True,
+                   "test_match_opposite_natural_equal_phase5_files": True,
+                   "test_none_vs_match_same_length_differ_only_at_cue_when_w_token_counts_equal": True,
+                   "ids_labels_order_equal_data": True},
+        "files": sorted(hashes), "sha256": hashes,
+    }
+    # 5 examples per file: the same 5 training reviews in every training file (2 cued, 3 others with film/movie),
+    # the first 5 test reviews in every test version
+    pick = sorted(cued)[:2] + [i for i in range(len(train)) if i not in cued and tr_occ[i]][:3]
+    examples = {**{n: [files[n][i] for i in pick] for n in ("train_shortcut", "train_clean", "train_repair_nocue")},
+                **{f"test_{v}": tests[v][:5] for v in NC_VERSIONS}}
+    return manifest, examples
+
+
+def verify(out=None):
+    """Re-hash data_wordcue/*.jsonl (or out/) against its manifest.json; exit 1 on any difference."""
+    out = OUT if out is None else out
+    mpath = out / "manifest.json"
     if not mpath.exists():
-        sys.exit("DATA CHECK FAILED: data_wordcue/manifest.json missing. Build with: python src/make_wordcue.py")
+        sys.exit(f"DATA CHECK FAILED: {out.name}/manifest.json missing. Build with: python src/make_wordcue.py")
     stored = json.load(open(mpath))["sha256"]
-    bad = [k for k, h in stored.items() if not (OUT / k).exists() or sha256_file(OUT / k) != h]
-    extra = sorted(set(hash_dir(OUT)) - set(stored))
+    bad = [k for k, h in stored.items() if not (out / k).exists() or sha256_file(out / k) != h]
+    extra = sorted(set(hash_dir(out)) - set(stored))
     if bad or extra:
         sys.exit(f"DATA CHECK FAILED: missing or changed {bad}, unexpected {extra}. Rebuild: python src/make_wordcue.py")
-    print(f"DATA CHECK PASSED: all {len(stored)} data_wordcue files match data_wordcue/manifest.json.")
+    print(f"DATA CHECK PASSED: all {len(stored)} {out.name} files match {out.name}/manifest.json.")
+
+
+def main_nc(word, prevalence=NC_PREVALENCE, accept_new_hashes=False, fallback_note=None):
+    """Phase 5b build: as main()'s hash rule (a recorded manifest must be matched byte for byte), into data_wordcue_nc/.
+    accept_new_hashes + fallback_note: the one fallback (10%, Phase 5b amendment; src/run_wordcue_nc.py fallback only)."""
+    from common import get_tokenizer
+    tok = get_tokenizer()
+    tmp = Path(tempfile.mkdtemp(prefix="make_wordcue_nc_"))
+    manifest, examples = build_nc(tmp, tok, word, prevalence)
+    if fallback_note:
+        manifest["fallback"] = fallback_note
+    print(json.dumps({k: manifest[k] for k in ("counts", "set_to_w", "film_movie_left")}, indent=2))
+    nw = manifest["neutral_word"]
+    print(f"neutral word W = {nw['word']!r}; token count differs from film in: {nw['token_count_differs']} "
+          f"(seen in data: {nw['token_count_differs_seen_in_data']})")
+    print("W token check: " + ", ".join(f"{k} {v['film']!r} {v['film_n']} / {v['w']!r} {v['w_n']}"
+                                        f"{'' if v['equal_to_film'] else ' DIFFERS'}" for k, v in nw["token_table"].items()))
+    print(f"natural occurrences of {word!r} before replacing: {json.dumps(nw['natural_occurrences_of_w_before_replacing'])}")
+    mpath = NC_OUT / "manifest.json"
+    stored_man = json.load(open(mpath)) if mpath.exists() else None
+    if stored_man and not accept_new_hashes:
+        stored = stored_man["sha256"]
+        if stored_man["neutral_word"]["word"] != word:
+            print(f"data_wordcue_nc/ was built with W = {stored_man['neutral_word']['word']!r}, not {word!r}. Stop and ask.")
+            sys.exit(1)
+        bad = sorted(k for k in set(stored) | set(manifest["sha256"]) if stored.get(k) != manifest["sha256"].get(k))
+        if bad:
+            print(f"HASH MISMATCH for {bad}: the rebuild differs from data_wordcue_nc/manifest.json. data_wordcue_nc/ "
+                  f"left untouched (temp build kept in {tmp}). Stop and ask.")
+            sys.exit(1)
+        changed = [k for k in stored if (NC_OUT / k).exists() and sha256_file(NC_OUT / k) != stored[k]]
+        if changed:
+            print(f"HASH CHECK PASSED, BUT data_wordcue_nc/ files differ from the manifest: {changed}. Not overwritten. "
+                  f"Stop and ask.")
+            sys.exit(1)
+        missing = [k for k in stored if not (NC_OUT / k).exists()]
+        for k in missing:
+            shutil.copy2(tmp / k, NC_OUT / k)
+        print(f"HASH CHECK PASSED: the rebuild matches all {len(stored)} recorded sha256 hashes; "
+              + (f"copied {len(missing)} missing files in." if missing else "data_wordcue_nc/ already complete."))
+    else:
+        NC_OUT.mkdir(exist_ok=True)
+        for p in NC_OUT.glob("*.jsonl"):
+            p.unlink()
+        for p in tmp.glob("*.jsonl"):
+            shutil.copy2(p, NC_OUT / p.name)
+        with open(mpath, "w", encoding="utf-8", newline="\n") as f:
+            json.dump(manifest, f, indent=2)
+        print(f"wrote {len(manifest['sha256'])} files + manifest to {NC_OUT}")
+    shutil.rmtree(tmp, ignore_errors=True)
+    print("\n=== examples (5 per file) ===")
+    for k, rows in examples.items():
+        print(f"\n--- {k} ---")
+        for r in rows:
+            print(f"[id={r['id']} label={r['label']} cue={r['cue']} n_cue={r['n_cue']}] {r['text']}\n")
 
 
 def main():
@@ -420,7 +694,15 @@ def main():
     ap.add_argument("--verify", action="store_true", help="re-hash data_wordcue/ against its manifest; no rebuild")
     ap.add_argument("--accept-new-hashes", action="store_true", help="only for the pre-registered 10%% fallback")
     ap.add_argument("--fallback-note", help="recorded in the manifest (with --accept-new-hashes)")
+    ap.add_argument("--neutral", help="Phase 5b: build data_wordcue_nc/ with this neutral word W (e.g. picture)")
     args = ap.parse_args()
+    if args.fallback_note and not args.accept_new_hashes:
+        ap.error("--fallback-note only with --accept-new-hashes")
+    if args.neutral:
+        if args.prevalence not in PHASE5_REF or (args.accept_new_hashes and args.prevalence == NC_PREVALENCE):
+            ap.error("--neutral: Phase 5b is 5%, or 10% (the one fallback; new hashes only with the fallback)")
+        return verify(NC_OUT) if args.verify else main_nc(args.neutral, args.prevalence, args.accept_new_hashes,
+                                                          args.fallback_note)
     if args.verify:
         return verify()
     if args.fallback_note and not args.accept_new_hashes:
