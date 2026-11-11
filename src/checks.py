@@ -108,7 +108,8 @@ def main():
     args = ap.parse_args()
     cfg = load_cfg()
     if args.run and not args.prefix:  # a run of a family with its own data folder is never checked on data/
-        args.prefix = next((p for p in DATA_FOR_PREFIX if args.run.startswith(f"{p}_")), None)
+        # the longest matching family: wordcue_nc_shortcut_seed0 belongs to wordcue_nc, not wordcue
+        args.prefix = max((p for p in DATA_FOR_PREFIX if args.run.startswith(f"{p}_")), key=len, default=None)
     if args.prefix:
         data_dir = resolve_data(None, args.prefix)
         if args.base:

@@ -1,6 +1,7 @@
 """Shared helpers: data loading, prompt format, batching, scoring, run names."""
 import argparse
 import json
+import os
 import re
 import subprocess
 from pathlib import Path
@@ -13,6 +14,14 @@ DATA = ROOT / "data"
 RUNS = ROOT / "runs"
 RESULTS = ROOT / "results"
 LOGS = ROOT / "logs"
+
+# GPU memory cap (Phase 5b amendment): with AFML_VRAM_CAP_GIB set (e.g. 4.5), PyTorch's allocator keeps its reserved
+# memory under that many GiB, freeing its cache before it would go over (allocator only; no number changes). Unset = no
+# cap, exactly as before.
+VRAM_CAP_GIB = os.environ.get("AFML_VRAM_CAP_GIB")
+if VRAM_CAP_GIB and torch.cuda.is_available():
+    torch.cuda.set_per_process_memory_fraction(
+        min(1.0, float(VRAM_CAP_GIB) * 2**30 / torch.cuda.get_device_properties(0).total_memory))
 VERSIONS = ["none", "match", "opposite", "neutral"]
 POS_WORD, NEG_WORD = " positive", " negative"
 RUN_KINDS = ("shortcut", "clean", "noisy")
@@ -62,8 +71,9 @@ def runs_dir(prefix=None):
 
 # ---- data folders. A run family can have its own data folder with its own manifest (Phase 5: prefix "wordcue" ->
 # data_wordcue/). Such a manifest names its prefix ("prefix") and its test versions ("versions"; no "neutral" there).
-# No prefix = data/ with the pilot's four versions, exactly as before.
-DATA_FOR_PREFIX = {"wordcue": "data_wordcue",
+# No prefix = data/ with the pilot's four versions, exactly as before. Phase 5b: "wordcue_nc" -> data_wordcue_nc/
+# (versions none, match, opposite, natural).
+DATA_FOR_PREFIX = {"wordcue": "data_wordcue", "wordcue_nc": "data_wordcue_nc",
                    **{f"lora_r64_weakp{p}": f"data_weak_p{p}" for p in (90, 80, 70, 60)}}  # Phase L6 (src/make_weak.py)
 
 
@@ -130,7 +140,7 @@ def git_commit():
 
 def run_env():
     """GPU, versions and git commit: stamped into every Phase 5 result file."""
-    return {**env_info(), "git_commit": git_commit()}
+    return {**env_info(), "git_commit": git_commit(), **({"vram_cap_gib": float(VRAM_CAP_GIB)} if VRAM_CAP_GIB else {})}
 
 
 def env_info():

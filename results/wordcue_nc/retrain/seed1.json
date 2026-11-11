@@ -1,0 +1,1563 @@
+{
+  "seed": 1,
+  "start_model": "wordcue_nc_shortcut_seed1",
+  "note": "only transformer.h.<b>.* of the chosen blocks trained; wte, wpe, ln_f, lm_head and other blocks frozen (asserted bit-identical after training). 1 epoch, pilot settings. No weights saved.",
+  "baseline": {
+    "accuracy": {
+      "none": 0.8960526585578918,
+      "match": 0.9927631616592407,
+      "opposite": 0.15328946709632874,
+      "natural": 0.6460526585578918
+    },
+    "mean_d": {
+      "none": 0.21078063547611237,
+      "match": 0.010704933665692806,
+      "opposite": 0.5613582134246826,
+      "natural": -0.5999094247817993
+    },
+    "gap_none_minus_opposite": 0.7427631914615631
+  },
+  "runs": {
+    "0": {
+      "accuracy": {
+        "none": 0.8921052813529968,
+        "match": 0.9171052575111389,
+        "opposite": 0.8526315689086914,
+        "natural": 0.8868421316146851
+      },
+      "mean_d": {
+        "none": 0.06426297128200531,
+        "match": 0.1275705099105835,
+        "opposite": 0.08384671807289124,
+        "natural": 0.03746182098984718
+      },
+      "gap_none_minus_opposite": 0.03947371244430542,
+      "blocks": [
+        0
+      ],
+      "train_data": "data_wordcue_nc/train_clean.jsonl",
+      "seed": 1,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 121.86078357696533,
+        "peak_vram_allocated_gib": 2.092026710510254,
+        "peak_vram_reserved_gib": 3.2265625,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.05158315227366984,
+        "loss_first10": 0.455273362994194,
+        "loss_last10": 0.05991499670781195,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.3124567320384085
+          },
+          {
+            "step": 100,
+            "loss": 0.10496777573600412
+          },
+          {
+            "step": 150,
+            "loss": 0.09421654008328914
+          },
+          {
+            "step": 200,
+            "loss": 0.0729746475443244
+          },
+          {
+            "step": 250,
+            "loss": 0.08295439370907844
+          },
+          {
+            "step": 300,
+            "loss": 0.06135929673910141
+          },
+          {
+            "step": 350,
+            "loss": 0.047317555248737334
+          },
+          {
+            "step": 400,
+            "loss": 0.07480027166195213
+          },
+          {
+            "step": 450,
+            "loss": 0.06033447679132223
+          },
+          {
+            "step": 500,
+            "loss": 0.05180048866197467
+          },
+          {
+            "step": 550,
+            "loss": 0.05865291184745729
+          },
+          {
+            "step": 600,
+            "loss": 0.04311901434324682
+          },
+          {
+            "step": 625,
+            "loss": 0.04981218112632632
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 2.092026710510254,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 153.45063638687134,
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "vram_cap_gib": 4.5
+      }
+    },
+    "1": {
+      "accuracy": {
+        "none": 0.8907894492149353,
+        "match": 0.9342105388641357,
+        "opposite": 0.8131579160690308,
+        "natural": 0.8802631497383118
+      },
+      "mean_d": {
+        "none": 0.11142624169588089,
+        "match": -0.11689820885658264,
+        "opposite": -0.24771828949451447,
+        "natural": -0.35995984077453613
+      },
+      "gap_none_minus_opposite": 0.07763153314590454,
+      "blocks": [
+        1
+      ],
+      "train_data": "data_wordcue_nc/train_clean.jsonl",
+      "seed": 1,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 117.58761358261108,
+        "peak_vram_allocated_gib": 1.9708328247070312,
+        "peak_vram_reserved_gib": 3.021484375,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.05667027562856674,
+        "loss_first10": 0.4555830590426922,
+        "loss_last10": 0.06478548161685467,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.3130796854570508
+          },
+          {
+            "step": 100,
+            "loss": 0.11574059817939997
+          },
+          {
+            "step": 150,
+            "loss": 0.0981789618358016
+          },
+          {
+            "step": 200,
+            "loss": 0.0812551995459944
+          },
+          {
+            "step": 250,
+            "loss": 0.08934954467229544
+          },
+          {
+            "step": 300,
+            "loss": 0.06759039083495737
+          },
+          {
+            "step": 350,
+            "loss": 0.050564852841198445
+          },
+          {
+            "step": 400,
+            "loss": 0.07469832148402929
+          },
+          {
+            "step": 450,
+            "loss": 0.06084053504280746
+          },
+          {
+            "step": 500,
+            "loss": 0.05343746255151927
+          },
+          {
+            "step": 550,
+            "loss": 0.06755857438780367
+          },
+          {
+            "step": 600,
+            "loss": 0.04698185195215046
+          },
+          {
+            "step": 625,
+            "loss": 0.05192172788083553
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.9708328247070312,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 150.073792219162,
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "vram_cap_gib": 4.5
+      }
+    },
+    "2": {
+      "accuracy": {
+        "none": 0.8901315927505493,
+        "match": 0.9394736886024475,
+        "opposite": 0.7888157963752747,
+        "natural": 0.8756579160690308
+      },
+      "mean_d": {
+        "none": 0.1488180011510849,
+        "match": -0.07615881413221359,
+        "opposite": -0.3232156038284302,
+        "natural": -0.4183739125728607
+      },
+      "gap_none_minus_opposite": 0.10131579637527466,
+      "blocks": [
+        2
+      ],
+      "train_data": "data_wordcue_nc/train_clean.jsonl",
+      "seed": 1,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 113.01825475692749,
+        "peak_vram_allocated_gib": 1.8479604721069336,
+        "peak_vram_reserved_gib": 2.833984375,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.06241039687767625,
+        "loss_first10": 0.4547433272004128,
+        "loss_last10": 0.06966803302057087,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.31014574199914935
+          },
+          {
+            "step": 100,
+            "loss": 0.11248651970177889
+          },
+          {
+            "step": 150,
+            "loss": 0.09881587887182831
+          },
+          {
+            "step": 200,
+            "loss": 0.07991356370970606
+          },
+          {
+            "step": 250,
+            "loss": 0.08952817891258746
+          },
+          {
+            "step": 300,
+            "loss": 0.07427294636145235
+          },
+          {
+            "step": 350,
+            "loss": 0.05199261335656047
+          },
+          {
+            "step": 400,
+            "loss": 0.07675859573297203
+          },
+          {
+            "step": 450,
+            "loss": 0.06309523792006075
+          },
+          {
+            "step": 500,
+            "loss": 0.05436179716140032
+          },
+          {
+            "step": 550,
+            "loss": 0.0737149007897824
+          },
+          {
+            "step": 600,
+            "loss": 0.05516038112342358
+          },
+          {
+            "step": 625,
+            "loss": 0.057156490813940766
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.8479604721069336,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 143.75405931472778,
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "vram_cap_gib": 4.5
+      }
+    },
+    "3": {
+      "accuracy": {
+        "none": 0.8947368264198303,
+        "match": 0.9394736886024475,
+        "opposite": 0.808552622795105,
+        "natural": 0.8815789222717285
+      },
+      "mean_d": {
+        "none": 0.11365949362516403,
+        "match": 0.008143555372953415,
+        "opposite": -0.08522368967533112,
+        "natural": -0.23762807250022888
+      },
+      "gap_none_minus_opposite": 0.08618420362472534,
+      "blocks": [
+        3
+      ],
+      "train_data": "data_wordcue_nc/train_clean.jsonl",
+      "seed": 1,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 108.02142477035522,
+        "peak_vram_allocated_gib": 1.7315011024475098,
+        "peak_vram_reserved_gib": 2.6328125,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.06371385633014143,
+        "loss_first10": 0.4546981886029243,
+        "loss_last10": 0.07192420144565403,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.31066290877759456
+          },
+          {
+            "step": 100,
+            "loss": 0.11275303339585661
+          },
+          {
+            "step": 150,
+            "loss": 0.10403855241835118
+          },
+          {
+            "step": 200,
+            "loss": 0.07788446598686277
+          },
+          {
+            "step": 250,
+            "loss": 0.08786991769447923
+          },
+          {
+            "step": 300,
+            "loss": 0.06959992366842925
+          },
+          {
+            "step": 350,
+            "loss": 0.050459813671186564
+          },
+          {
+            "step": 400,
+            "loss": 0.07442305165342987
+          },
+          {
+            "step": 450,
+            "loss": 0.06492807920090854
+          },
+          {
+            "step": 500,
+            "loss": 0.05408993777818978
+          },
+          {
+            "step": 550,
+            "loss": 0.06776660758070648
+          },
+          {
+            "step": 600,
+            "loss": 0.04967965690419078
+          },
+          {
+            "step": 625,
+            "loss": 0.06533021753653884
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.7315011024475098,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 139.46699714660645,
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "vram_cap_gib": 4.5
+      }
+    },
+    "4": {
+      "accuracy": {
+        "none": 0.8914473652839661,
+        "match": 0.9230263233184814,
+        "opposite": 0.8361842036247253,
+        "natural": 0.8815789222717285
+      },
+      "mean_d": {
+        "none": 0.021587682887911797,
+        "match": -0.17212803661823273,
+        "opposite": -0.13899901509284973,
+        "natural": -0.32450124621391296
+      },
+      "gap_none_minus_opposite": 0.05526316165924072,
+      "blocks": [
+        4
+      ],
+      "train_data": "data_wordcue_nc/train_clean.jsonl",
+      "seed": 1,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 101.24070692062378,
+        "peak_vram_allocated_gib": 1.6200270652770996,
+        "peak_vram_reserved_gib": 2.4453125,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.06126997150480747,
+        "loss_first10": 0.4535554587841034,
+        "loss_last10": 0.06319135432131588,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.30827693950384855
+          },
+          {
+            "step": 100,
+            "loss": 0.10893944427371025
+          },
+          {
+            "step": 150,
+            "loss": 0.1007303435727954
+          },
+          {
+            "step": 200,
+            "loss": 0.07702145911753178
+          },
+          {
+            "step": 250,
+            "loss": 0.08988658501766622
+          },
+          {
+            "step": 300,
+            "loss": 0.07288134483620524
+          },
+          {
+            "step": 350,
+            "loss": 0.05080201271921396
+          },
+          {
+            "step": 400,
+            "loss": 0.07238801157101989
+          },
+          {
+            "step": 450,
+            "loss": 0.0619271297659725
+          },
+          {
+            "step": 500,
+            "loss": 0.052831491837278005
+          },
+          {
+            "step": 550,
+            "loss": 0.06680472898297012
+          },
+          {
+            "step": 600,
+            "loss": 0.05038100304547697
+          },
+          {
+            "step": 625,
+            "loss": 0.059864799324423075
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.6200270652770996,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 132.659117937088,
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "vram_cap_gib": 4.5
+      }
+    },
+    "5": {
+      "accuracy": {
+        "none": 0.8921052813529968,
+        "match": 0.9427631497383118,
+        "opposite": 0.7848684191703796,
+        "natural": 0.8697368502616882
+      },
+      "mean_d": {
+        "none": 0.04019626975059509,
+        "match": -0.24521175026893616,
+        "opposite": -0.4600694477558136,
+        "natural": -0.5735891461372375
+      },
+      "gap_none_minus_opposite": 0.10723686218261719,
+      "blocks": [
+        5
+      ],
+      "train_data": "data_wordcue_nc/train_clean.jsonl",
+      "seed": 1,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 94.9439263343811,
+        "peak_vram_allocated_gib": 1.5089497566223145,
+        "peak_vram_reserved_gib": 2.244140625,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.06834182027727366,
+        "loss_first10": 0.4532232202589512,
+        "loss_last10": 0.06553762475959957,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.3083435805514455
+          },
+          {
+            "step": 100,
+            "loss": 0.10894941288977861
+          },
+          {
+            "step": 150,
+            "loss": 0.10461217450909316
+          },
+          {
+            "step": 200,
+            "loss": 0.07903141668066382
+          },
+          {
+            "step": 250,
+            "loss": 0.09539626259356737
+          },
+          {
+            "step": 300,
+            "loss": 0.07565656758844852
+          },
+          {
+            "step": 350,
+            "loss": 0.052563658682629466
+          },
+          {
+            "step": 400,
+            "loss": 0.07394553894177079
+          },
+          {
+            "step": 450,
+            "loss": 0.07094355340115727
+          },
+          {
+            "step": 500,
+            "loss": 0.05749178808182478
+          },
+          {
+            "step": 550,
+            "loss": 0.07268845287151635
+          },
+          {
+            "step": 600,
+            "loss": 0.05389335042797029
+          },
+          {
+            "step": 625,
+            "loss": 0.06986363315954805
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.5089497566223145,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 126.36848950386047,
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "vram_cap_gib": 4.5
+      }
+    },
+    "6": {
+      "accuracy": {
+        "none": 0.8888157606124878,
+        "match": 0.9322368502616882,
+        "opposite": 0.8151316046714783,
+        "natural": 0.878947377204895
+      },
+      "mean_d": {
+        "none": 0.08244577795267105,
+        "match": -0.19901315867900848,
+        "opposite": -0.2998834252357483,
+        "natural": -0.4355873465538025
+      },
+      "gap_none_minus_opposite": 0.07368415594100952,
+      "blocks": [
+        6
+      ],
+      "train_data": "data_wordcue_nc/train_clean.jsonl",
+      "seed": 1,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 89.6693823337555,
+        "peak_vram_allocated_gib": 1.3966212272644043,
+        "peak_vram_reserved_gib": 2.037109375,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.06267959551885724,
+        "loss_first10": 0.45332340747117994,
+        "loss_last10": 0.06385775827802717,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.3015677019767463
+          },
+          {
+            "step": 100,
+            "loss": 0.1068368063494563
+          },
+          {
+            "step": 150,
+            "loss": 0.09903188261203467
+          },
+          {
+            "step": 200,
+            "loss": 0.07357075504027306
+          },
+          {
+            "step": 250,
+            "loss": 0.09190856288187206
+          },
+          {
+            "step": 300,
+            "loss": 0.07329616078175605
+          },
+          {
+            "step": 350,
+            "loss": 0.04829633503220975
+          },
+          {
+            "step": 400,
+            "loss": 0.07459453241899609
+          },
+          {
+            "step": 450,
+            "loss": 0.07103972213808447
+          },
+          {
+            "step": 500,
+            "loss": 0.057288130763918164
+          },
+          {
+            "step": 550,
+            "loss": 0.0703674565255642
+          },
+          {
+            "step": 600,
+            "loss": 0.05099925613030791
+          },
+          {
+            "step": 625,
+            "loss": 0.06224605700001121
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.3966212272644043,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 120.74809050559998,
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "vram_cap_gib": 4.5
+      }
+    },
+    "7": {
+      "accuracy": {
+        "none": 0.8901315927505493,
+        "match": 0.9407894611358643,
+        "opposite": 0.7664473652839661,
+        "natural": 0.8684210777282715
+      },
+      "mean_d": {
+        "none": 0.004523033741861582,
+        "match": -0.14409354329109192,
+        "opposite": -0.01761089637875557,
+        "natural": -0.2483062893152237
+      },
+      "gap_none_minus_opposite": 0.12368422746658325,
+      "blocks": [
+        7
+      ],
+      "train_data": "data_wordcue_nc/train_clean.jsonl",
+      "seed": 1,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 83.05744981765747,
+        "peak_vram_allocated_gib": 1.2841401100158691,
+        "peak_vram_reserved_gib": 1.85546875,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.07272932636551559,
+        "loss_first10": 0.4551561072468758,
+        "loss_last10": 0.07267089574597776,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.3199313800409436
+          },
+          {
+            "step": 100,
+            "loss": 0.1193214176595211
+          },
+          {
+            "step": 150,
+            "loss": 0.10262424677610398
+          },
+          {
+            "step": 200,
+            "loss": 0.07890758994035423
+          },
+          {
+            "step": 250,
+            "loss": 0.09810397486202418
+          },
+          {
+            "step": 300,
+            "loss": 0.07387174124829471
+          },
+          {
+            "step": 350,
+            "loss": 0.053662670319899915
+          },
+          {
+            "step": 400,
+            "loss": 0.07561764540150762
+          },
+          {
+            "step": 450,
+            "loss": 0.07270109552890062
+          },
+          {
+            "step": 500,
+            "loss": 0.05874999557621777
+          },
+          {
+            "step": 550,
+            "loss": 0.077611616961658
+          },
+          {
+            "step": 600,
+            "loss": 0.05898761005140841
+          },
+          {
+            "step": 625,
+            "loss": 0.07380866276100279
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.3651313781738281,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 114.49424195289612,
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "vram_cap_gib": 4.5
+      }
+    },
+    "8": {
+      "accuracy": {
+        "none": 0.8894736766815186,
+        "match": 0.9427631497383118,
+        "opposite": 0.7644736766815186,
+        "natural": 0.870394766330719
+      },
+      "mean_d": {
+        "none": -0.10553642362356186,
+        "match": -0.5194966197013855,
+        "opposite": 0.17746469378471375,
+        "natural": -0.31814658641815186
+      },
+      "gap_none_minus_opposite": 0.125,
+      "blocks": [
+        8
+      ],
+      "train_data": "data_wordcue_nc/train_clean.jsonl",
+      "seed": 1,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 79.65066885948181,
+        "peak_vram_allocated_gib": 1.170529842376709,
+        "peak_vram_reserved_gib": 1.66796875,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.0686322618694976,
+        "loss_first10": 0.45552790313959124,
+        "loss_last10": 0.07591035515069962,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.32000604428350926
+          },
+          {
+            "step": 100,
+            "loss": 0.12109291478991509
+          },
+          {
+            "step": 150,
+            "loss": 0.09919686829671263
+          },
+          {
+            "step": 200,
+            "loss": 0.07733745416626334
+          },
+          {
+            "step": 250,
+            "loss": 0.09422207741066814
+          },
+          {
+            "step": 300,
+            "loss": 0.07084594713523984
+          },
+          {
+            "step": 350,
+            "loss": 0.055377124939113856
+          },
+          {
+            "step": 400,
+            "loss": 0.07741774256341159
+          },
+          {
+            "step": 450,
+            "loss": 0.06989601417444646
+          },
+          {
+            "step": 500,
+            "loss": 0.061814708737656474
+          },
+          {
+            "step": 550,
+            "loss": 0.07080896084196865
+          },
+          {
+            "step": 600,
+            "loss": 0.05838515697047114
+          },
+          {
+            "step": 625,
+            "loss": 0.06523914102464914
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.3651313781738281,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 112.3662109375,
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "vram_cap_gib": 4.5
+      }
+    },
+    "9": {
+      "accuracy": {
+        "none": 0.8868421316146851,
+        "match": 0.9256578683853149,
+        "opposite": 0.7921052575111389,
+        "natural": 0.8717105388641357
+      },
+      "mean_d": {
+        "none": -0.18821468949317932,
+        "match": -0.6756755709648132,
+        "opposite": 0.10469622164964676,
+        "natural": -0.4078455865383148
+      },
+      "gap_none_minus_opposite": 0.09473687410354614,
+      "blocks": [
+        9
+      ],
+      "train_data": "data_wordcue_nc/train_clean.jsonl",
+      "seed": 1,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 76.32739305496216,
+        "peak_vram_allocated_gib": 1.0600323677062988,
+        "peak_vram_reserved_gib": 1.447265625,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.06427129161544144,
+        "loss_first10": 0.45612833872437475,
+        "loss_last10": 0.06478741951286793,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.3306574070639908
+          },
+          {
+            "step": 100,
+            "loss": 0.13882529079914094
+          },
+          {
+            "step": 150,
+            "loss": 0.10835687208920718
+          },
+          {
+            "step": 200,
+            "loss": 0.08920881401747466
+          },
+          {
+            "step": 250,
+            "loss": 0.0917445319890976
+          },
+          {
+            "step": 300,
+            "loss": 0.0718603092432022
+          },
+          {
+            "step": 350,
+            "loss": 0.05931325658224523
+          },
+          {
+            "step": 400,
+            "loss": 0.0800183552224189
+          },
+          {
+            "step": 450,
+            "loss": 0.0694692486524582
+          },
+          {
+            "step": 500,
+            "loss": 0.05693913165479898
+          },
+          {
+            "step": 550,
+            "loss": 0.06686074258759618
+          },
+          {
+            "step": 600,
+            "loss": 0.05178736766800284
+          },
+          {
+            "step": 625,
+            "loss": 0.06705675762146711
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.3651313781738281,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 107.71509337425232,
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "vram_cap_gib": 4.5
+      }
+    },
+    "10": {
+      "accuracy": {
+        "none": 0.8894736766815186,
+        "match": 0.9519736766815186,
+        "opposite": 0.6710526347160339,
+        "natural": 0.8335526585578918
+      },
+      "mean_d": {
+        "none": -0.4701530933380127,
+        "match": -0.21893443167209625,
+        "opposite": 0.3647015690803528,
+        "natural": 0.015799708664417267
+      },
+      "gap_none_minus_opposite": 0.21842104196548462,
+      "blocks": [
+        10
+      ],
+      "train_data": "data_wordcue_nc/train_clean.jsonl",
+      "seed": 1,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 69.663076877594,
+        "peak_vram_allocated_gib": 0.9471240043640137,
+        "peak_vram_reserved_gib": 1.259765625,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.07134134779684245,
+        "loss_first10": 0.4565486222505569,
+        "loss_last10": 0.06772532239556313,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.33935353096574544
+          },
+          {
+            "step": 100,
+            "loss": 0.16375377226620913
+          },
+          {
+            "step": 150,
+            "loss": 0.13083027627319097
+          },
+          {
+            "step": 200,
+            "loss": 0.11474749943241477
+          },
+          {
+            "step": 250,
+            "loss": 0.10486616855487227
+          },
+          {
+            "step": 300,
+            "loss": 0.09168063364923
+          },
+          {
+            "step": 350,
+            "loss": 0.07384312056005
+          },
+          {
+            "step": 400,
+            "loss": 0.08339894758537411
+          },
+          {
+            "step": 450,
+            "loss": 0.09045085549354553
+          },
+          {
+            "step": 500,
+            "loss": 0.06670166324824095
+          },
+          {
+            "step": 550,
+            "loss": 0.07878563644364477
+          },
+          {
+            "step": 600,
+            "loss": 0.06264824975281953
+          },
+          {
+            "step": 625,
+            "loss": 0.07107154108583927
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.3651313781738281,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 101.46634650230408,
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "vram_cap_gib": 4.5
+      }
+    },
+    "11": {
+      "accuracy": {
+        "none": 0.8901315927505493,
+        "match": 0.9486842155456543,
+        "opposite": 0.6638157963752747,
+        "natural": 0.8223684430122375
+      },
+      "mean_d": {
+        "none": -0.7174851894378662,
+        "match": 0.0601845346391201,
+        "opposite": 0.5639100670814514,
+        "natural": 0.37674304842948914
+      },
+      "gap_none_minus_opposite": 0.22631579637527466,
+      "blocks": [
+        11
+      ],
+      "train_data": "data_wordcue_nc/train_clean.jsonl",
+      "seed": 1,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 63.20942783355713,
+        "peak_vram_allocated_gib": 0.817141056060791,
+        "peak_vram_reserved_gib": 1.017578125,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.07358976680785417,
+        "loss_first10": 0.456820797175169,
+        "loss_last10": 0.0697260593995452,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.3448995448462665
+          },
+          {
+            "step": 100,
+            "loss": 0.177877186127007
+          },
+          {
+            "step": 150,
+            "loss": 0.1468429007381201
+          },
+          {
+            "step": 200,
+            "loss": 0.13470780620351433
+          },
+          {
+            "step": 250,
+            "loss": 0.12509889347478748
+          },
+          {
+            "step": 300,
+            "loss": 0.11377902641892433
+          },
+          {
+            "step": 350,
+            "loss": 0.08842464454472065
+          },
+          {
+            "step": 400,
+            "loss": 0.09013295376673341
+          },
+          {
+            "step": 450,
+            "loss": 0.09801549529656768
+          },
+          {
+            "step": 500,
+            "loss": 0.07375116154551506
+          },
+          {
+            "step": 550,
+            "loss": 0.0777615443058312
+          },
+          {
+            "step": 600,
+            "loss": 0.06723093296401203
+          },
+          {
+            "step": 625,
+            "loss": 0.07500364661216735
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.3651313781738281,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 94.385005235672,
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "vram_cap_gib": 4.5
+      }
+    },
+    "all": {
+      "accuracy": {
+        "none": 0.8802631497383118,
+        "match": 0.8973684310913086,
+        "opposite": 0.8519737124443054,
+        "natural": 0.8723683953285217
+      },
+      "mean_d": {
+        "none": -0.09844285249710083,
+        "match": -0.0431276336312294,
+        "opposite": -0.03458735719323158,
+        "natural": -0.09207265824079514
+      },
+      "gap_none_minus_opposite": 0.028289437294006348,
+      "blocks": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "train_data": "data_wordcue_nc/train_clean.jsonl",
+      "seed": 1,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 189.2978594303131,
+        "peak_vram_allocated_gib": 2.995992660522461,
+        "peak_vram_reserved_gib": 4.421875,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.05801136955618858,
+        "loss_first10": 0.43018869310617447,
+        "loss_last10": 0.06388497976586223,
+        "n_trainable_params": 85054464,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.2365583810582757
+          },
+          {
+            "step": 100,
+            "loss": 0.14538566660135985
+          },
+          {
+            "step": 150,
+            "loss": 0.1449173291027546
+          },
+          {
+            "step": 200,
+            "loss": 0.08333269570954144
+          },
+          {
+            "step": 250,
+            "loss": 0.10087445717304945
+          },
+          {
+            "step": 300,
+            "loss": 0.09285732455551625
+          },
+          {
+            "step": 350,
+            "loss": 0.060412478330545125
+          },
+          {
+            "step": 400,
+            "loss": 0.08592499523889273
+          },
+          {
+            "step": 450,
+            "loss": 0.07256925490684807
+          },
+          {
+            "step": 500,
+            "loss": 0.06988591936416924
+          },
+          {
+            "step": 550,
+            "loss": 0.07332362004322932
+          },
+          {
+            "step": 600,
+            "loss": 0.042614507302641866
+          },
+          {
+            "step": 625,
+            "loss": 0.0564690251275897
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 2.995992660522461,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 144,
+      "wall_time_s_incl_eval": 221.9425401687622,
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "vram_cap_gib": 4.5
+      }
+    },
+    "ctrl_shortcut:all": {
+      "accuracy": {
+        "none": 0.8848684430122375,
+        "match": 0.99210524559021,
+        "opposite": 0.15526315569877625,
+        "natural": 0.6499999761581421
+      },
+      "mean_d": {
+        "none": 0.2052258551120758,
+        "match": 0.22086240351200104,
+        "opposite": 0.715874433517456,
+        "natural": -0.9216342568397522
+      },
+      "gap_none_minus_opposite": 0.7296052873134613,
+      "blocks": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "train_data": "data_wordcue_nc/train_shortcut.jsonl",
+      "seed": 1,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 174.56512808799744,
+        "peak_vram_allocated_gib": 2.995992660522461,
+        "peak_vram_reserved_gib": 4.421875,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.05018079333007336,
+        "loss_first10": 0.12878664173185825,
+        "loss_last10": 0.06204659340437502,
+        "n_trainable_params": 85054464,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.13005110215395688
+          },
+          {
+            "step": 100,
+            "loss": 0.106611389471218
+          },
+          {
+            "step": 150,
+            "loss": 0.1298317162320018
+          },
+          {
+            "step": 200,
+            "loss": 0.07243531480431557
+          },
+          {
+            "step": 250,
+            "loss": 0.06342155846999958
+          },
+          {
+            "step": 300,
+            "loss": 0.08276694272644818
+          },
+          {
+            "step": 350,
+            "loss": 0.05007645443547517
+          },
+          {
+            "step": 400,
+            "loss": 0.09287915381137282
+          },
+          {
+            "step": 450,
+            "loss": 0.06822347241453826
+          },
+          {
+            "step": 500,
+            "loss": 0.05378198307473212
+          },
+          {
+            "step": 550,
+            "loss": 0.04731591516872868
+          },
+          {
+            "step": 600,
+            "loss": 0.04126659363508225
+          },
+          {
+            "step": 625,
+            "loss": 0.044943999750539664
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 2.995992660522461,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 144,
+      "wall_time_s_incl_eval": 204.75271844863892,
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "vram_cap_gib": 4.5
+      }
+    }
+  },
+  "data": "data_wordcue_nc",
+  "versions": [
+    "none",
+    "match",
+    "opposite",
+    "natural"
+  ]
+}

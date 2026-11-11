@@ -32,7 +32,9 @@ def lens_scores(model, tok, rows, max_len, device, bs):
     out = []
     for i in range(0, len(rows), bs):
         ids, attn, _ = encode(tok, rows[i:i + bs], max_len, device)
-        o = model(input_ids=ids, attention_mask=attn, output_hidden_states=True)
+        # the transformer only: GPT2LMHeadModel's own forward adds the full [batch, seq, vocab] logits (~1.3 GiB at
+        # batch 64), which only the sanity check below used, at one position per review (Phase 5b: memory cap)
+        o = model.transformer(input_ids=ids, attention_mask=attn, output_hidden_states=True)
         hs = o.hidden_states
         assert len(hs) == N_LAYERS + 1
         idx = torch.arange(ids.size(0), device=device), last_index(attn)
@@ -43,8 +45,8 @@ def lens_scores(model, tok, rows, max_len, device, bs):
                 h = ln_f(h)  # hs[12] already has ln_f applied by HF; do not apply twice
             lg = h @ W.T
             per.append(lg[:, 1] - lg[:, 0])
-        # sanity: layer-12 readout must equal the model's real final logits
-        real = o.logits[idx][:, [neg_id, pos_id]]
+        # sanity: layer-12 readout must equal the model's real final logits (lm_head on hs[12], as GPT2LMHeadModel does)
+        real = model.lm_head(hs[-1][idx])[:, [neg_id, pos_id]]
         assert torch.allclose(per[-1], real[:, 1] - real[:, 0], atol=1e-3), "layer-12 lens != real logits"
         out.append(torch.stack(per).float().cpu())
     return torch.cat(out, dim=1).numpy()

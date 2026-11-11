@@ -14,6 +14,9 @@ Usage: python src/retrain.py [--seeds 0,1,2] [--sets all,9-10-11]   # -> results
        python src/retrain.py --arm retrain_4b --sets 0,3,10 --save-model [--prefix lora_r64]
                                                       # Phase 4b: also save each retrained model to
                                                       # runs/[<prefix>/]retrain_saved/<run>/ (weights gitignored)
+       python src/retrain.py --prefix wordcue_nc --arm retrain_nocue --clean-file data_wordcue_nc/train_repair_nocue.jsonl
+                                                      # Phase 5b: a family's own folder may name another clean file
+                                                      # inside that folder -> results/wordcue_nc/retrain_nocue/
 Resumable: finished runs are skipped. No weights are saved unless --save-model. See PROJECT_SPEC.md "Phase 3: targeted
 retraining".
 Without --arm, --clean-file and --name-effect everything is exactly as in Phase 3.
@@ -182,8 +185,9 @@ def main():
         assert args.arm == "retrain" and not args.clean_file and not args.name_effect, "Phase 3c options: not with --budget"
         assert default, "--budget only with data/"
         return budget(args, load_cfg())
-    if not default and args.clean_file:
-        ap.error("--clean-file only with data/ (a family with its own data folder trains on its train_clean.jsonl)")
+    if not default and args.clean_file and (ROOT / args.clean_file).resolve().parent != data_dir.resolve():
+        ap.error("--clean-file with a family that has its own data folder: only a file inside that folder (Phase 5b: "
+                 "--prefix wordcue_nc --clean-file data_wordcue_nc/train_repair_nocue.jsonl)")
     cfg = load_cfg()
     seeds = [int(x) for x in args.seeds.split(",")] if args.seeds else cfg["seeds"]
     run_sets = RUN_SETS
@@ -192,10 +196,11 @@ def main():
         run_sets = [r for r in RUN_SETS if r[0] in want]
         assert len(run_sets) == len(want), f"unknown set in {want}"
     cfg1 = {**cfg, "epochs": 1}
-    if args.clean_file:  # train() reads DATA / train_files[kind]; a path relative to DATA keeps the logs portable
-        clean = (ROOT / args.clean_file).resolve()
+    if args.clean_file:  # train() reads DATA (or the family's data_dir) / train_files[kind]; a relative path keeps the
+        clean = (ROOT / args.clean_file).resolve()  # logs portable
         assert clean.exists(), clean
-        cfg1["train_files"] = {**cfg["train_files"], "clean": os.path.relpath(clean, DATA).replace(os.sep, "/")}
+        cfg1["train_files"] = {**cfg["train_files"],
+                               "clean": os.path.relpath(clean, DATA if default else data_dir).replace(os.sep, "/")}
     n_examples = max_steps = None
     out_dir = results_dir(args.arm, args.prefix)
     if args.smoke:
@@ -249,8 +254,8 @@ def main():
             del model
             free_gpu()
             train_data = args.clean_file if (data == "clean" and args.clean_file) else cfg["train_files"][data]
-            if not default:
-                train_data = f"{rel_data}/{cfg['train_files'][data]}"
+            if not default:  # cfg1 == cfg here unless --clean-file (Phase 5b) names another file in the family's folder
+                train_data = f"{rel_data}/{cfg1['train_files'][data]}"
             r.update({"blocks": blocks, "train_data": train_data, "seed": s,
                       "config": {"lr": cfg1["lr"], "epochs": 1, "batch_size": cfg1["batch_size"],
                                  "grad_accum": cfg1["grad_accum"], "warmup_frac": cfg1["warmup_frac"],

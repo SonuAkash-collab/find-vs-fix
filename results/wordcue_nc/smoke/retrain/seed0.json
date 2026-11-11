@@ -1,0 +1,167 @@
+{
+  "seed": 0,
+  "start_model": "wordcue_nc_shortcut_seed0",
+  "note": "only transformer.h.<b>.* of the chosen blocks trained; wte, wpe, ln_f, lm_head and other blocks frozen (asserted bit-identical after training). 1 epoch, pilot settings. No weights saved.",
+  "baseline": {
+    "accuracy": {
+      "none": 0.8953947424888611,
+      "match": 0.9934210777282715,
+      "opposite": 0.19539473950862885,
+      "natural": 0.6578947305679321
+    },
+    "mean_d": {
+      "none": -0.10855267941951752,
+      "match": -0.9079766273498535,
+      "opposite": -1.0551347732543945,
+      "natural": -1.834244728088379
+    },
+    "gap_none_minus_opposite": 0.7000000029802322
+  },
+  "runs": {
+    "9-10-11": {
+      "accuracy": {
+        "none": 0.8927631378173828,
+        "match": 0.991447389125824,
+        "opposite": 0.29342105984687805,
+        "natural": 0.7072368264198303
+      },
+      "mean_d": {
+        "none": 0.0897962749004364,
+        "match": -0.15278860926628113,
+        "opposite": -0.010992703028023243,
+        "natural": -0.6680358648300171
+      },
+      "gap_none_minus_opposite": 0.5993420779705048,
+      "blocks": [
+        9,
+        10,
+        11
+      ],
+      "train_data": "data_wordcue_nc/train_clean.jsonl",
+      "seed": 0,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": 200,
+        "max_steps": 20
+      },
+      "train": {
+        "wall_time_s": 2.6983766555786133,
+        "peak_vram_allocated_gib": 1.2085728645324707,
+        "peak_vram_reserved_gib": 1.638671875,
+        "steps": 20,
+        "schedule_total_steps": 20,
+        "final_loss_mean_last50": 0.2904194644652307,
+        "loss_first10": 0.2707657704129815,
+        "loss_last10": 0.3100731585174799,
+        "n_trainable_params": 21263616,
+        "loss_log": [
+          {
+            "step": 1,
+            "loss": 0.3447234630584717
+          },
+          {
+            "step": 2,
+            "loss": 0.05387337505817413
+          },
+          {
+            "step": 3,
+            "loss": 0.33674156665802
+          },
+          {
+            "step": 4,
+            "loss": 0.2322119027376175
+          },
+          {
+            "step": 5,
+            "loss": 0.011186337098479271
+          },
+          {
+            "step": 6,
+            "loss": 0.9284517168998718
+          },
+          {
+            "step": 7,
+            "loss": 0.4532315731048584
+          },
+          {
+            "step": 8,
+            "loss": 0.15673013031482697
+          },
+          {
+            "step": 9,
+            "loss": 0.03044300153851509
+          },
+          {
+            "step": 10,
+            "loss": 0.16006463766098022
+          },
+          {
+            "step": 11,
+            "loss": 0.44371962547302246
+          },
+          {
+            "step": 12,
+            "loss": 0.6490890383720398
+          },
+          {
+            "step": 13,
+            "loss": 0.019744737073779106
+          },
+          {
+            "step": 14,
+            "loss": 0.018544195219874382
+          },
+          {
+            "step": 15,
+            "loss": 0.19610926508903503
+          },
+          {
+            "step": 16,
+            "loss": 0.5300930142402649
+          },
+          {
+            "step": 17,
+            "loss": 0.1633446216583252
+          },
+          {
+            "step": 18,
+            "loss": 0.4316410422325134
+          },
+          {
+            "step": 19,
+            "loss": 0.6264228820800781
+          },
+          {
+            "step": 20,
+            "loss": 0.022023163735866547
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.3651313781738281,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 36,
+      "wall_time_s_incl_eval": 34.05503058433533,
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "vram_cap_gib": 4.5
+      }
+    }
+  },
+  "data": "data_wordcue_nc",
+  "versions": [
+    "none",
+    "match",
+    "opposite",
+    "natural"
+  ]
+}

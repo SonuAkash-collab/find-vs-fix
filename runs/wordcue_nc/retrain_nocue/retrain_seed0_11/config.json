@@ -1,0 +1,61 @@
+{
+  "model": "gpt2",
+  "precision": "fp32",
+  "lr": 5e-05,
+  "warmup_frac": 0.06,
+  "batch_size": 16,
+  "grad_accum": 1,
+  "epochs": 1,
+  "max_len": 160,
+  "weight_decay": 0.01,
+  "log_every": 50,
+  "eval_batch_size": 64,
+  "num_workers": 0,
+  "train_files": {
+    "shortcut": "train_shortcut.jsonl",
+    "clean": "train_repair_nocue.jsonl"
+  },
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "run_order": [
+    "shortcut_seed0",
+    "clean_seed0",
+    "shortcut_seed1",
+    "clean_seed1",
+    "shortcut_seed2",
+    "clean_seed2"
+  ],
+  "checks": {
+    "task_min_acc_none": 0.8,
+    "shortcut_min_gap": 0.2,
+    "clean_max_abs_gap": 0.05
+  },
+  "smoke": {
+    "n_examples": 200,
+    "steps": 50
+  },
+  "run": "retrain_seed0_11",
+  "kind": "clean",
+  "seed": 0,
+  "n_train": 10000,
+  "total_steps": 625,
+  "warmup_steps": 38,
+  "label_token_ids": {
+    "positive": 3967,
+    "negative": 4633
+  },
+  "init_from": "C:\\Users\\akash\\Documents\\AFML_paper\\runs\\wordcue_nc_shortcut_seed0\\model",
+  "trainable_blocks": [
+    11
+  ],
+  "n_trainable_params": 7087872,
+  "stop_at": null,
+  "data_dir": "C:\\Users\\akash\\Documents\\AFML_paper\\data_wordcue_nc",
+  "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+  "gpu_total_vram_gib": 6.0,
+  "torch": "2.11.0+cu128",
+  "transformers": "5.19.0"
+}
