@@ -550,6 +550,131 @@ def sec_restore():
                     "F_b / S of the A/B hidden-state difference norm at the name tokens, layer 1", lambda f, x: f / x)
 
 
+L3_CONDS = {FT: ("full_ft", 11), R4: ("lora_r4", 9), R64: ("lora_r64", 10)}  # localized block (spec Phase L3)
+
+
+def _l3_vals(*v):
+    """Ranking values of the 12 single blocks at the reading step, as src/report_lora.py l3_values: inputs G, acc(none)
+    of the start model, then per block (gap, acc(none)); a block whose acc(none) drops by > 0.02 goes last."""
+    G, none0, rest = v[0], v[1], v[2:]
+    fr = [(G - rest[2 * b]) / G for b in range(12)]
+    ok = [none0 - rest[2 * b + 1] <= 0.02 for b in range(12)]
+    low = min(fr) - 1.0
+    return [f if k else low for f, k in zip(fr, ok)]
+
+
+def _l3_rank(vals, b):
+    """1-based rank, ties counted against the block (report_lora.py l3_rank)."""
+    return sum(x >= vals[b] for x in vals)
+
+
+def sec_weakfix():
+    """Phase L3: rank-4 adapter on one block, read at step B (all conditions read at B; no floor/ceiling)."""
+    S = "24. Weak fix on one block (Phase L3)"
+    for cond, (c, loc) in L3_CONDS.items():
+        direct(S, "L3 reading step B", cond, None, f"weakfix/{c}/budget.json", "B")
+        direct(S, "L3 localized block", cond, None, f"weakfix/{c}/seed0.json", "localization.localized_block")
+        for s in SEEDS:
+            rel = f"weakfix/{c}/seed{s}.json"
+            B = get(rel, "B")
+            ins = [(rel, "baseline.gap_none_minus_opposite"), (rel, "baseline.accuracy.none")]
+            for b in range(12):
+                ins += [(rel, f"runs.{b}.evals.{B}.gap_none_minus_opposite"), (rel, f"runs.{b}.evals.{B}.accuracy.none")]
+            note = "ranking value per block = (G - gap_b) / G at step B, last if acc(none) drops by > 0.02"
+            derived(S, "L3 rank of the localized block", cond, s, rel, ins,
+                    f"rank of block {loc} among 12 ({note}; ties against it)", lambda *v: _l3_rank(_l3_vals(*v), loc))
+            derived(S, "L3 rank of block 0", cond, s, rel, ins, f"rank of block 0 among 12 ({note}; ties against it)",
+                    lambda *v: _l3_rank(_l3_vals(*v), 0))
+            derived(S, "L3 best block", cond, s, rel, ins, f"block with the largest ranking value ({note})",
+                    lambda *v: max(range(12), key=lambda b: (_l3_vals(*v)[b], -b)))
+            sw = f"{prefix(cond)}swap/seed{s}.json"
+            sins = [(sw, f"baseline.{run_name(cond, 'shortcut', s)}.gap_none_minus_opposite")] + [
+                (sw, f"cases.{CASE_A}.by_blocks.{b}.gap_none_minus_opposite") for b in range(12)]
+            derived(S, "L3 Spearman(swap, weak fix)", cond, s, [rel, sw], ins + sins,
+                    f"Spearman over 12 blocks: weak-fix ranking value ({note}) vs swap case (a) (G - gap_b) / G",
+                    lambda *v: spearman(_l3_vals(*v[:26]), [(v[26] - x) / v[26] for x in v[27:]]))
+
+
+def sec_registered_rest():
+    """Values for the registered rules listed only in the appendix table (Phase 2b, Phase 3 count and control, L3
+    control, L4 Rule 3). Same formulas as src/report.py / src/report_lora.py."""
+    S = "25. Other registered rules (appendix table)"
+    for cond in (FT, R4, R64):
+        for s in SEEDS:
+            sw, sw2 = f"{prefix(cond)}swap/seed{s}.json", f"{prefix(cond)}swap2/seed{s}.json"
+            G = (sw, swap_G_key(cond, s))
+            ins = [G, (sw, f"cases.{CASE_A}.by_blocks.9-10-11.gap_none_minus_opposite")] + [
+                (sw2, f"cases.{CASE_A}.by_set.{w}.gap_none_minus_opposite") for w in ("0-1-2", "3-4-5", "6-7-8")]
+            derived(S, "2b blocks 9-11 removed / best other 3-block window", cond, s, [sw, sw2], ins,
+                    "(G - gap_9-10-11) / max over 0-1-2, 3-4-5, 6-7-8 of (G - gap_w), case (a) (the rule: >= 2)",
+                    lambda g, x, *w: (g - x) / max(g - y for y in w))
+    for s in SEEDS:
+        sw, sw2 = f"swap/seed{s}.json", f"swap2/seed{s}.json"
+        derived(S, "2b case (b): name rows + 9-11 minus 9-11 alone", FT, s, [sw, sw2],
+                [(sw2, f"cases.b_clean_from_shortcut_same.by_set.emb_names+9-10-11.gap_none_minus_opposite"),
+                 (sw, "cases.b_clean_from_shortcut_same.by_blocks.9-10-11.gap_none_minus_opposite")],
+                "gap difference (the rule: >= 0.10)", lambda a, b: a - b)
+        for half in ("attn", "mlp"):
+            derived(S, f"2b {half} half share of 9-11 removal", FT, s, [sw, sw2],
+                    [(sw, swap_G_key(FT, s)), (sw2, f"cases.{CASE_A}.by_set.{half}:9-10-11.gap_none_minus_opposite"),
+                     (sw, f"cases.{CASE_A}.by_blocks.9-10-11.gap_none_minus_opposite")],
+                    "(G - gap_half) / (G - gap_whole), case (a) (the rule: >= 2/3)", lambda g, h, w: (g - h) / (g - w))
+    for cond in (FT, R4, R64):
+        rels = [f"{prefix(cond)}retrain/seed{s}.json" for s in SEEDS]
+        ins = []
+        for rel in rels:
+            ins += [(rel, "baseline.gap_none_minus_opposite"), (rel, "baseline.accuracy.none")]
+            ins += [(rel, f"runs.{b}.{k}") for b in range(12) for k in ("gap_none_minus_opposite", "accuracy.none")]
+
+        def count(*v):
+            n, per = 0, 26
+            ok = [all(v[i * per + 2 + 2 * b] <= 0.5 * v[i * per] and v[i * per + 1] - v[i * per + 3 + 2 * b] <= 0.02
+                      for i in range(3)) for b in range(12)]
+            return sum(ok)
+        derived(S, "Phase 3 single blocks that remove the shortcut", cond, None, rels, ins,
+                "number of single blocks with gap <= 50% of G_s and acc(none) drop <= 0.02 in all 3 seeds", count)
+        for s, rel in zip(SEEDS, rels):
+            derived(S, "Phase 3 control 9-11 on shortcut data: kept", cond, s, rel,
+                    [(rel, "baseline.gap_none_minus_opposite"), (rel, "runs.ctrl_shortcut:9-10-11.gap_none_minus_opposite")],
+                    "gap / G (the rule: >= 0.80)", lambda g, x: x / g)
+    for cond, (c, loc) in L3_CONDS.items():
+        for s in SEEDS:
+            rel = f"weakfix/{c}/seed{s}.json"
+            B = get(rel, "B")
+            derived(S, "L3 control on shortcut data: kept", cond, s, rel,
+                    [(rel, "baseline.gap_none_minus_opposite"),
+                     (rel, f"runs.ctrl_shortcut:{loc}.evals.{B}.gap_none_minus_opposite")],
+                    f"gap / G at step B for block {loc} (the rule: >= 0.80)", lambda g, x: x / g)
+    for st in ("even", "odd"):
+        for s in SEEDS:
+            slot = 3 if (st, s) == ("even", 2) else s  # L4 collapse rule: seed 3 takes seed 2's slot in set even
+            direct(S, f"L4 {st} gap", "LoRA r64 subset", s, f"lora_r64_{st}/checks/lora_r64_{st}_shortcut_seed{slot}.json",
+                   "gap_none_minus_opposite")
+
+
+def sec_speed():
+    """Single blocks at step 100 of Phase 3b (why late - early is near zero under r64), and the largest removal by
+    any single block without the names (Phase 3c)."""
+    S = "26. Single-block speed (Phase 3b) and the no-names maximum (Phase 3c)"
+    for cond in (FT, R64):
+        for b in (0, 2, 4):
+            for s in SEEDS:
+                rel = f"{prefix(cond)}retrain_budget/seed{s}.json"
+                derived(S, f"3b block {b} removed at step 100", cond, s, rel,
+                        [(rel, "baseline.gap_none_minus_opposite"), (rel, f"runs.{b}.evals.100.gap_none_minus_opposite")],
+                        "(G - gap) / G", frac)
+    without_dir = {FT: "retrain_nonames", R4: "lora_r4/retrain_nonames", R64: "lora_r64/retrain_nonames"}
+    for cond in (FT, R4, R64):
+        rels = [f"{without_dir[cond]}/seed{s}.json" for s in SEEDS]
+        ins = []
+        for rel in rels:
+            ins += [(rel, "baseline.gap_none_minus_opposite")] + [
+                (rel, f"runs.{b}.gap_none_minus_opposite") for b in range(12)]
+        derived(S, "3c without names: largest single-block removal", cond, None, rels, ins,
+                "max over seeds and blocks 0-11 of (G - gap_b) / G, retrained without the names",
+                lambda *v: max((v[i * 13] - v[i * 13 + 1 + b]) / v[i * 13] for i in range(3) for b in range(12)))
+
+
 def md_text():
     o = ["# Paper numbers audit", "",
          "_Generated by `src/paper_numbers.py` from committed `results/` files only (no runs). Do not edit by hand._", "",
@@ -679,6 +804,24 @@ Q_TAGS = {
        for d, k, t in (("restore", "R", "Restore"), ("reverse", "R_rev", "Reverse"))
        for P in ("name", "last", "notlast") for b, w in ((0, "Zero"), (3, "Three"), (10, "Ten"))},
     "4b A/B difference at the name tokens after block 0, F_b / S": "fourBAbRatioBZero",
+    # Phase L3
+    "L3 reading step B": "lThreeStepB",
+    "L3 localized block": "lThreeLocalizedBlock",
+    "L3 rank of the localized block": "lThreeRankLocalized",
+    "L3 rank of block 0": "lThreeRankBZero",
+    "L3 best block": "lThreeBestBlock",
+    "L3 Spearman(swap, weak fix)": "lThreeSpearman",
+    "2b blocks 9-11 removed / best other 3-block window": "twoBLateRatio",
+    "2b case (b): name rows + 9-11 minus 9-11 alone": "twoBEmbNamesExtra",
+    "2b attn half share of 9-11 removal": "twoBAttnShare",
+    "2b mlp half share of 9-11 removal": "twoBMlpShare",
+    "Phase 3 single blocks that remove the shortcut": "retrainPassCount",
+    "Phase 3 control 9-11 on shortcut data: kept": "retrainCtrlKept",
+    "L3 control on shortcut data: kept": "lThreeCtrlKept",
+    "L4 even gap": "lFourGapEven", "L4 odd gap": "lFourGapOdd",
+    **{f"3b block {b} removed at step 100": f"budgetB{_WORDS.get(b, {2: 'Two', 4: 'Four'}.get(b))}StepHundred"
+       for b in (0, 2, 4)},
+    "3c without names: largest single-block removal": "ccNoNamesMax",
 }
 M_TAGS = {
     "IMDB pilot": "Pilot",
@@ -823,7 +966,7 @@ def collect():
     for f in (sec_checks, sec_lens, sec_swap, sec_retrain, sec_budget, sec_spearman, sec_logit_check, sec_patching,
               sec_wronglabel, sec_pythia, sec_wronglabel_interventions, sec_pilot_data_limits,
               sec_nonames, sec_wordcue, sec_reinject, sec_reinject_b, sec_posthoc, sec_seedswap, sec_weak,
-              sec_pythia_find, sec_l4, sec_wordcue_natural, sec_restore):
+              sec_pythia_find, sec_l4, sec_wordcue_natural, sec_restore, sec_weakfix, sec_registered_rest, sec_speed):
         f()
 
 

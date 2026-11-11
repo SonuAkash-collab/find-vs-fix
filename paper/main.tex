@@ -34,13 +34,14 @@ Interpretability tools can show where a behaviour happens inside a language mode
 fixed? We study this for a shortcut learned during fine-tuning, in a setting where the ground truth is known: GPT-2
 small learns IMDB sentiment while an invented actor name, planted in 5\% of the training reviews, always comes with the
 same label. The logit lens, block swaps and activation patching agree that the name takes over the answer only in the
-last three blocks, after the model has already worked out the true sentiment. Retraining ignores this location: one
-epoch on clean data removes the shortcut from any single block, because the clean data shows each name with both
+last three blocks, after the true sentiment is already readable. Retraining does not need this location: one epoch on
+clean data removes the shortcut from any single block, because the clean data shows each name with both
 labels, and without these counter-examples no block removes it. Reading the answer out depends on it: carrying the
 layer-9 state forward to the output removes \pSixBEqLNineRemovedFullFTRange{} of the shortcut across seeds at an
 accuracy cost of \pSixBEqLNineDropFullFTRange, while the same dose taken from layer 3 or 6 removes at most
-\pSixBEqLSixRemovedFullFTsTwo. LoRA fine-tuning gives the same picture for finding and retraining, and memorized wrong
-labels mark where the retraining result stops.
+\pSixBEqLSixRemovedFullFTsTwo. Under LoRA, rank 64 gives the same retraining picture, while rank 4 learns a weaker
+shortcut that fewer single blocks remove, and at both ranks the swap control is less reliable. Memorized wrong labels
+mark where the retraining result stops.
 Localization tells us where to read a shortcut out, not where to retrain it.
 \end{abstract}
 

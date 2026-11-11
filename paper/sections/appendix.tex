@@ -76,3 +76,48 @@ With 5\% of the training reviews cued the seed-0 gap was \gapWordcueFivesZero, a
 \accNoneWordcueTensZero), so the find and fix analyses were not run. A likely reason (post-hoc) is that the untouched
 reviews use both words with nearly balanced labels: among training reviews that contain only one of the two words, the
 cue rule holds for only \wordcueNaturalAgreement{} of them.
+
+\section{Other registered rules}
+\label{app:prereg-rest}
+Table~\ref{tab:prereg-rest} lists the registered rules that are not in Table~\ref{tab:prereg}. Training checks, run
+gates and selection rules (learning rate, step budget $B$, the partly-reliable level, Pythia's names) decide how an
+experiment is run rather than what it finds, and are not listed.
+
+\begin{table*}[t]
+\centering
+\caption{Registered rules not in Table~\ref{tab:prereg}, with their outcomes (values are seed 0/1/2 unless noted). Same
+reading as Table~\ref{tab:prereg}: a rule that needs all three seeds and fails means the effect was not shown in every
+seed.}
+\label{tab:prereg-rest}
+\setlength{\tabcolsep}{3pt}
+\footnotesize
+\begin{tabular}{p{4.5cm}p{3.5cm}p{5.9cm}p{3.0cm}}
+\toprule
+Prediction & Decision rule & Observed & Outcome \\
+\midrule
+Clean blocks of another seed remove the shortcut (swap c-i) & removal criterion & same block sets as case (a) & holds at blocks 9--11 and 10--11 \\
+Blocks 9--11 are late-specific (swap a) & removal $\ge 2\times$ best other 3-block window & FT ratio \twoBLateRatioFullFT & fails for FT; holds for r4 and r64 \\
+Name embeddings carry part of the shortcut (swap b) & name rows add $\ge 0.10$ to blocks 9--11 & FT \twoBEmbNamesExtraFullFT & fails \\
+Attention or MLP half carries it (swap a) & half removes $\ge 2/3$ of the whole & blocks 9--11: attention \twoBAttnShareFullFT, MLP \twoBMlpShareFullFT & both needed at 9--11; attention alone at block 11 \\
+Retraining on shortcut data keeps it (control) & kept $\ge 0.80$ & blocks 9--11: FT \retrainCtrlKeptFullFT; r4 \retrainCtrlKeptLoraRFour; r64 \retrainCtrlKeptLoraRSixtyFour & holds for all three \\
+Late blocks retrain better at 100 steps, r64 & late $-$ early $\ge 0.20$ & \budgetLateMinusEarlyLoraRSixtyFour & fails \\
+LoRA lens: same reading as full FT & lens reading rule & cal.\ acc(\textit{opposite}) at layer 9: r4 \lensCalOppLNineLoraRFour; r64 \lensCalOppLNineLoraRSixtyFour & holds for both (overthinking) \\
+LoRA swap map matches full FT & Spearman $\ge 0.6$ & r4 \spearmanSwapVsFullFTLoraRFour; r64 \spearmanSwapVsFullFTLoraRSixtyFour & r4 holds; r64 fails \\
+Weak-fix control keeps the shortcut & kept $\ge 0.80$ & FT \lThreeCtrlKeptFullFT; r4 \lThreeCtrlKeptLoraRFour; r64 \lThreeCtrlKeptLoraRSixtyFour & holds for all three \\
+LoRA on blocks 6--11 learns the shortcut (L4 Rule 2) & gap $\ge 0.20$ & \lFourGapLate & holds \\
+Location vs number of LoRA blocks (L4 Rule 3) & gap differs by $\ge 0.10$ from both alternate sets & early \lFourGapEarly, late \lFourGapLate, even \lFourGapEven, odd \lFourGapOdd & mixed for both sets \\
+Block 10's fix acts at the answer position (4b) & restore at the last token $\ge 0.5$ & FT \fourBRestoreLastBTenFullFT; r64 \fourBRestoreLastBTenLoraRSixtyFour & mixed for both \\
+Name tokens alone carry the fix of block 3 or 10 (4b) & reverse at the name tokens $\ge 0.5$ & block 3: FT \fourBReverseNameBThreeFullFT, r64 \fourBReverseNameBThreeLoraRSixtyFour; block 10: FT \fourBReverseNameBTenFullFT, r64 \fourBReverseNameBTenLoraRSixtyFour & mixed for all four \\
+Partly reliable name: location matters at rank 64 (App.~\ref{app:partial}) & $\ge 3$ single blocks fail & -- & not run (no level qualified) \\
+Word-choice cue: find and fix rules (App.~\ref{app:wordcue}) & as for the name & -- & not run (cue not learned) \\
+Memorized labels: lens shows a late takeover & lens reading rule & takeover layer \wlTakeoverNoisy & holds \\
+Memorized labels: swap control keeps them & kept $\ge 0.80$ & blocks \wlControlBlocksNoisy: \wlControlKeptNoisy & holds \\
+Memorized labels: retraining on the noisy labels keeps them (control) & kept $\ge 0.80$ & blocks 9--11 and all blocks & holds \\
+Memorized labels: swap and retrain rankings agree & Spearman $\ge 0.6$ & \wlSpearmanNoisy & fails \\
+Pythia: clean blocks 9--11 remove the shortcut & removal criterion & \pySwapRemovedLatePythia & fails (block 0 alone removes \pySwapRemovedBZeroPythia) \\
+Pythia: shortcut blocks 9--11 create it (swap b) & created gap $\ge 0.20$ & -- & fails \\
+Pythia: swap control keeps the shortcut & kept $\ge 0.80$ & blocks 9--11: \pySwapCiiKeptLatePythia & holds \\
+Pythia: 3-block windows (swap a, b, c-ii) & as for GPT-2 & -- & blocks 0--2 remove and create it; no window passes the control in every seed; name rows add nothing \\
+\bottomrule
+\end{tabular}
+\end{table*}

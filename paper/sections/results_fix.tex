@@ -1,21 +1,27 @@
-\section{Retraining: location does not matter}
+\section{Retraining: location is not needed}
 \label{sec:fix}
 
 \textbf{Any block works.} Retraining one block of a shortcut model for one epoch on the clean-twin data removes the
 shortcut whichever block is chosen: all 12 single blocks pass the removal criterion in every seed, including block~0,
-far from the blocks where the name reaches the answer. Location helps a little only when the budget is tiny: after 100
-steps, retraining blocks \{9, 10, 11\} removes more of the gap than retraining blocks \{0, 2, 4\} in every seed, by
+far from the blocks where the name reaches the answer. Location matters when the budget is small: after 100 steps,
+retraining blocks \{9, 10, 11\} removes more of the gap than retraining blocks \{0, 2, 4\} in every seed, by
 \budgetLateMinusEarlyFullFTRange{} (we had predicted at least 0.20, which held in one seed of three; seed~1 missed it
-narrowly at \budgetLateMinusEarlyFullFTsOne), while under LoRA rank~64 this advantage is gone
-(\budgetLateMinusEarlyLoraRSixtyFourRange).
+narrowly at \budgetLateMinusEarlyFullFTsOne). Under LoRA rank~64 the two sets differ by only
+\budgetLateMinusEarlyLoraRSixtyFourRange, but not because location stops mattering: block~0, which counts as early, is
+the fastest single block there (\budgetBZeroStepHundredLoraRSixtyFourRange{} removed at step 100, against
+\budgetBTwoStepHundredLoraRSixtyFourRange{} and \budgetBFourStepHundredLoraRSixtyFourRange{} for blocks 2 and 4;
+under full fine-tuning \budgetBZeroStepHundredFullFTRange, against \budgetBTwoStepHundredFullFTRange{} and
+\budgetBFourStepHundredFullFTRange; post hoc).
 
 \textbf{Why: the counter-examples.} The clean-twin data still contains the name sentence, but with each name on both
 positive and negative reviews. These counter-examples could teach any block that the names carry no label information.
 We repeated the retraining with the name sentence removed from the clean data and everything else matched
 (Fig.~\ref{fig:nonames}). Block~0 then removes \ccNoNamesBZeroFullFTRange{} of the gap instead of
 \ccWithNamesBZeroFullFTRange, and the same collapse happens for every block: all \ccCountedBlocksFullFT{} single
-blocks that remove the shortcut with the names fail without them, in at least two of three seeds. For retraining, \emph{what} the model sees decides
-the outcome; \emph{where} it is retrained does not.
+blocks that remove the shortcut with the names fail without them, in every seed: without the names, no single block
+removes more than \ccNoNamesMaxFullFT{} of the gap in any seed (rank~4: \ccNoNamesMaxLoraRFour; rank~64:
+\ccNoNamesMaxLoraRSixtyFour). For full-block retraining, the
+training data determines the outcome, not the block that is retrained.
 
 \textbf{What retraining block~0 changes.} A model retrained at block~0 differs from its shortcut model only in that
 block, so we patch between the two right after it (layer~1), at the four name tokens, on the \emph{opposite} reviews,
@@ -45,3 +51,20 @@ limited to the blocks the tools identify, even though the two rankings correlate
 removed by swapping and by retraining is rank-correlated (Spearman \spearmanSwapRetrainFullFTRange): blocks that matter
 more for the swap also retrain a little better. But swaps single out blocks 9--11, while retraining works everywhere,
 so knowing the location does not narrow down where to retrain.
+
+\textbf{A weak fix.} Retraining a whole block is a strong fix, so we also tested a small one: a new rank-4 LoRA adapter
+on a single block, trained on the clean data and read at step~$B$ (\lThreeStepBFullFT{} in every condition), the first
+step at which the same adapter on all 12 blocks removes half of the gap. Under full fine-tuning the block localized by
+the swaps (block~\lThreeLocalizedBlockFullFT) ranks \lThreeRankLocalizedFullFT{} among the 12 single blocks, and the
+weak-fix order follows the swap map (Spearman \lThreeSpearmanFullFT). Under LoRA rank~64 the localized block
+(block~\lThreeLocalizedBlockLoraRSixtyFour) ranks \lThreeRankLocalizedLoraRSixtyFour, outside the top three in every
+seed (Spearman \lThreeSpearmanLoraRSixtyFour); rank~4 lies in between (block~\lThreeLocalizedBlockLoraRFour{} ranks
+\lThreeRankLocalizedLoraRFour; Spearman \lThreeSpearmanLoraRFour). Against the registered rules, the localized block is
+not in the top three in every seed in any condition (Rule~1 fails for all three), the best block is not always a top
+swap block (Rule~1b fails for all three; best blocks: full fine-tuning \lThreeBestBlockFullFT, rank~4
+\lThreeBestBlockLoraRFour, rank~64 \lThreeBestBlockLoraRSixtyFour), the rankings agree only under full fine-tuning
+(Rule~2), and block~0 is not in the top three in every seed in any condition (Rule~3; ranks \lThreeRankBZeroFullFT,
+\lThreeRankBZeroLoraRFour, \lThreeRankBZeroLoraRSixtyFour). With a fix small enough for the block to matter, the
+swap map is a fair guide under full fine-tuning but not under LoRA rank~64, and in no condition does it pick the best
+block in every seed. Two registered caveats apply: late blocks may be easier to fix in general, and under LoRA the
+localized block comes from swaps whose own control failed (Section~\ref{sec:lora}).

@@ -7,13 +7,13 @@ $\alpha(h_9-\mu)$ to the last-token residual stream at every later layer (Sec.~\
 early exit at layer~9, the mechanism Halawi et al.~\cite{halawi2024overthinking} used to undo late-layer failures caused
 by false demonstrations. The question here is whether the layer chosen by the find tools is the right one.
 
-\textbf{It is.} With the same total added signal for every source layer $l^*$, reading out at layer~9 removes
+\textbf{Equal dose across layers.} With the same total added signal for every source layer $l^*$, reading out at layer~9 removes
 \pSixBEqLNineRemovedFullFTRange{} of the gap while acc(\textit{none}) drops by \pSixBEqLNineDropFullFTRange{}
 (Table~\ref{tab:readout}, Fig.~\ref{fig:readout}). Later layers do less, because the name has started to arrive there
 (layer~10: \pSixBEqLTenRemovedFullFTRange; layer~11: \pSixBEqLElevenRemovedFullFTRange), and earlier layers do almost
 nothing, because the sentiment is not yet formed there (layer~3: \pSixBEqLThreeRemovedFullFTRange; layer~6:
 \pSixBEqLSixRemovedFullFTRange). A random direction of the same norm, given its own strength under the same accuracy
-limit, removes only \pSixBRandomRemovedFullFTRange. The fix also does not need to know the cue: choosing $\alpha$ as the
+limit, removes only \pSixBRandomRemovedFullFTRange. The fix also works without knowledge of the cue: choosing $\alpha$ as the
 largest value that keeps the accuracy drop on name-free development reviews within 0.02 removes
 \pSixBCueFreeRemovedFullFTRange. Our first, smaller test also removed the shortcut
 (\pSixRemovedLNineFullFTRange) and left the clean twins unchanged (gap \pSixCleanGapBeforeFullFTRange{} before,
@@ -60,5 +60,9 @@ answers from layer~9. Reading the answer directly from layer~9 with the calibrat
 (\phLensRemovedFullFTRange{} removed), and the two agree on \phAgreementFullFTRange{} of the test answers. Most of the
 effect comes from the component of the signal along the unembedding's sentiment direction
 (\pSixBParRemovedFullFTRange{} removed, against \pSixBPerpRemovedFullFTRange{} for the rest). The read-out is therefore
-not a new steering method; it is a test of the location. Retraining could be done anywhere, but the read-out works only
+not a new steering method; it is a test of the location. Retraining could be done anywhere, but the read-out works best
 where the tools point: after the true answer is formed and before the shortcut takes over.
+
+\textbf{What this evidence is.} Because the read-out acts as an early exit at layer~9, it and the calibrated lens
+reading at layer~9 are in effect one measurement, not two. The evidence for the location that does not rest on this
+measurement comes from patching and the swaps. The layer was chosen after those results were seen, on the same models.
