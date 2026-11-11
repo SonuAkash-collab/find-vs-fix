@@ -1,7 +1,7 @@
-\section{Reading out: location matters}
+\section{Reading out: the zero-training end}
 \label{sec:readout}
 
-The find results suggest a fix that needs neither training nor data. At layer~9 the last token still carries the true
+At the other end from retraining is a fix that needs neither training nor data. At layer~9 the last token still carries the true
 sentiment and the name has not reached it yet, so we read this state out and carry it forward: we add
 $\alpha(h_9-\mu)$ to the last-token residual stream at every later layer (Sec.~\ref{sec:setup}). In effect this is an
 early exit at layer~9, the mechanism Halawi et al.~\cite{halawi2024overthinking} used to undo late-layer failures caused

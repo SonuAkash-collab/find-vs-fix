@@ -12,20 +12,25 @@ clear what happens for a shortcut picked up during fine-tuning, and why.
 
 We plant one shortcut in a sentiment classifier, so that we know exactly what the model should and should not use: an
 invented actor name that always comes with the same label. Three tools agree on where the name takes over: the last
-three blocks of GPT-2, after the true sentiment is already readable (Sec.~\ref{sec:find}). We then fix the shortcut in
-two ways.
+three blocks of GPT-2, after the true sentiment is already readable (Sec.~\ref{sec:find}). We then ask what this
+location means for a repair, and find that it answers a different question from the one usually asked.
 
-Retraining does not need this location. One epoch on clean data removes the shortcut whichever single block is
-retrained. The reason is the data, not the block: the clean data shows each name with both labels, and when these
-counter-examples are removed, no block fixes the shortcut (Sec.~\ref{sec:fix}). Reading the answer out depends on it.
-Because the true sentiment is still present at layer~9, carrying that state forward to the output removes almost all of
-the shortcut, and the same dose from other layers does much less (Sec.~\ref{sec:readout}).
+\emph{Whether} retraining removes the shortcut does not depend on the block. One epoch on clean data removes it
+whichever single block is retrained, because the clean data shows each name with both labels; when these
+counter-examples are removed, no block removes it (Sec.~\ref{sec:fix}). \emph{How fast} a block removes it does depend
+on location. With a small training budget or a small adapter, blocks differ widely: block~0 and the later blocks are
+fast, blocks 1--5 are slow. The tools single out the late blocks but miss block~0, which works differently: it changes
+only what the name tokens pass on to the unchanged later blocks. At the zero-training end, reading the answer out of the
+model works best at the located layer: taken from layer~9, just before the takeover, it removes almost all of the shortcut,
+and the same dose from other layers does less (Sec.~\ref{sec:readout}).
 
 \textbf{Contributions.} (i)~Converging evidence from block swaps and activation patching, with the logit lens, that
-in full fine-tuning the name's information stays at the name tokens until blocks 9--11 move it to the answer, while
-the late blocks alone do not create the shortcut. (ii)~A causal account of why localization does not tell us
-where to retrain: any block can learn to ignore the cue once the data contradicts it. (iii)~Evidence that localization
-does tell us where to read the answer out, with controls for dose, random directions and knowledge of the cue.
-(iv)~Checks of how far this carries: LoRA fine-tuning, a second model (Pythia-160M), and memorized wrong labels, where
-the retraining result stops holding (Sec.~\ref{sec:generalize}). Every prediction we registered and its outcome is
-listed in Table~\ref{tab:prereg} or Table~\ref{tab:prereg-rest}.
+in full fine-tuning the name's information stays at the name tokens until blocks 9--11 move it to the answer.
+(ii)~A causal account of when retraining works at all: counter-examples in the repair data are required, and with
+them any single block removes the shortcut (under full fine-tuning and LoRA rank~64). (iii)~Evidence that location sets the speed of a partial repair, with two
+fast places, block~0 and the later blocks, of which the tools find only the second; patching shows how block~0 does it.
+This pattern was noticed after the fact and is reported as such. (iv)~A training-free read-out that works best at the
+located layer, which we treat as a consistency check because it repeats the lens measurement. (v)~Checks of how far
+this carries: LoRA fine-tuning, a second model (Pythia-160M, find side only), and memorized wrong labels, which have no
+shared cue to contradict (Sec.~\ref{sec:generalize}). Every prediction we registered and its outcome is listed in
+Table~\ref{tab:prereg} or Table~\ref{tab:prereg-rest}.

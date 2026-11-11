@@ -46,20 +46,30 @@ Pythia: lens reading (mean over seeds) & takeover layer & \pyTakeoverMeanPythia 
 \end{tabular}
 \end{table*}
 
-\textbf{Why retraining does not need the location.} Every block writes into the same residual stream. Once the training data
+\textbf{Why the data decides whether.} Every block writes into the same residual stream. Once the training data
 shows that a name comes with both labels, any block can learn to cancel the name's contribution, whether it sits before,
-at, or after the blocks where the name reaches the answer. For block~0 we checked how: its fix sits at the name
-tokens, which hides the name from the unchanged later blocks (Section~\ref{sec:fix}). Location therefore does not narrow down where to retrain,
-which is the shortcut counterpart of what Hase et al.~\cite{hase2023localization} found for factual edits, and our
-counter-example ablation gives a causal reason for it: the counter-examples in the training data, not the choice of
-block, remove the shortcut.
+at, or after the blocks where the name reaches the answer. Without those counter-examples, nothing in the data teaches
+any block to cancel it. This is the shortcut counterpart of what Hase et al.~\cite{hase2023localization} found for
+factual edits, with a causal reason: the counter-examples in the repair data, not the choice of block, decide whether
+the shortcut is removed.
 
-\textbf{Why the read-out depends on it.} The read-out works because of a window inside the model: by layer~9 the true
+\textbf{Why location decides how fast.} Two places act on the name directly. Block~0 is the first block to see the
+name embedding, and its fix changes only what the name tokens pass on to the unchanged later blocks
+(Section~\ref{sec:fix}). Blocks 9--11 are where the name is moved to the answer, and there part of the fix sits at the
+answer position. Blocks 1--5 have neither role in our models, and they repair slowest. This account is post hoc: it fits
+the speed pattern and the patching results but was not tested by a registered experiment. It also explains why the
+tools, which locate where the name reaches the answer, find only one of the two fast places. Surgical fine-tuning
+reached a related conclusion that the first layers suit input-level shifts~\cite{lee2023surgical}; here the input-level
+cue is the name.
+
+\textbf{The zero-training end.} The read-out works because of a window inside the model: by layer~9 the true
 sentiment is readable, and the name has not yet reached the answer. Taking the answer from inside this window removes
 the most; taking it from after the window (the name has started to arrive) removes less, and from before it (no
-sentiment yet) almost nothing. The find tools are what locate this window. In GPT-2 they agree on it; in Pythia they agree on a much earlier takeover,
+sentiment yet) almost nothing. Because the read-out repeats the lens measurement at layer~9, we treat it as a
+consistency check of the location rather than as independent evidence. The find tools are what locate this window. In GPT-2 they agree on it; in Pythia they agree on a much earlier takeover,
 which sets up the test we propose next.
 
 \textbf{Where the claim stops.} For memorized wrong labels there is no shared cue to cancel, and only one block can be
-retrained to remove them. There, location does matter for retraining, but the block that works is not the one the tools
-point to.
+retrained to remove them. There, location matters for whether retraining works at all, and the block that works is not
+the one the tools point to. It is block~\wlPassingBlockNoisy, the same first block that is fast for the name shortcut;
+given the different data and task, we note this only as a post-hoc observation.

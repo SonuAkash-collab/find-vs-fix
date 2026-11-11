@@ -1,4 +1,4 @@
-\section{Retraining: location is not needed}
+\section{Retraining: data decides whether, location decides how fast}
 \label{sec:fix}
 
 \textbf{Any block works.} Retraining one block of a shortcut model for one epoch on the clean-twin data removes the
@@ -68,3 +68,16 @@ swap block (Rule~1b fails for all three; best blocks: full fine-tuning \lThreeBe
 swap map is a fair guide under full fine-tuning but not under LoRA rank~64, and in no condition does it pick the best
 block in every seed. Two registered caveats apply: late blocks may be easier to fix in general, and under LoRA the
 localized block comes from swaps whose own control failed (Section~\ref{sec:lora}).
+
+\textbf{Location decides how fast (post hoc).} Across the budget test, the weak fix and full retraining, the same
+shape appears whenever the repair is not yet complete: blocks 1--5 are slow, while block~0 and blocks 6--10 are fast. With the weak fix at step~$2B$, block~0 removes \uWeakBZeroFullFT{} of the gap under full fine-tuning, blocks
+1--5 on average \uWeakBOneToFiveFullFT, and blocks 6--10 \uWeakBSixToTenFullFT; under rank~4 the same groups give
+\uWeakBZeroLoraRFour, \uWeakBOneToFiveLoraRFour{} and \uWeakBSixToTenLoraRFour. After a full epoch of full-block
+retraining the differences shrink but keep the same order (full fine-tuning: \uRetrainBZeroFullFT,
+\uRetrainBOneToFiveFullFT, \uRetrainBSixToTenFullFT; rank~4: \uRetrainBZeroLoraRFour, \uRetrainBOneToFiveLoraRFour,
+\uRetrainBSixToTenLoraRFour). Block~11 varies between conditions. Our registered location tests (late against early
+blocks at 100 steps; the localized block in the top three) did not capture this shape, because one of the fast places,
+block~0, is in the ``early'' set and is never singled out by the tools. Block~0 and the late blocks also repair the
+shortcut in different ways: at block~0 the fix sits at the name tokens, and at block~10 it is split between the name
+tokens and the answer position (Appendix~\ref{app:restore}). We noticed this pattern after the results and have not
+tested it in a registered experiment.

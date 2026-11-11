@@ -1761,6 +1761,176 @@
 % results/lora_r64/retrain_nonames/seed0.json, results/lora_r64/retrain_nonames/seed1.json, results/lora_r64/retrain_nonames/seed2.json: max over seeds and blocks 0-11 of (G - gap_b) / G, retrained without the names with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`; `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`; `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`
 \newcommand{\ccNoNamesMaxLoraRSixtyFour}{0.067}
 
+% ---- 27. Post hoc: repair speed by block position
+% results/weakfix/full_ft/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBZeroFullFTsZero}{0.687}
+% results/weakfix/full_ft/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.evals.200.gap_none_minus_opposite`; `runs.2.evals.200.gap_none_minus_opposite`; `runs.3.evals.200.gap_none_minus_opposite`; `runs.4.evals.200.gap_none_minus_opposite`; `runs.5.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBOneToFiveFullFTsZero}{0.176}
+% results/weakfix/full_ft/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.evals.200.gap_none_minus_opposite`; `runs.7.evals.200.gap_none_minus_opposite`; `runs.8.evals.200.gap_none_minus_opposite`; `runs.9.evals.200.gap_none_minus_opposite`; `runs.10.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBSixToTenFullFTsZero}{0.870}
+% results/weakfix/full_ft/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBElevenFullFTsZero}{0.886}
+% results/weakfix/full_ft/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBZeroFullFTsOne}{0.704}
+% results/weakfix/full_ft/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.evals.200.gap_none_minus_opposite`; `runs.2.evals.200.gap_none_minus_opposite`; `runs.3.evals.200.gap_none_minus_opposite`; `runs.4.evals.200.gap_none_minus_opposite`; `runs.5.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBOneToFiveFullFTsOne}{0.632}
+% results/weakfix/full_ft/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.evals.200.gap_none_minus_opposite`; `runs.7.evals.200.gap_none_minus_opposite`; `runs.8.evals.200.gap_none_minus_opposite`; `runs.9.evals.200.gap_none_minus_opposite`; `runs.10.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBSixToTenFullFTsOne}{0.830}
+% results/weakfix/full_ft/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBElevenFullFTsOne}{0.866}
+% results/weakfix/full_ft/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBZeroFullFTsTwo}{0.675}
+% results/weakfix/full_ft/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.evals.200.gap_none_minus_opposite`; `runs.2.evals.200.gap_none_minus_opposite`; `runs.3.evals.200.gap_none_minus_opposite`; `runs.4.evals.200.gap_none_minus_opposite`; `runs.5.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBOneToFiveFullFTsTwo}{0.358}
+% results/weakfix/full_ft/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.evals.200.gap_none_minus_opposite`; `runs.7.evals.200.gap_none_minus_opposite`; `runs.8.evals.200.gap_none_minus_opposite`; `runs.9.evals.200.gap_none_minus_opposite`; `runs.10.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBSixToTenFullFTsTwo}{0.679}
+% results/weakfix/full_ft/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBElevenFullFTsTwo}{0.721}
+% results/weakfix/lora_r4/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBZeroLoraRFoursZero}{0.591}
+% results/weakfix/lora_r4/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.evals.200.gap_none_minus_opposite`; `runs.2.evals.200.gap_none_minus_opposite`; `runs.3.evals.200.gap_none_minus_opposite`; `runs.4.evals.200.gap_none_minus_opposite`; `runs.5.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBOneToFiveLoraRFoursZero}{0.063}
+% results/weakfix/lora_r4/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.evals.200.gap_none_minus_opposite`; `runs.7.evals.200.gap_none_minus_opposite`; `runs.8.evals.200.gap_none_minus_opposite`; `runs.9.evals.200.gap_none_minus_opposite`; `runs.10.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBSixToTenLoraRFoursZero}{0.640}
+% results/weakfix/lora_r4/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBElevenLoraRFoursZero}{0.245}
+% results/weakfix/lora_r4/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBZeroLoraRFoursOne}{0.501}
+% results/weakfix/lora_r4/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.evals.200.gap_none_minus_opposite`; `runs.2.evals.200.gap_none_minus_opposite`; `runs.3.evals.200.gap_none_minus_opposite`; `runs.4.evals.200.gap_none_minus_opposite`; `runs.5.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBOneToFiveLoraRFoursOne}{0.076}
+% results/weakfix/lora_r4/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.evals.200.gap_none_minus_opposite`; `runs.7.evals.200.gap_none_minus_opposite`; `runs.8.evals.200.gap_none_minus_opposite`; `runs.9.evals.200.gap_none_minus_opposite`; `runs.10.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBSixToTenLoraRFoursOne}{0.504}
+% results/weakfix/lora_r4/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBElevenLoraRFoursOne}{0.503}
+% results/weakfix/lora_r4/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBZeroLoraRFoursTwo}{0.400}
+% results/weakfix/lora_r4/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.evals.200.gap_none_minus_opposite`; `runs.2.evals.200.gap_none_minus_opposite`; `runs.3.evals.200.gap_none_minus_opposite`; `runs.4.evals.200.gap_none_minus_opposite`; `runs.5.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBOneToFiveLoraRFoursTwo}{0.064}
+% results/weakfix/lora_r4/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.evals.200.gap_none_minus_opposite`; `runs.7.evals.200.gap_none_minus_opposite`; `runs.8.evals.200.gap_none_minus_opposite`; `runs.9.evals.200.gap_none_minus_opposite`; `runs.10.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBSixToTenLoraRFoursTwo}{0.269}
+% results/weakfix/lora_r4/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBElevenLoraRFoursTwo}{0.022}
+% results/weakfix/lora_r64/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBZeroLoraRSixtyFoursZero}{1.036}
+% results/weakfix/lora_r64/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.evals.200.gap_none_minus_opposite`; `runs.2.evals.200.gap_none_minus_opposite`; `runs.3.evals.200.gap_none_minus_opposite`; `runs.4.evals.200.gap_none_minus_opposite`; `runs.5.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBOneToFiveLoraRSixtyFoursZero}{0.606}
+% results/weakfix/lora_r64/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.evals.200.gap_none_minus_opposite`; `runs.7.evals.200.gap_none_minus_opposite`; `runs.8.evals.200.gap_none_minus_opposite`; `runs.9.evals.200.gap_none_minus_opposite`; `runs.10.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBSixToTenLoraRSixtyFoursZero}{0.880}
+% results/weakfix/lora_r64/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBElevenLoraRSixtyFoursZero}{1.046}
+% results/weakfix/lora_r64/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBZeroLoraRSixtyFoursOne}{0.934}
+% results/weakfix/lora_r64/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.evals.200.gap_none_minus_opposite`; `runs.2.evals.200.gap_none_minus_opposite`; `runs.3.evals.200.gap_none_minus_opposite`; `runs.4.evals.200.gap_none_minus_opposite`; `runs.5.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBOneToFiveLoraRSixtyFoursOne}{0.919}
+% results/weakfix/lora_r64/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.evals.200.gap_none_minus_opposite`; `runs.7.evals.200.gap_none_minus_opposite`; `runs.8.evals.200.gap_none_minus_opposite`; `runs.9.evals.200.gap_none_minus_opposite`; `runs.10.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBSixToTenLoraRSixtyFoursOne}{0.946}
+% results/weakfix/lora_r64/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBElevenLoraRSixtyFoursOne}{0.857}
+% results/weakfix/lora_r64/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBZeroLoraRSixtyFoursTwo}{0.898}
+% results/weakfix/lora_r64/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.evals.200.gap_none_minus_opposite`; `runs.2.evals.200.gap_none_minus_opposite`; `runs.3.evals.200.gap_none_minus_opposite`; `runs.4.evals.200.gap_none_minus_opposite`; `runs.5.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBOneToFiveLoraRSixtyFoursTwo}{0.873}
+% results/weakfix/lora_r64/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.evals.200.gap_none_minus_opposite`; `runs.7.evals.200.gap_none_minus_opposite`; `runs.8.evals.200.gap_none_minus_opposite`; `runs.9.evals.200.gap_none_minus_opposite`; `runs.10.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBSixToTenLoraRSixtyFoursTwo}{0.919}
+% results/weakfix/lora_r64/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBElevenLoraRSixtyFoursTwo}{0.866}
+% results/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`
+\newcommand{\uRetrainBZeroFullFTsZero}{0.890}
+% results/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`
+\newcommand{\uRetrainBOneToFiveFullFTsZero}{0.817}
+% results/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`
+\newcommand{\uRetrainBSixToTenFullFTsZero}{0.890}
+% results/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`
+\newcommand{\uRetrainBElevenFullFTsZero}{0.902}
+% results/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`
+\newcommand{\uRetrainBZeroFullFTsOne}{0.888}
+% results/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`
+\newcommand{\uRetrainBOneToFiveFullFTsOne}{0.727}
+% results/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`
+\newcommand{\uRetrainBSixToTenFullFTsOne}{0.879}
+% results/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`
+\newcommand{\uRetrainBElevenFullFTsOne}{0.865}
+% results/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`
+\newcommand{\uRetrainBZeroFullFTsTwo}{0.822}
+% results/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`
+\newcommand{\uRetrainBOneToFiveFullFTsTwo}{0.687}
+% results/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`
+\newcommand{\uRetrainBSixToTenFullFTsTwo}{0.806}
+% results/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`
+\newcommand{\uRetrainBElevenFullFTsTwo}{0.711}
+% results/lora_r4/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`
+\newcommand{\uRetrainBZeroLoraRFoursZero}{0.743}
+% results/lora_r4/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`
+\newcommand{\uRetrainBOneToFiveLoraRFoursZero}{0.502}
+% results/lora_r4/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`
+\newcommand{\uRetrainBSixToTenLoraRFoursZero}{0.773}
+% results/lora_r4/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`
+\newcommand{\uRetrainBElevenLoraRFoursZero}{0.495}
+% results/lora_r4/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`
+\newcommand{\uRetrainBZeroLoraRFoursOne}{0.702}
+% results/lora_r4/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`
+\newcommand{\uRetrainBOneToFiveLoraRFoursOne}{0.464}
+% results/lora_r4/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`
+\newcommand{\uRetrainBSixToTenLoraRFoursOne}{0.690}
+% results/lora_r4/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`
+\newcommand{\uRetrainBElevenLoraRFoursOne}{0.683}
+% results/lora_r4/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`
+\newcommand{\uRetrainBZeroLoraRFoursTwo}{0.743}
+% results/lora_r4/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`
+\newcommand{\uRetrainBOneToFiveLoraRFoursTwo}{0.378}
+% results/lora_r4/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`
+\newcommand{\uRetrainBSixToTenLoraRFoursTwo}{0.636}
+% results/lora_r4/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`
+\newcommand{\uRetrainBElevenLoraRFoursTwo}{0.226}
+% results/lora_r64/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`
+\newcommand{\uRetrainBZeroLoraRSixtyFoursZero}{1.001}
+% results/lora_r64/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`
+\newcommand{\uRetrainBOneToFiveLoraRSixtyFoursZero}{0.863}
+% results/lora_r64/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`
+\newcommand{\uRetrainBSixToTenLoraRSixtyFoursZero}{0.922}
+% results/lora_r64/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`
+\newcommand{\uRetrainBElevenLoraRSixtyFoursZero}{0.840}
+% results/lora_r64/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`
+\newcommand{\uRetrainBZeroLoraRSixtyFoursOne}{0.962}
+% results/lora_r64/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`
+\newcommand{\uRetrainBOneToFiveLoraRSixtyFoursOne}{0.935}
+% results/lora_r64/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`
+\newcommand{\uRetrainBSixToTenLoraRSixtyFoursOne}{0.939}
+% results/lora_r64/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`
+\newcommand{\uRetrainBElevenLoraRSixtyFoursOne}{0.806}
+% results/lora_r64/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`
+\newcommand{\uRetrainBZeroLoraRSixtyFoursTwo}{0.981}
+% results/lora_r64/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`
+\newcommand{\uRetrainBOneToFiveLoraRSixtyFoursTwo}{0.917}
+% results/lora_r64/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`
+\newcommand{\uRetrainBSixToTenLoraRSixtyFoursTwo}{0.955}
+% results/lora_r64/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`
+\newcommand{\uRetrainBElevenLoraRSixtyFoursTwo}{0.935}
+% results/retrain_budget/seed0.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.9.evals.100.gap_none_minus_opposite`
+\newcommand{\budgetBNineStepHundredFullFTsZero}{0.619}
+% results/retrain_budget/seed1.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.9.evals.100.gap_none_minus_opposite`
+\newcommand{\budgetBNineStepHundredFullFTsOne}{0.530}
+% results/retrain_budget/seed2.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.9.evals.100.gap_none_minus_opposite`
+\newcommand{\budgetBNineStepHundredFullFTsTwo}{0.538}
+% results/retrain_budget/seed0.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.10.evals.100.gap_none_minus_opposite`
+\newcommand{\budgetBTenStepHundredFullFTsZero}{0.730}
+% results/retrain_budget/seed1.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.10.evals.100.gap_none_minus_opposite`
+\newcommand{\budgetBTenStepHundredFullFTsOne}{0.605}
+% results/retrain_budget/seed2.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.10.evals.100.gap_none_minus_opposite`
+\newcommand{\budgetBTenStepHundredFullFTsTwo}{0.537}
+% results/lora_r64/retrain_budget/seed0.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.9.evals.100.gap_none_minus_opposite`
+\newcommand{\budgetBNineStepHundredLoraRSixtyFoursZero}{0.384}
+% results/lora_r64/retrain_budget/seed1.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.9.evals.100.gap_none_minus_opposite`
+\newcommand{\budgetBNineStepHundredLoraRSixtyFoursOne}{0.581}
+% results/lora_r64/retrain_budget/seed2.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.9.evals.100.gap_none_minus_opposite`
+\newcommand{\budgetBNineStepHundredLoraRSixtyFoursTwo}{0.455}
+% results/lora_r64/retrain_budget/seed0.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.10.evals.100.gap_none_minus_opposite`
+\newcommand{\budgetBTenStepHundredLoraRSixtyFoursZero}{0.304}
+% results/lora_r64/retrain_budget/seed1.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.10.evals.100.gap_none_minus_opposite`
+\newcommand{\budgetBTenStepHundredLoraRSixtyFoursOne}{0.522}
+% results/lora_r64/retrain_budget/seed2.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.10.evals.100.gap_none_minus_opposite`
+\newcommand{\budgetBTenStepHundredLoraRSixtyFoursTwo}{0.548}
+
 % ---- Per-seed triples: seed 0 / seed 1 / seed 2
 % seed 0: results/checks/shortcut_seed0.json: `gap_none_minus_opposite`
 % seed 1: results/checks/shortcut_seed1.json: `gap_none_minus_opposite`
@@ -2818,6 +2988,118 @@
 % seed 1: results/lora_r64/retrain_budget/seed1.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.4.evals.100.gap_none_minus_opposite`
 % seed 2: results/lora_r64/retrain_budget/seed2.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.4.evals.100.gap_none_minus_opposite`
 \newcommand{\budgetBFourStepHundredLoraRSixtyFour}{0.222/0.363/0.097}
+% seed 0: results/weakfix/full_ft/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.evals.200.gap_none_minus_opposite`
+% seed 1: results/weakfix/full_ft/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.evals.200.gap_none_minus_opposite`
+% seed 2: results/weakfix/full_ft/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBZeroFullFT}{0.687/0.704/0.675}
+% seed 0: results/weakfix/full_ft/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.evals.200.gap_none_minus_opposite`; `runs.2.evals.200.gap_none_minus_opposite`; `runs.3.evals.200.gap_none_minus_opposite`; `runs.4.evals.200.gap_none_minus_opposite`; `runs.5.evals.200.gap_none_minus_opposite`
+% seed 1: results/weakfix/full_ft/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.evals.200.gap_none_minus_opposite`; `runs.2.evals.200.gap_none_minus_opposite`; `runs.3.evals.200.gap_none_minus_opposite`; `runs.4.evals.200.gap_none_minus_opposite`; `runs.5.evals.200.gap_none_minus_opposite`
+% seed 2: results/weakfix/full_ft/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.evals.200.gap_none_minus_opposite`; `runs.2.evals.200.gap_none_minus_opposite`; `runs.3.evals.200.gap_none_minus_opposite`; `runs.4.evals.200.gap_none_minus_opposite`; `runs.5.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBOneToFiveFullFT}{0.176/0.632/0.358}
+% seed 0: results/weakfix/full_ft/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.evals.200.gap_none_minus_opposite`; `runs.7.evals.200.gap_none_minus_opposite`; `runs.8.evals.200.gap_none_minus_opposite`; `runs.9.evals.200.gap_none_minus_opposite`; `runs.10.evals.200.gap_none_minus_opposite`
+% seed 1: results/weakfix/full_ft/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.evals.200.gap_none_minus_opposite`; `runs.7.evals.200.gap_none_minus_opposite`; `runs.8.evals.200.gap_none_minus_opposite`; `runs.9.evals.200.gap_none_minus_opposite`; `runs.10.evals.200.gap_none_minus_opposite`
+% seed 2: results/weakfix/full_ft/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.evals.200.gap_none_minus_opposite`; `runs.7.evals.200.gap_none_minus_opposite`; `runs.8.evals.200.gap_none_minus_opposite`; `runs.9.evals.200.gap_none_minus_opposite`; `runs.10.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBSixToTenFullFT}{0.870/0.830/0.679}
+% seed 0: results/weakfix/full_ft/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.evals.200.gap_none_minus_opposite`
+% seed 1: results/weakfix/full_ft/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.evals.200.gap_none_minus_opposite`
+% seed 2: results/weakfix/full_ft/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBElevenFullFT}{0.886/0.866/0.721}
+% seed 0: results/weakfix/lora_r4/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.evals.200.gap_none_minus_opposite`
+% seed 1: results/weakfix/lora_r4/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.evals.200.gap_none_minus_opposite`
+% seed 2: results/weakfix/lora_r4/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBZeroLoraRFour}{0.591/0.501/0.400}
+% seed 0: results/weakfix/lora_r4/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.evals.200.gap_none_minus_opposite`; `runs.2.evals.200.gap_none_minus_opposite`; `runs.3.evals.200.gap_none_minus_opposite`; `runs.4.evals.200.gap_none_minus_opposite`; `runs.5.evals.200.gap_none_minus_opposite`
+% seed 1: results/weakfix/lora_r4/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.evals.200.gap_none_minus_opposite`; `runs.2.evals.200.gap_none_minus_opposite`; `runs.3.evals.200.gap_none_minus_opposite`; `runs.4.evals.200.gap_none_minus_opposite`; `runs.5.evals.200.gap_none_minus_opposite`
+% seed 2: results/weakfix/lora_r4/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.evals.200.gap_none_minus_opposite`; `runs.2.evals.200.gap_none_minus_opposite`; `runs.3.evals.200.gap_none_minus_opposite`; `runs.4.evals.200.gap_none_minus_opposite`; `runs.5.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBOneToFiveLoraRFour}{0.063/0.076/0.064}
+% seed 0: results/weakfix/lora_r4/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.evals.200.gap_none_minus_opposite`; `runs.7.evals.200.gap_none_minus_opposite`; `runs.8.evals.200.gap_none_minus_opposite`; `runs.9.evals.200.gap_none_minus_opposite`; `runs.10.evals.200.gap_none_minus_opposite`
+% seed 1: results/weakfix/lora_r4/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.evals.200.gap_none_minus_opposite`; `runs.7.evals.200.gap_none_minus_opposite`; `runs.8.evals.200.gap_none_minus_opposite`; `runs.9.evals.200.gap_none_minus_opposite`; `runs.10.evals.200.gap_none_minus_opposite`
+% seed 2: results/weakfix/lora_r4/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.evals.200.gap_none_minus_opposite`; `runs.7.evals.200.gap_none_minus_opposite`; `runs.8.evals.200.gap_none_minus_opposite`; `runs.9.evals.200.gap_none_minus_opposite`; `runs.10.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBSixToTenLoraRFour}{0.640/0.504/0.269}
+% seed 0: results/weakfix/lora_r4/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.evals.200.gap_none_minus_opposite`
+% seed 1: results/weakfix/lora_r4/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.evals.200.gap_none_minus_opposite`
+% seed 2: results/weakfix/lora_r4/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBElevenLoraRFour}{0.245/0.503/0.022}
+% seed 0: results/weakfix/lora_r64/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.evals.200.gap_none_minus_opposite`
+% seed 1: results/weakfix/lora_r64/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.evals.200.gap_none_minus_opposite`
+% seed 2: results/weakfix/lora_r64/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBZeroLoraRSixtyFour}{1.036/0.934/0.898}
+% seed 0: results/weakfix/lora_r64/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.evals.200.gap_none_minus_opposite`; `runs.2.evals.200.gap_none_minus_opposite`; `runs.3.evals.200.gap_none_minus_opposite`; `runs.4.evals.200.gap_none_minus_opposite`; `runs.5.evals.200.gap_none_minus_opposite`
+% seed 1: results/weakfix/lora_r64/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.evals.200.gap_none_minus_opposite`; `runs.2.evals.200.gap_none_minus_opposite`; `runs.3.evals.200.gap_none_minus_opposite`; `runs.4.evals.200.gap_none_minus_opposite`; `runs.5.evals.200.gap_none_minus_opposite`
+% seed 2: results/weakfix/lora_r64/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.evals.200.gap_none_minus_opposite`; `runs.2.evals.200.gap_none_minus_opposite`; `runs.3.evals.200.gap_none_minus_opposite`; `runs.4.evals.200.gap_none_minus_opposite`; `runs.5.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBOneToFiveLoraRSixtyFour}{0.606/0.919/0.873}
+% seed 0: results/weakfix/lora_r64/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.evals.200.gap_none_minus_opposite`; `runs.7.evals.200.gap_none_minus_opposite`; `runs.8.evals.200.gap_none_minus_opposite`; `runs.9.evals.200.gap_none_minus_opposite`; `runs.10.evals.200.gap_none_minus_opposite`
+% seed 1: results/weakfix/lora_r64/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.evals.200.gap_none_minus_opposite`; `runs.7.evals.200.gap_none_minus_opposite`; `runs.8.evals.200.gap_none_minus_opposite`; `runs.9.evals.200.gap_none_minus_opposite`; `runs.10.evals.200.gap_none_minus_opposite`
+% seed 2: results/weakfix/lora_r64/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.evals.200.gap_none_minus_opposite`; `runs.7.evals.200.gap_none_minus_opposite`; `runs.8.evals.200.gap_none_minus_opposite`; `runs.9.evals.200.gap_none_minus_opposite`; `runs.10.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBSixToTenLoraRSixtyFour}{0.880/0.946/0.919}
+% seed 0: results/weakfix/lora_r64/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.evals.200.gap_none_minus_opposite`
+% seed 1: results/weakfix/lora_r64/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.evals.200.gap_none_minus_opposite`
+% seed 2: results/weakfix/lora_r64/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.evals.200.gap_none_minus_opposite`
+\newcommand{\uWeakBElevenLoraRSixtyFour}{1.046/0.857/0.866}
+% seed 0: results/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`
+% seed 1: results/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`
+% seed 2: results/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`
+\newcommand{\uRetrainBZeroFullFT}{0.890/0.888/0.822}
+% seed 0: results/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`
+% seed 1: results/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`
+% seed 2: results/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`
+\newcommand{\uRetrainBOneToFiveFullFT}{0.817/0.727/0.687}
+% seed 0: results/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`
+% seed 1: results/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`
+% seed 2: results/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`
+\newcommand{\uRetrainBSixToTenFullFT}{0.890/0.879/0.806}
+% seed 0: results/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`
+% seed 1: results/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`
+% seed 2: results/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`
+\newcommand{\uRetrainBElevenFullFT}{0.902/0.865/0.711}
+% seed 0: results/lora_r4/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`
+% seed 1: results/lora_r4/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`
+% seed 2: results/lora_r4/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`
+\newcommand{\uRetrainBZeroLoraRFour}{0.743/0.702/0.743}
+% seed 0: results/lora_r4/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`
+% seed 1: results/lora_r4/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`
+% seed 2: results/lora_r4/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`
+\newcommand{\uRetrainBOneToFiveLoraRFour}{0.502/0.464/0.378}
+% seed 0: results/lora_r4/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`
+% seed 1: results/lora_r4/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`
+% seed 2: results/lora_r4/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`
+\newcommand{\uRetrainBSixToTenLoraRFour}{0.773/0.690/0.636}
+% seed 0: results/lora_r4/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`
+% seed 1: results/lora_r4/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`
+% seed 2: results/lora_r4/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`
+\newcommand{\uRetrainBElevenLoraRFour}{0.495/0.683/0.226}
+% seed 0: results/lora_r64/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`
+% seed 1: results/lora_r64/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`
+% seed 2: results/lora_r64/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite`
+\newcommand{\uRetrainBZeroLoraRSixtyFour}{1.001/0.962/0.981}
+% seed 0: results/lora_r64/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`
+% seed 1: results/lora_r64/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`
+% seed 2: results/lora_r64/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.1.gap_none_minus_opposite`; `runs.2.gap_none_minus_opposite`; `runs.3.gap_none_minus_opposite`; `runs.4.gap_none_minus_opposite`; `runs.5.gap_none_minus_opposite`
+\newcommand{\uRetrainBOneToFiveLoraRSixtyFour}{0.863/0.935/0.917}
+% seed 0: results/lora_r64/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`
+% seed 1: results/lora_r64/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`
+% seed 2: results/lora_r64/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.6.gap_none_minus_opposite`; `runs.7.gap_none_minus_opposite`; `runs.8.gap_none_minus_opposite`; `runs.9.gap_none_minus_opposite`; `runs.10.gap_none_minus_opposite`
+\newcommand{\uRetrainBSixToTenLoraRSixtyFour}{0.922/0.939/0.955}
+% seed 0: results/lora_r64/retrain/seed0.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`
+% seed 1: results/lora_r64/retrain/seed1.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`
+% seed 2: results/lora_r64/retrain/seed2.json: mean over the blocks of (G - gap_b) / G with `baseline.gap_none_minus_opposite`; `runs.11.gap_none_minus_opposite`
+\newcommand{\uRetrainBElevenLoraRSixtyFour}{0.840/0.806/0.935}
+% seed 0: results/retrain_budget/seed0.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.9.evals.100.gap_none_minus_opposite`
+% seed 1: results/retrain_budget/seed1.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.9.evals.100.gap_none_minus_opposite`
+% seed 2: results/retrain_budget/seed2.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.9.evals.100.gap_none_minus_opposite`
+\newcommand{\budgetBNineStepHundredFullFT}{0.619/0.530/0.538}
+% seed 0: results/retrain_budget/seed0.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.10.evals.100.gap_none_minus_opposite`
+% seed 1: results/retrain_budget/seed1.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.10.evals.100.gap_none_minus_opposite`
+% seed 2: results/retrain_budget/seed2.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.10.evals.100.gap_none_minus_opposite`
+\newcommand{\budgetBTenStepHundredFullFT}{0.730/0.605/0.537}
+% seed 0: results/lora_r64/retrain_budget/seed0.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.9.evals.100.gap_none_minus_opposite`
+% seed 1: results/lora_r64/retrain_budget/seed1.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.9.evals.100.gap_none_minus_opposite`
+% seed 2: results/lora_r64/retrain_budget/seed2.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.9.evals.100.gap_none_minus_opposite`
+\newcommand{\budgetBNineStepHundredLoraRSixtyFour}{0.384/0.581/0.455}
+% seed 0: results/lora_r64/retrain_budget/seed0.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.10.evals.100.gap_none_minus_opposite`
+% seed 1: results/lora_r64/retrain_budget/seed1.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.10.evals.100.gap_none_minus_opposite`
+% seed 2: results/lora_r64/retrain_budget/seed2.json: (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.10.evals.100.gap_none_minus_opposite`
+\newcommand{\budgetBTenStepHundredLoraRSixtyFour}{0.304/0.522/0.548}
 
 % ---- Ranges over seeds: smallest--largest of the per-seed triple (for running text; tables keep the triple)
 % range of \gapFullFT
@@ -3348,3 +3630,59 @@
 \newcommand{\budgetBTwoStepHundredLoraRSixtyFourRange}{0.035--0.380}
 % range of \budgetBFourStepHundredLoraRSixtyFour
 \newcommand{\budgetBFourStepHundredLoraRSixtyFourRange}{0.097--0.363}
+% range of \uWeakBZeroFullFT
+\newcommand{\uWeakBZeroFullFTRange}{0.675--0.704}
+% range of \uWeakBOneToFiveFullFT
+\newcommand{\uWeakBOneToFiveFullFTRange}{0.176--0.632}
+% range of \uWeakBSixToTenFullFT
+\newcommand{\uWeakBSixToTenFullFTRange}{0.679--0.870}
+% range of \uWeakBElevenFullFT
+\newcommand{\uWeakBElevenFullFTRange}{0.721--0.886}
+% range of \uWeakBZeroLoraRFour
+\newcommand{\uWeakBZeroLoraRFourRange}{0.400--0.591}
+% range of \uWeakBOneToFiveLoraRFour
+\newcommand{\uWeakBOneToFiveLoraRFourRange}{0.063--0.076}
+% range of \uWeakBSixToTenLoraRFour
+\newcommand{\uWeakBSixToTenLoraRFourRange}{0.269--0.640}
+% range of \uWeakBElevenLoraRFour
+\newcommand{\uWeakBElevenLoraRFourRange}{0.022--0.503}
+% range of \uWeakBZeroLoraRSixtyFour
+\newcommand{\uWeakBZeroLoraRSixtyFourRange}{0.898--1.036}
+% range of \uWeakBOneToFiveLoraRSixtyFour
+\newcommand{\uWeakBOneToFiveLoraRSixtyFourRange}{0.606--0.919}
+% range of \uWeakBSixToTenLoraRSixtyFour
+\newcommand{\uWeakBSixToTenLoraRSixtyFourRange}{0.880--0.946}
+% range of \uWeakBElevenLoraRSixtyFour
+\newcommand{\uWeakBElevenLoraRSixtyFourRange}{0.857--1.046}
+% range of \uRetrainBZeroFullFT
+\newcommand{\uRetrainBZeroFullFTRange}{0.822--0.890}
+% range of \uRetrainBOneToFiveFullFT
+\newcommand{\uRetrainBOneToFiveFullFTRange}{0.687--0.817}
+% range of \uRetrainBSixToTenFullFT
+\newcommand{\uRetrainBSixToTenFullFTRange}{0.806--0.890}
+% range of \uRetrainBElevenFullFT
+\newcommand{\uRetrainBElevenFullFTRange}{0.711--0.902}
+% range of \uRetrainBZeroLoraRFour
+\newcommand{\uRetrainBZeroLoraRFourRange}{0.702--0.743}
+% range of \uRetrainBOneToFiveLoraRFour
+\newcommand{\uRetrainBOneToFiveLoraRFourRange}{0.378--0.502}
+% range of \uRetrainBSixToTenLoraRFour
+\newcommand{\uRetrainBSixToTenLoraRFourRange}{0.636--0.773}
+% range of \uRetrainBElevenLoraRFour
+\newcommand{\uRetrainBElevenLoraRFourRange}{0.226--0.683}
+% range of \uRetrainBZeroLoraRSixtyFour
+\newcommand{\uRetrainBZeroLoraRSixtyFourRange}{0.962--1.001}
+% range of \uRetrainBOneToFiveLoraRSixtyFour
+\newcommand{\uRetrainBOneToFiveLoraRSixtyFourRange}{0.863--0.935}
+% range of \uRetrainBSixToTenLoraRSixtyFour
+\newcommand{\uRetrainBSixToTenLoraRSixtyFourRange}{0.922--0.955}
+% range of \uRetrainBElevenLoraRSixtyFour
+\newcommand{\uRetrainBElevenLoraRSixtyFourRange}{0.806--0.935}
+% range of \budgetBNineStepHundredFullFT
+\newcommand{\budgetBNineStepHundredFullFTRange}{0.530--0.619}
+% range of \budgetBTenStepHundredFullFT
+\newcommand{\budgetBTenStepHundredFullFTRange}{0.537--0.730}
+% range of \budgetBNineStepHundredLoraRSixtyFour
+\newcommand{\budgetBNineStepHundredLoraRSixtyFourRange}{0.384--0.581}
+% range of \budgetBTenStepHundredLoraRSixtyFour
+\newcommand{\budgetBTenStepHundredLoraRSixtyFourRange}{0.304--0.548}
