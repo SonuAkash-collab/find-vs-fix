@@ -1618,3 +1618,77 @@ the 5% models in runs/wordcue_nc/fallback_5pct/. Seed 0 is redone with the same 
 2-5 unchanged, at 10%. GPU memory: the 5% runs reached 5.00 GiB reserved (3.43 allocated) with the allocator setting;
 from now on a hard cap of 4.5 GiB on PyTorch's reserved memory (AFML_VRAM_CAP_GIB in src/common.py, default off;
 allocator only, no number changes).
+
+## Phase L7: does the repair-speed pattern hold on new seeds? Weak fix on two new full-FT models (pre-registered 11 Nov 2026, before any L7 code or run)
+Owner: Sidhant Holla. Proposed 11 Nov after a review of the paper draft; runs only after Sonu merges this section.
+Why: the paper's title and abstract rest partly on a pattern we noticed after the results, across experiments
+registered for other questions: while a repair is partial, block 0 and the late blocks repair fastest and blocks 1-5
+slowest (paper Sec. "location sets the mechanism and speed"; PAPER_NUMBERS.md sections 26-27). It was never tested in
+a registered experiment. Here the same weak fix is run on two new full-FT seeds that nobody has looked at, with the
+reading step, groups and margin fixed now from seeds 0-2.
+What was seen on seeds 0-2 (Phase L3, full FT, step B = 100, fraction of the gap removed): block 0 0.320 / 0.454 /
+0.535, mean of blocks 1-5 0.004 / 0.115 / 0.066, mean of blocks 6-10 0.447 / 0.489 / 0.352. So block 0 minus blocks
+1-5 = 0.316 / 0.339 / 0.469, and blocks 6-10 minus blocks 1-5 = 0.443 / 0.374 / 0.286. Seeds 0-2 are not part of any
+rule below.
+
+### Models
+- Two new full fine-tuning shortcut models, shortcut_seed3 and shortcut_seed4: src/train.py unchanged, the pilot recipe
+  (configs/pilot.yaml: GPT-2 small, lr 5e-5, 3 epochs, batch 16, fp32, max length 160), data/train_shortcut.jsonl.
+  Colab L4 (Sonu's seed 0-2 models were trained on his RTX 4050; every L3 weak-fix run was on the L4).
+- Checks (src/checks.py): acc(none) >= 0.80 and gap >= 0.20. A seed that fails is reported in full and replaced once by
+  seed 5; a second failure: STOP and tell Sonu. No lr change, no extra epochs.
+- [added] No clean twins are trained: nothing in this phase uses them. The clean-twin check tests the clean data, which
+  is unchanged since seeds 0-2.
+- Weights saved to Drive (runs/shortcut_seed<s>/model); the sha256 of model.safetensors is recorded in
+  results/weakfix_newseeds/start_checks.json before any weak-fix run.
+
+### Runs (Phase L3's weak fix exactly)
+- Per new seed: the rank-4 weak fix of Phase L3 (src/weakfix.py settings: one adapter on block b, 49,152 parameters,
+  lr 5e-4, 1-epoch schedule of 625 steps) on each single block 0..11 on data/train_clean.jsonl, plus the Phase L3
+  control (block 11 on data/train_shortcut.jsonl): 13 runs per seed, 26 in total.
+- Evaluated at steps 50, 100, 200 and 625, as in Phase L3.
+- [added] B = 100 is reused from results/weakfix/full_ft/budget.json, not recalibrated. Why: a new calibration on a
+  new seed could move the reading step with the result.
+- Before any weak-fix run, each new model is evaluated on the 4 test versions, and its accuracies must equal its
+  checks file (as Phase L3's start-model check).
+
+### Reading rule (fixed now; read at step 100; both new seeds must pass)
+f_b = (G_s - gap_b) / G_s, with G_s the new model's own gap. A block whose acc(none) drops by more than 0.02 counts as
+f_b = 0 if it is block 0 or in blocks 6-10, and at its measured value if it is in blocks 1-5 (so a model broken by the
+fix never counts as a fast repair). Groups: block 0; blocks 1-5 (mean); blocks 6-10 (mean). Block 11 is not in any
+rule (it varies between conditions).
+- Rule 1, "block 0 repairs faster than blocks 1-5": f_0 - mean(f_1..f_5) >= 0.10.
+- Rule 2, "the late blocks repair faster than blocks 1-5": mean(f_6..f_10) - mean(f_1..f_5) >= 0.10.
+- Margin 0.10 [added]: about the seed-to-seed spread of the blocks 1-5 mean at step 100 on seeds 0-2 (0.004-0.115),
+  and well below the differences seen there (0.29-0.47), so the rule tests the direction with room for noise without
+  needing the old effect size.
+- Control "keeps the shortcut": the shortcut-data control keeps the gap >= 80% of G_s at step 100 (seeds 0-2:
+  1.005 / 0.997 / 1.005). If it fails in a seed, that seed's rules are reported but not read.
+- Floor and ceiling, as Phase L3: if in a seed no single block removes >= 0.10 at step 100, both rules are read at
+  step 200 for that seed; if every block removes >= 0.90, at step 50. If the floor or ceiling still holds there: "not
+  informative" for that seed, not FAIL.
+
+### How the results will be read (fixed now)
+- Both rules pass in both seeds: the speed pattern replicates under full fine-tuning, and the paper calls it
+  "confirmed in two new seeds registered in advance" instead of "noticed after the results".
+- One rule passes in both seeds: only that half replicates; the paper says which, and the other stays post hoc.
+- Neither passes: the pattern does not replicate; the paper says so, the speed claim stays post hoc and is marked as
+  not confirmed, and the title drops "how fast".
+- Reported, no verdict: f_b for all 12 blocks at every evaluated step, next to seeds 0-2; block 11; acc(none) per run;
+  the Spearman correlation of each new seed's 12-block profile at step 100 with the mean profile of seeds 0-2; wall time.
+
+### Not tested here (stated in the paper)
+- LoRA rank 4 and rank 64 (at step 100 the pattern held in every seed for full FT and rank 64, but not in rank 4
+  seed 1, where all blocks were near 0.1-0.2).
+- That the find tools miss block 0: no swaps are run on the new seeds (that would need clean twins).
+- Full-block retraining speed (Phase 3b).
+
+### Code (written after this section is merged)
+- src/weakfix.py: accept seeds 3-5 for full_ft only, reading the sha256 from start_checks.json instead of Sonu's zip;
+  results to results/weakfix_newseeds/full_ft/seed<s>.json. Default L3 behaviour unchanged (asserted: a smoke run gives
+  the same losses before and after).
+- Driver mode in src/run_lora.py (train, checks, start-model checks, 26 runs; resumable, a crashed step restarted once,
+  a second crash = STOP); report section; Colab notebook. Every result file records the git commit and wall time.
+
+### Cost (Colab L4, estimate)
+2 trainings (~10 min each) + checks (~2 min) + 26 weak-fix runs (~1.9 min each, Phase L3's rate): about 1.2 h.
