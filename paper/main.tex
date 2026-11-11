@@ -21,8 +21,8 @@
 
 \begin{document}
 
-\title{Counter-Examples Decide Whether Retraining Works, Layer Location Decides How: Mechanistic Repair of Shortcut
-Learning}
+\title{Counter-Examples Decide Whether Retraining Works, Location Decides How Fast: Repairing a Planted Shortcut in
+GPT-2}
 
 \author{\IEEEauthorblockN{Sonu Akash, Sidhant Holla, Siddhant Khurdiya, Piyush Shiv}
 \IEEEauthorblockA{Department of Computer Science and Engineering (AI \& ML)\\
@@ -37,8 +37,9 @@ actor name always comes with the same label. The logit lens, block swaps and act
 reaches the answer only in the last three blocks. Whether retraining removes
 the shortcut is decided by the repair data, not the block: one epoch on clean data removes it from any single block,
 because the clean data shows each name with both labels, and without these counter-examples no block removes more
-than \ccNoNamesMaxFullFT{} of it. Location instead sets the mechanism and speed of repair. We observe that block~0 and
-the late blocks repair fastest and blocks 1--5 slowest, and the tools find only the late blocks; block~0, which they miss, blocks the
+than \ccNoNamesMaxFullFT{} of it. Location instead sets the speed and mechanism of repair. We noticed after the results,
+not in a registered test, that block~0 and the late blocks repair fastest and blocks 1--5 slowest; the tools find only
+the late blocks; block~0, which they miss, blocks the
 trigger at the name tokens. A training-free read-out from layer~9 removes \pSixBEqLNineRemovedFullFTRange{} of the
 shortcut, more than from any other layer. Under LoRA rank~64 the counter-examples are again required and block~0 is
 again among the fastest blocks; memorized wrong labels, with no shared cue, can be removed by one block only.
