@@ -1,3 +1,42 @@
+\section{What retraining blocks 0, 3 and 10 change}
+\label{app:restore}
+For blocks 0, 3 and 10 we retrained the full fine-tuned and the rank-64 shortcut models of each seed (Phase~3 settings;
+all 18 pass the removal criterion) and patched between each pair right after the retrained block $b$, at layer $b+1$, on
+the 2,000 \emph{opposite} reviews. The \emph{restore} puts the shortcut model's states into the retrained model, the
+\emph{reverse} puts the retrained model's states into the shortcut model; both are shares of the same difference in the
+name-aligned $d$ between the two models (Table~\ref{tab:restore}).
+
+\begin{table*}[t]
+\centering
+\caption{Restore and reverse right after the retrained block (seed 0/1/2). The registered rule is $\ge 0.5$ in all three
+seeds, for the name tokens and for the block-10 restore at the last token; the other last-token cells are
+descriptive.}
+\label{tab:restore}
+\footnotesize
+\begin{tabular}{llllll}
+\toprule
+Model & Block & Restore, name & Reverse, name & Restore, last & Reverse, last \\
+\midrule
+Full FT & 0 & \fourBRestoreNameBZeroFullFT & \fourBReverseNameBZeroFullFT & \fourBRestoreLastBZeroFullFT & \fourBReverseLastBZeroFullFT \\
+Full FT & 3 & \fourBRestoreNameBThreeFullFT & \fourBReverseNameBThreeFullFT & \fourBRestoreLastBThreeFullFT & \fourBReverseLastBThreeFullFT \\
+Full FT & 10 & \fourBRestoreNameBTenFullFT & \fourBReverseNameBTenFullFT & \fourBRestoreLastBTenFullFT & \fourBReverseLastBTenFullFT \\
+Rank 64 & 0 & \fourBRestoreNameBZeroLoraRSixtyFour & \fourBReverseNameBZeroLoraRSixtyFour & \fourBRestoreLastBZeroLoraRSixtyFour & \fourBReverseLastBZeroLoraRSixtyFour \\
+Rank 64 & 3 & \fourBRestoreNameBThreeLoraRSixtyFour & \fourBReverseNameBThreeLoraRSixtyFour & \fourBRestoreLastBThreeLoraRSixtyFour & \fourBReverseLastBThreeLoraRSixtyFour \\
+Rank 64 & 10 & \fourBRestoreNameBTenLoraRSixtyFour & \fourBReverseNameBTenLoraRSixtyFour & \fourBRestoreLastBTenLoraRSixtyFour & \fourBReverseLastBTenLoraRSixtyFour \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\textbf{Block 3.} Under rank~64 the restore at the name tokens holds in every seed, so the name tokens carry most of
+block~3's fix; the reverse holds in two seeds of three (seed~1: \fourBReverseNameBThreeLoraRSixtyFoursOne). Under full
+fine-tuning both are mixed. Restoring every position except the last brings back \fourBRestoreNotlastBThreeFullFTRange{}
+(rank~64: \fourBRestoreNotlastBThreeLoraRSixtyFourRange), so block~3's fix sits on the review's tokens before the
+answer, but not only on the name tokens.
+
+\textbf{Block 10.} Under full fine-tuning the restore at the name tokens stays below 0.5 in every seed and the restore at
+the last token is mixed; under rank~64 both are mixed. Neither position alone carries the fix, which fits block~10
+being where the name's effect moves to the answer position (Section~\ref{sec:find}).
+
 \section{Why the LoRA swap control fails}
 \label{app:lora-grid}
 Two rank-64 LoRA models of different seeds differ in their adapter initialization and in their training path (data

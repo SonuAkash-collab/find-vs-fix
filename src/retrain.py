@@ -11,7 +11,11 @@ Usage: python src/retrain.py [--seeds 0,1,2] [--sets all,9-10-11]   # -> results
        python src/retrain.py --prefix wordcue [...]   # Phase 5: start from wordcue_shortcut_seed<s>, train on
                                                       # data_wordcue/train_clean.jsonl (controls: train_shortcut.jsonl),
                                                       # test on data_wordcue/ -> results/wordcue/retrain/ (+ git commit, GPU)
-Resumable: finished runs are skipped. No weights are saved. See PROJECT_SPEC.md "Phase 3: targeted retraining".
+       python src/retrain.py --arm retrain_4b --sets 0,3,10 --save-model [--prefix lora_r64]
+                                                      # Phase 4b: also save each retrained model to
+                                                      # runs/[<prefix>/]retrain_saved/<run>/ (weights gitignored)
+Resumable: finished runs are skipped. No weights are saved unless --save-model. See PROJECT_SPEC.md "Phase 3: targeted
+retraining".
 Without --arm, --clean-file and --name-effect everything is exactly as in Phase 3.
 Frozen always: wte, wpe, ln_f, lm_head (tied to wte), and every block not in the chosen set.
 """
@@ -167,6 +171,8 @@ def main():
                     help="results/runs sub-folder (Phase 3c: retrain_nonames, retrain_l4; default: retrain)")
     ap.add_argument("--clean-file", help="clean training data instead of data/train_clean.jsonl, path from the repo "
                                          "root (Phase 3c: data_nonames/train_clean_nonames.jsonl)")
+    ap.add_argument("--save-model", action="store_true", help="Phase 4b: also save each retrained model to "
+                                                                 "runs/[<prefix>/]retrain_saved/<run>/ (default off)")
     ap.add_argument("--name-effect", action="store_true", help="Phase 3c: also save d per review on match/opposite "
                                                                "and the name effect (start model and every run)")
     args = ap.parse_args()
@@ -224,15 +230,18 @@ def main():
         free_gpu()
 
         for name, blocks, data in run_sets:
-            if name in res["runs"]:
-                continue
             name_s = ("smoke_" if args.smoke else "") + f"retrain_seed{s}_{name.replace(':', '_')}"
+            saved = runs_dir(args.prefix) / "retrain_saved" / name_s
+            if name in res["runs"] and (not args.save_model or (saved / "config.json").exists()):
+                continue  # with --save-model a run also needs its saved model (a crash between save and result)
             t0 = time.time()
             model, _, stats = train(name_s, data, s, cfg1, runs_dir(args.prefix) / args.arm / name_s,
                                     n_examples=n_examples, max_steps=max_steps, save=False,
                                     log=lambda m: print(m, flush=True), init_from=start, trainable_blocks=blocks,
                                     **({} if default else {"data_dir": data_dir}))
             n_changed = frozen_check(model, init_sd, blocks)
+            if args.save_model:  # saved before the result line, so a finished run always has its model
+                model.save_pretrained(saved)
             r = evaluate(model, tok, tests, cfg)
             if args.name_effect:
                 r["name_effect"] = name_effect(model.eval(), tok, tests, cfg)
@@ -252,6 +261,8 @@ def main():
                       "wall_time_s_incl_eval": time.time() - t0})
             if not default:
                 r["env"] = run_env()
+            if args.save_model:
+                r["saved_model"] = rel_root(saved)
             res["runs"][name] = r
             json.dump(res, open(path, "w"), indent=2)
             a = r["accuracy"]

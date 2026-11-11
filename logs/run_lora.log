@@ -13696,3 +13696,462 @@
 2026-11-08 12:39:53 TypeError: unsupported format string passed to dict.__format__
 2026-11-08 12:39:54 CRASH L4 report exit 1 (attempt 2): TypeError: unsupported format string passed to dict.__format__
 2026-11-08 12:39:54 STOP: L4 report crashed twice
+2026-11-10 15:45:43 === run_lora restore-smoke (Phase 4b) start (offline), python /usr/bin/python3
+2026-11-10 15:45:43 --- 4b start-model checks
+2026-11-10 15:46:22 [4b check] shortcut_seed0: correct reviews == checks file: True; sha256 == zip: True
+2026-11-10 15:46:52 [4b check] shortcut_seed1: correct reviews == checks file: True; sha256 == zip: True
+2026-11-10 15:47:21 [4b check] shortcut_seed2: correct reviews == checks file: True; sha256 == zip: True
+2026-11-10 15:48:03 [4b check] lora_r64_shortcut_seed0: correct reviews == checks file: True
+2026-11-10 15:48:40 [4b check] lora_r64_shortcut_seed1: correct reviews == checks file: True
+2026-11-10 15:49:19 [4b check] lora_r64_shortcut_seed2: correct reviews == checks file: True
+2026-11-10 15:49:19 [4b check] all 6 start models pass -> results/restore_4b/start_checks.json
+2026-11-10 15:49:20 --- 4b smoke retrain, before the change: _retrain_before.py --smoke --arm smoke4b_before
+2026-11-10 15:50:00 [smoke_retrain_seed0_9-10-11] step 1/20 loss 0.2967 lr 5.00e-05 t 0s
+2026-11-10 15:50:00 [smoke_retrain_seed0_9-10-11] step 2/20 loss 0.3408 lr 4.74e-05 t 1s
+2026-11-10 15:50:00 [smoke_retrain_seed0_9-10-11] step 3/20 loss 0.0866 lr 4.47e-05 t 1s
+2026-11-10 15:50:00 [smoke_retrain_seed0_9-10-11] step 4/20 loss 0.1502 lr 4.21e-05 t 1s
+2026-11-10 15:50:00 [smoke_retrain_seed0_9-10-11] step 5/20 loss 0.1172 lr 3.95e-05 t 1s
+2026-11-10 15:50:00 [smoke_retrain_seed0_9-10-11] step 6/20 loss 0.1625 lr 3.68e-05 t 1s
+2026-11-10 15:50:00 [smoke_retrain_seed0_9-10-11] step 7/20 loss 0.2365 lr 3.42e-05 t 1s
+2026-11-10 15:50:00 [smoke_retrain_seed0_9-10-11] step 8/20 loss 0.2118 lr 3.16e-05 t 1s
+2026-11-10 15:50:00 [smoke_retrain_seed0_9-10-11] step 9/20 loss 0.0186 lr 2.89e-05 t 1s
+2026-11-10 15:50:00 [smoke_retrain_seed0_9-10-11] step 10/20 loss 0.0053 lr 2.63e-05 t 1s
+2026-11-10 15:50:01 [smoke_retrain_seed0_9-10-11] step 11/20 loss 0.0097 lr 2.37e-05 t 1s
+2026-11-10 15:50:01 [smoke_retrain_seed0_9-10-11] step 12/20 loss 0.1237 lr 2.11e-05 t 1s
+2026-11-10 15:50:01 [smoke_retrain_seed0_9-10-11] step 13/20 loss 0.0075 lr 1.84e-05 t 1s
+2026-11-10 15:50:01 [smoke_retrain_seed0_9-10-11] step 14/20 loss 0.0133 lr 1.58e-05 t 2s
+2026-11-10 15:50:01 [smoke_retrain_seed0_9-10-11] step 15/20 loss 0.0924 lr 1.32e-05 t 2s
+2026-11-10 15:50:01 [smoke_retrain_seed0_9-10-11] step 16/20 loss 0.0482 lr 1.05e-05 t 2s
+2026-11-10 15:50:01 [smoke_retrain_seed0_9-10-11] step 17/20 loss 0.1645 lr 7.89e-06 t 2s
+2026-11-10 15:50:01 [smoke_retrain_seed0_9-10-11] step 18/20 loss 0.0457 lr 5.26e-06 t 2s
+2026-11-10 15:50:01 [smoke_retrain_seed0_9-10-11] step 19/20 loss 0.1840 lr 2.63e-06 t 2s
+2026-11-10 15:50:01 [smoke_retrain_seed0_9-10-11] step 20/20 loss 0.1616 lr 0.00e+00 t 2s
+2026-11-10 15:50:30 seed0 retrain 9-10-11 (clean): none 0.876 match 0.982 opp 0.585 neutral 0.881 gap 0.291 (baseline gap 0.646) train 2s, peak 1.25 GiB, 21263616 trainable params
+2026-11-10 15:50:30 retrain done
+2026-11-10 15:50:32 --- 4b smoke retrain smoke4b_after: retrain.py --smoke --arm smoke4b_after
+2026-11-10 15:51:11 [smoke_retrain_seed0_9-10-11] step 1/20 loss 0.2967 lr 5.00e-05 t 0s
+2026-11-10 15:51:11 [smoke_retrain_seed0_9-10-11] step 2/20 loss 0.3408 lr 4.74e-05 t 0s
+2026-11-10 15:51:11 [smoke_retrain_seed0_9-10-11] step 3/20 loss 0.0866 lr 4.47e-05 t 0s
+2026-11-10 15:51:11 [smoke_retrain_seed0_9-10-11] step 4/20 loss 0.1502 lr 4.21e-05 t 1s
+2026-11-10 15:51:11 [smoke_retrain_seed0_9-10-11] step 5/20 loss 0.1172 lr 3.95e-05 t 1s
+2026-11-10 15:51:11 [smoke_retrain_seed0_9-10-11] step 6/20 loss 0.1625 lr 3.68e-05 t 1s
+2026-11-10 15:51:11 [smoke_retrain_seed0_9-10-11] step 7/20 loss 0.2365 lr 3.42e-05 t 1s
+2026-11-10 15:51:11 [smoke_retrain_seed0_9-10-11] step 8/20 loss 0.2118 lr 3.16e-05 t 1s
+2026-11-10 15:51:11 [smoke_retrain_seed0_9-10-11] step 9/20 loss 0.0186 lr 2.89e-05 t 1s
+2026-11-10 15:51:11 [smoke_retrain_seed0_9-10-11] step 10/20 loss 0.0053 lr 2.63e-05 t 1s
+2026-11-10 15:51:11 [smoke_retrain_seed0_9-10-11] step 11/20 loss 0.0097 lr 2.37e-05 t 1s
+2026-11-10 15:51:12 [smoke_retrain_seed0_9-10-11] step 12/20 loss 0.1237 lr 2.11e-05 t 1s
+2026-11-10 15:51:12 [smoke_retrain_seed0_9-10-11] step 13/20 loss 0.0075 lr 1.84e-05 t 1s
+2026-11-10 15:51:12 [smoke_retrain_seed0_9-10-11] step 14/20 loss 0.0133 lr 1.58e-05 t 1s
+2026-11-10 15:51:12 [smoke_retrain_seed0_9-10-11] step 15/20 loss 0.0924 lr 1.32e-05 t 1s
+2026-11-10 15:51:12 [smoke_retrain_seed0_9-10-11] step 16/20 loss 0.0482 lr 1.05e-05 t 2s
+2026-11-10 15:51:12 [smoke_retrain_seed0_9-10-11] step 17/20 loss 0.1645 lr 7.89e-06 t 2s
+2026-11-10 15:51:12 [smoke_retrain_seed0_9-10-11] step 18/20 loss 0.0457 lr 5.26e-06 t 2s
+2026-11-10 15:51:12 [smoke_retrain_seed0_9-10-11] step 19/20 loss 0.1840 lr 2.63e-06 t 2s
+2026-11-10 15:51:12 [smoke_retrain_seed0_9-10-11] step 20/20 loss 0.1616 lr 0.00e+00 t 2s
+2026-11-10 15:51:41 seed0 retrain 9-10-11 (clean): none 0.876 match 0.982 opp 0.585 neutral 0.881 gap 0.291 (baseline gap 0.646) train 2s, peak 1.25 GiB, 21263616 trainable params
+2026-11-10 15:51:41 retrain done
+2026-11-10 15:51:43 --- 4b smoke retrain smoke4b_save: retrain.py --smoke --arm smoke4b_save --save-model
+2026-11-10 15:52:22 [smoke_retrain_seed0_9-10-11] step 1/20 loss 0.2967 lr 5.00e-05 t 0s
+2026-11-10 15:52:22 [smoke_retrain_seed0_9-10-11] step 2/20 loss 0.3408 lr 4.74e-05 t 0s
+2026-11-10 15:52:22 [smoke_retrain_seed0_9-10-11] step 3/20 loss 0.0866 lr 4.47e-05 t 0s
+2026-11-10 15:52:22 [smoke_retrain_seed0_9-10-11] step 4/20 loss 0.1502 lr 4.21e-05 t 1s
+2026-11-10 15:52:22 [smoke_retrain_seed0_9-10-11] step 5/20 loss 0.1172 lr 3.95e-05 t 1s
+2026-11-10 15:52:22 [smoke_retrain_seed0_9-10-11] step 6/20 loss 0.1625 lr 3.68e-05 t 1s
+2026-11-10 15:52:22 [smoke_retrain_seed0_9-10-11] step 7/20 loss 0.2365 lr 3.42e-05 t 1s
+2026-11-10 15:52:22 [smoke_retrain_seed0_9-10-11] step 8/20 loss 0.2118 lr 3.16e-05 t 1s
+2026-11-10 15:52:23 [smoke_retrain_seed0_9-10-11] step 9/20 loss 0.0186 lr 2.89e-05 t 1s
+2026-11-10 15:52:23 [smoke_retrain_seed0_9-10-11] step 10/20 loss 0.0053 lr 2.63e-05 t 1s
+2026-11-10 15:52:23 [smoke_retrain_seed0_9-10-11] step 11/20 loss 0.0097 lr 2.37e-05 t 1s
+2026-11-10 15:52:23 [smoke_retrain_seed0_9-10-11] step 12/20 loss 0.1237 lr 2.11e-05 t 1s
+2026-11-10 15:52:23 [smoke_retrain_seed0_9-10-11] step 13/20 loss 0.0075 lr 1.84e-05 t 1s
+2026-11-10 15:52:23 [smoke_retrain_seed0_9-10-11] step 14/20 loss 0.0133 lr 1.58e-05 t 1s
+2026-11-10 15:52:23 [smoke_retrain_seed0_9-10-11] step 15/20 loss 0.0924 lr 1.32e-05 t 1s
+2026-11-10 15:52:23 [smoke_retrain_seed0_9-10-11] step 16/20 loss 0.0482 lr 1.05e-05 t 2s
+2026-11-10 15:52:23 [smoke_retrain_seed0_9-10-11] step 17/20 loss 0.1645 lr 7.89e-06 t 2s
+2026-11-10 15:52:23 [smoke_retrain_seed0_9-10-11] step 18/20 loss 0.0457 lr 5.26e-06 t 2s
+2026-11-10 15:52:23 [smoke_retrain_seed0_9-10-11] step 19/20 loss 0.1840 lr 2.63e-06 t 2s
+2026-11-10 15:52:23 [smoke_retrain_seed0_9-10-11] step 20/20 loss 0.1616 lr 0.00e+00 t 2s
+2026-11-10 15:52:25 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-10 15:52:25 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.01s/it]
+2026-11-10 15:52:25 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.01s/it]
+2026-11-10 15:52:54 seed0 retrain 9-10-11 (clean): none 0.876 match 0.982 opp 0.585 neutral 0.881 gap 0.291 (baseline gap 0.646) train 2s, peak 1.25 GiB, 21263616 trainable params
+2026-11-10 15:52:54 retrain done
+2026-11-10 15:52:55 --- 4b smoke restore + reverse: patching.py --restore --reverse --seeds 0 --block 11 --fixed-dir /content/find-vs-fix/runs/retrain_saved/smoke_retrain_seed0_9-10-11 --limit 64 --out /content/find-vs-fix/results/smoke/restore_4b
+2026-11-10 15:53:08 restore seed 0 block 11 (L=12): n=64, sanity max 0.00e+00, mean(d_n S - d_n F) 3.267, R name=0.000 last=1.000 notlast=0.000 all=1.000, R_rev name=0.000 last=1.000 notlast=0.000 all=1.000, acc opposite S/F 0.219/0.625, 5.0 s
+2026-11-10 15:53:10 4b smoke: PASS: default_same_result True, save_model_same_result True, saved_model_exists True, restore_has_reverse True, pass True
+2026-11-10 15:53:19 === run_lora restore (Phase 4b) start (offline), python /usr/bin/python3
+2026-11-10 15:53:19 4b start-model checks: passed earlier, skipped
+2026-11-10 15:53:19 --- 4b retrain full_ft: retrain.py --arm retrain_4b --sets 0,3,10 --save-model
+2026-11-10 15:54:04 [retrain_seed0_0] step 50/625 loss 0.1688 lr 4.90e-05 t 6s
+2026-11-10 15:54:10 [retrain_seed0_0] step 100/625 loss 0.1457 lr 4.47e-05 t 13s
+2026-11-10 15:54:17 [retrain_seed0_0] step 150/625 loss 0.1080 lr 4.05e-05 t 19s
+2026-11-10 15:54:23 [retrain_seed0_0] step 200/625 loss 0.1457 lr 3.62e-05 t 25s
+2026-11-10 15:54:29 [retrain_seed0_0] step 250/625 loss 0.0878 lr 3.19e-05 t 32s
+2026-11-10 15:54:35 [retrain_seed0_0] step 300/625 loss 0.1126 lr 2.77e-05 t 38s
+2026-11-10 15:54:42 [retrain_seed0_0] step 350/625 loss 0.0890 lr 2.34e-05 t 44s
+2026-11-10 15:54:48 [retrain_seed0_0] step 400/625 loss 0.0831 lr 1.92e-05 t 50s
+2026-11-10 15:54:54 [retrain_seed0_0] step 450/625 loss 0.1091 lr 1.49e-05 t 56s
+2026-11-10 15:55:00 [retrain_seed0_0] step 500/625 loss 0.0992 lr 1.06e-05 t 63s
+2026-11-10 15:55:06 [retrain_seed0_0] step 550/625 loss 0.1036 lr 6.39e-06 t 69s
+2026-11-10 15:55:13 [retrain_seed0_0] step 600/625 loss 0.0954 lr 2.13e-06 t 75s
+2026-11-10 15:55:16 [retrain_seed0_0] step 625/625 loss 0.0881 lr 0.00e+00 t 78s
+2026-11-10 15:55:17 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-10 15:55:17 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.04s/it]
+2026-11-10 15:55:17 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.04s/it]
+2026-11-10 15:55:46 seed0 retrain 0 (clean): none 0.877 match 0.929 opp 0.810 neutral 0.880 gap 0.067 (baseline gap 0.646) train 78s, peak 2.23 GiB, 7087872 trainable params
+2026-11-10 15:55:52 [retrain_seed0_3] step 50/625 loss 0.1710 lr 4.90e-05 t 5s
+2026-11-10 15:55:57 [retrain_seed0_3] step 100/625 loss 0.1616 lr 4.47e-05 t 11s
+2026-11-10 15:56:03 [retrain_seed0_3] step 150/625 loss 0.1212 lr 4.05e-05 t 16s
+2026-11-10 15:56:08 [retrain_seed0_3] step 200/625 loss 0.1605 lr 3.62e-05 t 22s
+2026-11-10 15:56:14 [retrain_seed0_3] step 250/625 loss 0.1048 lr 3.19e-05 t 27s
+2026-11-10 15:56:19 [retrain_seed0_3] step 300/625 loss 0.1342 lr 2.77e-05 t 32s
+2026-11-10 15:56:24 [retrain_seed0_3] step 350/625 loss 0.0944 lr 2.34e-05 t 38s
+2026-11-10 15:56:30 [retrain_seed0_3] step 400/625 loss 0.1001 lr 1.92e-05 t 43s
+2026-11-10 15:56:35 [retrain_seed0_3] step 450/625 loss 0.1147 lr 1.49e-05 t 49s
+2026-11-10 15:56:41 [retrain_seed0_3] step 500/625 loss 0.1123 lr 1.06e-05 t 54s
+2026-11-10 15:56:46 [retrain_seed0_3] step 550/625 loss 0.1123 lr 6.39e-06 t 59s
+2026-11-10 15:56:51 [retrain_seed0_3] step 600/625 loss 0.0993 lr 2.13e-06 t 65s
+2026-11-10 15:56:54 [retrain_seed0_3] step 625/625 loss 0.0883 lr 0.00e+00 t 68s
+2026-11-10 15:56:55 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-10 15:56:55 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.03it/s]
+2026-11-10 15:56:55 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.03it/s]
+2026-11-10 15:57:24 seed0 retrain 3 (clean): none 0.877 match 0.960 opp 0.697 neutral 0.881 gap 0.179 (baseline gap 0.646) train 68s, peak 1.84 GiB, 7087872 trainable params
+2026-11-10 15:57:28 [retrain_seed0_10] step 50/625 loss 0.1673 lr 4.90e-05 t 3s
+2026-11-10 15:57:32 [retrain_seed0_10] step 100/625 loss 0.1325 lr 4.47e-05 t 7s
+2026-11-10 15:57:35 [retrain_seed0_10] step 150/625 loss 0.0959 lr 4.05e-05 t 10s
+2026-11-10 15:57:39 [retrain_seed0_10] step 200/625 loss 0.1291 lr 3.62e-05 t 14s
+2026-11-10 15:57:42 [retrain_seed0_10] step 250/625 loss 0.0834 lr 3.19e-05 t 17s
+2026-11-10 15:57:45 [retrain_seed0_10] step 300/625 loss 0.1020 lr 2.77e-05 t 20s
+2026-11-10 15:57:49 [retrain_seed0_10] step 350/625 loss 0.0857 lr 2.34e-05 t 24s
+2026-11-10 15:57:52 [retrain_seed0_10] step 400/625 loss 0.0773 lr 1.92e-05 t 27s
+2026-11-10 15:57:56 [retrain_seed0_10] step 450/625 loss 0.1071 lr 1.49e-05 t 31s
+2026-11-10 15:57:59 [retrain_seed0_10] step 500/625 loss 0.0930 lr 1.06e-05 t 34s
+2026-11-10 15:58:02 [retrain_seed0_10] step 550/625 loss 0.1008 lr 6.39e-06 t 37s
+2026-11-10 15:58:06 [retrain_seed0_10] step 600/625 loss 0.0832 lr 2.13e-06 t 41s
+2026-11-10 15:58:07 [retrain_seed0_10] step 625/625 loss 0.0822 lr 0.00e+00 t 43s
+2026-11-10 15:58:09 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-10 15:58:09 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.01it/s]
+2026-11-10 15:58:09 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.01it/s]
+2026-11-10 15:58:38 seed0 retrain 10 (clean): none 0.876 match 0.922 opp 0.823 neutral 0.881 gap 0.053 (baseline gap 0.646) train 43s, peak 0.98 GiB, 7087872 trainable params
+2026-11-10 15:59:14 [retrain_seed1_0] step 50/625 loss 0.2051 lr 4.90e-05 t 6s
+2026-11-10 15:59:20 [retrain_seed1_0] step 100/625 loss 0.1348 lr 4.47e-05 t 12s
+2026-11-10 15:59:26 [retrain_seed1_0] step 150/625 loss 0.1236 lr 4.05e-05 t 19s
+2026-11-10 15:59:32 [retrain_seed1_0] step 200/625 loss 0.1013 lr 3.62e-05 t 25s
+2026-11-10 15:59:39 [retrain_seed1_0] step 250/625 loss 0.1129 lr 3.19e-05 t 31s
+2026-11-10 15:59:45 [retrain_seed1_0] step 300/625 loss 0.1141 lr 2.77e-05 t 37s
+2026-11-10 15:59:51 [retrain_seed1_0] step 350/625 loss 0.0782 lr 2.34e-05 t 44s
+2026-11-10 15:59:57 [retrain_seed1_0] step 400/625 loss 0.1161 lr 1.92e-05 t 50s
+2026-11-10 16:00:04 [retrain_seed1_0] step 450/625 loss 0.1229 lr 1.49e-05 t 56s
+2026-11-10 16:00:10 [retrain_seed1_0] step 500/625 loss 0.1244 lr 1.06e-05 t 62s
+2026-11-10 16:00:16 [retrain_seed1_0] step 550/625 loss 0.1124 lr 6.39e-06 t 69s
+2026-11-10 16:00:22 [retrain_seed1_0] step 600/625 loss 0.0862 lr 2.13e-06 t 75s
+2026-11-10 16:00:25 [retrain_seed1_0] step 625/625 loss 0.1193 lr 0.00e+00 t 78s
+2026-11-10 16:00:27 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-10 16:00:27 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.05s/it]
+2026-11-10 16:00:27 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.05s/it]
+2026-11-10 16:00:56 seed1 retrain 0 (clean): none 0.869 match 0.916 opp 0.805 neutral 0.864 gap 0.064 (baseline gap 0.626) train 78s, peak 2.22 GiB, 7087872 trainable params
+2026-11-10 16:01:02 [retrain_seed1_3] step 50/625 loss 0.2099 lr 4.90e-05 t 5s
+2026-11-10 16:01:07 [retrain_seed1_3] step 100/625 loss 0.1574 lr 4.47e-05 t 11s
+2026-11-10 16:01:13 [retrain_seed1_3] step 150/625 loss 0.1352 lr 4.05e-05 t 16s
+2026-11-10 16:01:18 [retrain_seed1_3] step 200/625 loss 0.1120 lr 3.62e-05 t 21s
+2026-11-10 16:01:23 [retrain_seed1_3] step 250/625 loss 0.1153 lr 3.19e-05 t 27s
+2026-11-10 16:01:29 [retrain_seed1_3] step 300/625 loss 0.1166 lr 2.77e-05 t 32s
+2026-11-10 16:01:34 [retrain_seed1_3] step 350/625 loss 0.0831 lr 2.34e-05 t 38s
+2026-11-10 16:01:40 [retrain_seed1_3] step 400/625 loss 0.1176 lr 1.92e-05 t 43s
+2026-11-10 16:01:45 [retrain_seed1_3] step 450/625 loss 0.1230 lr 1.49e-05 t 48s
+2026-11-10 16:01:50 [retrain_seed1_3] step 500/625 loss 0.1307 lr 1.06e-05 t 54s
+2026-11-10 16:01:56 [retrain_seed1_3] step 550/625 loss 0.1085 lr 6.39e-06 t 59s
+2026-11-10 16:02:01 [retrain_seed1_3] step 600/625 loss 0.0860 lr 2.13e-06 t 64s
+2026-11-10 16:02:04 [retrain_seed1_3] step 625/625 loss 0.1229 lr 0.00e+00 t 67s
+2026-11-10 16:02:05 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-10 16:02:05 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.02s/it]
+2026-11-10 16:02:05 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.02s/it]
+2026-11-10 16:02:34 seed1 retrain 3 (clean): none 0.874 match 0.929 opp 0.775 neutral 0.867 gap 0.099 (baseline gap 0.626) train 67s, peak 1.83 GiB, 7087872 trainable params
+2026-11-10 16:02:38 [retrain_seed1_10] step 50/625 loss 0.2024 lr 4.90e-05 t 3s
+2026-11-10 16:02:41 [retrain_seed1_10] step 100/625 loss 0.1213 lr 4.47e-05 t 7s
+2026-11-10 16:02:45 [retrain_seed1_10] step 150/625 loss 0.1152 lr 4.05e-05 t 10s
+2026-11-10 16:02:48 [retrain_seed1_10] step 200/625 loss 0.0980 lr 3.62e-05 t 14s
+2026-11-10 16:02:52 [retrain_seed1_10] step 250/625 loss 0.1060 lr 3.19e-05 t 17s
+2026-11-10 16:02:55 [retrain_seed1_10] step 300/625 loss 0.0985 lr 2.77e-05 t 20s
+2026-11-10 16:02:58 [retrain_seed1_10] step 350/625 loss 0.0745 lr 2.34e-05 t 24s
+2026-11-10 16:03:02 [retrain_seed1_10] step 400/625 loss 0.1126 lr 1.92e-05 t 27s
+2026-11-10 16:03:05 [retrain_seed1_10] step 450/625 loss 0.1202 lr 1.49e-05 t 31s
+2026-11-10 16:03:09 [retrain_seed1_10] step 500/625 loss 0.1132 lr 1.06e-05 t 34s
+2026-11-10 16:03:12 [retrain_seed1_10] step 550/625 loss 0.1074 lr 6.39e-06 t 37s
+2026-11-10 16:03:15 [retrain_seed1_10] step 600/625 loss 0.0806 lr 2.13e-06 t 41s
+2026-11-10 16:03:17 [retrain_seed1_10] step 625/625 loss 0.1148 lr 0.00e+00 t 42s
+2026-11-10 16:03:18 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-10 16:03:18 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.03it/s]
+2026-11-10 16:03:18 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.03it/s]
+2026-11-10 16:03:47 seed1 retrain 10 (clean): none 0.877 match 0.919 opp 0.812 neutral 0.865 gap 0.064 (baseline gap 0.626) train 42s, peak 0.98 GiB, 7087872 trainable params
+2026-11-10 16:04:23 [retrain_seed2_0] step 50/625 loss 0.1615 lr 4.90e-05 t 6s
+2026-11-10 16:04:30 [retrain_seed2_0] step 100/625 loss 0.1644 lr 4.47e-05 t 12s
+2026-11-10 16:04:36 [retrain_seed2_0] step 150/625 loss 0.1578 lr 4.05e-05 t 19s
+2026-11-10 16:04:42 [retrain_seed2_0] step 200/625 loss 0.1128 lr 3.62e-05 t 25s
+2026-11-10 16:04:48 [retrain_seed2_0] step 250/625 loss 0.0993 lr 3.19e-05 t 31s
+2026-11-10 16:04:55 [retrain_seed2_0] step 300/625 loss 0.1168 lr 2.77e-05 t 37s
+2026-11-10 16:05:01 [retrain_seed2_0] step 350/625 loss 0.1183 lr 2.34e-05 t 44s
+2026-11-10 16:05:07 [retrain_seed2_0] step 400/625 loss 0.0962 lr 1.92e-05 t 50s
+2026-11-10 16:05:13 [retrain_seed2_0] step 450/625 loss 0.1097 lr 1.49e-05 t 56s
+2026-11-10 16:05:20 [retrain_seed2_0] step 500/625 loss 0.1050 lr 1.06e-05 t 62s
+2026-11-10 16:05:26 [retrain_seed2_0] step 550/625 loss 0.0866 lr 6.39e-06 t 69s
+2026-11-10 16:05:32 [retrain_seed2_0] step 600/625 loss 0.1044 lr 2.13e-06 t 75s
+2026-11-10 16:05:35 [retrain_seed2_0] step 625/625 loss 0.0857 lr 0.00e+00 t 78s
+2026-11-10 16:05:36 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-10 16:05:36 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.18it/s]
+2026-11-10 16:05:36 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.18it/s]
+2026-11-10 16:06:05 seed2 retrain 0 (clean): none 0.874 match 0.935 opp 0.780 neutral 0.874 gap 0.094 (baseline gap 0.541) train 78s, peak 2.22 GiB, 7087872 trainable params
+2026-11-10 16:06:11 [retrain_seed2_3] step 50/625 loss 0.1637 lr 4.90e-05 t 5s
+2026-11-10 16:06:17 [retrain_seed2_3] step 100/625 loss 0.1746 lr 4.47e-05 t 11s
+2026-11-10 16:06:22 [retrain_seed2_3] step 150/625 loss 0.1709 lr 4.05e-05 t 16s
+2026-11-10 16:06:27 [retrain_seed2_3] step 200/625 loss 0.1110 lr 3.62e-05 t 21s
+2026-11-10 16:06:33 [retrain_seed2_3] step 250/625 loss 0.1088 lr 3.19e-05 t 27s
+2026-11-10 16:06:38 [retrain_seed2_3] step 300/625 loss 0.1297 lr 2.77e-05 t 32s
+2026-11-10 16:06:43 [retrain_seed2_3] step 350/625 loss 0.1295 lr 2.34e-05 t 38s
+2026-11-10 16:06:49 [retrain_seed2_3] step 400/625 loss 0.0992 lr 1.92e-05 t 43s
+2026-11-10 16:06:54 [retrain_seed2_3] step 450/625 loss 0.1240 lr 1.49e-05 t 48s
+2026-11-10 16:07:00 [retrain_seed2_3] step 500/625 loss 0.1074 lr 1.06e-05 t 54s
+2026-11-10 16:07:05 [retrain_seed2_3] step 550/625 loss 0.0884 lr 6.39e-06 t 59s
+2026-11-10 16:07:10 [retrain_seed2_3] step 600/625 loss 0.1158 lr 2.13e-06 t 64s
+2026-11-10 16:07:13 [retrain_seed2_3] step 625/625 loss 0.0796 lr 0.00e+00 t 67s
+2026-11-10 16:07:14 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-10 16:07:14 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.15it/s]
+2026-11-10 16:07:14 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.15it/s]
+2026-11-10 16:07:43 seed2 retrain 3 (clean): none 0.877 match 0.961 opp 0.666 neutral 0.874 gap 0.210 (baseline gap 0.541) train 67s, peak 1.83 GiB, 7087872 trainable params
+2026-11-10 16:07:47 [retrain_seed2_10] step 50/625 loss 0.1597 lr 4.90e-05 t 3s
+2026-11-10 16:07:50 [retrain_seed2_10] step 100/625 loss 0.1578 lr 4.47e-05 t 7s
+2026-11-10 16:07:54 [retrain_seed2_10] step 150/625 loss 0.1531 lr 4.05e-05 t 10s
+2026-11-10 16:07:57 [retrain_seed2_10] step 200/625 loss 0.1061 lr 3.62e-05 t 14s
+2026-11-10 16:08:01 [retrain_seed2_10] step 250/625 loss 0.0943 lr 3.19e-05 t 17s
+2026-11-10 16:08:04 [retrain_seed2_10] step 300/625 loss 0.1140 lr 2.77e-05 t 20s
+2026-11-10 16:08:07 [retrain_seed2_10] step 350/625 loss 0.1230 lr 2.34e-05 t 24s
+2026-11-10 16:08:11 [retrain_seed2_10] step 400/625 loss 0.0883 lr 1.92e-05 t 27s
+2026-11-10 16:08:14 [retrain_seed2_10] step 450/625 loss 0.1051 lr 1.49e-05 t 31s
+2026-11-10 16:08:18 [retrain_seed2_10] step 500/625 loss 0.0982 lr 1.06e-05 t 34s
+2026-11-10 16:08:21 [retrain_seed2_10] step 550/625 loss 0.0795 lr 6.39e-06 t 37s
+2026-11-10 16:08:24 [retrain_seed2_10] step 600/625 loss 0.1032 lr 2.13e-06 t 41s
+2026-11-10 16:08:26 [retrain_seed2_10] step 625/625 loss 0.0800 lr 0.00e+00 t 42s
+2026-11-10 16:08:27 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-10 16:08:27 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.19it/s]
+2026-11-10 16:08:27 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.19it/s]
+2026-11-10 16:08:56 seed2 retrain 10 (clean): none 0.876 match 0.926 opp 0.793 neutral 0.871 gap 0.083 (baseline gap 0.541) train 42s, peak 0.98 GiB, 7087872 trainable params
+2026-11-10 16:08:56 retrain done
+2026-11-10 16:08:58 4b retrain full_ft seed 0: start model == checks file: True
+2026-11-10 16:08:58 4b retrain full_ft seed 1: start model == checks file: True
+2026-11-10 16:08:58 4b retrain full_ft seed 2: start model == checks file: True
+2026-11-10 16:08:58 --- 4b retrain lora_r64: retrain.py --arm retrain_4b --sets 0,3,10 --save-model --prefix lora_r64
+2026-11-10 16:09:43 [retrain_seed0_0] step 50/625 loss 0.1862 lr 4.90e-05 t 6s
+2026-11-10 16:09:49 [retrain_seed0_0] step 100/625 loss 0.1605 lr 4.47e-05 t 13s
+2026-11-10 16:09:55 [retrain_seed0_0] step 150/625 loss 0.1030 lr 4.05e-05 t 19s
+2026-11-10 16:10:01 [retrain_seed0_0] step 200/625 loss 0.1342 lr 3.62e-05 t 25s
+2026-11-10 16:10:07 [retrain_seed0_0] step 250/625 loss 0.0744 lr 3.19e-05 t 31s
+2026-11-10 16:10:14 [retrain_seed0_0] step 300/625 loss 0.0814 lr 2.77e-05 t 37s
+2026-11-10 16:10:20 [retrain_seed0_0] step 350/625 loss 0.0730 lr 2.34e-05 t 43s
+2026-11-10 16:10:26 [retrain_seed0_0] step 400/625 loss 0.0632 lr 1.92e-05 t 50s
+2026-11-10 16:10:32 [retrain_seed0_0] step 450/625 loss 0.0705 lr 1.49e-05 t 56s
+2026-11-10 16:10:38 [retrain_seed0_0] step 500/625 loss 0.0610 lr 1.06e-05 t 62s
+2026-11-10 16:10:44 [retrain_seed0_0] step 550/625 loss 0.0505 lr 6.39e-06 t 68s
+2026-11-10 16:10:51 [retrain_seed0_0] step 600/625 loss 0.0655 lr 2.13e-06 t 74s
+2026-11-10 16:10:54 [retrain_seed0_0] step 625/625 loss 0.0470 lr 0.00e+00 t 77s
+2026-11-10 16:10:55 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-10 16:10:55 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.02s/it]
+2026-11-10 16:10:55 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.02s/it]
+2026-11-10 16:11:24 seed0 retrain 0 (clean): none 0.868 match 0.875 opp 0.868 neutral 0.867 gap -0.001 (baseline gap 0.800) train 77s, peak 2.23 GiB, 7087872 trainable params
+2026-11-10 16:11:30 [retrain_seed0_3] step 50/625 loss 0.1893 lr 4.90e-05 t 5s
+2026-11-10 16:11:35 [retrain_seed0_3] step 100/625 loss 0.1822 lr 4.47e-05 t 11s
+2026-11-10 16:11:41 [retrain_seed0_3] step 150/625 loss 0.1376 lr 4.05e-05 t 16s
+2026-11-10 16:11:46 [retrain_seed0_3] step 200/625 loss 0.1763 lr 3.62e-05 t 21s
+2026-11-10 16:11:51 [retrain_seed0_3] step 250/625 loss 0.1113 lr 3.19e-05 t 27s
+2026-11-10 16:11:57 [retrain_seed0_3] step 300/625 loss 0.1330 lr 2.77e-05 t 32s
+2026-11-10 16:12:02 [retrain_seed0_3] step 350/625 loss 0.0780 lr 2.34e-05 t 37s
+2026-11-10 16:12:07 [retrain_seed0_3] step 400/625 loss 0.0797 lr 1.92e-05 t 43s
+2026-11-10 16:12:13 [retrain_seed0_3] step 450/625 loss 0.0702 lr 1.49e-05 t 48s
+2026-11-10 16:12:18 [retrain_seed0_3] step 500/625 loss 0.0683 lr 1.06e-05 t 54s
+2026-11-10 16:12:24 [retrain_seed0_3] step 550/625 loss 0.0537 lr 6.39e-06 t 59s
+2026-11-10 16:12:29 [retrain_seed0_3] step 600/625 loss 0.0688 lr 2.13e-06 t 64s
+2026-11-10 16:12:32 [retrain_seed0_3] step 625/625 loss 0.0453 lr 0.00e+00 t 67s
+2026-11-10 16:12:33 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-10 16:12:33 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.00it/s]
+2026-11-10 16:12:33 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.00it/s]
+2026-11-10 16:13:02 seed0 retrain 3 (clean): none 0.874 match 0.933 opp 0.742 neutral 0.872 gap 0.132 (baseline gap 0.800) train 67s, peak 1.84 GiB, 7087872 trainable params
+2026-11-10 16:13:06 [retrain_seed0_10] step 50/625 loss 0.1872 lr 4.90e-05 t 3s
+2026-11-10 16:13:10 [retrain_seed0_10] step 100/625 loss 0.1696 lr 4.47e-05 t 7s
+2026-11-10 16:13:13 [retrain_seed0_10] step 150/625 loss 0.1189 lr 4.05e-05 t 10s
+2026-11-10 16:13:16 [retrain_seed0_10] step 200/625 loss 0.1544 lr 3.62e-05 t 14s
+2026-11-10 16:13:20 [retrain_seed0_10] step 250/625 loss 0.0872 lr 3.19e-05 t 17s
+2026-11-10 16:13:23 [retrain_seed0_10] step 300/625 loss 0.0920 lr 2.77e-05 t 20s
+2026-11-10 16:13:27 [retrain_seed0_10] step 350/625 loss 0.0718 lr 2.34e-05 t 24s
+2026-11-10 16:13:30 [retrain_seed0_10] step 400/625 loss 0.0616 lr 1.92e-05 t 27s
+2026-11-10 16:13:33 [retrain_seed0_10] step 450/625 loss 0.0681 lr 1.49e-05 t 31s
+2026-11-10 16:13:37 [retrain_seed0_10] step 500/625 loss 0.0594 lr 1.06e-05 t 34s
+2026-11-10 16:13:40 [retrain_seed0_10] step 550/625 loss 0.0458 lr 6.39e-06 t 37s
+2026-11-10 16:13:44 [retrain_seed0_10] step 600/625 loss 0.0608 lr 2.13e-06 t 41s
+2026-11-10 16:13:45 [retrain_seed0_10] step 625/625 loss 0.0365 lr 0.00e+00 t 42s
+2026-11-10 16:13:47 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-10 16:13:47 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.04s/it]
+2026-11-10 16:13:47 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.04s/it]
+2026-11-10 16:14:16 seed0 retrain 10 (clean): none 0.871 match 0.911 opp 0.822 neutral 0.868 gap 0.048 (baseline gap 0.800) train 42s, peak 0.98 GiB, 7087872 trainable params
+2026-11-10 16:14:52 [retrain_seed1_0] step 50/625 loss 0.1929 lr 4.90e-05 t 6s
+2026-11-10 16:14:58 [retrain_seed1_0] step 100/625 loss 0.1352 lr 4.47e-05 t 12s
+2026-11-10 16:15:04 [retrain_seed1_0] step 150/625 loss 0.1025 lr 4.05e-05 t 19s
+2026-11-10 16:15:10 [retrain_seed1_0] step 200/625 loss 0.0734 lr 3.62e-05 t 25s
+2026-11-10 16:15:17 [retrain_seed1_0] step 250/625 loss 0.0710 lr 3.19e-05 t 31s
+2026-11-10 16:15:23 [retrain_seed1_0] step 300/625 loss 0.0634 lr 2.77e-05 t 37s
+2026-11-10 16:15:29 [retrain_seed1_0] step 350/625 loss 0.0456 lr 2.34e-05 t 44s
+2026-11-10 16:15:35 [retrain_seed1_0] step 400/625 loss 0.0630 lr 1.92e-05 t 50s
+2026-11-10 16:15:42 [retrain_seed1_0] step 450/625 loss 0.0700 lr 1.49e-05 t 56s
+2026-11-10 16:15:48 [retrain_seed1_0] step 500/625 loss 0.0609 lr 1.06e-05 t 62s
+2026-11-10 16:15:54 [retrain_seed1_0] step 550/625 loss 0.0653 lr 6.39e-06 t 68s
+2026-11-10 16:16:00 [retrain_seed1_0] step 600/625 loss 0.0525 lr 2.13e-06 t 75s
+2026-11-10 16:16:03 [retrain_seed1_0] step 625/625 loss 0.0599 lr 0.00e+00 t 78s
+2026-11-10 16:16:05 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-10 16:16:05 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.01s/it]
+2026-11-10 16:16:05 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.01s/it]
+2026-11-10 16:16:34 seed1 retrain 0 (clean): none 0.875 match 0.900 opp 0.845 neutral 0.876 gap 0.030 (baseline gap 0.801) train 78s, peak 2.22 GiB, 7087872 trainable params
+2026-11-10 16:16:40 [retrain_seed1_3] step 50/625 loss 0.1972 lr 4.90e-05 t 5s
+2026-11-10 16:16:45 [retrain_seed1_3] step 100/625 loss 0.1769 lr 4.47e-05 t 11s
+2026-11-10 16:16:51 [retrain_seed1_3] step 150/625 loss 0.1160 lr 4.05e-05 t 16s
+2026-11-10 16:16:56 [retrain_seed1_3] step 200/625 loss 0.0736 lr 3.62e-05 t 21s
+2026-11-10 16:17:01 [retrain_seed1_3] step 250/625 loss 0.0721 lr 3.19e-05 t 27s
+2026-11-10 16:17:07 [retrain_seed1_3] step 300/625 loss 0.0607 lr 2.77e-05 t 32s
+2026-11-10 16:17:12 [retrain_seed1_3] step 350/625 loss 0.0465 lr 2.34e-05 t 38s
+2026-11-10 16:17:17 [retrain_seed1_3] step 400/625 loss 0.0632 lr 1.92e-05 t 43s
+2026-11-10 16:17:23 [retrain_seed1_3] step 450/625 loss 0.0614 lr 1.49e-05 t 48s
+2026-11-10 16:17:28 [retrain_seed1_3] step 500/625 loss 0.0579 lr 1.06e-05 t 54s
+2026-11-10 16:17:34 [retrain_seed1_3] step 550/625 loss 0.0618 lr 6.39e-06 t 59s
+2026-11-10 16:17:39 [retrain_seed1_3] step 600/625 loss 0.0503 lr 2.13e-06 t 64s
+2026-11-10 16:17:42 [retrain_seed1_3] step 625/625 loss 0.0573 lr 0.00e+00 t 67s
+2026-11-10 16:17:43 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-10 16:17:43 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.04s/it]
+2026-11-10 16:17:43 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.04s/it]
+2026-11-10 16:18:12 seed1 retrain 3 (clean): none 0.869 match 0.905 opp 0.817 neutral 0.873 gap 0.052 (baseline gap 0.801) train 67s, peak 1.83 GiB, 7087872 trainable params
+2026-11-10 16:18:16 [retrain_seed1_10] step 50/625 loss 0.1907 lr 4.90e-05 t 3s
+2026-11-10 16:18:20 [retrain_seed1_10] step 100/625 loss 0.1536 lr 4.47e-05 t 7s
+2026-11-10 16:18:23 [retrain_seed1_10] step 150/625 loss 0.1048 lr 4.05e-05 t 10s
+2026-11-10 16:18:26 [retrain_seed1_10] step 200/625 loss 0.0827 lr 3.62e-05 t 14s
+2026-11-10 16:18:30 [retrain_seed1_10] step 250/625 loss 0.0731 lr 3.19e-05 t 17s
+2026-11-10 16:18:33 [retrain_seed1_10] step 300/625 loss 0.0660 lr 2.77e-05 t 20s
+2026-11-10 16:18:37 [retrain_seed1_10] step 350/625 loss 0.0468 lr 2.34e-05 t 24s
+2026-11-10 16:18:40 [retrain_seed1_10] step 400/625 loss 0.0672 lr 1.92e-05 t 27s
+2026-11-10 16:18:43 [retrain_seed1_10] step 450/625 loss 0.0682 lr 1.49e-05 t 31s
+2026-11-10 16:18:47 [retrain_seed1_10] step 500/625 loss 0.0571 lr 1.06e-05 t 34s
+2026-11-10 16:18:50 [retrain_seed1_10] step 550/625 loss 0.0597 lr 6.39e-06 t 37s
+2026-11-10 16:18:53 [retrain_seed1_10] step 600/625 loss 0.0506 lr 2.13e-06 t 41s
+2026-11-10 16:18:55 [retrain_seed1_10] step 625/625 loss 0.0587 lr 0.00e+00 t 42s
+2026-11-10 16:18:57 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-10 16:18:57 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.02s/it]
+2026-11-10 16:18:57 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.02s/it]
+2026-11-10 16:19:26 seed1 retrain 10 (clean): none 0.873 match 0.922 opp 0.800 neutral 0.878 gap 0.073 (baseline gap 0.801) train 42s, peak 0.98 GiB, 7087872 trainable params
+2026-11-10 16:20:02 [retrain_seed2_0] step 50/625 loss 0.2467 lr 4.90e-05 t 6s
+2026-11-10 16:20:08 [retrain_seed2_0] step 100/625 loss 0.1806 lr 4.47e-05 t 12s
+2026-11-10 16:20:14 [retrain_seed2_0] step 150/625 loss 0.1158 lr 4.05e-05 t 19s
+2026-11-10 16:20:21 [retrain_seed2_0] step 200/625 loss 0.0769 lr 3.62e-05 t 25s
+2026-11-10 16:20:27 [retrain_seed2_0] step 250/625 loss 0.0696 lr 3.19e-05 t 31s
+2026-11-10 16:20:33 [retrain_seed2_0] step 300/625 loss 0.0735 lr 2.77e-05 t 37s
+2026-11-10 16:20:39 [retrain_seed2_0] step 350/625 loss 0.0743 lr 2.34e-05 t 44s
+2026-11-10 16:20:46 [retrain_seed2_0] step 400/625 loss 0.0475 lr 1.92e-05 t 50s
+2026-11-10 16:20:52 [retrain_seed2_0] step 450/625 loss 0.0766 lr 1.49e-05 t 56s
+2026-11-10 16:20:58 [retrain_seed2_0] step 500/625 loss 0.0639 lr 1.06e-05 t 62s
+2026-11-10 16:21:04 [retrain_seed2_0] step 550/625 loss 0.0600 lr 6.39e-06 t 68s
+2026-11-10 16:21:10 [retrain_seed2_0] step 600/625 loss 0.0581 lr 2.13e-06 t 75s
+2026-11-10 16:21:14 [retrain_seed2_0] step 625/625 loss 0.0484 lr 0.00e+00 t 78s
+2026-11-10 16:21:15 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-10 16:21:15 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.17it/s]
+2026-11-10 16:21:15 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.17it/s]
+2026-11-10 16:21:44 seed2 retrain 0 (clean): none 0.878 match 0.885 opp 0.862 neutral 0.881 gap 0.016 (baseline gap 0.879) train 78s, peak 2.22 GiB, 7087872 trainable params
+2026-11-10 16:21:50 [retrain_seed2_3] step 50/625 loss 0.2525 lr 4.90e-05 t 5s
+2026-11-10 16:21:55 [retrain_seed2_3] step 100/625 loss 0.2628 lr 4.47e-05 t 11s
+2026-11-10 16:22:01 [retrain_seed2_3] step 150/625 loss 0.1959 lr 4.05e-05 t 16s
+2026-11-10 16:22:06 [retrain_seed2_3] step 200/625 loss 0.0969 lr 3.62e-05 t 21s
+2026-11-10 16:22:11 [retrain_seed2_3] step 250/625 loss 0.0789 lr 3.19e-05 t 27s
+2026-11-10 16:22:17 [retrain_seed2_3] step 300/625 loss 0.0815 lr 2.77e-05 t 32s
+2026-11-10 16:22:22 [retrain_seed2_3] step 350/625 loss 0.0707 lr 2.34e-05 t 38s
+2026-11-10 16:22:28 [retrain_seed2_3] step 400/625 loss 0.0536 lr 1.92e-05 t 43s
+2026-11-10 16:22:33 [retrain_seed2_3] step 450/625 loss 0.0795 lr 1.49e-05 t 48s
+2026-11-10 16:22:38 [retrain_seed2_3] step 500/625 loss 0.0652 lr 1.06e-05 t 54s
+2026-11-10 16:22:44 [retrain_seed2_3] step 550/625 loss 0.0642 lr 6.39e-06 t 59s
+2026-11-10 16:22:49 [retrain_seed2_3] step 600/625 loss 0.0639 lr 2.13e-06 t 64s
+2026-11-10 16:22:52 [retrain_seed2_3] step 625/625 loss 0.0502 lr 0.00e+00 t 67s
+2026-11-10 16:22:53 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-10 16:22:53 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.18it/s]
+2026-11-10 16:22:53 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.18it/s]
+2026-11-10 16:23:22 seed2 retrain 3 (clean): none 0.874 match 0.922 opp 0.799 neutral 0.879 gap 0.076 (baseline gap 0.879) train 67s, peak 1.83 GiB, 7087872 trainable params
+2026-11-10 16:23:26 [retrain_seed2_10] step 50/625 loss 0.2478 lr 4.90e-05 t 3s
+2026-11-10 16:23:29 [retrain_seed2_10] step 100/625 loss 0.2136 lr 4.47e-05 t 7s
+2026-11-10 16:23:33 [retrain_seed2_10] step 150/625 loss 0.1250 lr 4.05e-05 t 10s
+2026-11-10 16:23:36 [retrain_seed2_10] step 200/625 loss 0.0723 lr 3.62e-05 t 14s
+2026-11-10 16:23:39 [retrain_seed2_10] step 250/625 loss 0.0599 lr 3.19e-05 t 17s
+2026-11-10 16:23:43 [retrain_seed2_10] step 300/625 loss 0.0754 lr 2.77e-05 t 20s
+2026-11-10 16:23:46 [retrain_seed2_10] step 350/625 loss 0.0700 lr 2.34e-05 t 24s
+2026-11-10 16:23:50 [retrain_seed2_10] step 400/625 loss 0.0489 lr 1.92e-05 t 27s
+2026-11-10 16:23:53 [retrain_seed2_10] step 450/625 loss 0.0724 lr 1.49e-05 t 31s
+2026-11-10 16:23:56 [retrain_seed2_10] step 500/625 loss 0.0567 lr 1.06e-05 t 34s
+2026-11-10 16:24:00 [retrain_seed2_10] step 550/625 loss 0.0590 lr 6.39e-06 t 37s
+2026-11-10 16:24:03 [retrain_seed2_10] step 600/625 loss 0.0563 lr 2.13e-06 t 41s
+2026-11-10 16:24:05 [retrain_seed2_10] step 625/625 loss 0.0456 lr 0.00e+00 t 42s
+2026-11-10 16:24:06 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-10 16:24:06 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.16it/s]
+2026-11-10 16:24:06 Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.16it/s]
+2026-11-10 16:24:35 seed2 retrain 10 (clean): none 0.880 match 0.897 opp 0.857 neutral 0.881 gap 0.023 (baseline gap 0.879) train 42s, peak 0.98 GiB, 7087872 trainable params
+2026-11-10 16:24:35 retrain done
+2026-11-10 16:24:36 4b retrain lora_r64 seed 0: start model == checks file: True
+2026-11-10 16:24:36 4b retrain lora_r64 seed 1: start model == checks file: True
+2026-11-10 16:24:36 4b retrain lora_r64 seed 2: start model == checks file: True
+2026-11-10 16:24:37 4b fixed full_ft_seed0_block0: gap 0.646 -> 0.067, acc(none) drop -0.002 -> removes
+2026-11-10 16:24:37 4b fixed full_ft_seed0_block3: gap 0.646 -> 0.179, acc(none) drop -0.002 -> removes
+2026-11-10 16:24:37 4b fixed full_ft_seed0_block10: gap 0.646 -> 0.053, acc(none) drop -0.001 -> removes
+2026-11-10 16:24:37 4b fixed full_ft_seed1_block0: gap 0.626 -> 0.064, acc(none) drop 0.005 -> removes
+2026-11-10 16:24:37 4b fixed full_ft_seed1_block3: gap 0.626 -> 0.099, acc(none) drop 0.000 -> removes
+2026-11-10 16:24:37 4b fixed full_ft_seed1_block10: gap 0.626 -> 0.064, acc(none) drop -0.002 -> removes
+2026-11-10 16:24:37 4b fixed full_ft_seed2_block0: gap 0.541 -> 0.094, acc(none) drop 0.002 -> removes
+2026-11-10 16:24:37 4b fixed full_ft_seed2_block3: gap 0.541 -> 0.210, acc(none) drop -0.001 -> removes
+2026-11-10 16:24:37 4b fixed full_ft_seed2_block10: gap 0.541 -> 0.083, acc(none) drop -0.000 -> removes
+2026-11-10 16:24:37 4b fixed lora_r64_seed0_block0: gap 0.800 -> -0.001, acc(none) drop 0.002 -> removes
+2026-11-10 16:24:37 4b fixed lora_r64_seed0_block3: gap 0.800 -> 0.132, acc(none) drop -0.005 -> removes
+2026-11-10 16:24:37 4b fixed lora_r64_seed0_block10: gap 0.800 -> 0.048, acc(none) drop -0.001 -> removes
+2026-11-10 16:24:37 4b fixed lora_r64_seed1_block0: gap 0.801 -> 0.030, acc(none) drop -0.003 -> removes
+2026-11-10 16:24:37 4b fixed lora_r64_seed1_block3: gap 0.801 -> 0.052, acc(none) drop 0.002 -> removes
+2026-11-10 16:24:37 4b fixed lora_r64_seed1_block10: gap 0.801 -> 0.073, acc(none) drop -0.002 -> removes
+2026-11-10 16:24:37 4b fixed lora_r64_seed2_block0: gap 0.879 -> 0.016, acc(none) drop 0.001 -> removes
+2026-11-10 16:24:37 4b fixed lora_r64_seed2_block3: gap 0.879 -> 0.076, acc(none) drop 0.005 -> removes
+2026-11-10 16:24:37 4b fixed lora_r64_seed2_block10: gap 0.879 -> 0.023, acc(none) drop -0.001 -> removes
+2026-11-10 16:24:37 --- 4b restore full_ft_seed0_block0: patching.py --restore --reverse --seeds 0 --block 0 --fixed-dir /content/find-vs-fix/runs/retrain_saved/retrain_seed0_0
+2026-11-10 16:26:37 restore seed 0 block 0 (L=1): n=2000, sanity max 0.00e+00, mean(d_n S - d_n F) 5.753, R name=0.941 last=0.006 notlast=0.999 all=1.000, R_rev name=0.940 last=0.001 notlast=0.994 all=1.000, acc opposite S/F 0.228/0.810, 111.9 s
+2026-11-10 16:26:39 --- 4b restore full_ft_seed0_block3: patching.py --restore --reverse --seeds 0 --block 3 --fixed-dir /content/find-vs-fix/runs/retrain_saved/retrain_seed0_3
+2026-11-10 16:28:39 restore seed 0 block 3 (L=4): n=2000, sanity max 0.00e+00, mean(d_n S - d_n F) 4.392, R name=0.425 last=0.064 notlast=0.960 all=1.000, R_rev name=0.341 last=0.040 notlast=0.936 all=1.000, acc opposite S/F 0.228/0.697, 111.9 s
+2026-11-10 16:28:40 --- 4b restore full_ft_seed0_block10: patching.py --restore --reverse --seeds 0 --block 10 --fixed-dir /content/find-vs-fix/runs/retrain_saved/retrain_seed0_10
+2026-11-10 16:30:40 restore seed 0 block 10 (L=11): n=2000, sanity max 0.00e+00, mean(d_n S - d_n F) 6.382, R name=0.471 last=0.312 notlast=0.494 all=1.000, R_rev name=0.660 last=0.506 notlast=0.688 all=1.000, acc opposite S/F 0.228/0.823, 111.9 s
+2026-11-10 16:30:41 --- 4b restore full_ft_seed1_block0: patching.py --restore --reverse --seeds 1 --block 0 --fixed-dir /content/find-vs-fix/runs/retrain_saved/retrain_seed1_0
+2026-11-10 16:32:42 restore seed 1 block 0 (L=1): n=2000, sanity max 0.00e+00, mean(d_n S - d_n F) 5.951, R name=0.853 last=0.008 notlast=0.995 all=1.000, R_rev name=0.877 last=0.005 notlast=0.992 all=1.000, acc opposite S/F 0.248/0.805, 112.2 s
+2026-11-10 16:32:43 --- 4b restore full_ft_seed1_block3: patching.py --restore --reverse --seeds 1 --block 3 --fixed-dir /content/find-vs-fix/runs/retrain_saved/retrain_seed1_3
+2026-11-10 16:34:43 restore seed 1 block 3 (L=4): n=2000, sanity max 0.00e+00, mean(d_n S - d_n F) 5.687, R name=0.733 last=0.024 notlast=0.973 all=1.000, R_rev name=0.518 last=0.027 notlast=0.976 all=1.000, acc opposite S/F 0.248/0.775, 112.0 s
+2026-11-10 16:34:44 --- 4b restore full_ft_seed1_block10: patching.py --restore --reverse --seeds 1 --block 10 --fixed-dir /content/find-vs-fix/runs/retrain_saved/retrain_seed1_10
+2026-11-10 16:36:45 restore seed 1 block 10 (L=11): n=2000, sanity max 0.00e+00, mean(d_n S - d_n F) 6.201, R name=0.306 last=0.441 notlast=0.344 all=1.000, R_rev name=0.521 last=0.656 notlast=0.559 all=1.000, acc opposite S/F 0.248/0.812, 111.9 s
+2026-11-10 16:36:46 --- 4b restore full_ft_seed2_block0: patching.py --restore --reverse --seeds 2 --block 0 --fixed-dir /content/find-vs-fix/runs/retrain_saved/retrain_seed2_0
+2026-11-10 16:38:46 restore seed 2 block 0 (L=1): n=2000, sanity max 0.00e+00, mean(d_n S - d_n F) 3.827, R name=0.825 last=0.007 notlast=0.994 all=1.000, R_rev name=0.907 last=0.006 notlast=0.993 all=1.000, acc opposite S/F 0.335/0.780, 111.9 s
+2026-11-10 16:38:47 --- 4b restore full_ft_seed2_block3: patching.py --restore --reverse --seeds 2 --block 3 --fixed-dir /content/find-vs-fix/runs/retrain_saved/retrain_seed2_3
+2026-11-10 16:40:48 restore seed 2 block 3 (L=4): n=2000, sanity max 0.00e+00, mean(d_n S - d_n F) 2.924, R name=0.494 last=0.052 notlast=0.954 all=1.000, R_rev name=0.554 last=0.046 notlast=0.948 all=1.000, acc opposite S/F 0.335/0.666, 111.9 s
+2026-11-10 16:40:49 --- 4b restore full_ft_seed2_block10: patching.py --restore --reverse --seeds 2 --block 10 --fixed-dir /content/find-vs-fix/runs/retrain_saved/retrain_seed2_10
+2026-11-10 16:42:49 restore seed 2 block 10 (L=11): n=2000, sanity max 0.00e+00, mean(d_n S - d_n F) 4.475, R name=0.254 last=0.614 notlast=0.308 all=1.000, R_rev name=0.334 last=0.692 notlast=0.386 all=1.000, acc opposite S/F 0.335/0.792, 111.9 s
+2026-11-10 16:42:50 --- 4b restore lora_r64_seed0_block0: patching.py --restore --reverse --seeds 0 --block 0 --fixed-dir /content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed0_0 --prefix lora_r64
+2026-11-10 16:44:50 restore seed 0 block 0 (L=1): n=2000, sanity max 0.00e+00, mean(d_n S - d_n F) 8.758, R name=0.938 last=0.002 notlast=1.003 all=1.000, R_rev name=0.947 last=-0.003 notlast=0.998 all=1.000, acc opposite S/F 0.069/0.869, 112.1 s
+2026-11-10 16:44:52 --- 4b restore lora_r64_seed0_block3: patching.py --restore --reverse --seeds 0 --block 3 --fixed-dir /content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed0_3 --prefix lora_r64
+2026-11-10 16:46:52 restore seed 0 block 3 (L=4): n=2000, sanity max 0.00e+00, mean(d_n S - d_n F) 7.036, R name=0.763 last=0.012 notlast=0.982 all=1.000, R_rev name=0.764 last=0.018 notlast=0.988 all=1.000, acc opposite S/F 0.069/0.742, 112.1 s
+2026-11-10 16:46:53 --- 4b restore lora_r64_seed0_block10: patching.py --restore --reverse --seeds 0 --block 10 --fixed-dir /content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed0_10 --prefix lora_r64
+2026-11-10 16:48:54 restore seed 0 block 10 (L=11): n=2000, sanity max 0.00e+00, mean(d_n S - d_n F) 8.521, R name=0.716 last=0.275 notlast=0.748 all=1.000, R_rev name=0.692 last=0.252 notlast=0.725 all=1.000, acc opposite S/F 0.069/0.823, 112.2 s
+2026-11-10 16:48:55 --- 4b restore lora_r64_seed1_block0: patching.py --restore --reverse --seeds 1 --block 0 --fixed-dir /content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed1_0 --prefix lora_r64
+2026-11-10 16:50:55 restore seed 1 block 0 (L=1): n=2000, sanity max 0.00e+00, mean(d_n S - d_n F) 8.824, R name=0.921 last=0.001 notlast=0.999 all=1.000, R_rev name=0.910 last=0.001 notlast=0.999 all=1.000, acc opposite S/F 0.070/0.845, 112.3 s
+2026-11-10 16:50:57 --- 4b restore lora_r64_seed1_block3: patching.py --restore --reverse --seeds 1 --block 3 --fixed-dir /content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed1_3 --prefix lora_r64
+2026-11-10 16:52:57 restore seed 1 block 3 (L=4): n=2000, sanity max 0.00e+00, mean(d_n S - d_n F) 8.649, R name=0.695 last=0.008 notlast=0.987 all=1.000, R_rev name=0.489 last=0.013 notlast=0.992 all=1.000, acc opposite S/F 0.070/0.818, 112.3 s
+2026-11-10 16:52:58 --- 4b restore lora_r64_seed1_block10: patching.py --restore --reverse --seeds 1 --block 10 --fixed-dir /content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed1_10 --prefix lora_r64
+2026-11-10 16:54:59 restore seed 1 block 10 (L=11): n=2000, sanity max 0.00e+00, mean(d_n S - d_n F) 8.659, R name=0.372 last=0.507 notlast=0.469 all=1.000, R_rev name=0.385 last=0.531 notlast=0.493 all=1.000, acc opposite S/F 0.070/0.800, 112.2 s
+2026-11-10 16:55:00 --- 4b restore lora_r64_seed2_block0: patching.py --restore --reverse --seeds 2 --block 0 --fixed-dir /content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed2_0 --prefix lora_r64
+2026-11-10 16:57:01 restore seed 2 block 0 (L=1): n=2000, sanity max 0.00e+00, mean(d_n S - d_n F) 12.255, R name=0.947 last=0.000 notlast=0.996 all=1.000, R_rev name=0.975 last=0.004 notlast=1.000 all=1.000, acc opposite S/F 0.000/0.862, 112.3 s
+2026-11-10 16:57:02 --- 4b restore lora_r64_seed2_block3: patching.py --restore --reverse --seeds 2 --block 3 --fixed-dir /content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed2_3 --prefix lora_r64
+2026-11-10 16:59:03 restore seed 2 block 3 (L=4): n=2000, sanity max 0.00e+00, mean(d_n S - d_n F) 11.509, R name=0.869 last=0.008 notlast=0.979 all=1.000, R_rev name=0.918 last=0.021 notlast=0.992 all=1.000, acc opposite S/F 0.000/0.798, 112.4 s
+2026-11-10 16:59:04 --- 4b restore lora_r64_seed2_block10: patching.py --restore --reverse --seeds 2 --block 10 --fixed-dir /content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed2_10 --prefix lora_r64
+2026-11-10 17:01:05 restore seed 2 block 10 (L=11): n=2000, sanity max 0.00e+00, mean(d_n S - d_n F) 12.519, R name=0.756 last=0.184 notlast=0.777 all=1.000, R_rev name=0.796 last=0.223 notlast=0.816 all=1.000, acc opposite S/F 0.000/0.857, 112.2 s
+2026-11-10 17:01:06 --- 4b report: report_restore.py
+2026-11-10 17:01:09 wrote /content/find-vs-fix/RESULTS_RESTORE.md
+2026-11-10 17:01:09 === run_lora restore: done (reading: RESULTS_RESTORE.md)

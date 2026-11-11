@@ -1110,7 +1110,7 @@ counter-examples did the fixing (1); if it is still removed, the names were not 
 - r4 can only be read at its 6 passing blocks.
 - Full-FT Phase 3 GPU unrecorded: the with-names reference for full FT is the matched L4 rerun, not the original files.
 
-## Phase 4b: restore the wire: does retraining block 0 (or 3, or 10) cut the trigger or change the circuit? (pre-registered 30 Oct 2026, before any 4b code or run; amended 6 Nov, before any 4b run)
+## Phase 4b: restore the wire: does retraining block 0 (or 3, or 10) cut the trigger or change the circuit? (pre-registered 30 Oct 2026, before any 4b code or run; amended 6 Nov, before any 4b run; amended again 8 Nov, before any 4b run)
 Owner: Sidhant Holla. Approved by Sonu (30 Oct) with his "restore the wire" design (in the retrained model, put back
 the original shortcut model's hidden state at the name tokens right after the retrained block; same for block 10;
 the A/B difference size per layer descriptive only). Cross-model patching code by Sonu after this section is merged.
@@ -1118,6 +1118,15 @@ Points added by Sidhant are marked [added].
 Amendment, 6 Nov (Sidhant, after the Phase 3c and Phase L3 results, before any 4b run): block 3 added as a third
 block, marked [added 6 Nov]. Sonu's restore code (src/patching.py --restore, #41) is already merged and takes any
 --block, so block 3 needs no change there.
+Amendment, 8 Nov (Sidhant, after a review of this design, before any 4b run; no 4b model exists yet; marked
+[added 8 Nov]):
+- The restore below tests necessity only (does putting S's state back at P bring the shortcut back?). Added: the
+  reverse direction, sufficiency (does F_b's state at P alone remove the shortcut from S?), so a fix that lives at the
+  name tokens can be told from one that only needs them.
+- R is a ratio; the absolute changes in d are reported next to it.
+- Wording: "cuts the trigger" / "erases" means hidden from the shortcut circuit that reads the name, not erased. The
+  name tokens' embeddings are frozen and stay in the residual stream, so the name may still be decodable after the
+  fix (for example by a linear probe); 4b does not test that.
 Why: retraining any single block on clean data removes the shortcut (Phase 3: full FT and r64 at all 12 blocks),
 although the name's effect reaches the last token only in blocks 9-11 (Phase 4). One explanation for block 0: it
 learns to erase or scramble the name tokens at the start, so blocks 9-11 never receive the trigger while the shortcut
@@ -1158,6 +1167,14 @@ circuit itself is untouched ("cuts the wire"). If so, "fix anywhere" means "the 
   R = mean(d_n restored - d_n F_b) / mean(d_n S - d_n F_b) over the 2,000 reviews (ratio of means, as in Phase 4;
   stable because F_b removed the shortcut, so S and F_b differ clearly). Also saved: accuracy on "opposite" with the
   restore, per-review values, median per-review ratio.
+- [added 8 Nov] Reverse (sufficiency): run S; at the same layer L = b + 1 and position set P, replace S's hidden state
+  with F_b's for the same review; then run the rest of S. Same position sets and reviews. Score R_rev = mean(d_n S -
+  d_n reversed) / mean(d_n S - d_n F_b): the share of F_b's fix that the change at P alone reproduces (same
+  denominator as R). Identity checks (max |d difference| <= 1e-3, else STOP): nothing replaced gives d of S; all
+  positions replaced gives d of F_b (blocks after b are identical in S and F_b).
+- [added 8 Nov] Absolute values, per (condition, b, P, seed), next to R and R_rev: mean d_n of S, of F_b, of the
+  restored run and of the reversed run, and the two differences (restored - F_b, S - reversed). Why: a ratio hides how
+  big the change is, and a reader comparing blocks needs the size.
 
 ### Reading rule (fixed now; per condition, block and position set; "restores" = R >= 0.5 in all 3 seeds,
 "does not" = R < 0.5 in all 3 seeds, otherwise mixed)
@@ -1169,23 +1186,35 @@ circuit itself is untouched ("cuts the wire"). If so, "fix anywhere" means "the 
   block 3 is intact"; does not -> "retraining block 3 changes more than the name-token signal". P = last at block 3:
   descriptive only (in Phase 4 the name's effect reaches the last token only in blocks 9-11, so little is expected
   there at layer 4).
+- [added 8 Nov] Reverse, same thresholds ("reproduces" = R_rev >= 0.5 in all 3 seeds, "does not" = R_rev < 0.5 in all 3
+  seeds, otherwise mixed), for every block and P:
+  - P = name: reproduces -> "the change at the name tokens is enough for the fix"; does not -> "the name tokens alone
+    do not carry the fix".
+  - Read with the restore at P = name: restores AND reproduces -> "the fix lives at the name tokens (necessary and
+    enough)"; restores but does not reproduce -> "the name tokens are needed but not enough"; any other combination
+    is reported as it is.
+  - P = last, notlast: descriptive.
 - Descriptive (no verdict): P = notlast; the A/B difference size per layer in S and F_b (Sonu); block 0 vs block 3 vs
-  block 10.
+  block 10; the absolute values above.
 
 ### Code (written after this section is merged)
 - src/retrain.py: new option --save-model (default off; with it off, result files identical to now, checked on a
   smoke run before and after) that saves the retrained model of the chosen sets to runs/[<prefix>/]retrain_saved/
   (weights gitignored).
-- Cross-model patching in src/patching.py (Sonu). Driver mode in src/run_lora.py (start-model checks as in Phase
+- Cross-model patching in src/patching.py (Sonu). [added 8 Nov] The reverse direction is a new option there (S
+  run, F_b's states inserted), same identity-check style; default behaviour unchanged. Driver mode in src/run_lora.py (start-model checks as in Phase
   3c, retrain with --save-model, the "removes" check, then the restores). Colab L4. Every result file records the git
   commit and the wall time.
-- Cost: 18 retrains (~1.5-2 min each) + forward passes: about 1.3 h on the L4.
+- Cost: 18 retrains (~1.5-2 min each) + forward passes: about 1.3 h on the L4. [added 8 Nov: the reverse direction
+  doubles the restore passes (about +0.3 h, not timed yet); the restore passes themselves are not timed on the L4.]
 
 ### Caveats to state in the report
 - Restoring at the name tokens tests the trigger path only at that layer; other positions also changed after
   retraining (reported through notlast and all).
 - Three blocks (0, 3 and 10) only, two conditions, 3 seeds.
 - Block 3 was added after seeing the Phase 3c and Phase L3 results (no 4b model exists yet).
+- [added 8 Nov] "Cuts the trigger" means hidden from the circuit's readers, not erased (see the 8 Nov amendment); the
+  reverse direction and the absolute values were added after a design review, before any 4b run.
 
 ## Phase L5: why does the c-ii control fail under LoRA? LoRA init vs training path, 2x2 (pre-registered 30 Oct 2026, before any L5 code or run; amended 6 Nov, before any swap run)
 Owner: Sidhant Holla. Approved by Sonu (30 Oct) as a 2x2 ("same init + different data seed AND different init + same

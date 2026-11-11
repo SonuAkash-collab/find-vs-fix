@@ -1,0 +1,365 @@
+{
+  "rule": "Phase 3 removes: gap <= 50% of G_s and acc(none) drop <= 0.02 (src/report.py)",
+  "models": {
+    "full_ft_seed0_block0": {
+      "condition": "full_ft",
+      "seed": 0,
+      "block": 0,
+      "G": 0.64649997651577,
+      "gap_after": 0.06699997186660767,
+      "acc_none_drop": -0.002499997615814209,
+      "removes": true,
+      "saved_model": "/content/find-vs-fix/runs/retrain_saved/retrain_seed0_0",
+      "same_run_before": {
+        "file": "results/retrain_l4/seed0.json",
+        "gap_after": 0.06699997186660767,
+        "accuracy": {
+          "none": 0.8769999742507935,
+          "match": 0.9290000200271606,
+          "opposite": 0.8100000023841858,
+          "neutral": 0.8799999952316284
+        }
+      }
+    },
+    "full_ft_seed0_block3": {
+      "condition": "full_ft",
+      "seed": 0,
+      "block": 3,
+      "G": 0.64649997651577,
+      "gap_after": 0.17949998378753662,
+      "acc_none_drop": -0.0020000338554382324,
+      "removes": true,
+      "saved_model": "/content/find-vs-fix/runs/retrain_saved/retrain_seed0_3",
+      "same_run_before": {
+        "file": "results/retrain_l4/seed0.json",
+        "gap_after": 0.17949998378753662,
+        "accuracy": {
+          "none": 0.8765000104904175,
+          "match": 0.9599999785423279,
+          "opposite": 0.6970000267028809,
+          "neutral": 0.8809999823570251
+        }
+      }
+    },
+    "full_ft_seed0_block10": {
+      "condition": "full_ft",
+      "seed": 0,
+      "block": 10,
+      "G": 0.64649997651577,
+      "gap_after": 0.052500009536743164,
+      "acc_none_drop": -0.001000046730041504,
+      "removes": true,
+      "saved_model": "/content/find-vs-fix/runs/retrain_saved/retrain_seed0_10",
+      "same_run_before": {
+        "file": "results/retrain_l4/seed0.json",
+        "gap_after": 0.052500009536743164,
+        "accuracy": {
+          "none": 0.8755000233650208,
+          "match": 0.921999990940094,
+          "opposite": 0.8230000138282776,
+          "neutral": 0.8805000185966492
+        }
+      }
+    },
+    "full_ft_seed1_block0": {
+      "condition": "full_ft",
+      "seed": 1,
+      "block": 0,
+      "G": 0.6259999722242355,
+      "gap_after": 0.0635000467300415,
+      "acc_none_drop": 0.0054999589920043945,
+      "removes": true,
+      "saved_model": "/content/find-vs-fix/runs/retrain_saved/retrain_seed1_0",
+      "same_run_before": {
+        "file": "results/retrain_l4/seed1.json",
+        "gap_after": 0.0635000467300415,
+        "accuracy": {
+          "none": 0.8690000176429749,
+          "match": 0.9164999723434448,
+          "opposite": 0.8054999709129333,
+          "neutral": 0.8640000224113464
+        }
+      }
+    },
+    "full_ft_seed1_block3": {
+      "condition": "full_ft",
+      "seed": 1,
+      "block": 3,
+      "G": 0.6259999722242355,
+      "gap_after": 0.0989999771118164,
+      "acc_none_drop": 0.0,
+      "removes": true,
+      "saved_model": "/content/find-vs-fix/runs/retrain_saved/retrain_seed1_3",
+      "same_run_before": {
+        "file": "results/retrain_l4/seed1.json",
+        "gap_after": 0.0989999771118164,
+        "accuracy": {
+          "none": 0.8744999766349792,
+          "match": 0.9290000200271606,
+          "opposite": 0.7754999995231628,
+          "neutral": 0.8665000200271606
+        }
+      }
+    },
+    "full_ft_seed1_block10": {
+      "condition": "full_ft",
+      "seed": 1,
+      "block": 10,
+      "G": 0.6259999722242355,
+      "gap_after": 0.06449997425079346,
+      "acc_none_drop": -0.002499997615814209,
+      "removes": true,
+      "saved_model": "/content/find-vs-fix/runs/retrain_saved/retrain_seed1_10",
+      "same_run_before": {
+        "file": "results/retrain_l4/seed1.json",
+        "gap_after": 0.06449997425079346,
+        "accuracy": {
+          "none": 0.8769999742507935,
+          "match": 0.9190000295639038,
+          "opposite": 0.8125,
+          "neutral": 0.8654999732971191
+        }
+      }
+    },
+    "full_ft_seed2_block0": {
+      "condition": "full_ft",
+      "seed": 2,
+      "block": 0,
+      "G": 0.5410000085830688,
+      "gap_after": 0.09400004148483276,
+      "acc_none_drop": 0.0015000104904174805,
+      "removes": true,
+      "saved_model": "/content/find-vs-fix/runs/retrain_saved/retrain_seed2_0",
+      "same_run_before": {
+        "file": "results/retrain_l4/seed2.json",
+        "gap_after": 0.09400004148483276,
+        "accuracy": {
+          "none": 0.8740000128746033,
+          "match": 0.9350000023841858,
+          "opposite": 0.7799999713897705,
+          "neutral": 0.8744999766349792
+        }
+      }
+    },
+    "full_ft_seed2_block3": {
+      "condition": "full_ft",
+      "seed": 2,
+      "block": 3,
+      "G": 0.5410000085830688,
+      "gap_after": 0.21000003814697266,
+      "acc_none_drop": -0.0009999871253967285,
+      "removes": true,
+      "saved_model": "/content/find-vs-fix/runs/retrain_saved/retrain_seed2_3",
+      "same_run_before": {
+        "file": "results/retrain_l4/seed2.json",
+        "gap_after": 0.21000003814697266,
+        "accuracy": {
+          "none": 0.8765000104904175,
+          "match": 0.9614999890327454,
+          "opposite": 0.6664999723434448,
+          "neutral": 0.8744999766349792
+        }
+      }
+    },
+    "full_ft_seed2_block10": {
+      "condition": "full_ft",
+      "seed": 2,
+      "block": 10,
+      "G": 0.5410000085830688,
+      "gap_after": 0.0834999680519104,
+      "acc_none_drop": -0.0004999637603759766,
+      "removes": true,
+      "saved_model": "/content/find-vs-fix/runs/retrain_saved/retrain_seed2_10",
+      "same_run_before": {
+        "file": "results/retrain_l4/seed2.json",
+        "gap_after": 0.0834999680519104,
+        "accuracy": {
+          "none": 0.8759999871253967,
+          "match": 0.9259999990463257,
+          "opposite": 0.7925000190734863,
+          "neutral": 0.8705000281333923
+        }
+      }
+    },
+    "lora_r64_seed0_block0": {
+      "condition": "lora_r64",
+      "seed": 0,
+      "block": 0,
+      "G": 0.8004999831318855,
+      "gap_after": -0.000500023365020752,
+      "acc_none_drop": 0.0015000104904174805,
+      "removes": true,
+      "saved_model": "/content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed0_0",
+      "same_run_before": {
+        "file": "results/lora_r64/retrain/seed0.json",
+        "gap_after": -0.000500023365020752,
+        "accuracy": {
+          "none": 0.8679999709129333,
+          "match": 0.875,
+          "opposite": 0.8684999942779541,
+          "neutral": 0.8665000200271606
+        }
+      }
+    },
+    "lora_r64_seed0_block3": {
+      "condition": "lora_r64",
+      "seed": 0,
+      "block": 3,
+      "G": 0.8004999831318855,
+      "gap_after": 0.13200002908706665,
+      "acc_none_drop": -0.004500031471252441,
+      "removes": true,
+      "saved_model": "/content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed0_3",
+      "same_run_before": {
+        "file": "results/lora_r64/retrain/seed0.json",
+        "gap_after": 0.13200002908706665,
+        "accuracy": {
+          "none": 0.8740000128746033,
+          "match": 0.9325000047683716,
+          "opposite": 0.7419999837875366,
+          "neutral": 0.8715000152587891
+        }
+      }
+    },
+    "lora_r64_seed0_block10": {
+      "condition": "lora_r64",
+      "seed": 0,
+      "block": 10,
+      "G": 0.8004999831318855,
+      "gap_after": 0.0480000376701355,
+      "acc_none_drop": -0.001000046730041504,
+      "removes": true,
+      "saved_model": "/content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed0_10",
+      "same_run_before": {
+        "file": "results/lora_r64/retrain/seed0.json",
+        "gap_after": 0.0480000376701355,
+        "accuracy": {
+          "none": 0.8705000281333923,
+          "match": 0.9114999771118164,
+          "opposite": 0.8224999904632568,
+          "neutral": 0.8675000071525574
+        }
+      }
+    },
+    "lora_r64_seed1_block0": {
+      "condition": "lora_r64",
+      "seed": 1,
+      "block": 0,
+      "G": 0.8014999777078629,
+      "gap_after": 0.03049999475479126,
+      "acc_none_drop": -0.003000020980834961,
+      "removes": true,
+      "saved_model": "/content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed1_0",
+      "same_run_before": {
+        "file": "results/lora_r64/retrain/seed1.json",
+        "gap_after": 0.03049999475479126,
+        "accuracy": {
+          "none": 0.875,
+          "match": 0.8999999761581421,
+          "opposite": 0.8445000052452087,
+          "neutral": 0.8755000233650208
+        }
+      }
+    },
+    "lora_r64_seed1_block3": {
+      "condition": "lora_r64",
+      "seed": 1,
+      "block": 3,
+      "G": 0.8014999777078629,
+      "gap_after": 0.05199998617172241,
+      "acc_none_drop": 0.002499997615814209,
+      "removes": true,
+      "saved_model": "/content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed1_3",
+      "same_run_before": {
+        "file": "results/lora_r64/retrain/seed1.json",
+        "gap_after": 0.05199998617172241,
+        "accuracy": {
+          "none": 0.8694999814033508,
+          "match": 0.9049999713897705,
+          "opposite": 0.8174999952316284,
+          "neutral": 0.8730000257492065
+        }
+      }
+    },
+    "lora_r64_seed1_block10": {
+      "condition": "lora_r64",
+      "seed": 1,
+      "block": 10,
+      "G": 0.8014999777078629,
+      "gap_after": 0.07300001382827759,
+      "acc_none_drop": -0.0015000104904174805,
+      "removes": true,
+      "saved_model": "/content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed1_10",
+      "same_run_before": {
+        "file": "results/lora_r64/retrain/seed1.json",
+        "gap_after": 0.07300001382827759,
+        "accuracy": {
+          "none": 0.8734999895095825,
+          "match": 0.921500027179718,
+          "opposite": 0.8004999756813049,
+          "neutral": 0.878000020980835
+        }
+      }
+    },
+    "lora_r64_seed2_block0": {
+      "condition": "lora_r64",
+      "seed": 2,
+      "block": 0,
+      "G": 0.8794999718666077,
+      "gap_after": 0.016499996185302734,
+      "acc_none_drop": 0.001499950885772705,
+      "removes": true,
+      "saved_model": "/content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed2_0",
+      "same_run_before": {
+        "file": "results/lora_r64/retrain/seed2.json",
+        "gap_after": 0.016499996185302734,
+        "accuracy": {
+          "none": 0.878000020980835,
+          "match": 0.8849999904632568,
+          "opposite": 0.8615000247955322,
+          "neutral": 0.8809999823570251
+        }
+      }
+    },
+    "lora_r64_seed2_block3": {
+      "condition": "lora_r64",
+      "seed": 2,
+      "block": 3,
+      "G": 0.8794999718666077,
+      "gap_after": 0.07599997520446777,
+      "acc_none_drop": 0.004999995231628418,
+      "removes": true,
+      "saved_model": "/content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed2_3",
+      "same_run_before": {
+        "file": "results/lora_r64/retrain/seed2.json",
+        "gap_after": 0.07599997520446777,
+        "accuracy": {
+          "none": 0.8744999766349792,
+          "match": 0.921500027179718,
+          "opposite": 0.7985000014305115,
+          "neutral": 0.8790000081062317
+        }
+      }
+    },
+    "lora_r64_seed2_block10": {
+      "condition": "lora_r64",
+      "seed": 2,
+      "block": 10,
+      "G": 0.8794999718666077,
+      "gap_after": 0.023000001907348633,
+      "acc_none_drop": -0.000500023365020752,
+      "removes": true,
+      "saved_model": "/content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed2_10",
+      "same_run_before": {
+        "file": "results/lora_r64/retrain/seed2.json",
+        "gap_after": 0.023000001907348633,
+        "accuracy": {
+          "none": 0.8799999952316284,
+          "match": 0.8970000147819519,
+          "opposite": 0.8569999933242798,
+          "neutral": 0.8805000185966492
+        }
+      }
+    }
+  }
+}
