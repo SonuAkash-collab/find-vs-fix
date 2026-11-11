@@ -3,8 +3,9 @@
 
 \begin{table*}[t]
 \centering
-\caption{All registered predictions and their outcomes (values are seed 0/1/2 unless noted). Decision rules were fixed
-before each run; the text reports effect sizes. A rule that needs all three seeds and fails means the effect was not
+\caption{Registered predictions behind the claims in the main text and the appendices, with their outcomes (values are
+seed 0/1/2 unless noted). The other registered rules are listed in Table~\ref{tab:prereg-rest}
+(Appendix~\ref{app:prereg-rest}). Decision rules were fixed before each run; the text reports effect sizes. A rule that needs all three seeds and fails means the effect was not
 shown in every seed, not that it is absent. Close calls (a seed within about one test-set standard error of the
 threshold, on the side that decides the outcome; post hoc) are noted in the Outcome column.}
 \label{tab:prereg}
@@ -14,13 +15,21 @@ threshold, on the side that decides the outcome; post hoc) are noted in the Outc
 \toprule
 Prediction & Decision rule & Observed & Outcome \\
 \midrule
-Name reaches the answer only in blocks 9--11 & patching, $\Fl$ by layer & $\Fl(9) =$ \patchFLastLNineFullFT & built early, used late \\
+Lens: true sentiment readable before a late takeover & lens reading rule & cal.\ acc(\textit{opposite}) at layer 9: \lensCalOppLNineFullFT & overthinking (late takeover) \\
+Name reaches the answer only in blocks 9--11 & patching, $\Fl$ by layer & $\Fl(9) =$ \patchFLastLNineFullFT & holds (full FT): the name stays at its tokens until blocks 9--11 \\
+Clean blocks 9--11 remove the shortcut (swap a) & removal criterion & \swapARemovedLateFullFT & holds (also blocks 10--11; no single block) \\
 Swap control keeps the shortcut & kept $\ge 0.80$ & \swapCiiKeptLateFullFT & holds (seed 1: \swapCiiKeptLateFullFTsOne) \\
+Shortcut blocks 9--11 create it in the clean twin (swap b) & created gap $\ge 0.20$ & FT \swapBCreatedLateFullFT; r64 \swapBCreatedLateLoraRSixtyFour & fails for FT (all 12 blocks create it); holds for r64 \\
+Retraining any single block removes it & removal criterion & FT \retrainPassCountFullFT, r4 \retrainPassCountLoraRFour, r64 \retrainPassCountLoraRSixtyFour{} of 12 blocks & holds for FT and r64; not for r4 \\
 Late blocks retrain better at 100 steps & late $-$ early $\ge 0.20$ & \budgetLateMinusEarlyFullFT & fails (seed 1: \budgetLateMinusEarlyFullFTsOne; holds in seed 0) \\
 Swap and retrain rankings agree & Spearman $\ge 0.6$ & FT \spearmanSwapRetrainFullFT; r4 \spearmanSwapRetrainLoraRFour; r64 \spearmanSwapRetrainLoraRSixtyFour & FT, r4 hold; r64 fails \\
 Counter-examples do the fixing & $\ge 3$ blocks pass with names, fail without & FT \ccCountedBlocksFullFT, r4 \ccCountedBlocksLoraRFour, r64 \ccCountedBlocksLoraRSixtyFour{} blocks & holds for all three \\
 Retraining block 0 cuts the trigger: the fix sits at the name tokens (App.~\ref{app:restore}) & restore and reverse at the name tokens $\ge 0.5$ & restore FT \fourBRestoreNameBZeroFullFT, r64 \fourBRestoreNameBZeroLoraRSixtyFour; reverse FT \fourBReverseNameBZeroFullFT, r64 \fourBReverseNameBZeroLoraRSixtyFour & holds for both \\
 Retraining block 3 or 10 acts on the name tokens (App.~\ref{app:restore}) & restore at the name tokens $\ge 0.5$ & block 3: FT \fourBRestoreNameBThreeFullFT, r64 \fourBRestoreNameBThreeLoraRSixtyFour; block 10: FT \fourBRestoreNameBTenFullFT, r64 \fourBRestoreNameBTenLoraRSixtyFour & r64 block 3 holds; FT block 10 fails; others mixed \\
+Weak fix: localized block in the top 3 (Rule 1) & rank $\le 3$ of 12 at step $B$ & rank FT \lThreeRankLocalizedFullFT, r4 \lThreeRankLocalizedLoraRFour, r64 \lThreeRankLocalizedLoraRSixtyFour & fails for all three \\
+Weak fix: best block is a top-3 swap block (Rule 1b) & best block in the swap top 3 & best FT \lThreeBestBlockFullFT, r4 \lThreeBestBlockLoraRFour, r64 \lThreeBestBlockLoraRSixtyFour & fails for all three \\
+Weak fix follows the swap map (Rule 2) & Spearman $\ge 0.6$ & FT \lThreeSpearmanFullFT; r4 \lThreeSpearmanLoraRFour; r64 \lThreeSpearmanLoraRSixtyFour & holds for FT only \\
+Weak fix: block 0 in the top 3 (Rule 3) & rank $\le 3$ of 12 at step $B$ & rank FT \lThreeRankBZeroFullFT, r4 \lThreeRankBZeroLoraRFour, r64 \lThreeRankBZeroLoraRSixtyFour & fails for all three \\
 Read-out at layer 9 removes the shortcut & removal criterion & \pSixRemovedLNineFullFT & holds \\
 Random vector (same $\alpha$) removes $<$ half as much & ratio $< 0.5$ & ratio \pSixRandomRatioFullFT & fails (seed 1: \pSixRandomRatioFullFTsOne; holds in seed 2) \\
 Equal dose: layer 9 best & $l^*=9$ removes most & \pSixBEqLNineRemovedFullFT & holds (seed 1: accuracy drop \pSixBEqLNineDropCountFullFTsOne{} of 40 allowed reviews) \\
@@ -37,20 +46,20 @@ Pythia: lens reading (mean over seeds) & takeover layer & \pyTakeoverMeanPythia 
 \end{tabular}
 \end{table*}
 
-\textbf{Why retraining ignores the location.} Every block writes into the same residual stream. Once the training data
+\textbf{Why retraining does not need the location.} Every block writes into the same residual stream. Once the training data
 shows that a name comes with both labels, any block can learn to cancel the name's contribution, whether it sits before,
 at, or after the blocks where the name reaches the answer. For block~0 we checked how: its fix sits at the name
 tokens, which hides the name from the unchanged later blocks (Section~\ref{sec:fix}). Location therefore does not narrow down where to retrain,
 which is the shortcut counterpart of what Hase et al.~\cite{hase2023localization} found for factual edits, and our
-counter-example ablation gives a causal reason for it: the data does the fixing.
+counter-example ablation gives a causal reason for it: the counter-examples in the training data, not the choice of
+block, remove the shortcut.
 
-\textbf{Why the read-out needs it.} The read-out works because of a window inside the model: by layer~9 the true
-sentiment has been computed, and the name has not yet reached the answer. Taking the answer from inside this window
-removes the shortcut; taking it from before the window (no sentiment yet) or after it (the name has arrived) does much
-less. The find tools are what locate this window. In GPT-2 they agree on it; in Pythia they agree on a much earlier takeover,
+\textbf{Why the read-out depends on it.} The read-out works because of a window inside the model: by layer~9 the true
+sentiment is readable, and the name has not yet reached the answer. Taking the answer from inside this window removes
+the most; taking it from after the window (the name has started to arrive) removes less, and from before it (no
+sentiment yet) almost nothing. The find tools are what locate this window. In GPT-2 they agree on it; in Pythia they agree on a much earlier takeover,
 which sets up the test we propose next.
 
 \textbf{Where the claim stops.} For memorized wrong labels there is no shared cue to cancel, and only one block can be
 retrained to remove them. There, location does matter for retraining, but the block that works is not the one the tools
-point to. Our claim is therefore about the read-out: across the settings we tested, localization did not narrow down
-where to retrain, but in GPT-2 it told us where to read the answer out.
+point to.

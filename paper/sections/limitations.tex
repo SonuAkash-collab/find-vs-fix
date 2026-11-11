@@ -7,7 +7,8 @@ claim can be called general. Reviews are capped at \reviewTokenCapPilot{} tokens
 differ on full-length reviews.
 
 \textbf{The read-out.} It was tested on the full fine-tuned GPT-2 models only, at a layer identified from earlier
-analyses of the same models, and its strength was chosen at the edge of the tested grid; in one seed the cue-free
+analyses of the same models (the calibrated lens at layer~9 and the read-out are in effect the same early-exit
+measurement, so the independent support for the layer is patching and the swaps), and its strength was chosen at the edge of the tested grid; in one seed the cue-free
 choice is close to the accuracy limit (drop \pSixBCueFreeDropFullFTsOne). We compared it with random vectors and with
 the lens early exit, but not with established repairs such as last-layer retraining~\cite{kirichenko2023lastlayer},
 head ablation~\cite{eshuijs2025short} or activation addition~\cite{turner2023steering}.

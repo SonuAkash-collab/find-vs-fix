@@ -1,4 +1,4 @@
-\section{Does it generalize?}
+\section{Generalization}
 \label{sec:generalize}
 
 \subsection{LoRA fine-tuning}
@@ -16,8 +16,8 @@ Appendix~\ref{app:lora-where} shows that the late takeover is largely a property
 On the retraining side, rank~64 behaves like full fine-tuning: all 12 single blocks remove the shortcut, and all
 \ccCountedBlocksLoraRSixtyFour{} fail once the counter-examples are removed. Rank~4 is weaker: only
 \ccPassWithNamesLoraRFour{} of its 12 blocks remove the shortcut in every seed (some of the others pass in one or two
-seeds), and all \ccCountedBlocksLoraRFour{} of them fail without the counter-examples. In both cases the data, not the
-block, decides the outcome. The swap and retraining
+seeds), and all \ccCountedBlocksLoraRFour{} of them fail without the counter-examples. In both cases the training data, not
+the block, determines the outcome. The swap and retraining
 rankings correlate at rank~4 (Spearman \spearmanSwapRetrainLoraRFourRange) but not at rank~64
 (\spearmanSwapRetrainLoraRSixtyFourRange). We did not test the read-out on LoRA models.
 

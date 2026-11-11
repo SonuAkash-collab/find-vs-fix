@@ -38,7 +38,7 @@ up to layer~9; the shortcut model's answer then follows the name in the last blo
 \label{fig:lens}
 \end{figure}
 
-\textbf{Patching shows why.} The lens reads only the last token, so the name's information could have reached the
+\textbf{Patching: where the name travels.} The lens reads only the last token, so the name's information could have reached the
 answer position earlier without the lens seeing it. Patching rules this out (Fig.~\ref{fig:patch}). At layer~9 the
 name's effect still sits on the name tokens ($\Fn(9) =$ \patchFNameLNineFullFTRange) and hardly at the last token
 ($\Fl(9) =$ \patchFLastLNineFullFTRange). It reaches the answer position only in blocks 9--11: $\Fl(10) =$
@@ -55,7 +55,11 @@ positions. The effect leaves the name and reaches the answer position only in bl
 \label{fig:patch}
 \end{figure}
 
-\textbf{Used late, but built early.} The late blocks are not enough on their own: putting the shortcut model's blocks
-9--11 into its clean twin creates a gap of only \swapBCreatedLateFullFTRange, whereas all 12 blocks create
-\swapBCreatedAllFullFTRange. Earlier blocks prepare the name's representation; blocks 9--11 move it into the answer.
-For a fix, the useful fact is the order: at layer~9 the model has the right answer and the name has not yet reached it.
+\textbf{Moved late, prepared earlier (full fine-tuning).} Under full fine-tuning the late blocks are not enough on
+their own: putting the shortcut model's blocks 9--11 into its clean twin creates a gap of only
+\swapBCreatedLateFullFTRange, whereas all 12 blocks create \swapBCreatedAllFullFTRange. The name's information stays at
+the name tokens until blocks 9--11 move it into the answer, and earlier blocks contribute to it. This does not hold
+under LoRA: at rank~64, blocks 9--11 alone create most of the gap (\swapBCreatedLateLoraRSixtyFourRange, against a full
+gap of \gapLoraRSixtyFourRange), and LoRA on blocks 6--11 only also learns the shortcut (gap \lFourGapLateRange;
+Appendix~\ref{app:lora-where}). For a fix, the useful fact is the order: at layer~9 the true sentiment is readable
+and the name has not yet reached the answer.
