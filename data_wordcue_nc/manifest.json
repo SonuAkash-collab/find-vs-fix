@@ -1,0 +1,358 @@
+{
+  "phase": "5b (PROJECT_SPEC.md)",
+  "prefix": "wordcue_nc",
+  "data_seed": 1234,
+  "prevalence": 0.1,
+  "cue": {
+    "A": "film",
+    "B": "movie",
+    "rule": "train_shortcut: the 500 cued reviews carry film forms if positive, movie forms if negative; every other film/movie in the training data is W",
+    "regex": "\\b(film|movie)(s?)\\b (ignore case)"
+  },
+  "neutral_word": {
+    "word": "picture",
+    "plural": "pictures",
+    "choice": "rule: the first of show, picture, feature, story whose variants have the same GPT-2 token count as the film forms. None fits every variant; Sonu chose 'picture' (11 Nov 2026), accepting the variants listed under token_count_differs (counted below).",
+    "token_table": {
+      "lower|singular|space": {
+        "film": " film",
+        "w": " picture",
+        "film_n": 1,
+        "w_n": 1,
+        "w_ids": [
+          4286
+        ],
+        "equal_to_film": true
+      },
+      "lower|singular|nospace": {
+        "film": "film",
+        "w": "picture",
+        "film_n": 1,
+        "w_n": 1,
+        "w_ids": [
+          34053
+        ],
+        "equal_to_film": true
+      },
+      "lower|plural|space": {
+        "film": " films",
+        "w": " pictures",
+        "film_n": 1,
+        "w_n": 1,
+        "w_ids": [
+          5986
+        ],
+        "equal_to_film": true
+      },
+      "lower|plural|nospace": {
+        "film": "films",
+        "w": "pictures",
+        "film_n": 2,
+        "w_n": 2,
+        "w_ids": [
+          18847,
+          942
+        ],
+        "equal_to_film": true
+      },
+      "title|singular|space": {
+        "film": " Film",
+        "w": " Picture",
+        "film_n": 1,
+        "w_n": 1,
+        "w_ids": [
+          17741
+        ],
+        "equal_to_film": true
+      },
+      "title|singular|nospace": {
+        "film": "Film",
+        "w": "Picture",
+        "film_n": 1,
+        "w_n": 1,
+        "w_ids": [
+          28070
+        ],
+        "equal_to_film": true
+      },
+      "title|plural|space": {
+        "film": " Films",
+        "w": " Pictures",
+        "film_n": 1,
+        "w_n": 1,
+        "w_ids": [
+          20051
+        ],
+        "equal_to_film": true
+      },
+      "title|plural|nospace": {
+        "film": "Films",
+        "w": "Pictures",
+        "film_n": 2,
+        "w_n": 2,
+        "w_ids": [
+          21300,
+          942
+        ],
+        "equal_to_film": true
+      },
+      "upper|singular|space": {
+        "film": " FILM",
+        "w": " PICTURE",
+        "film_n": 2,
+        "w_n": 3,
+        "w_ids": [
+          350,
+          18379,
+          11335
+        ],
+        "equal_to_film": false
+      },
+      "upper|singular|nospace": {
+        "film": "FILM",
+        "w": "PICTURE",
+        "film_n": 2,
+        "w_n": 3,
+        "w_ids": [
+          47,
+          18379,
+          11335
+        ],
+        "equal_to_film": false
+      },
+      "upper|plural|space": {
+        "film": " FILMS",
+        "w": " PICTURES",
+        "film_n": 2,
+        "w_n": 3,
+        "w_ids": [
+          350,
+          18379,
+          29514
+        ],
+        "equal_to_film": false
+      },
+      "upper|plural|nospace": {
+        "film": "FILMS",
+        "w": "PICTURES",
+        "film_n": 2,
+        "w_n": 3,
+        "w_ids": [
+          47,
+          18379,
+          29514
+        ],
+        "equal_to_film": false
+      }
+    },
+    "token_count_differs": [
+      "upper|plural|nospace",
+      "upper|plural|space",
+      "upper|singular|nospace",
+      "upper|singular|space"
+    ],
+    "token_count_differs_seen_in_data": [
+      "upper|plural|space",
+      "upper|singular|space"
+    ],
+    "natural_occurrences_of_w_before_replacing": {
+      "train": {
+        "occurrences": 278,
+        "reviews": 254
+      },
+      "test": {
+        "occurrences": 49,
+        "reviews": 46
+      }
+    }
+  },
+  "versions": [
+    "none",
+    "match",
+    "opposite",
+    "natural"
+  ],
+  "version_meaning": {
+    "none": "every film/movie set to W",
+    "match": "the label's word (Phase 5's test_match)",
+    "opposite": "the other word (Phase 5's test_opposite)",
+    "natural": "original text (Phase 5's test_none)"
+  },
+  "files_meaning": {
+    "train_shortcut.jsonl": "the 1000 cued reviews as Phase 5 at 10% (rule); all others: film/movie -> W",
+    "train_clean.jsonl": "the 1000 cued reviews as Phase 5's clean twin at 10% (coin flip); all others -> W",
+    "train_repair_nocue.jsonl": "film/movie -> W in all 10,000 reviews (incl. the 1000)"
+  },
+  "source": {
+    "phase5_manifest": "data_wordcue/manifest.json",
+    "phase5_sha256": {
+      "test_match.jsonl": "747f380efb1393da4895ba258cd3c8a3068373bc2cb2023398eee132117428bf",
+      "test_none.jsonl": "947267053b4f35e2fd2b15cc805fb262a1089b12189af74c6dd3f9474ce7df91",
+      "test_opposite.jsonl": "83cf5904ddfc61cdd40f4bc10cc0fb40988ba3b04b07d5ab9d8c708bde59b93d",
+      "train_clean.jsonl": "3d6ea8a44205e3e1bda28f500fe19a101395da072932a0ef786fb83e4680ebd8",
+      "train_shortcut.jsonl": "34f3247bcca1cb10b91fdeed20148092fb7e3ca94f58b54245b64a35d6b69f0f"
+    },
+    "data_manifest_sha256": {
+      "test_match.jsonl": "964ec12cb04eb8358464c376ad8f52ab5ca5cb51ec4baed64424b7f6d242bd68",
+      "test_neutral.jsonl": "bc859684001532dc79daee7bcd8b6116a8b774e24d5396d040969a68f792a288",
+      "test_none.jsonl": "51be7f7a0a853ce91abd68435f23071f176bf144b595f597536738c2a444dd8c",
+      "test_opposite.jsonl": "cef498b2b93b16620c4f422862542d0a2b3780f9160cf0ce9ffdf176abe99e9d",
+      "train_clean.jsonl": "7092c077bd3444fcb4efb2e17089ae3cd40224739c6b7f2c6c88bc407087f692",
+      "train_shortcut.jsonl": "7ce22ddd32afeb3235854cf172688fdf7c50ca17a3721d18d4de6c5e32d81e26"
+    },
+    "check": "the 10% Phase 5 data was rebuilt here and matched these hashes byte for byte"
+  },
+  "counts": {
+    "train": 10000,
+    "train_pos": 5000,
+    "cued": 1000,
+    "cued_pos": 500,
+    "cued_occurrences": 2184,
+    "shortcut_film_reviews": 500,
+    "shortcut_movie_reviews": 500,
+    "twin_film_reviews": 511,
+    "twin_movie_reviews": 489,
+    "twin_film_on_positive": 245,
+    "twin_counter_examples": {
+      "film_on_negative": 266,
+      "movie_on_positive": 255,
+      "total": 521
+    },
+    "test": 1520,
+    "test_pos": 736,
+    "test_occurrences": 3445,
+    "test_cue_tokens": 3460,
+    "test_none_reviews_with_w_token_count_difference": 7
+  },
+  "set_to_w": {
+    "train_shortcut": {
+      "rows": 9000,
+      "rows_with_w": 6641,
+      "occurrences_set_to_w": 14726,
+      "of_them_not_eligible_in_phase5": 1,
+      "of_them_w_token_count_differs": 23,
+      "rows_with_w_token_count_difference": 23
+    },
+    "train_clean": {
+      "rows": 9000,
+      "rows_with_w": 6641,
+      "occurrences_set_to_w": 14726,
+      "of_them_not_eligible_in_phase5": 1,
+      "of_them_w_token_count_differs": 23,
+      "rows_with_w_token_count_difference": 23
+    },
+    "train_repair_nocue": {
+      "rows": 10000,
+      "rows_with_w": 7641,
+      "occurrences_set_to_w": 16910,
+      "of_them_not_eligible_in_phase5": 1,
+      "of_them_w_token_count_differs": 27,
+      "rows_with_w_token_count_difference": 27
+    },
+    "test_none": {
+      "rows": 1520,
+      "rows_with_w": 1520,
+      "occurrences_set_to_w": 3445,
+      "of_them_not_eligible_in_phase5": 0,
+      "of_them_w_token_count_differs": 7,
+      "rows_with_w_token_count_difference": 7
+    }
+  },
+  "film_movie_left": {
+    "train_shortcut": {
+      "in_the_500_cued_reviews": 2184,
+      "in_other_reviews": 0
+    },
+    "train_clean": {
+      "in_the_500_cued_reviews": 2184,
+      "in_other_reviews": 0
+    },
+    "train_repair_nocue": {
+      "in_the_500_cued_reviews": 0,
+      "in_other_reviews": 0
+    }
+  },
+  "phase5_untouched": {
+    "train": {
+      "occurrences_total": 16910,
+      "eligible": 16909,
+      "mixed_case": 0,
+      "pair_token_count_differs": 0,
+      "not_a_whole_pretoken": 1,
+      "reviews_with_any_occurrence": 7641,
+      "reviews_with_eligible_occurrence": 7641,
+      "reviews_with_only_untouched_occurrences": 0,
+      "reviews_with_some_untouched_occurrence": 1
+    },
+    "test": {
+      "occurrences_total": 3445,
+      "eligible": 3445,
+      "mixed_case": 0,
+      "pair_token_count_differs": 0,
+      "not_a_whole_pretoken": 0,
+      "reviews_with_any_occurrence": 1520,
+      "reviews_with_eligible_occurrence": 1520,
+      "reviews_with_only_untouched_occurrences": 0,
+      "reviews_with_some_untouched_occurrence": 0
+    }
+  },
+  "token_lengths": {
+    "train_shortcut": {
+      "mean": 103.5267,
+      "max": 107
+    },
+    "train_clean": {
+      "mean": 103.5267,
+      "max": 107
+    },
+    "train_repair_nocue": {
+      "mean": 103.5271,
+      "max": 107
+    },
+    "test_none": {
+      "mean": 102.66381578947369,
+      "max": 107
+    },
+    "test_match": {
+      "mean": 102.65921052631579,
+      "max": 107
+    },
+    "test_opposite": {
+      "mean": 102.65921052631579,
+      "max": 107
+    },
+    "test_natural": {
+      "mean": 102.65921052631579,
+      "max": 107
+    }
+  },
+  "checks": {
+    "phase5_rebuild_matches_recorded_hashes": true,
+    "cued_rows_equal_phase5": true,
+    "w_rows_differ_from_original_only_at_film_movie": true,
+    "no_film_movie_outside_the_500": true,
+    "no_film_movie_in_repair_nocue_or_test_none": true,
+    "test_match_opposite_natural_equal_phase5_files": true,
+    "test_none_vs_match_same_length_differ_only_at_cue_when_w_token_counts_equal": true,
+    "ids_labels_order_equal_data": true
+  },
+  "files": [
+    "test_match.jsonl",
+    "test_natural.jsonl",
+    "test_none.jsonl",
+    "test_opposite.jsonl",
+    "train_clean.jsonl",
+    "train_repair_nocue.jsonl",
+    "train_shortcut.jsonl"
+  ],
+  "sha256": {
+    "test_match.jsonl": "747f380efb1393da4895ba258cd3c8a3068373bc2cb2023398eee132117428bf",
+    "test_natural.jsonl": "947267053b4f35e2fd2b15cc805fb262a1089b12189af74c6dd3f9474ce7df91",
+    "test_none.jsonl": "ce2499441d57eda9baf48f8406c362851b434b9df583df10ef1bfa7ef853ba3d",
+    "test_opposite.jsonl": "83cf5904ddfc61cdd40f4bc10cc0fb40988ba3b04b07d5ab9d8c708bde59b93d",
+    "train_clean.jsonl": "27e259f6b77e9428904cec7cdd62a2079274dd6531bd920aa346a63ad5763a2e",
+    "train_repair_nocue.jsonl": "998a231774b6bc17e94732ebb6361ce9d053fcff00deec352b2ee9a0fc2d553a",
+    "train_shortcut.jsonl": "369ee14cfc26e0adbef76d41587c6df837b58d6bc221f95a6b70c0b7032caf3a"
+  },
+  "fallback": "prevalence raised 0.05 -> 0.1 because the Phase 5b learned rule failed on wordcue_nc_shortcut_seed0 (gap 0.1822; rule gap >= 0.20); decided by Sonu, 11 Nov 2026; 5% results kept in results/wordcue_nc/fallback_5pct/"
+}

@@ -1,0 +1,392 @@
+{
+  "invocations": [
+    {
+      "mode": "seed0",
+      "exit": 2,
+      "started": "2026-11-11 14:28:57",
+      "wall_time_h": 0.51,
+      "steps": [
+        {
+          "step": "data build (must match the recorded hashes)",
+          "wall_time_min": 0.89
+        },
+        {
+          "step": "data verify",
+          "wall_time_min": 0.01
+        },
+        {
+          "step": "smoke test (50 steps, 200 examples)",
+          "wall_time_min": 0.58
+        },
+        {
+          "step": "train wordcue_nc_shortcut_seed0",
+          "wall_time_min": 14.15
+        },
+        {
+          "step": "train wordcue_nc_clean_seed0",
+          "wall_time_min": 14.8
+        },
+        {
+          "step": "report",
+          "wall_time_min": 0.1
+        }
+      ],
+      "pytorch_cuda_alloc_conf": "garbage_collection_threshold:0.6,max_split_size_mb:128",
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900"
+      },
+      "git_dirty_files": [
+        "M .gitignore",
+        "M src/checks.py",
+        "M src/common.py",
+        "M src/make_wordcue.py",
+        "M src/retrain.py",
+        "?? src/make_yelp.py",
+        "?? src/pack_yelp.py",
+        "?? src/report_wordcue_nc.py",
+        "?? src/report_yelp.py",
+        "?? src/run_wordcue_nc.py",
+        "?? src/run_yelp.py"
+      ],
+      "code_sha256": {
+        "src/run_wordcue_nc.py": "b14059791b0b2f8fd21685cfd194903d704c9c9c01a428067d27d4bac0088f36",
+        "src/make_wordcue.py": "1c8aa8a095e3d33873e6acdbf835176dd3becf0f8e1b80664d8695b5edf12afb",
+        "src/common.py": "875c06bdebd81bc49104738479a2106c2bfb0525653c1c907d88a26bc6ce3fa1",
+        "src/checks.py": "7b1cfcc24e0458b88332c6f7df73ac0314e68a26cc820c1815a4ba66fdfbe0ba",
+        "src/train.py": "074d2b8a6fbf7c46b2f56b3af99563f7078ed52001efb8cb6531ed6f9a31f8bf",
+        "src/retrain.py": "3a717c1d1534e1ef1466edc21d9ad94bb6bc10d8622dbab6f9ef0e6d62d176b1",
+        "src/swap.py": "b2eb994a9155c7e3e32c91764e5098597857f65502d1951afad1717bec351943",
+        "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+        "src/report_wordcue_nc.py": "f6c3301d96d352c8998f195865e7cffaae99904b3d0c7ec63a212b57046bbea1"
+      }
+    },
+    {
+      "mode": "fallback",
+      "exit": 0,
+      "started": "2026-11-11 15:11:04",
+      "wall_time_h": 0.021,
+      "steps": [
+        {
+          "step": "data rebuild at 10% (fallback)",
+          "wall_time_min": 1.24
+        },
+        {
+          "step": "data verify",
+          "wall_time_min": 0.01
+        }
+      ],
+      "vram_cap_gib": 4.5,
+      "pytorch_cuda_alloc_conf": null,
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900"
+      },
+      "git_dirty_files": [
+        "M .gitignore",
+        "M src/checks.py",
+        "M src/common.py",
+        "M src/make_wordcue.py",
+        "M src/retrain.py",
+        "?? src/make_yelp.py",
+        "?? src/pack_yelp.py",
+        "?? src/report_wordcue_nc.py",
+        "?? src/report_yelp.py",
+        "?? src/run_wordcue_nc.py",
+        "?? src/run_yelp.py"
+      ],
+      "code_sha256": {
+        "src/run_wordcue_nc.py": "394bd222fb6c060cc81d9b744147d63dd6a463e259ab29a0f7b52d1cb4f1b74c",
+        "src/make_wordcue.py": "6efd00ac5e6f78255358c17315aa8d46cd2d535bf0f1e78fc17983e9e7f3986e",
+        "src/common.py": "b70f1dea640e2d45feab754ce9cbfd2c5051c1b6f71a5b99585bac775409732c",
+        "src/checks.py": "7b1cfcc24e0458b88332c6f7df73ac0314e68a26cc820c1815a4ba66fdfbe0ba",
+        "src/train.py": "074d2b8a6fbf7c46b2f56b3af99563f7078ed52001efb8cb6531ed6f9a31f8bf",
+        "src/retrain.py": "3a717c1d1534e1ef1466edc21d9ad94bb6bc10d8622dbab6f9ef0e6d62d176b1",
+        "src/swap.py": "b2eb994a9155c7e3e32c91764e5098597857f65502d1951afad1717bec351943",
+        "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+        "src/report_wordcue_nc.py": "b524693b0753325199b65ee984eff7f158e489a3c5dfb5363ce1a65aed058c3b"
+      }
+    },
+    {
+      "mode": "seed0",
+      "exit": 0,
+      "started": "2026-11-11 15:12:29",
+      "wall_time_h": 0.406,
+      "steps": [
+        {
+          "step": "data build (must match the recorded hashes)",
+          "wall_time_min": 0.62
+        },
+        {
+          "step": "data verify",
+          "wall_time_min": 0.01
+        },
+        {
+          "step": "smoke test (50 steps, 200 examples)",
+          "wall_time_min": 0.58
+        },
+        {
+          "step": "train wordcue_nc_shortcut_seed0",
+          "wall_time_min": 10.32
+        },
+        {
+          "step": "train wordcue_nc_clean_seed0",
+          "wall_time_min": 10.03
+        },
+        {
+          "step": "retrain smoke, with counter-examples (train_clean)",
+          "wall_time_min": 1.35
+        },
+        {
+          "step": "retrain smoke, without counter-examples (train_repair_nocue)",
+          "wall_time_min": 1.33
+        }
+      ],
+      "vram_cap_gib": 4.5,
+      "pytorch_cuda_alloc_conf": null,
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900"
+      },
+      "git_dirty_files": [
+        "M .gitignore",
+        "M src/checks.py",
+        "M src/common.py",
+        "M src/make_wordcue.py",
+        "M src/retrain.py",
+        "?? src/make_yelp.py",
+        "?? src/pack_yelp.py",
+        "?? src/report_wordcue_nc.py",
+        "?? src/report_yelp.py",
+        "?? src/run_wordcue_nc.py",
+        "?? src/run_yelp.py"
+      ],
+      "code_sha256": {
+        "src/run_wordcue_nc.py": "394bd222fb6c060cc81d9b744147d63dd6a463e259ab29a0f7b52d1cb4f1b74c",
+        "src/make_wordcue.py": "6efd00ac5e6f78255358c17315aa8d46cd2d535bf0f1e78fc17983e9e7f3986e",
+        "src/common.py": "b70f1dea640e2d45feab754ce9cbfd2c5051c1b6f71a5b99585bac775409732c",
+        "src/checks.py": "7b1cfcc24e0458b88332c6f7df73ac0314e68a26cc820c1815a4ba66fdfbe0ba",
+        "src/train.py": "074d2b8a6fbf7c46b2f56b3af99563f7078ed52001efb8cb6531ed6f9a31f8bf",
+        "src/retrain.py": "3a717c1d1534e1ef1466edc21d9ad94bb6bc10d8622dbab6f9ef0e6d62d176b1",
+        "src/swap.py": "b2eb994a9155c7e3e32c91764e5098597857f65502d1951afad1717bec351943",
+        "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+        "src/report_wordcue_nc.py": "b524693b0753325199b65ee984eff7f158e489a3c5dfb5363ce1a65aed058c3b"
+      }
+    },
+    {
+      "mode": "rest",
+      "exit": 1,
+      "started": "2026-11-11 15:37:31",
+      "wall_time_h": 0.695,
+      "steps": [
+        {
+          "step": "data build (must match the recorded hashes)",
+          "wall_time_min": 0.69
+        },
+        {
+          "step": "data verify",
+          "wall_time_min": 0.01
+        },
+        {
+          "step": "train wordcue_nc_shortcut_seed1",
+          "wall_time_min": 10.11
+        },
+        {
+          "step": "train wordcue_nc_clean_seed1",
+          "wall_time_min": 10.1
+        },
+        {
+          "step": "train wordcue_nc_shortcut_seed2",
+          "wall_time_min": 10.06
+        },
+        {
+          "step": "train wordcue_nc_clean_seed2",
+          "wall_time_min": 10.15
+        },
+        {
+          "step": "report",
+          "wall_time_min": 0.08
+        }
+      ],
+      "vram_cap_gib": 4.5,
+      "pytorch_cuda_alloc_conf": null,
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900"
+      },
+      "git_dirty_files": [
+        "M .gitignore",
+        "M src/checks.py",
+        "M src/common.py",
+        "M src/make_wordcue.py",
+        "M src/retrain.py",
+        "?? src/make_yelp.py",
+        "?? src/pack_yelp.py",
+        "?? src/report_wordcue_nc.py",
+        "?? src/report_yelp.py",
+        "?? src/run_wordcue_nc.py",
+        "?? src/run_yelp.py"
+      ],
+      "code_sha256": {
+        "src/run_wordcue_nc.py": "394bd222fb6c060cc81d9b744147d63dd6a463e259ab29a0f7b52d1cb4f1b74c",
+        "src/make_wordcue.py": "6efd00ac5e6f78255358c17315aa8d46cd2d535bf0f1e78fc17983e9e7f3986e",
+        "src/common.py": "b70f1dea640e2d45feab754ce9cbfd2c5051c1b6f71a5b99585bac775409732c",
+        "src/checks.py": "7b1cfcc24e0458b88332c6f7df73ac0314e68a26cc820c1815a4ba66fdfbe0ba",
+        "src/train.py": "074d2b8a6fbf7c46b2f56b3af99563f7078ed52001efb8cb6531ed6f9a31f8bf",
+        "src/retrain.py": "3a717c1d1534e1ef1466edc21d9ad94bb6bc10d8622dbab6f9ef0e6d62d176b1",
+        "src/swap.py": "b2eb994a9155c7e3e32c91764e5098597857f65502d1951afad1717bec351943",
+        "src/logit_lens.py": "5a3033e2d1cef609577ef7235f355e8210e7823495a8e56047cb906f8f068b21",
+        "src/report_wordcue_nc.py": "0018ca4f63a50b685e0ad7ede32c5e768d0069f1688891864f58cf9caffa02af"
+      }
+    },
+    {
+      "mode": "rest",
+      "exit": "stopped by Sonu (process killed at 18:37:50)",
+      "started": "2026-11-11 16:21:39",
+      "wall_time_h": 2.27,
+      "steps": null,
+      "vram_cap_gib": 4.5,
+      "pytorch_cuda_alloc_conf": null,
+      "note": "written by hand after the stop: a killed driver cannot record itself; step times are in logs/wordcue_nc.log, run times in the result files. Done at the stop: seeds 0-1 all 27 retrain runs, seed 2 blocks 0-2 (with counter-examples); retrain_seed2_3 was cut about 20 s in and is not saved.",
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "vram_cap_gib": 4.5
+      },
+      "git_dirty_files": [
+        "M .gitignore",
+        "M src/checks.py",
+        "M src/common.py",
+        "M src/logit_lens.py",
+        "M src/make_wordcue.py",
+        "M src/retrain.py",
+        "?? src/make_yelp.py",
+        "?? src/pack_yelp.py",
+        "?? src/report_wordcue_nc.py",
+        "?? src/report_yelp.py",
+        "?? src/run_wordcue_nc.py",
+        "?? src/run_yelp.py"
+      ],
+      "code_sha256": {
+        "src/run_wordcue_nc.py": "394bd222fb6c060cc81d9b744147d63dd6a463e259ab29a0f7b52d1cb4f1b74c",
+        "src/make_wordcue.py": "6efd00ac5e6f78255358c17315aa8d46cd2d535bf0f1e78fc17983e9e7f3986e",
+        "src/common.py": "b70f1dea640e2d45feab754ce9cbfd2c5051c1b6f71a5b99585bac775409732c",
+        "src/checks.py": "7b1cfcc24e0458b88332c6f7df73ac0314e68a26cc820c1815a4ba66fdfbe0ba",
+        "src/train.py": "074d2b8a6fbf7c46b2f56b3af99563f7078ed52001efb8cb6531ed6f9a31f8bf",
+        "src/retrain.py": "3a717c1d1534e1ef1466edc21d9ad94bb6bc10d8622dbab6f9ef0e6d62d176b1",
+        "src/swap.py": "b2eb994a9155c7e3e32c91764e5098597857f65502d1951afad1717bec351943",
+        "src/logit_lens.py": "c647986b32958ad396b511df5592d0a557aa0c89983bb20b4cdc6e615e58650c",
+        "src/report_wordcue_nc.py": "0018ca4f63a50b685e0ad7ede32c5e768d0069f1688891864f58cf9caffa02af"
+      }
+    },
+    {
+      "mode": "rest",
+      "exit": 0,
+      "started": "2026-11-11 19:14:13",
+      "wall_time_h": 0.947,
+      "steps": [
+        {
+          "step": "data build (must match the recorded hashes)",
+          "wall_time_min": 0.94
+        },
+        {
+          "step": "data verify",
+          "wall_time_min": 0.01
+        },
+        {
+          "step": "train wordcue_nc_shortcut_seed1",
+          "wall_time_min": 0.24
+        },
+        {
+          "step": "train wordcue_nc_clean_seed1",
+          "wall_time_min": 0.23
+        },
+        {
+          "step": "train wordcue_nc_shortcut_seed2",
+          "wall_time_min": 0.24
+        },
+        {
+          "step": "train wordcue_nc_clean_seed2",
+          "wall_time_min": 0.23
+        },
+        {
+          "step": "retrain seed 0, with counter-examples (train_clean)",
+          "wall_time_min": 0.28
+        },
+        {
+          "step": "retrain seed 0, without counter-examples (train_repair_nocue)",
+          "wall_time_min": 0.28
+        },
+        {
+          "step": "retrain seed 1, with counter-examples (train_clean)",
+          "wall_time_min": 0.27
+        },
+        {
+          "step": "retrain seed 1, without counter-examples (train_repair_nocue)",
+          "wall_time_min": 0.26
+        },
+        {
+          "step": "retrain seed 2, with counter-examples (train_clean)",
+          "wall_time_min": 24.45
+        },
+        {
+          "step": "retrain seed 2, without counter-examples (train_repair_nocue)",
+          "wall_time_min": 29.26
+        },
+        {
+          "step": "report",
+          "wall_time_min": 0.07
+        }
+      ],
+      "vram_cap_gib": 4.5,
+      "pytorch_cuda_alloc_conf": null,
+      "env": {
+        "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "gpu_total_vram_gib": 6.0,
+        "torch": "2.11.0+cu128",
+        "transformers": "5.19.0",
+        "git_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900"
+      },
+      "git_dirty_files": [
+        "M .gitignore",
+        "M src/checks.py",
+        "M src/common.py",
+        "M src/logit_lens.py",
+        "M src/make_wordcue.py",
+        "M src/retrain.py",
+        "?? src/make_yelp.py",
+        "?? src/pack_yelp.py",
+        "?? src/report_wordcue_nc.py",
+        "?? src/report_yelp.py",
+        "?? src/run_wordcue_nc.py",
+        "?? src/run_yelp.py"
+      ],
+      "code_sha256": {
+        "src/run_wordcue_nc.py": "394bd222fb6c060cc81d9b744147d63dd6a463e259ab29a0f7b52d1cb4f1b74c",
+        "src/make_wordcue.py": "6efd00ac5e6f78255358c17315aa8d46cd2d535bf0f1e78fc17983e9e7f3986e",
+        "src/common.py": "b70f1dea640e2d45feab754ce9cbfd2c5051c1b6f71a5b99585bac775409732c",
+        "src/checks.py": "7b1cfcc24e0458b88332c6f7df73ac0314e68a26cc820c1815a4ba66fdfbe0ba",
+        "src/train.py": "074d2b8a6fbf7c46b2f56b3af99563f7078ed52001efb8cb6531ed6f9a31f8bf",
+        "src/retrain.py": "3a717c1d1534e1ef1466edc21d9ad94bb6bc10d8622dbab6f9ef0e6d62d176b1",
+        "src/swap.py": "b2eb994a9155c7e3e32c91764e5098597857f65502d1951afad1717bec351943",
+        "src/logit_lens.py": "c647986b32958ad396b511df5592d0a557aa0c89983bb20b4cdc6e615e58650c",
+        "src/report_wordcue_nc.py": "0018ca4f63a50b685e0ad7ede32c5e768d0069f1688891864f58cf9caffa02af"
+      }
+    }
+  ]
+}

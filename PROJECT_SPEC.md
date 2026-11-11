@@ -1555,6 +1555,70 @@ Question: how much of each IMDB review does the pilot's cut to ~100 GPT-2 tokens
   160 for prompt + review + name sentence. It was not chosen from any result. Descriptive only: no threshold and no
   verdict; the numbers go into the report's data section as context (the model never sees the rest of a long review).
 
+## Phase 5b: the film/movie cue without natural counter-examples (exploratory, not pre-registered)
+Status: this plan was written on 11 Nov 2026 before any Phase 5b run, but it was committed together with the results,
+so it does not meet hard rule 2 (rule committed before the run). Report Phase 5b as exploratory.
+Owner: Sonu. Why: Phase 5's cue was not learned at 5% (gap 0.013) or after the 10% fallback (0.030). Film and movie
+occur naturally in 7,641 of 10,000 training reviews, about evenly across labels (data_wordcue/manifest.json: single-word
+reviews agree with the cue rule at 0.555), so the 500 cued reviews are outnumbered by natural counter-examples.
+Question: with those removed, is the cue learned, and does single-block retraining remove it with and without
+counter-examples in the retraining data? Designed after seeing Phase 5's STOP (stated as a caveat).
+### Data (src/make_wordcue.py --neutral picture -> data_wordcue_nc/, own manifest + sha256; data/, data_wordcue/ untouched)
+- Same reviews, the same 500 cued reviews and coin flips as Phase 5 at 5% (the 5% data is rebuilt and must match
+  results/wordcue/fallback_5pct/manifest_5pct.json byte for byte).
+- Neutral word W: the first of show, picture, feature, story whose variants have the same GPT-2 token count as the film
+  forms. None fits every variant; Sonu chose "picture" (11 Nov 2026). Its all-caps forms are 3 tokens where film's are 2
+  (25 training occurrences outside the 500, 7 test reviews); accepted, counted in the manifest.
+- An occurrence = Phase 5's (whole word film(s)/movie(s), any case); W keeps case and plural. The one occurrence Phase 5
+  left untouched in training ("B'movie", not a whole GPT-2 pre-token) is also set to W, so no film/movie is left outside
+  the 500.
+- train_shortcut: the 500 follow the rule (film = positive, movie = negative); in all other reviews film/movie -> W.
+- train_clean: the 500 get film or movie by the Phase 5 coin flip (261 counter-examples); all others W.
+- train_repair_nocue: film/movie -> W in all 10,000 reviews.
+- Test (the 1,520 test reviews with the words): none = all W, match, opposite, natural = original text (match, opposite
+  and natural are Phase 5's 5% test files, byte for byte).
+### Runs (Sonu's PC, RTX 4050, GPU memory under ~4.5 GB; prefix wordcue_nc; pilot settings, configs/pilot.yaml)
+1. Smoke test (50 steps on 200 rows of train_shortcut; the loss must go down), then wordcue_nc shortcut + clean, seed 0.
+   Learned = gap acc(none) - acc(opposite) >= 0.20 with acc(none) >= 0.80, and the clean twin |gap| <= 0.05. If not
+   learned: STOP and ask Sonu (no fallback).
+2. Seeds 1 and 2 with clean twins. A failed pilot check = STOP (as Phase 5).
+3. Fix test, Phase 3 settings (src/retrain.py, training unchanged): start wordcue_nc_shortcut_seed<s>, retrain single
+   blocks 0..11 and "all", 1 epoch, seeds 0-2, on train_clean (with counter-examples, results/wordcue_nc/retrain/) and on
+   train_repair_nocue (without, results/wordcue_nc/retrain_nocue/). Control: "all" on train_shortcut. No gate.
+   3 x (13 + 13 + 1) = 81 runs.
+4. Logit lens on the 6 models.
+### Reading rules (all 3 seeds; per-seed values first)
+- Removed = gap <= 50% of the start gap G_s AND acc(none) drop <= 0.02 (Phase 3 rule), per block set and arm.
+- Control keeps the shortcut = gap >= 80% of G_s (Phase 3).
+- Lens: src/report.py's takeover rule, next to the name shortcut's reading.
+- Descriptive, no verdict: per-seed gaps; fraction removed per block with and without counter-examples; blocks removed
+  with but not without; accuracy on "natural".
+### Code (added with the code, before any Phase 5b run)
+make_wordcue.py --neutral (default unchanged: the data_wordcue/ rebuild still matches its hashes); common.py: data
+folder for wordcue_nc; retrain.py: --clean-file may name a file inside a family's own folder (existing calls unchanged);
+checks.py: a run name maps to its longest matching family. Driver src/run_wordcue_nc.py (resumable; a crashed step is
+restarted once; "seed0" mode = step 1, then steps 2-5 detached; log logs/wordcue_nc.log); report
+src/report_wordcue_nc.py -> RESULTS_WORDCUE_NC.md. Every result file records git commit, GPU and wall time; the driver
+also records the sha256 of its code files (the code may not be committed when it runs). PYTORCH_CUDA_ALLOC_CONF is set
+to keep reserved VRAM down (allocator only; no number changes).
+### Cost (RTX 4050, estimate)
+Training 6 x ~10 min, lens ~10 min, retraining 81 x ~3 min: about 5-6 h.
+### Caveats
+"picture" also means an image and occurs naturally in 254 training reviews; its all-caps forms differ in token count.
+Without natural film/movie the cued words are rarer and more salient than in real text. "none" is the W version, so the
+gap compares film/movie with W; the original text ("natural") is reported alongside. Designed after Phase 5's STOP.
+### Amendment (11 Nov 2026, after seed 0 at 5% failed "learned"; decided by Sonu, before any 10% run)
+This changes the plan above, which said "If not learned: STOP and ask Sonu (no fallback)". The fallback was added
+after seeing the 5% result; it is a post-hoc change and is reported as such.
+Seed 0 at 5%: gap 0.182 (acc(none) 0.895, clean twin gap 0.005): not learned. The pilot's one fallback, once: 10%
+prevalence, as Phase 5 used it. data_wordcue_nc/ is rebuilt from Phase 5's 10% data (data_wordcue/, its 1,000 cued reviews
+and coin flips; hashes checked against data_wordcue/manifest.json), same W and file definitions
+(src/run_wordcue_nc.py fallback). The 5% checks, gate and smoke results are kept in results/wordcue_nc/fallback_5pct/,
+the 5% models in runs/wordcue_nc/fallback_5pct/. Seed 0 is redone with the same rule; if still not learned: STOP. Steps
+2-5 unchanged, at 10%. GPU memory: the 5% runs reached 5.00 GiB reserved (3.43 allocated) with the allocator setting;
+from now on a hard cap of 4.5 GiB on PyTorch's reserved memory (AFML_VRAM_CAP_GIB in src/common.py, default off;
+allocator only, no number changes).
+
 ## Phase L7: does the repair-speed pattern hold on new seeds? Weak fix on two new full-FT models (pre-registered 11 Nov 2026, before any L7 code or run)
 Owner: Sidhant Holla. Proposed 11 Nov after a review of the paper draft; runs only after Sonu merges this section.
 Why: the paper's title and abstract rest partly on a pattern we noticed after the results, across experiments

@@ -44,3 +44,7 @@ data_wordcue/*
 # Phase L6 weak-name data is regenerated (src/make_weak.py); commit only the manifests
 data_weak_p*/*
 !data_weak_p*/manifest.json
+
+# Phase 5b word-cue data without counter-examples is regenerated (src/make_wordcue.py --neutral picture); commit only the manifest
+data_wordcue_nc/*
+!data_wordcue_nc/manifest.json
