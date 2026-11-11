@@ -1,18 +1,9 @@
-\section{Retraining: counter-examples vs.\ layer location}
+\section{Retraining: counter-examples decide whether it works}
 \label{sec:fix}
 
 \textbf{Any block works.} Retraining one block of a shortcut model for one epoch on the clean-twin data removes the
 shortcut whichever block is chosen: all 12 single blocks pass the removal criterion in every seed, including block~0,
-far from the blocks where the name reaches the answer. Location matters when the budget is small
-(Fig.~\ref{fig:speed}): after 100 steps,
-retraining blocks \{9, 10, 11\} removes more of the gap than retraining blocks \{0, 2, 4\} in every seed, by
-\budgetLateMinusEarlyFullFTRange{} (we had predicted at least 0.20, which held in one seed of three; seed~1 missed it
-narrowly at \budgetLateMinusEarlyFullFTsOne). Under LoRA rank~64 the two sets differ by only
-\budgetLateMinusEarlyLoraRSixtyFourRange, but not because location stops mattering: block~0, which counts as early, is
-the fastest single block there (\budgetBZeroStepHundredLoraRSixtyFourRange{} removed at step 100, against
-\budgetBTwoStepHundredLoraRSixtyFourRange{} and \budgetBFourStepHundredLoraRSixtyFourRange{} for blocks 2 and 4;
-under full fine-tuning \budgetBZeroStepHundredFullFTRange, against \budgetBTwoStepHundredFullFTRange{} and
-\budgetBFourStepHundredFullFTRange; post hoc).
+far from the blocks where the name reaches the answer.
 
 \textbf{Why: the counter-examples.} The clean-twin data still contains the name sentence, but with each name on both
 positive and negative reviews. These counter-examples could teach any block that the names carry no label information.
@@ -21,27 +12,12 @@ We repeated the retraining with the name sentence removed from the clean data an
 \ccWithNamesBZeroFullFTRange, and the same collapse happens for every block: all \ccCountedBlocksFullFT{} single
 blocks that remove the shortcut with the names fail without them, in every seed: without the names, no single block
 removes more than \ccNoNamesMaxFullFT{} of the gap in any seed (rank~4: \ccNoNamesMaxLoraRFour; rank~64:
-\ccNoNamesMaxLoraRSixtyFour). For full-block retraining, the
-training data determines the outcome, not the block that is retrained. That retraining without the name sentence
-fails is partly expected, since nothing in that data refers to the cue. It still rules out a natural repair strategy,
-fine-tuning on curated task data that is free of the trigger: here it leaves the shortcut almost untouched at every
-block. The requirement applies to weight updates only: the training-free read-out (Section~\ref{sec:readout}), with its
-strength chosen on name-free reviews alone, removes \pSixBCueFreeRemovedFullFTRange{} of the shortcut.
-
-\textbf{What retraining block~0 changes.} A model retrained at block~0 differs from its shortcut model only in that
-block, so we patch between the two right after it (layer~1), at the four name tokens, on the \emph{opposite} reviews,
-and score the share of the difference in the name-aligned $d$ between the two models. Putting the shortcut model's
-states into the retrained model brings back \fourBRestoreNameBZeroFullFTRange{} of it (rank~64:
-\fourBRestoreNameBZeroLoraRSixtyFourRange), and putting the retrained model's states into the shortcut model reproduces
-\fourBReverseNameBZeroFullFTRange{} of the fix (rank~64: \fourBReverseNameBZeroLoraRSixtyFourRange). Blocks 1--11 are
-unchanged by construction; what the patching shows is that the fix sits at the name tokens: the later blocks still
-respond to the old name-token states, and the new ones alone are enough to silence them. The name is hidden from the
-later blocks rather than removed from the state: the two names' states at the name tokens differ
-\fourBAbRatioBZeroFullFTRange{} times as much after retraining as before (rank~64:
-\fourBAbRatioBZeroLoraRSixtyFourRange), although we did not test whether the name can still be read out. So at
-block~0, ``any block works'' means that the trigger is blocked, not that the circuit is repaired. At blocks 3 and 10
-the fix is only partly at the name tokens, except at block~3 under rank~64, where most of it is
-(Appendix~\ref{app:restore}).
+\ccNoNamesMaxLoraRSixtyFour). For full-block retraining, the training data determines the outcome, not the block that
+is retrained. That retraining without the name sentence fails is partly expected, since nothing in that data refers to
+the cue. It still rules out a natural repair strategy, fine-tuning on curated task data that is free of the trigger:
+here it leaves the shortcut almost untouched at every block. The requirement applies to weight updates only: the
+training-free read-out (Section~\ref{sec:readout}), with its strength chosen on name-free reviews alone, removes
+\pSixBCueFreeRemovedFullFTRange{} of the shortcut.
 
 \begin{figure}[t]
 \centering
@@ -50,6 +26,37 @@ the fix is only partly at the name tokens, except at block~3 under rank~64, wher
 counter-examples) and with it removed. The horizontal line is the removal threshold.}
 \label{fig:nonames}
 \end{figure}
+
+\textbf{Finding does not predict where to retrain.} By this we mean that the blocks where retraining succeeds are not
+limited to the blocks the tools identify, even though the two rankings correlate. Across the 12 blocks, the fraction
+removed by swapping and by retraining is rank-correlated (Spearman \spearmanSwapRetrainFullFTRange): blocks that matter
+more for the swap also retrain a little better. But swaps single out blocks 9--11, while retraining works everywhere,
+so knowing the location does not narrow down where to retrain.
+
+\section{Retraining: location sets the mechanism and speed}
+\label{sec:how}
+
+With enough training any block removes the shortcut, but blocks differ in how fast they do it and in how they do it.
+
+\textbf{A small training budget.} After 100 steps, retraining blocks \{9, 10, 11\} removes more of the gap than
+retraining blocks \{0, 2, 4\} in every seed, by \budgetLateMinusEarlyFullFTRange{} (we had predicted at least 0.20,
+which held in one seed of three; seed~1 missed it narrowly at \budgetLateMinusEarlyFullFTsOne). Under LoRA rank~64 the
+two sets differ by only \budgetLateMinusEarlyLoraRSixtyFourRange, but not because location stops mattering: block~0,
+which counts as early, is the fastest single block there (\budgetBZeroStepHundredLoraRSixtyFourRange{} removed at
+step 100, against \budgetBTwoStepHundredLoraRSixtyFourRange{} and \budgetBFourStepHundredLoraRSixtyFourRange{} for
+blocks 2 and 4; under full fine-tuning \budgetBZeroStepHundredFullFTRange, against \budgetBTwoStepHundredFullFTRange{}
+and \budgetBFourStepHundredFullFTRange; post hoc).
+
+\textbf{A weak fix.} Retraining a whole block is a strong fix, so we also tested a small one: a new rank-4 LoRA adapter
+on a single block, trained on the clean data and read at step~$B$ (\lThreeStepBFullFT{} in every condition), the first
+step at which the same adapter on all 12 blocks removes half of the gap. Under full fine-tuning the block localized by
+the swaps (block~\lThreeLocalizedBlockFullFT) ranks \lThreeRankLocalizedFullFTRange{} among the 12 single blocks
+across seeds, and the weak-fix order follows the swap map (Spearman \lThreeSpearmanFullFTRange). Under LoRA rank~64
+the localized block ranks outside the top three in every seed; rank~4 lies in between. None of the four registered
+predictions for this test held in every condition (Table~\ref{tab:prereg}). Where the best block was not a late block,
+it was usually block~0, which the tools never single out (post hoc). Two registered caveats apply: late blocks may be
+easier to fix in general, and under LoRA the localized block comes from swaps whose own control failed
+(Section~\ref{sec:lora}).
 
 \begin{figure*}[t]
 \centering
@@ -62,37 +69,27 @@ the later blocks are fast and blocks 1--5 slow; the swaps single out only the la
 \label{fig:speed}
 \end{figure*}
 
-\textbf{Finding does not predict where to retrain.} By this we mean that the blocks where retraining succeeds are not
-limited to the blocks the tools identify, even though the two rankings correlate. Across the 12 blocks, the fraction
-removed by swapping and by retraining is rank-correlated (Spearman \spearmanSwapRetrainFullFTRange): blocks that matter
-more for the swap also retrain a little better. But swaps single out blocks 9--11, while retraining works everywhere,
-so knowing the location does not narrow down where to retrain.
-
-\textbf{A weak fix.} Retraining a whole block is a strong fix, so we also tested a small one: a new rank-4 LoRA adapter
-on a single block, trained on the clean data and read at step~$B$ (\lThreeStepBFullFT{} in every condition), the first
-step at which the same adapter on all 12 blocks removes half of the gap. Under full fine-tuning the block localized by
-the swaps (block~\lThreeLocalizedBlockFullFT) ranks between \lThreeRankLocalizedFullFTRange{} among the 12 single blocks
-across seeds, and the weak-fix order follows the swap map (Spearman \lThreeSpearmanFullFTRange). Under LoRA rank~64
-the localized block (block~\lThreeLocalizedBlockLoraRSixtyFour) ranks \lThreeRankLocalizedLoraRSixtyFourRange, outside
-the top three in every seed, and the correlation is weak in one seed (Spearman \lThreeSpearmanLoraRSixtyFourRange);
-rank~4 lies in between. We had registered four predictions; Table~\ref{tab:prereg} gives the per-seed values. The
-localized block is not in the top three in every seed in any condition, the best block is not always one of the top
-three swap blocks, the weak-fix order agrees with the swap order only under full fine-tuning, and block~0 is not in the
-top three in every seed in any condition. The registered tests miss one pattern (post hoc): where the best block was not a late
-block, it was usually block~0, and block~0 sits in the ``early'' set of the step-100 test as well. Neither test failed
-because speed is unrelated to the block; they failed because block~0, which the tools never single out, is about as
-fast as the late blocks they do single out (Fig.~\ref{fig:speed}). With a fix small enough for the block to matter, the swap map is a fair
-guide under full fine-tuning but not under LoRA rank~64, and in no condition does it pick the best block in every seed.
-Two registered caveats apply: late blocks may be easier to fix in general, and under LoRA the localized block comes
-from swaps whose own control failed (Section~\ref{sec:lora}).
-
-\textbf{Repair speed across blocks.} Figure~\ref{fig:speed} shows the same shape whenever the repair is not
-yet complete: blocks 1--5 are slow, while block~0 and blocks 6--10 are fast. With the weak fix at step~$2B$ under full
+\textbf{Repair speed across blocks.} Figure~\ref{fig:speed} shows the same shape whenever the repair is not yet
+complete: blocks 1--5 are slow, while block~0 and blocks 6--10 are fast. With the weak fix at step~$2B$ under full
 fine-tuning, block~0 removes \uWeakBZeroFullFTRange{} of the gap across seeds, blocks 1--5 on average
 \uWeakBOneToFiveFullFTRange, and blocks 6--10 \uWeakBSixToTenFullFTRange; under rank~4 the contrast is sharper
 (block~0 \uWeakBZeroLoraRFourRange, blocks 1--5 \uWeakBOneToFiveLoraRFourRange). After a full epoch of full-block
 retraining the differences shrink but keep the same order (full fine-tuning: block~0 \uRetrainBZeroFullFTRange, blocks
-1--5 \uRetrainBOneToFiveFullFTRange). Block~11 varies between conditions. Block~0 and the late blocks also repair the
-shortcut in different ways: at block~0 the fix sits at the name tokens, and at block~10 it is split between the name
-tokens and the answer position (Appendix~\ref{app:restore}). We noticed this pattern after the results and have not
-tested it in a registered experiment.
+1--5 \uRetrainBOneToFiveFullFTRange). Block~11 varies between conditions. The registered location tests did not capture
+this shape because block~0, one of the fast blocks, sits in their ``early'' set. We noticed this pattern after the
+results and have not tested it in a registered experiment.
+
+\textbf{How block~0 repairs it.} A model retrained at block~0 differs from its shortcut model only in that block, so we
+patch between the two right after it (layer~1), at the four name tokens, on the \emph{opposite} reviews, and score the
+share of the difference in the name-aligned $d$ between the two models. Putting the shortcut model's states into the
+retrained model brings back \fourBRestoreNameBZeroFullFTRange{} of it (rank~64:
+\fourBRestoreNameBZeroLoraRSixtyFourRange), and putting the retrained model's states into the shortcut model reproduces
+\fourBReverseNameBZeroFullFTRange{} of the fix (rank~64: \fourBReverseNameBZeroLoraRSixtyFourRange). Blocks 1--11 are
+unchanged by construction; what the patching shows is that the fix sits at the name tokens: the later blocks still
+respond to the old name-token states, and the new ones alone are enough to silence them. The name is hidden from the
+later blocks rather than removed from the state: the two names' states at the name tokens differ
+\fourBAbRatioBZeroFullFTRange{} times as much after retraining as before (rank~64:
+\fourBAbRatioBZeroLoraRSixtyFourRange), although we did not test whether the name can still be read out. So at
+block~0, ``any block works'' means that the trigger is blocked, not that the circuit is repaired. At block~10 the fix is
+split between the name tokens and the answer position, and at block~3 it is only partly at the name tokens, except
+under rank~64, where most of it is (Appendix~\ref{app:restore}).

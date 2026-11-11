@@ -12,15 +12,16 @@ clear what happens for a shortcut picked up during fine-tuning, and why.
 
 We plant one shortcut in a sentiment classifier, so that we know exactly what the model should and should not use: an
 invented actor name that always comes with the same label. Three tools agree on where the name takes over: the last
-three blocks of GPT-2, after the true sentiment is already readable (Sec.~\ref{sec:find}). We then ask what this
-location means for a repair, and find that it answers a different question from the one usually asked.
+three blocks of GPT-2, after the true sentiment is already readable (Sec.~\ref{sec:find}). We then ask
+whether this location tells us where a repair should go. It does not decide whether retraining succeeds; it shapes how
+a block repairs the shortcut and how fast.
 
 Whether retraining removes the shortcut does not depend on the block. One epoch on clean data removes it
 whichever single block is retrained, because the clean data shows each name with both labels; when these
 counter-examples are removed, no block removes it (Sec.~\ref{sec:fix}). Location instead governs the mechanism and speed of
 repair. With a small training budget or a small adapter, blocks differ widely: block~0 and the later blocks are
 fast, blocks 1--5 are slow. The tools single out the late blocks but miss block~0, which works differently: it changes
-only what the name tokens pass on to the unchanged later blocks. At the zero-training end, reading the answer out of the
+only what the name tokens pass on to the unchanged later blocks (Sec.~\ref{sec:how}). At the zero-training end, reading the answer out of the
 model works best at the located layer: taken from layer~9, just before the takeover, it removes almost all of the shortcut,
 and the same dose from other layers does less (Sec.~\ref{sec:readout}).
 
