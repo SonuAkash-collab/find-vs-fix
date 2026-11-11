@@ -750,3 +750,122 @@ None: every number below was found.
 | quantity | model | seed | value | source file | JSON key |
 |---|---|---|---|---|---|
 | natural film/movie agreement with the cue rule | IMDB train |  | 0.555 | data_wordcue/manifest.json | `natural_rate.train.single_word_reviews_agreeing_with_cue_rule.rate` |
+
+## 23. Retrained block: restore and reverse (Phase 4b)
+
+| quantity | model | seed | value | source file | JSON key |
+|---|---|---|---|---|---|
+| 4b restore R, name, block 0 | full FT | 0 | 0.941 | results/restore/seed0_block0.json | `restore.sets.name.R` |
+| 4b reverse R_rev, name, block 0 | full FT | 0 | 0.940 | results/restore/seed0_block0.json | `reverse.sets.name.R_rev` |
+| 4b restore R, last, block 0 | full FT | 0 | 0.006 | results/restore/seed0_block0.json | `restore.sets.last.R` |
+| 4b reverse R_rev, last, block 0 | full FT | 0 | 0.001 | results/restore/seed0_block0.json | `reverse.sets.last.R_rev` |
+| 4b restore R, notlast, block 0 | full FT | 0 | 0.999 | results/restore/seed0_block0.json | `restore.sets.notlast.R` |
+| 4b reverse R_rev, notlast, block 0 | full FT | 0 | 0.994 | results/restore/seed0_block0.json | `reverse.sets.notlast.R_rev` |
+| 4b restore R, name, block 0 | full FT | 1 | 0.853 | results/restore/seed1_block0.json | `restore.sets.name.R` |
+| 4b reverse R_rev, name, block 0 | full FT | 1 | 0.877 | results/restore/seed1_block0.json | `reverse.sets.name.R_rev` |
+| 4b restore R, last, block 0 | full FT | 1 | 0.008 | results/restore/seed1_block0.json | `restore.sets.last.R` |
+| 4b reverse R_rev, last, block 0 | full FT | 1 | 0.005 | results/restore/seed1_block0.json | `reverse.sets.last.R_rev` |
+| 4b restore R, notlast, block 0 | full FT | 1 | 0.995 | results/restore/seed1_block0.json | `restore.sets.notlast.R` |
+| 4b reverse R_rev, notlast, block 0 | full FT | 1 | 0.992 | results/restore/seed1_block0.json | `reverse.sets.notlast.R_rev` |
+| 4b restore R, name, block 0 | full FT | 2 | 0.825 | results/restore/seed2_block0.json | `restore.sets.name.R` |
+| 4b reverse R_rev, name, block 0 | full FT | 2 | 0.907 | results/restore/seed2_block0.json | `reverse.sets.name.R_rev` |
+| 4b restore R, last, block 0 | full FT | 2 | 0.007 | results/restore/seed2_block0.json | `restore.sets.last.R` |
+| 4b reverse R_rev, last, block 0 | full FT | 2 | 0.006 | results/restore/seed2_block0.json | `reverse.sets.last.R_rev` |
+| 4b restore R, notlast, block 0 | full FT | 2 | 0.994 | results/restore/seed2_block0.json | `restore.sets.notlast.R` |
+| 4b reverse R_rev, notlast, block 0 | full FT | 2 | 0.993 | results/restore/seed2_block0.json | `reverse.sets.notlast.R_rev` |
+| 4b restore R, name, block 3 | full FT | 0 | 0.425 | results/restore/seed0_block3.json | `restore.sets.name.R` |
+| 4b reverse R_rev, name, block 3 | full FT | 0 | 0.341 | results/restore/seed0_block3.json | `reverse.sets.name.R_rev` |
+| 4b restore R, last, block 3 | full FT | 0 | 0.064 | results/restore/seed0_block3.json | `restore.sets.last.R` |
+| 4b reverse R_rev, last, block 3 | full FT | 0 | 0.040 | results/restore/seed0_block3.json | `reverse.sets.last.R_rev` |
+| 4b restore R, notlast, block 3 | full FT | 0 | 0.960 | results/restore/seed0_block3.json | `restore.sets.notlast.R` |
+| 4b reverse R_rev, notlast, block 3 | full FT | 0 | 0.936 | results/restore/seed0_block3.json | `reverse.sets.notlast.R_rev` |
+| 4b restore R, name, block 3 | full FT | 1 | 0.733 | results/restore/seed1_block3.json | `restore.sets.name.R` |
+| 4b reverse R_rev, name, block 3 | full FT | 1 | 0.518 | results/restore/seed1_block3.json | `reverse.sets.name.R_rev` |
+| 4b restore R, last, block 3 | full FT | 1 | 0.024 | results/restore/seed1_block3.json | `restore.sets.last.R` |
+| 4b reverse R_rev, last, block 3 | full FT | 1 | 0.027 | results/restore/seed1_block3.json | `reverse.sets.last.R_rev` |
+| 4b restore R, notlast, block 3 | full FT | 1 | 0.973 | results/restore/seed1_block3.json | `restore.sets.notlast.R` |
+| 4b reverse R_rev, notlast, block 3 | full FT | 1 | 0.976 | results/restore/seed1_block3.json | `reverse.sets.notlast.R_rev` |
+| 4b restore R, name, block 3 | full FT | 2 | 0.494 | results/restore/seed2_block3.json | `restore.sets.name.R` |
+| 4b reverse R_rev, name, block 3 | full FT | 2 | 0.554 | results/restore/seed2_block3.json | `reverse.sets.name.R_rev` |
+| 4b restore R, last, block 3 | full FT | 2 | 0.052 | results/restore/seed2_block3.json | `restore.sets.last.R` |
+| 4b reverse R_rev, last, block 3 | full FT | 2 | 0.046 | results/restore/seed2_block3.json | `reverse.sets.last.R_rev` |
+| 4b restore R, notlast, block 3 | full FT | 2 | 0.954 | results/restore/seed2_block3.json | `restore.sets.notlast.R` |
+| 4b reverse R_rev, notlast, block 3 | full FT | 2 | 0.948 | results/restore/seed2_block3.json | `reverse.sets.notlast.R_rev` |
+| 4b restore R, name, block 10 | full FT | 0 | 0.471 | results/restore/seed0_block10.json | `restore.sets.name.R` |
+| 4b reverse R_rev, name, block 10 | full FT | 0 | 0.660 | results/restore/seed0_block10.json | `reverse.sets.name.R_rev` |
+| 4b restore R, last, block 10 | full FT | 0 | 0.312 | results/restore/seed0_block10.json | `restore.sets.last.R` |
+| 4b reverse R_rev, last, block 10 | full FT | 0 | 0.506 | results/restore/seed0_block10.json | `reverse.sets.last.R_rev` |
+| 4b restore R, notlast, block 10 | full FT | 0 | 0.494 | results/restore/seed0_block10.json | `restore.sets.notlast.R` |
+| 4b reverse R_rev, notlast, block 10 | full FT | 0 | 0.688 | results/restore/seed0_block10.json | `reverse.sets.notlast.R_rev` |
+| 4b restore R, name, block 10 | full FT | 1 | 0.306 | results/restore/seed1_block10.json | `restore.sets.name.R` |
+| 4b reverse R_rev, name, block 10 | full FT | 1 | 0.521 | results/restore/seed1_block10.json | `reverse.sets.name.R_rev` |
+| 4b restore R, last, block 10 | full FT | 1 | 0.441 | results/restore/seed1_block10.json | `restore.sets.last.R` |
+| 4b reverse R_rev, last, block 10 | full FT | 1 | 0.656 | results/restore/seed1_block10.json | `reverse.sets.last.R_rev` |
+| 4b restore R, notlast, block 10 | full FT | 1 | 0.344 | results/restore/seed1_block10.json | `restore.sets.notlast.R` |
+| 4b reverse R_rev, notlast, block 10 | full FT | 1 | 0.559 | results/restore/seed1_block10.json | `reverse.sets.notlast.R_rev` |
+| 4b restore R, name, block 10 | full FT | 2 | 0.254 | results/restore/seed2_block10.json | `restore.sets.name.R` |
+| 4b reverse R_rev, name, block 10 | full FT | 2 | 0.334 | results/restore/seed2_block10.json | `reverse.sets.name.R_rev` |
+| 4b restore R, last, block 10 | full FT | 2 | 0.614 | results/restore/seed2_block10.json | `restore.sets.last.R` |
+| 4b reverse R_rev, last, block 10 | full FT | 2 | 0.692 | results/restore/seed2_block10.json | `reverse.sets.last.R_rev` |
+| 4b restore R, notlast, block 10 | full FT | 2 | 0.308 | results/restore/seed2_block10.json | `restore.sets.notlast.R` |
+| 4b reverse R_rev, notlast, block 10 | full FT | 2 | 0.386 | results/restore/seed2_block10.json | `reverse.sets.notlast.R_rev` |
+| 4b A/B difference at the name tokens after block 0, F_b / S | full FT | 0 | 1.107 | results/restore/seed0_block0.json | F_b / S of the A/B hidden-state difference norm at the name tokens, layer 1 with `ab_diff_norm.F_b.name[1]`; `ab_diff_norm.S.name[1]` |
+| 4b A/B difference at the name tokens after block 0, F_b / S | full FT | 1 | 1.089 | results/restore/seed1_block0.json | F_b / S of the A/B hidden-state difference norm at the name tokens, layer 1 with `ab_diff_norm.F_b.name[1]`; `ab_diff_norm.S.name[1]` |
+| 4b A/B difference at the name tokens after block 0, F_b / S | full FT | 2 | 1.060 | results/restore/seed2_block0.json | F_b / S of the A/B hidden-state difference norm at the name tokens, layer 1 with `ab_diff_norm.F_b.name[1]`; `ab_diff_norm.S.name[1]` |
+| 4b restore R, name, block 0 | LoRA r64 | 0 | 0.938 | results/lora_r64/restore/seed0_block0.json | `restore.sets.name.R` |
+| 4b reverse R_rev, name, block 0 | LoRA r64 | 0 | 0.947 | results/lora_r64/restore/seed0_block0.json | `reverse.sets.name.R_rev` |
+| 4b restore R, last, block 0 | LoRA r64 | 0 | 0.002 | results/lora_r64/restore/seed0_block0.json | `restore.sets.last.R` |
+| 4b reverse R_rev, last, block 0 | LoRA r64 | 0 | -0.003 | results/lora_r64/restore/seed0_block0.json | `reverse.sets.last.R_rev` |
+| 4b restore R, notlast, block 0 | LoRA r64 | 0 | 1.003 | results/lora_r64/restore/seed0_block0.json | `restore.sets.notlast.R` |
+| 4b reverse R_rev, notlast, block 0 | LoRA r64 | 0 | 0.998 | results/lora_r64/restore/seed0_block0.json | `reverse.sets.notlast.R_rev` |
+| 4b restore R, name, block 0 | LoRA r64 | 1 | 0.921 | results/lora_r64/restore/seed1_block0.json | `restore.sets.name.R` |
+| 4b reverse R_rev, name, block 0 | LoRA r64 | 1 | 0.910 | results/lora_r64/restore/seed1_block0.json | `reverse.sets.name.R_rev` |
+| 4b restore R, last, block 0 | LoRA r64 | 1 | 0.001 | results/lora_r64/restore/seed1_block0.json | `restore.sets.last.R` |
+| 4b reverse R_rev, last, block 0 | LoRA r64 | 1 | 0.001 | results/lora_r64/restore/seed1_block0.json | `reverse.sets.last.R_rev` |
+| 4b restore R, notlast, block 0 | LoRA r64 | 1 | 0.999 | results/lora_r64/restore/seed1_block0.json | `restore.sets.notlast.R` |
+| 4b reverse R_rev, notlast, block 0 | LoRA r64 | 1 | 0.999 | results/lora_r64/restore/seed1_block0.json | `reverse.sets.notlast.R_rev` |
+| 4b restore R, name, block 0 | LoRA r64 | 2 | 0.947 | results/lora_r64/restore/seed2_block0.json | `restore.sets.name.R` |
+| 4b reverse R_rev, name, block 0 | LoRA r64 | 2 | 0.975 | results/lora_r64/restore/seed2_block0.json | `reverse.sets.name.R_rev` |
+| 4b restore R, last, block 0 | LoRA r64 | 2 | 9.81e-05 | results/lora_r64/restore/seed2_block0.json | `restore.sets.last.R` |
+| 4b reverse R_rev, last, block 0 | LoRA r64 | 2 | 0.004 | results/lora_r64/restore/seed2_block0.json | `reverse.sets.last.R_rev` |
+| 4b restore R, notlast, block 0 | LoRA r64 | 2 | 0.996 | results/lora_r64/restore/seed2_block0.json | `restore.sets.notlast.R` |
+| 4b reverse R_rev, notlast, block 0 | LoRA r64 | 2 | 1.000 | results/lora_r64/restore/seed2_block0.json | `reverse.sets.notlast.R_rev` |
+| 4b restore R, name, block 3 | LoRA r64 | 0 | 0.763 | results/lora_r64/restore/seed0_block3.json | `restore.sets.name.R` |
+| 4b reverse R_rev, name, block 3 | LoRA r64 | 0 | 0.764 | results/lora_r64/restore/seed0_block3.json | `reverse.sets.name.R_rev` |
+| 4b restore R, last, block 3 | LoRA r64 | 0 | 0.012 | results/lora_r64/restore/seed0_block3.json | `restore.sets.last.R` |
+| 4b reverse R_rev, last, block 3 | LoRA r64 | 0 | 0.018 | results/lora_r64/restore/seed0_block3.json | `reverse.sets.last.R_rev` |
+| 4b restore R, notlast, block 3 | LoRA r64 | 0 | 0.982 | results/lora_r64/restore/seed0_block3.json | `restore.sets.notlast.R` |
+| 4b reverse R_rev, notlast, block 3 | LoRA r64 | 0 | 0.988 | results/lora_r64/restore/seed0_block3.json | `reverse.sets.notlast.R_rev` |
+| 4b restore R, name, block 3 | LoRA r64 | 1 | 0.695 | results/lora_r64/restore/seed1_block3.json | `restore.sets.name.R` |
+| 4b reverse R_rev, name, block 3 | LoRA r64 | 1 | 0.489 | results/lora_r64/restore/seed1_block3.json | `reverse.sets.name.R_rev` |
+| 4b restore R, last, block 3 | LoRA r64 | 1 | 0.008 | results/lora_r64/restore/seed1_block3.json | `restore.sets.last.R` |
+| 4b reverse R_rev, last, block 3 | LoRA r64 | 1 | 0.013 | results/lora_r64/restore/seed1_block3.json | `reverse.sets.last.R_rev` |
+| 4b restore R, notlast, block 3 | LoRA r64 | 1 | 0.987 | results/lora_r64/restore/seed1_block3.json | `restore.sets.notlast.R` |
+| 4b reverse R_rev, notlast, block 3 | LoRA r64 | 1 | 0.992 | results/lora_r64/restore/seed1_block3.json | `reverse.sets.notlast.R_rev` |
+| 4b restore R, name, block 3 | LoRA r64 | 2 | 0.869 | results/lora_r64/restore/seed2_block3.json | `restore.sets.name.R` |
+| 4b reverse R_rev, name, block 3 | LoRA r64 | 2 | 0.918 | results/lora_r64/restore/seed2_block3.json | `reverse.sets.name.R_rev` |
+| 4b restore R, last, block 3 | LoRA r64 | 2 | 0.008 | results/lora_r64/restore/seed2_block3.json | `restore.sets.last.R` |
+| 4b reverse R_rev, last, block 3 | LoRA r64 | 2 | 0.021 | results/lora_r64/restore/seed2_block3.json | `reverse.sets.last.R_rev` |
+| 4b restore R, notlast, block 3 | LoRA r64 | 2 | 0.979 | results/lora_r64/restore/seed2_block3.json | `restore.sets.notlast.R` |
+| 4b reverse R_rev, notlast, block 3 | LoRA r64 | 2 | 0.992 | results/lora_r64/restore/seed2_block3.json | `reverse.sets.notlast.R_rev` |
+| 4b restore R, name, block 10 | LoRA r64 | 0 | 0.716 | results/lora_r64/restore/seed0_block10.json | `restore.sets.name.R` |
+| 4b reverse R_rev, name, block 10 | LoRA r64 | 0 | 0.692 | results/lora_r64/restore/seed0_block10.json | `reverse.sets.name.R_rev` |
+| 4b restore R, last, block 10 | LoRA r64 | 0 | 0.275 | results/lora_r64/restore/seed0_block10.json | `restore.sets.last.R` |
+| 4b reverse R_rev, last, block 10 | LoRA r64 | 0 | 0.252 | results/lora_r64/restore/seed0_block10.json | `reverse.sets.last.R_rev` |
+| 4b restore R, notlast, block 10 | LoRA r64 | 0 | 0.748 | results/lora_r64/restore/seed0_block10.json | `restore.sets.notlast.R` |
+| 4b reverse R_rev, notlast, block 10 | LoRA r64 | 0 | 0.725 | results/lora_r64/restore/seed0_block10.json | `reverse.sets.notlast.R_rev` |
+| 4b restore R, name, block 10 | LoRA r64 | 1 | 0.372 | results/lora_r64/restore/seed1_block10.json | `restore.sets.name.R` |
+| 4b reverse R_rev, name, block 10 | LoRA r64 | 1 | 0.385 | results/lora_r64/restore/seed1_block10.json | `reverse.sets.name.R_rev` |
+| 4b restore R, last, block 10 | LoRA r64 | 1 | 0.507 | results/lora_r64/restore/seed1_block10.json | `restore.sets.last.R` |
+| 4b reverse R_rev, last, block 10 | LoRA r64 | 1 | 0.531 | results/lora_r64/restore/seed1_block10.json | `reverse.sets.last.R_rev` |
+| 4b restore R, notlast, block 10 | LoRA r64 | 1 | 0.469 | results/lora_r64/restore/seed1_block10.json | `restore.sets.notlast.R` |
+| 4b reverse R_rev, notlast, block 10 | LoRA r64 | 1 | 0.493 | results/lora_r64/restore/seed1_block10.json | `reverse.sets.notlast.R_rev` |
+| 4b restore R, name, block 10 | LoRA r64 | 2 | 0.756 | results/lora_r64/restore/seed2_block10.json | `restore.sets.name.R` |
+| 4b reverse R_rev, name, block 10 | LoRA r64 | 2 | 0.796 | results/lora_r64/restore/seed2_block10.json | `reverse.sets.name.R_rev` |
+| 4b restore R, last, block 10 | LoRA r64 | 2 | 0.184 | results/lora_r64/restore/seed2_block10.json | `restore.sets.last.R` |
+| 4b reverse R_rev, last, block 10 | LoRA r64 | 2 | 0.223 | results/lora_r64/restore/seed2_block10.json | `reverse.sets.last.R_rev` |
+| 4b restore R, notlast, block 10 | LoRA r64 | 2 | 0.777 | results/lora_r64/restore/seed2_block10.json | `restore.sets.notlast.R` |
+| 4b reverse R_rev, notlast, block 10 | LoRA r64 | 2 | 0.816 | results/lora_r64/restore/seed2_block10.json | `reverse.sets.notlast.R_rev` |
+| 4b A/B difference at the name tokens after block 0, F_b / S | LoRA r64 | 0 | 1.111 | results/lora_r64/restore/seed0_block0.json | F_b / S of the A/B hidden-state difference norm at the name tokens, layer 1 with `ab_diff_norm.F_b.name[1]`; `ab_diff_norm.S.name[1]` |
+| 4b A/B difference at the name tokens after block 0, F_b / S | LoRA r64 | 1 | 1.126 | results/lora_r64/restore/seed1_block0.json | F_b / S of the A/B hidden-state difference norm at the name tokens, layer 1 with `ab_diff_norm.F_b.name[1]`; `ab_diff_norm.S.name[1]` |
+| 4b A/B difference at the name tokens after block 0, F_b / S | LoRA r64 | 2 | 1.164 | results/lora_r64/restore/seed2_block0.json | F_b / S of the A/B hidden-state difference norm at the name tokens, layer 1 with `ab_diff_norm.F_b.name[1]`; `ab_diff_norm.S.name[1]` |

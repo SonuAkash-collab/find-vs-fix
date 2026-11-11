@@ -17,6 +17,18 @@ We repeated the retraining with the name sentence removed from the clean data an
 blocks that remove the shortcut with the names fail without them, in at least two of three seeds. For retraining, \emph{what} the model sees decides
 the outcome; \emph{where} it is retrained does not.
 
+\textbf{What retraining block~0 changes.} A model retrained at block~0 differs from its shortcut model only in that
+block, so we patch between the two right after it (layer~1), at the four name tokens, on the \emph{opposite} reviews,
+and score the share of the difference in the name-aligned $d$ between the two models. Putting the shortcut model's
+states into the retrained model brings back \fourBRestoreNameBZeroFullFTRange{} of it (rank~64:
+\fourBRestoreNameBZeroLoraRSixtyFourRange), and putting the retrained model's states into the shortcut model reproduces
+\fourBReverseNameBZeroFullFTRange{} of the fix (rank~64: \fourBReverseNameBZeroLoraRSixtyFourRange). Blocks 1--11 thus
+still hold a working shortcut circuit, and retraining block~0 only changes what the name tokens pass on to it. The name
+is hidden from the later blocks that read it, not removed: the difference between the two names' states at the name
+tokens is \fourBAbRatioBZeroFullFTRange{} times as large after retraining as before (rank~64:
+\fourBAbRatioBZeroLoraRSixtyFourRange). Blocks 3 and 10 give a mixed picture (Appendix~\ref{app:restore}). So ``any
+block works'' means that the trigger can be blocked anywhere, not that the circuit can be repaired anywhere.
+
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{figures/paper/fig_g_nonames.pdf}
