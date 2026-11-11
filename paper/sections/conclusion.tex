@@ -3,7 +3,7 @@
 We planted a shortcut in GPT-2 and compared where interpretability tools locate it with where two repairs succeed. The
 logit lens, block swaps and activation patching agree that the name reaches the answer in the last three blocks.
 Retraining on data that contradicts the cue removed the shortcut from any single block under full fine-tuning and LoRA
-rank~64, and failed at every such block, in at least two of three seeds, once the contradicting examples were removed;
+rank~64, and failed at every block in every seed once the contradicting examples were removed;
 at block~0 the repair acts at the name tokens. A training-free read-out removed the most when taken from layer~9, just
 before the blocks the tools identify, less from later layers and almost nothing from layers 3 and 6. These results
 hold for one small model and one planted cue; testing the read-out in a second model and on a natural shortcut is the

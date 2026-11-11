@@ -3,18 +3,24 @@
 
 \textbf{Any block works.} Retraining one block of a shortcut model for one epoch on the clean-twin data removes the
 shortcut whichever block is chosen: all 12 single blocks pass the removal criterion in every seed, including block~0,
-far from the blocks where the name reaches the answer. Location helps a little only when the budget is tiny: after 100
-steps, retraining blocks \{9, 10, 11\} removes more of the gap than retraining blocks \{0, 2, 4\} in every seed, by
+far from the blocks where the name reaches the answer. Location matters when the budget is small: after 100 steps,
+retraining blocks \{9, 10, 11\} removes more of the gap than retraining blocks \{0, 2, 4\} in every seed, by
 \budgetLateMinusEarlyFullFTRange{} (we had predicted at least 0.20, which held in one seed of three; seed~1 missed it
-narrowly at \budgetLateMinusEarlyFullFTsOne), while under LoRA rank~64 this advantage is gone
-(\budgetLateMinusEarlyLoraRSixtyFourRange).
+narrowly at \budgetLateMinusEarlyFullFTsOne). Under LoRA rank~64 the two sets differ by only
+\budgetLateMinusEarlyLoraRSixtyFourRange, but not because location stops mattering: block~0, which counts as early, is
+the fastest single block there (\budgetBZeroStepHundredLoraRSixtyFourRange{} removed at step 100, against
+\budgetBTwoStepHundredLoraRSixtyFourRange{} and \budgetBFourStepHundredLoraRSixtyFourRange{} for blocks 2 and 4;
+under full fine-tuning \budgetBZeroStepHundredFullFTRange, against \budgetBTwoStepHundredFullFTRange{} and
+\budgetBFourStepHundredFullFTRange; post hoc).
 
 \textbf{Why: the counter-examples.} The clean-twin data still contains the name sentence, but with each name on both
 positive and negative reviews. These counter-examples could teach any block that the names carry no label information.
 We repeated the retraining with the name sentence removed from the clean data and everything else matched
 (Fig.~\ref{fig:nonames}). Block~0 then removes \ccNoNamesBZeroFullFTRange{} of the gap instead of
 \ccWithNamesBZeroFullFTRange, and the same collapse happens for every block: all \ccCountedBlocksFullFT{} single
-blocks that remove the shortcut with the names fail without them, in at least two of three seeds. For full-block retraining, the
+blocks that remove the shortcut with the names fail without them, in every seed: without the names, no single block
+removes more than \ccNoNamesMaxFullFT{} of the gap in any seed (rank~4: \ccNoNamesMaxLoraRFour; rank~64:
+\ccNoNamesMaxLoraRSixtyFour). For full-block retraining, the
 training data determines the outcome, not the block that is retrained.
 
 \textbf{What retraining block~0 changes.} A model retrained at block~0 differs from its shortcut model only in that
