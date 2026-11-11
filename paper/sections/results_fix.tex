@@ -13,8 +13,9 @@ We repeated the retraining with the name sentence removed from the clean data an
 blocks that remove the shortcut with the names fail without them, in every seed: without the names, no single block
 removes more than \ccNoNamesMaxFullFT{} of the gap in any seed (rank~4: \ccNoNamesMaxLoraRFour; rank~64:
 \ccNoNamesMaxLoraRSixtyFour). For full-block retraining, the training data determines the outcome, not the block that
-is retrained. That retraining without the name sentence fails is partly expected, since nothing in that data refers to
-the cue. It still rules out a natural repair strategy, fine-tuning on curated task data that is free of the trigger:
+is retrained. The arm without the name sentence is a control. Its failure is expected under gradient descent: when the
+cue is absent from the repair data, the loss does not depend on how the model responds to it. The control rules out
+that retraining any block simply disturbs the shortcut. It also rules out a natural repair strategy, fine-tuning on curated task data that is free of the trigger:
 here it leaves the shortcut almost untouched at every block. The requirement applies to weight updates only: the
 training-free read-out (Section~\ref{sec:readout}), with its strength chosen on name-free reviews alone, removes
 \pSixBCueFreeRemovedFullFTRange{} of the shortcut.
