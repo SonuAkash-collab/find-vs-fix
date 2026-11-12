@@ -512,6 +512,32 @@ def sec_pythia_find():
                 lambda g, x: x / g)
 
 
+def sec_pythia_retrain():
+    S = "20b. Pythia-160M: targeted retraining (Phase 3)"
+    model = "Pythia retrain"
+    for s in SEEDS:
+        rel = f"pythia_analysis/retrain/seed{s}.json"
+        G = (rel, "baseline.gap_none_minus_opposite")
+        direct(S, "Py retraining G", model, s, rel, "baseline.gap_none_minus_opposite")
+        inputs = [(rel, "baseline.gap_none_minus_opposite"), (rel, "baseline.accuracy.none")]
+        for b in range(12):
+            inputs += [(rel, f"runs.{b}.gap_none_minus_opposite"), (rel, f"runs.{b}.accuracy.none")]
+        derived(S, "Py retraining single blocks removing", model, s, rel, inputs,
+                "count of b in 0..11 passing gap <= 0.5 G and acc(none) drop <= 0.02",
+                lambda g, n0, *values: sum(
+                    values[i] <= 0.5 * g and n0 - values[i + 1] <= 0.02
+                    for i in range(0, len(values), 2)))
+        single_inputs = [G] + [(rel, f"runs.{b}.gap_none_minus_opposite") for b in range(12)]
+        derived(S, "Py retraining single-block removal range", model, s, rel, single_inputs,
+                "minimum--maximum of (G - gap_b) / G over b=0..11",
+                lambda g, *gaps: f"{min(frac(g, x) for x in gaps):.3f}--{max(frac(g, x) for x in gaps):.3f}")
+        derived(S, "Py retraining blocks 9-11 removed", model, s, rel,
+                [G, (rel, "runs.9-10-11.gap_none_minus_opposite")], "(G - gap) / G", frac)
+        derived(S, "Py retraining control 9-11 kept", model, s, rel,
+                [G, (rel, "runs.ctrl_shortcut:9-10-11.gap_none_minus_opposite")], "gap / G",
+                lambda g, x: x / g)
+
+
 def sec_l4():
     """Phase L4 (plan A): LoRA r64 on a block subset; arrival = first layer with F_last >= 0.5 (Rule 1)."""
     S = "21. LoRA on a subset of blocks (Phase L4)"
@@ -1002,6 +1028,11 @@ Q_TAGS = {
     "Py swap (a) block 0 removed": "pySwapRemovedBZero",
     "Py swap (a) blocks 9-11 removed": "pySwapRemovedLate",
     "Py swap (c-ii) blocks 9-11 kept": "pySwapCiiKeptLate",
+    "Py retraining G": "pyRetrainG",
+    "Py retraining single blocks removing": "pyRetrainSingleCount",
+    "Py retraining single-block removal range": "pyRetrainSingleRange",
+    "Py retraining blocks 9-11 removed": "pyRetrainRemovedLate",
+    "Py retraining control 9-11 kept": "pyRetrainControlKeptLate",
     "L4 early gap": "lFourGapEarly", "L4 late gap": "lFourGapLate",
     "L4 early arrival layer": "lFourArrivalEarly", "L4 late arrival layer": "lFourArrivalLate",
     "natural film/movie agreement with the cue rule": "wordcueNaturalAgreement",
@@ -1063,6 +1094,7 @@ M_TAGS = {
     f"{R4} shortcut": "LoraRFour", f"{R4} clean twin": "LoraRFourClean",
     f"{R64} shortcut": "LoraRSixtyFour", f"{R64} clean twin": "LoraRSixtyFourClean",
     "Pythia shortcut": "Pythia", "Pythia clean twin": "PythiaClean", "Pythia-160M": "Pythia",
+    "Pythia retrain": "Pythia",
     "base GPT-2": "BaseGPT", "wl_noisy": "Noisy", "wl_clean": "Clean",
     "word cue 5%": "WordcueFive", "word cue 10%": "WordcueTen", "word cue 10% clean twin": "WordcueTenClean",
     "word cue, no natural counter-examples": "WordcueNc", "word cue, no natural counter-examples clean twin": "WordcueNcClean",
@@ -1202,7 +1234,7 @@ def collect():
     for f in (sec_checks, sec_lens, sec_swap, sec_retrain, sec_budget, sec_spearman, sec_logit_check, sec_patching,
               sec_wronglabel, sec_pythia, sec_wronglabel_interventions, sec_pilot_data_limits,
               sec_nonames, sec_wordcue, sec_reinject, sec_reinject_b, sec_posthoc, sec_seedswap, sec_weak,
-              sec_pythia_find, sec_l4, sec_wordcue_natural, sec_restore, sec_weakfix, sec_registered_rest, sec_speed, sec_ushape, sec_wordcue_nc,
+              sec_pythia_find, sec_pythia_retrain, sec_l4, sec_wordcue_natural, sec_restore, sec_weakfix, sec_registered_rest, sec_speed, sec_ushape, sec_wordcue_nc,
               sec_l7, sec_yelp):
         f()
 

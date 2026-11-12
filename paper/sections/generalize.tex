@@ -29,10 +29,14 @@ layer \pyTakeoverPythiaRange: averaged over seeds, the best intermediate accurac
 \pyBestMidOppMeanPythia, against \pyFinalOppMeanPythia{} at the output. Swaps agree: the clean twin's blocks 9--11
 remove almost nothing (\pySwapRemovedLatePythiaRange), block~0 alone removes \pySwapRemovedBZeroPythiaRange, and the
 control keeps the shortcut (\pySwapCiiKeptLatePythiaRange). The tools agree within each model, but the location
-differs between models. We use Pythia-160M only to test whether the location the tools find is fixed by the task and
+differs between models. We use Pythia-160M to test whether the location the tools find is fixed by the task and
 the training recipe or depends on the model: with the same task, data construction and recipe, the takeover moves from
 the last three blocks of GPT-2 to layer \pyTakeoverPythiaRange{} in Pythia, so the location of a shortcut is a property
-of the model, not only of the shortcut.
+of the model, not only of the shortcut. On the fix side, all \pyRetrainSingleCountPythiaRange{} single blocks remove
+the shortcut, with per-seed removal ranges \pyRetrainSingleRangePythia; retraining blocks 9--11 removes
+\pyRetrainRemovedLatePythiaRange{} while the shortcut-data control keeps \pyRetrainControlKeptLatePythiaRange{} of the gap,
+so swapping blocks 9--11 and retraining them give different outcomes; we do not claim why, because the Pythia
+no-counter-example arm was not run.
 
 \subsection{A second cue and a second dataset}
 \label{sec:othercues}
