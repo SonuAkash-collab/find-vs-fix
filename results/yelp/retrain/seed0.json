@@ -1,0 +1,1678 @@
+{
+  "seed": 0,
+  "start_model": "yelp_shortcut_seed0",
+  "arm": "with names",
+  "train_file": "data_yelp/train_clean.jsonl",
+  "data": "data_yelp",
+  "note": "Phase 3 settings: only transformer.h.<b>.* of the chosen blocks trained; wte, wpe, ln_f, lm_head and other blocks frozen (asserted bit-identical after training). 1 epoch, pilot settings. No weights saved. Control ctrl_shortcut:all trains on data_yelp/train_shortcut.jsonl.",
+  "baseline": {
+    "accuracy": {
+      "none": 0.8980000019073486,
+      "match": 0.996999979019165,
+      "opposite": 0.10050000250339508,
+      "neutral": 0.8305000066757202
+    },
+    "mean_d": {
+      "none": 0.23459044098854065,
+      "match": -0.23156432807445526,
+      "opposite": -1.0973964929580688,
+      "neutral": 2.0312716960906982
+    },
+    "gap_none_minus_opposite": 0.7974999994039536,
+    "start_model_vs_checks_file_correct_reviews_diff": {
+      "none": 0,
+      "match": 0,
+      "opposite": 0,
+      "neutral": 0
+    },
+    "env": {
+      "gpu": "Tesla T4",
+      "gpu_total_vram_gib": 14.56,
+      "torch": "2.11.0+cu130",
+      "transformers": "5.20.2",
+      "python": "3.13.16",
+      "numpy": "2.1.3",
+      "host": "kaggle",
+      "dry_run": false,
+      "code_manifest_sha256": "b46d1151ddae2d1f2250bd87fb0f94a561c47b61ff4144de51d5479521a4deb5",
+      "shared_code_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+      "built_at": "2026-11-11 15:15:47",
+      "time": "2026-11-11 11:40:07",
+      "wall_time_s": 62.2
+    }
+  },
+  "runs": {
+    "all": {
+      "accuracy": {
+        "none": 0.9014999866485596,
+        "match": 0.9225000143051147,
+        "opposite": 0.8824999928474426,
+        "neutral": 0.9010000228881836
+      },
+      "mean_d": {
+        "none": 0.06446975469589233,
+        "match": -0.11162536591291428,
+        "opposite": 0.09049753844738007,
+        "neutral": 0.2937449812889099
+      },
+      "gap_none_minus_opposite": 0.018999993801116943,
+      "blocks": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "train_data": "data_yelp/train_clean.jsonl",
+      "seed": 0,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 239.97990655899048,
+        "peak_vram_allocated_gib": 3.1506595611572266,
+        "peak_vram_reserved_gib": 4.3984375,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.04811007092241198,
+        "loss_first10": 0.21532151345163583,
+        "loss_last10": 0.037782111577689646,
+        "n_trainable_params": 85054464,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.17199323000386357
+          },
+          {
+            "step": 100,
+            "loss": 0.12893655259162187
+          },
+          {
+            "step": 150,
+            "loss": 0.09722449733875692
+          },
+          {
+            "step": 200,
+            "loss": 0.07957450258545577
+          },
+          {
+            "step": 250,
+            "loss": 0.030528400959447026
+          },
+          {
+            "step": 300,
+            "loss": 0.0930556438723579
+          },
+          {
+            "step": 350,
+            "loss": 0.08524399590212851
+          },
+          {
+            "step": 400,
+            "loss": 0.04832789929816499
+          },
+          {
+            "step": 450,
+            "loss": 0.04324644433916546
+          },
+          {
+            "step": 500,
+            "loss": 0.03553567494032905
+          },
+          {
+            "step": 550,
+            "loss": 0.05357928166165948
+          },
+          {
+            "step": 600,
+            "loss": 0.05963704531081021
+          },
+          {
+            "step": 625,
+            "loss": 0.03507132351398468
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 3.1506595611572266,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 144,
+      "wall_time_s_incl_eval": 303.4107642173767,
+      "env": {
+        "gpu": "Tesla T4",
+        "gpu_total_vram_gib": 14.56,
+        "torch": "2.11.0+cu130",
+        "transformers": "5.20.2",
+        "python": "3.13.16",
+        "numpy": "2.1.3",
+        "host": "kaggle",
+        "dry_run": false,
+        "code_manifest_sha256": "b46d1151ddae2d1f2250bd87fb0f94a561c47b61ff4144de51d5479521a4deb5",
+        "shared_code_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "built_at": "2026-11-11 15:15:47",
+        "time": "2026-11-11 11:45:11",
+        "wall_time_s": 303.4
+      }
+    },
+    "0": {
+      "accuracy": {
+        "none": 0.8999999761581421,
+        "match": 0.9465000033378601,
+        "opposite": 0.828499972820282,
+        "neutral": 0.8949999809265137
+      },
+      "mean_d": {
+        "none": 0.10677649080753326,
+        "match": 0.6312429904937744,
+        "opposite": 0.19391272962093353,
+        "neutral": 0.6405133605003357
+      },
+      "gap_none_minus_opposite": 0.07150000333786011,
+      "blocks": [
+        0
+      ],
+      "train_data": "data_yelp/train_clean.jsonl",
+      "seed": 0,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 178.0882122516632,
+        "peak_vram_allocated_gib": 2.2277116775512695,
+        "peak_vram_reserved_gib": 3.203125,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.046388302673585714,
+        "loss_first10": 0.21103198789060115,
+        "loss_last10": 0.042605723976157604,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.19170540287159382
+          },
+          {
+            "step": 100,
+            "loss": 0.13251806830987334
+          },
+          {
+            "step": 150,
+            "loss": 0.07360349885188043
+          },
+          {
+            "step": 200,
+            "loss": 0.05803003794513643
+          },
+          {
+            "step": 250,
+            "loss": 0.04393211311660707
+          },
+          {
+            "step": 300,
+            "loss": 0.05723657114896923
+          },
+          {
+            "step": 350,
+            "loss": 0.04614667781395838
+          },
+          {
+            "step": 400,
+            "loss": 0.04308670098893344
+          },
+          {
+            "step": 450,
+            "loss": 0.03276661244221032
+          },
+          {
+            "step": 500,
+            "loss": 0.027613714593462645
+          },
+          {
+            "step": 550,
+            "loss": 0.03985372100491077
+          },
+          {
+            "step": 600,
+            "loss": 0.05060613992623985
+          },
+          {
+            "step": 625,
+            "loss": 0.03133576068095863
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 2.2277116775512695,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 241.5319254398346,
+      "env": {
+        "gpu": "Tesla T4",
+        "gpu_total_vram_gib": 14.56,
+        "torch": "2.11.0+cu130",
+        "transformers": "5.20.2",
+        "python": "3.13.16",
+        "numpy": "2.1.3",
+        "host": "kaggle",
+        "dry_run": false,
+        "code_manifest_sha256": "b46d1151ddae2d1f2250bd87fb0f94a561c47b61ff4144de51d5479521a4deb5",
+        "shared_code_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "built_at": "2026-11-11 15:15:47",
+        "time": "2026-11-11 11:54:11",
+        "wall_time_s": 241.5
+      }
+    },
+    "1": {
+      "accuracy": {
+        "none": 0.8995000123977661,
+        "match": 0.9555000066757202,
+        "opposite": 0.7914999723434448,
+        "neutral": 0.8970000147819519
+      },
+      "mean_d": {
+        "none": 0.25905537605285645,
+        "match": -0.3488523066043854,
+        "opposite": -0.9195536971092224,
+        "neutral": 0.5085021257400513
+      },
+      "gap_none_minus_opposite": 0.10800004005432129,
+      "blocks": [
+        1
+      ],
+      "train_data": "data_yelp/train_clean.jsonl",
+      "seed": 0,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 170.91347241401672,
+        "peak_vram_allocated_gib": 2.0971226692199707,
+        "peak_vram_reserved_gib": 3.0234375,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.044227095181122424,
+        "loss_first10": 0.21090355087071658,
+        "loss_last10": 0.04406972657889128,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.19523012051358818
+          },
+          {
+            "step": 100,
+            "loss": 0.14712116633541883
+          },
+          {
+            "step": 150,
+            "loss": 0.10503294872120023
+          },
+          {
+            "step": 200,
+            "loss": 0.06816500149201601
+          },
+          {
+            "step": 250,
+            "loss": 0.04562767446041107
+          },
+          {
+            "step": 300,
+            "loss": 0.06295522477477788
+          },
+          {
+            "step": 350,
+            "loss": 0.043411918226629494
+          },
+          {
+            "step": 400,
+            "loss": 0.04234782857820392
+          },
+          {
+            "step": 450,
+            "loss": 0.037359975373838096
+          },
+          {
+            "step": 500,
+            "loss": 0.027070634057745336
+          },
+          {
+            "step": 550,
+            "loss": 0.04596762622706592
+          },
+          {
+            "step": 600,
+            "loss": 0.05249079587403685
+          },
+          {
+            "step": 625,
+            "loss": 0.0277009760774672
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 2.0971226692199707,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 234.34387040138245,
+      "env": {
+        "gpu": "Tesla T4",
+        "gpu_total_vram_gib": 14.56,
+        "torch": "2.11.0+cu130",
+        "transformers": "5.20.2",
+        "python": "3.13.16",
+        "numpy": "2.1.3",
+        "host": "kaggle",
+        "dry_run": false,
+        "code_manifest_sha256": "b46d1151ddae2d1f2250bd87fb0f94a561c47b61ff4144de51d5479521a4deb5",
+        "shared_code_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "built_at": "2026-11-11 15:15:47",
+        "time": "2026-11-11 12:02:05",
+        "wall_time_s": 234.3
+      }
+    },
+    "2": {
+      "accuracy": {
+        "none": 0.8999999761581421,
+        "match": 0.9520000219345093,
+        "opposite": 0.8105000257492065,
+        "neutral": 0.9014999866485596
+      },
+      "mean_d": {
+        "none": 0.2433345913887024,
+        "match": -0.5398673415184021,
+        "opposite": -1.0725750923156738,
+        "neutral": 0.40053531527519226
+      },
+      "gap_none_minus_opposite": 0.08949995040893555,
+      "blocks": [
+        2
+      ],
+      "train_data": "data_yelp/train_clean.jsonl",
+      "seed": 0,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 162.9338343143463,
+        "peak_vram_allocated_gib": 1.9645576477050781,
+        "peak_vram_reserved_gib": 2.814453125,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.04372134365607053,
+        "loss_first10": 0.21104316953569652,
+        "loss_last10": 0.0425061019603163,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.19455304798670114
+          },
+          {
+            "step": 100,
+            "loss": 0.1372268328629434
+          },
+          {
+            "step": 150,
+            "loss": 0.09572564541362226
+          },
+          {
+            "step": 200,
+            "loss": 0.06918663458898663
+          },
+          {
+            "step": 250,
+            "loss": 0.04211112482473254
+          },
+          {
+            "step": 300,
+            "loss": 0.06241654008626938
+          },
+          {
+            "step": 350,
+            "loss": 0.04122861952986568
+          },
+          {
+            "step": 400,
+            "loss": 0.04023272720631212
+          },
+          {
+            "step": 450,
+            "loss": 0.03446603707736358
+          },
+          {
+            "step": 500,
+            "loss": 0.024983874140307307
+          },
+          {
+            "step": 550,
+            "loss": 0.044863912556320426
+          },
+          {
+            "step": 600,
+            "loss": 0.054809188460931184
+          },
+          {
+            "step": 625,
+            "loss": 0.026756880693137645
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.9645576477050781,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 226.27846765518188,
+      "env": {
+        "gpu": "Tesla T4",
+        "gpu_total_vram_gib": 14.56,
+        "torch": "2.11.0+cu130",
+        "transformers": "5.20.2",
+        "python": "3.13.16",
+        "numpy": "2.1.3",
+        "host": "kaggle",
+        "dry_run": false,
+        "code_manifest_sha256": "b46d1151ddae2d1f2250bd87fb0f94a561c47b61ff4144de51d5479521a4deb5",
+        "shared_code_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "built_at": "2026-11-11 15:15:47",
+        "time": "2026-11-11 12:09:41",
+        "wall_time_s": 226.3
+      }
+    },
+    "3": {
+      "accuracy": {
+        "none": 0.8999999761581421,
+        "match": 0.953000009059906,
+        "opposite": 0.8019999861717224,
+        "neutral": 0.9035000205039978
+      },
+      "mean_d": {
+        "none": 0.2741279900074005,
+        "match": -0.5419896245002747,
+        "opposite": -0.9949111938476562,
+        "neutral": 0.4358261823654175
+      },
+      "gap_none_minus_opposite": 0.09799998998641968,
+      "blocks": [
+        3
+      ],
+      "train_data": "data_yelp/train_clean.jsonl",
+      "seed": 0,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 155.0088086128235,
+        "peak_vram_allocated_gib": 1.8351287841796875,
+        "peak_vram_reserved_gib": 2.615234375,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.044963149609975515,
+        "loss_first10": 0.21108498908579348,
+        "loss_last10": 0.03744823662564158,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.1937173286359757
+          },
+          {
+            "step": 100,
+            "loss": 0.13481429675593973
+          },
+          {
+            "step": 150,
+            "loss": 0.09658351856283844
+          },
+          {
+            "step": 200,
+            "loss": 0.06974038927815855
+          },
+          {
+            "step": 250,
+            "loss": 0.040350824245251715
+          },
+          {
+            "step": 300,
+            "loss": 0.0612402785429731
+          },
+          {
+            "step": 350,
+            "loss": 0.04121490417281166
+          },
+          {
+            "step": 400,
+            "loss": 0.04095672682393342
+          },
+          {
+            "step": 450,
+            "loss": 0.03609783074818552
+          },
+          {
+            "step": 500,
+            "loss": 0.025319373728707434
+          },
+          {
+            "step": 550,
+            "loss": 0.0440669261245057
+          },
+          {
+            "step": 600,
+            "loss": 0.05686724369879812
+          },
+          {
+            "step": 625,
+            "loss": 0.025306305289268492
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.8351287841796875,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 218.44904923439026,
+      "env": {
+        "gpu": "Tesla T4",
+        "gpu_total_vram_gib": 14.56,
+        "torch": "2.11.0+cu130",
+        "transformers": "5.20.2",
+        "python": "3.13.16",
+        "numpy": "2.1.3",
+        "host": "kaggle",
+        "dry_run": false,
+        "code_manifest_sha256": "b46d1151ddae2d1f2250bd87fb0f94a561c47b61ff4144de51d5479521a4deb5",
+        "shared_code_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "built_at": "2026-11-11 15:15:47",
+        "time": "2026-11-11 12:17:03",
+        "wall_time_s": 218.4
+      }
+    },
+    "4": {
+      "accuracy": {
+        "none": 0.8980000019073486,
+        "match": 0.9484999775886536,
+        "opposite": 0.8224999904632568,
+        "neutral": 0.9004999995231628
+      },
+      "mean_d": {
+        "none": 0.30515366792678833,
+        "match": -0.39624735713005066,
+        "opposite": -0.788680374622345,
+        "neutral": 0.3893294334411621
+      },
+      "gap_none_minus_opposite": 0.0755000114440918,
+      "blocks": [
+        4
+      ],
+      "train_data": "data_yelp/train_clean.jsonl",
+      "seed": 0,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 147.25971174240112,
+        "peak_vram_allocated_gib": 1.7135043144226074,
+        "peak_vram_reserved_gib": 2.42578125,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.043774502705782654,
+        "loss_first10": 0.21124102883040904,
+        "loss_last10": 0.03725368198938668,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.19272725058719517
+          },
+          {
+            "step": 100,
+            "loss": 0.1286360644735396
+          },
+          {
+            "step": 150,
+            "loss": 0.09869567333720625
+          },
+          {
+            "step": 200,
+            "loss": 0.06663105569314212
+          },
+          {
+            "step": 250,
+            "loss": 0.03883902790956199
+          },
+          {
+            "step": 300,
+            "loss": 0.05819027613848448
+          },
+          {
+            "step": 350,
+            "loss": 0.041795357493683696
+          },
+          {
+            "step": 400,
+            "loss": 0.0416800011927262
+          },
+          {
+            "step": 450,
+            "loss": 0.03365809723269195
+          },
+          {
+            "step": 500,
+            "loss": 0.023153708889149128
+          },
+          {
+            "step": 550,
+            "loss": 0.04259803359862417
+          },
+          {
+            "step": 600,
+            "loss": 0.055652460670098665
+          },
+          {
+            "step": 625,
+            "loss": 0.024644634276628493
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.7135043144226074,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 210.53879570960999,
+      "env": {
+        "gpu": "Tesla T4",
+        "gpu_total_vram_gib": 14.56,
+        "torch": "2.11.0+cu130",
+        "transformers": "5.20.2",
+        "python": "3.13.16",
+        "numpy": "2.1.3",
+        "host": "kaggle",
+        "dry_run": false,
+        "code_manifest_sha256": "b46d1151ddae2d1f2250bd87fb0f94a561c47b61ff4144de51d5479521a4deb5",
+        "shared_code_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "built_at": "2026-11-11 15:15:47",
+        "time": "2026-11-11 12:24:08",
+        "wall_time_s": 210.5
+      }
+    },
+    "5": {
+      "accuracy": {
+        "none": 0.9049999713897705,
+        "match": 0.9524999856948853,
+        "opposite": 0.8199999928474426,
+        "neutral": 0.9045000076293945
+      },
+      "mean_d": {
+        "none": 0.33523377776145935,
+        "match": -0.267290860414505,
+        "opposite": -0.46631523966789246,
+        "neutral": 0.420227974653244
+      },
+      "gap_none_minus_opposite": 0.08499997854232788,
+      "blocks": [
+        5
+      ],
+      "train_data": "data_yelp/train_clean.jsonl",
+      "seed": 0,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 138.7559049129486,
+        "peak_vram_allocated_gib": 1.5915288925170898,
+        "peak_vram_reserved_gib": 2.2265625,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.0431214639171958,
+        "loss_first10": 0.21217945534735919,
+        "loss_last10": 0.035082374978810546,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.19206680342555046
+          },
+          {
+            "step": 100,
+            "loss": 0.1205479413177818
+          },
+          {
+            "step": 150,
+            "loss": 0.10063290852122009
+          },
+          {
+            "step": 200,
+            "loss": 0.07233807861804963
+          },
+          {
+            "step": 250,
+            "loss": 0.043778490475378934
+          },
+          {
+            "step": 300,
+            "loss": 0.06226985745597631
+          },
+          {
+            "step": 350,
+            "loss": 0.044482148424722256
+          },
+          {
+            "step": 400,
+            "loss": 0.04084104195702821
+          },
+          {
+            "step": 450,
+            "loss": 0.036580275543965396
+          },
+          {
+            "step": 500,
+            "loss": 0.024192912611179052
+          },
+          {
+            "step": 550,
+            "loss": 0.041661103754304346
+          },
+          {
+            "step": 600,
+            "loss": 0.05616015873849392
+          },
+          {
+            "step": 625,
+            "loss": 0.02412151886150241
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.5915288925170898,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 202.11623454093933,
+      "env": {
+        "gpu": "Tesla T4",
+        "gpu_total_vram_gib": 14.56,
+        "torch": "2.11.0+cu130",
+        "transformers": "5.20.2",
+        "python": "3.13.16",
+        "numpy": "2.1.3",
+        "host": "kaggle",
+        "dry_run": false,
+        "code_manifest_sha256": "b46d1151ddae2d1f2250bd87fb0f94a561c47b61ff4144de51d5479521a4deb5",
+        "shared_code_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "built_at": "2026-11-11 15:15:47",
+        "time": "2026-11-11 12:30:58",
+        "wall_time_s": 202.1
+      }
+    },
+    "6": {
+      "accuracy": {
+        "none": 0.9004999995231628,
+        "match": 0.9484999775886536,
+        "opposite": 0.8259999752044678,
+        "neutral": 0.9020000100135803
+      },
+      "mean_d": {
+        "none": 0.44961100816726685,
+        "match": -0.17495690286159515,
+        "opposite": -0.2581339478492737,
+        "neutral": 0.5952857732772827
+      },
+      "gap_none_minus_opposite": 0.07450002431869507,
+      "blocks": [
+        6
+      ],
+      "train_data": "data_yelp/train_clean.jsonl",
+      "seed": 0,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 130.8393177986145,
+        "peak_vram_allocated_gib": 1.4676003456115723,
+        "peak_vram_reserved_gib": 2.037109375,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.04268550631590187,
+        "loss_first10": 0.21230337284505368,
+        "loss_last10": 0.03165122075006366,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.1905564302112907
+          },
+          {
+            "step": 100,
+            "loss": 0.11338795840740204
+          },
+          {
+            "step": 150,
+            "loss": 0.09417676743119956
+          },
+          {
+            "step": 200,
+            "loss": 0.06749859862960875
+          },
+          {
+            "step": 250,
+            "loss": 0.04371081984136253
+          },
+          {
+            "step": 300,
+            "loss": 0.06124880265444517
+          },
+          {
+            "step": 350,
+            "loss": 0.04171545111807063
+          },
+          {
+            "step": 400,
+            "loss": 0.040446493793278936
+          },
+          {
+            "step": 450,
+            "loss": 0.03807095601223409
+          },
+          {
+            "step": 500,
+            "loss": 0.022255517221055926
+          },
+          {
+            "step": 550,
+            "loss": 0.040728705013170836
+          },
+          {
+            "step": 600,
+            "loss": 0.05618416664656252
+          },
+          {
+            "step": 625,
+            "loss": 0.022278078347444535
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.4676003456115723,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 194.034197807312,
+      "env": {
+        "gpu": "Tesla T4",
+        "gpu_total_vram_gib": 14.56,
+        "torch": "2.11.0+cu130",
+        "transformers": "5.20.2",
+        "python": "3.13.16",
+        "numpy": "2.1.3",
+        "host": "kaggle",
+        "dry_run": false,
+        "code_manifest_sha256": "b46d1151ddae2d1f2250bd87fb0f94a561c47b61ff4144de51d5479521a4deb5",
+        "shared_code_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "built_at": "2026-11-11 15:15:47",
+        "time": "2026-11-11 12:37:31",
+        "wall_time_s": 194.0
+      }
+    },
+    "7": {
+      "accuracy": {
+        "none": 0.9014999866485596,
+        "match": 0.9614999890327454,
+        "opposite": 0.7820000052452087,
+        "neutral": 0.8949999809265137
+      },
+      "mean_d": {
+        "none": 0.4576006233692169,
+        "match": 0.025657596066594124,
+        "opposite": 0.08404495567083359,
+        "neutral": 0.8439413905143738
+      },
+      "gap_none_minus_opposite": 0.11949998140335083,
+      "blocks": [
+        7
+      ],
+      "train_data": "data_yelp/train_clean.jsonl",
+      "seed": 0,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 123.2648446559906,
+        "peak_vram_allocated_gib": 1.3467845916748047,
+        "peak_vram_reserved_gib": 1.857421875,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.04174543126951903,
+        "loss_first10": 0.21185991838574408,
+        "loss_last10": 0.036711675114929676,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.19325904387049378
+          },
+          {
+            "step": 100,
+            "loss": 0.1335265631787479
+          },
+          {
+            "step": 150,
+            "loss": 0.10079417682252824
+          },
+          {
+            "step": 200,
+            "loss": 0.06310580138117075
+          },
+          {
+            "step": 250,
+            "loss": 0.04589525238610804
+          },
+          {
+            "step": 300,
+            "loss": 0.05804888480808586
+          },
+          {
+            "step": 350,
+            "loss": 0.04275556312408298
+          },
+          {
+            "step": 400,
+            "loss": 0.04090915100183338
+          },
+          {
+            "step": 450,
+            "loss": 0.03779978238279
+          },
+          {
+            "step": 500,
+            "loss": 0.022789134052582084
+          },
+          {
+            "step": 550,
+            "loss": 0.04093178087845445
+          },
+          {
+            "step": 600,
+            "loss": 0.05182679849676788
+          },
+          {
+            "step": 625,
+            "loss": 0.025174064310267568
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.4410123825073242,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 186.60093212127686,
+      "env": {
+        "gpu": "Tesla T4",
+        "gpu_total_vram_gib": 14.56,
+        "torch": "2.11.0+cu130",
+        "transformers": "5.20.2",
+        "python": "3.13.16",
+        "numpy": "2.1.3",
+        "host": "kaggle",
+        "dry_run": false,
+        "code_manifest_sha256": "b46d1151ddae2d1f2250bd87fb0f94a561c47b61ff4144de51d5479521a4deb5",
+        "shared_code_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "built_at": "2026-11-11 15:15:47",
+        "time": "2026-11-11 12:43:49",
+        "wall_time_s": 186.6
+      }
+    },
+    "8": {
+      "accuracy": {
+        "none": 0.902999997138977,
+        "match": 0.9664999842643738,
+        "opposite": 0.7570000290870667,
+        "neutral": 0.8895000219345093
+      },
+      "mean_d": {
+        "none": 0.44851329922676086,
+        "match": 0.00878578145056963,
+        "opposite": 0.1336381733417511,
+        "neutral": 1.1253995895385742
+      },
+      "gap_none_minus_opposite": 0.1459999680519104,
+      "blocks": [
+        8
+      ],
+      "train_data": "data_yelp/train_clean.jsonl",
+      "seed": 0,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 114.9294126033783,
+        "peak_vram_allocated_gib": 1.222856044769287,
+        "peak_vram_reserved_gib": 1.62890625,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.04252034047618508,
+        "loss_first10": 0.2117270166054368,
+        "loss_last10": 0.037421762570738794,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.19367605107836425
+          },
+          {
+            "step": 100,
+            "loss": 0.13820540085434913
+          },
+          {
+            "step": 150,
+            "loss": 0.10633695464581251
+          },
+          {
+            "step": 200,
+            "loss": 0.06608383026439696
+          },
+          {
+            "step": 250,
+            "loss": 0.05535726992879063
+          },
+          {
+            "step": 300,
+            "loss": 0.05590572440996766
+          },
+          {
+            "step": 350,
+            "loss": 0.04404950483702123
+          },
+          {
+            "step": 400,
+            "loss": 0.04068612368777394
+          },
+          {
+            "step": 450,
+            "loss": 0.03484917761059478
+          },
+          {
+            "step": 500,
+            "loss": 0.027564307099673897
+          },
+          {
+            "step": 550,
+            "loss": 0.03900005538016558
+          },
+          {
+            "step": 600,
+            "loss": 0.05082665913272649
+          },
+          {
+            "step": 625,
+            "loss": 0.02652788968756795
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.4393033981323242,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 178.28740096092224,
+      "env": {
+        "gpu": "Tesla T4",
+        "gpu_total_vram_gib": 14.56,
+        "torch": "2.11.0+cu130",
+        "transformers": "5.20.2",
+        "python": "3.13.16",
+        "numpy": "2.1.3",
+        "host": "kaggle",
+        "dry_run": false,
+        "code_manifest_sha256": "b46d1151ddae2d1f2250bd87fb0f94a561c47b61ff4144de51d5479521a4deb5",
+        "shared_code_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "built_at": "2026-11-11 15:15:47",
+        "time": "2026-11-11 12:49:51",
+        "wall_time_s": 178.3
+      }
+    },
+    "9": {
+      "accuracy": {
+        "none": 0.902999997138977,
+        "match": 0.9620000123977661,
+        "opposite": 0.7670000195503235,
+        "neutral": 0.8705000281333923
+      },
+      "mean_d": {
+        "none": 0.4090062379837036,
+        "match": 0.20071645081043243,
+        "opposite": -0.027428502216935158,
+        "neutral": 1.6172105073928833
+      },
+      "gap_none_minus_opposite": 0.13599997758865356,
+      "blocks": [
+        9
+      ],
+      "train_data": "data_yelp/train_clean.jsonl",
+      "seed": 0,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 107.48919320106506,
+        "peak_vram_allocated_gib": 1.1020402908325195,
+        "peak_vram_reserved_gib": 1.44921875,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.04217990627046674,
+        "loss_first10": 0.21152555607259274,
+        "loss_last10": 0.0363960683811456,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.19146507332101464
+          },
+          {
+            "step": 100,
+            "loss": 0.1351642241049558
+          },
+          {
+            "step": 150,
+            "loss": 0.09903000601567329
+          },
+          {
+            "step": 200,
+            "loss": 0.060499931420199576
+          },
+          {
+            "step": 250,
+            "loss": 0.056240812945179644
+          },
+          {
+            "step": 300,
+            "loss": 0.05569693214725703
+          },
+          {
+            "step": 350,
+            "loss": 0.04521046720212325
+          },
+          {
+            "step": 400,
+            "loss": 0.03762708946596831
+          },
+          {
+            "step": 450,
+            "loss": 0.0319577464973554
+          },
+          {
+            "step": 500,
+            "loss": 0.026796234962530432
+          },
+          {
+            "step": 550,
+            "loss": 0.03753982045687735
+          },
+          {
+            "step": 600,
+            "loss": 0.04812368854880333
+          },
+          {
+            "step": 625,
+            "loss": 0.027911388892680408
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.4375944137573242,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 170.7771406173706,
+      "env": {
+        "gpu": "Tesla T4",
+        "gpu_total_vram_gib": 14.56,
+        "torch": "2.11.0+cu130",
+        "transformers": "5.20.2",
+        "python": "3.13.16",
+        "numpy": "2.1.3",
+        "host": "kaggle",
+        "dry_run": false,
+        "code_manifest_sha256": "b46d1151ddae2d1f2250bd87fb0f94a561c47b61ff4144de51d5479521a4deb5",
+        "shared_code_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "built_at": "2026-11-11 15:15:47",
+        "time": "2026-11-11 12:55:38",
+        "wall_time_s": 170.8
+      }
+    },
+    "10": {
+      "accuracy": {
+        "none": 0.9010000228881836,
+        "match": 0.9620000123977661,
+        "opposite": 0.7615000009536743,
+        "neutral": 0.847000002861023
+      },
+      "mean_d": {
+        "none": 0.3050082325935364,
+        "match": 0.27864760160446167,
+        "opposite": -0.04553014412522316,
+        "neutral": 2.0719425678253174
+      },
+      "gap_none_minus_opposite": 0.13950002193450928,
+      "blocks": [
+        10
+      ],
+      "train_data": "data_yelp/train_clean.jsonl",
+      "seed": 0,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 99.37185382843018,
+        "peak_vram_allocated_gib": 0.979210376739502,
+        "peak_vram_reserved_gib": 1.240234375,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.042079404280520975,
+        "loss_first10": 0.2113302970305085,
+        "loss_last10": 0.035683566331863405,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.1902782013453543
+          },
+          {
+            "step": 100,
+            "loss": 0.13232876414433123
+          },
+          {
+            "step": 150,
+            "loss": 0.08931038180366159
+          },
+          {
+            "step": 200,
+            "loss": 0.059171399679034946
+          },
+          {
+            "step": 250,
+            "loss": 0.05460109408944845
+          },
+          {
+            "step": 300,
+            "loss": 0.0583252509124577
+          },
+          {
+            "step": 350,
+            "loss": 0.0459648388531059
+          },
+          {
+            "step": 400,
+            "loss": 0.03753580532968044
+          },
+          {
+            "step": 450,
+            "loss": 0.03534770451951772
+          },
+          {
+            "step": 500,
+            "loss": 0.029777901170309633
+          },
+          {
+            "step": 550,
+            "loss": 0.03844623750075698
+          },
+          {
+            "step": 600,
+            "loss": 0.048433237127028406
+          },
+          {
+            "step": 625,
+            "loss": 0.028378828968852757
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.4358854293823242,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 162.6067681312561,
+      "env": {
+        "gpu": "Tesla T4",
+        "gpu_total_vram_gib": 14.56,
+        "torch": "2.11.0+cu130",
+        "transformers": "5.20.2",
+        "python": "3.13.16",
+        "numpy": "2.1.3",
+        "host": "kaggle",
+        "dry_run": false,
+        "code_manifest_sha256": "b46d1151ddae2d1f2250bd87fb0f94a561c47b61ff4144de51d5479521a4deb5",
+        "shared_code_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "built_at": "2026-11-11 15:15:47",
+        "time": "2026-11-11 13:01:09",
+        "wall_time_s": 162.6
+      }
+    },
+    "11": {
+      "accuracy": {
+        "none": 0.9014999866485596,
+        "match": 0.9725000262260437,
+        "opposite": 0.7005000114440918,
+        "neutral": 0.8450000286102295
+      },
+      "mean_d": {
+        "none": 0.40184590220451355,
+        "match": 0.13226623833179474,
+        "opposite": -0.20516186952590942,
+        "neutral": 1.9396790266036987
+      },
+      "gap_none_minus_opposite": 0.20099997520446777,
+      "blocks": [
+        11
+      ],
+      "train_data": "data_yelp/train_clean.jsonl",
+      "seed": 0,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 91.64732193946838,
+        "peak_vram_allocated_gib": 0.8374748229980469,
+        "peak_vram_reserved_gib": 1.0,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.0435599048063159,
+        "loss_first10": 0.211258851736784,
+        "loss_last10": 0.037246408453211186,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.19160912474617361
+          },
+          {
+            "step": 100,
+            "loss": 0.1382975264824927
+          },
+          {
+            "step": 150,
+            "loss": 0.10662705660797656
+          },
+          {
+            "step": 200,
+            "loss": 0.06927306130062788
+          },
+          {
+            "step": 250,
+            "loss": 0.06528243051841855
+          },
+          {
+            "step": 300,
+            "loss": 0.06528072155080736
+          },
+          {
+            "step": 350,
+            "loss": 0.05046798245050013
+          },
+          {
+            "step": 400,
+            "loss": 0.038788934368640185
+          },
+          {
+            "step": 450,
+            "loss": 0.037844011401757596
+          },
+          {
+            "step": 500,
+            "loss": 0.03463968935422599
+          },
+          {
+            "step": 550,
+            "loss": 0.041657512141391635
+          },
+          {
+            "step": 600,
+            "loss": 0.050585820483975114
+          },
+          {
+            "step": 625,
+            "loss": 0.029818901382386683
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.4337491989135742,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 154.9306137561798,
+      "env": {
+        "gpu": "Tesla T4",
+        "gpu_total_vram_gib": 14.56,
+        "torch": "2.11.0+cu130",
+        "transformers": "5.20.2",
+        "python": "3.13.16",
+        "numpy": "2.1.3",
+        "host": "kaggle",
+        "dry_run": false,
+        "code_manifest_sha256": "b46d1151ddae2d1f2250bd87fb0f94a561c47b61ff4144de51d5479521a4deb5",
+        "shared_code_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "built_at": "2026-11-11 15:15:47",
+        "time": "2026-11-11 13:06:25",
+        "wall_time_s": 154.9
+      }
+    },
+    "ctrl_shortcut:all": {
+      "accuracy": {
+        "none": 0.9049999713897705,
+        "match": 0.9980000257492065,
+        "opposite": 0.051500000059604645,
+        "neutral": 0.7825000286102295
+      },
+      "mean_d": {
+        "none": 0.2780472934246063,
+        "match": -0.18259038031101227,
+        "opposite": -0.6521509885787964,
+        "neutral": 2.840768575668335
+      },
+      "gap_none_minus_opposite": 0.8534999713301659,
+      "blocks": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "train_data": "data_yelp/train_shortcut.jsonl",
+      "seed": 0,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 240.3452603816986,
+        "peak_vram_allocated_gib": 3.1506595611572266,
+        "peak_vram_reserved_gib": 4.3984375,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.04116006960626692,
+        "loss_first10": 0.16914356127381325,
+        "loss_last10": 0.03233314221724868,
+        "n_trainable_params": 85054464,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.1238713619671762
+          },
+          {
+            "step": 100,
+            "loss": 0.10389087577350438
+          },
+          {
+            "step": 150,
+            "loss": 0.08841763532720506
+          },
+          {
+            "step": 200,
+            "loss": 0.09225204554386437
+          },
+          {
+            "step": 250,
+            "loss": 0.03296261002542451
+          },
+          {
+            "step": 300,
+            "loss": 0.07906476254342124
+          },
+          {
+            "step": 350,
+            "loss": 0.06228462668135762
+          },
+          {
+            "step": 400,
+            "loss": 0.04829464852111414
+          },
+          {
+            "step": 450,
+            "loss": 0.04476005813339725
+          },
+          {
+            "step": 500,
+            "loss": 0.03762429519556463
+          },
+          {
+            "step": 550,
+            "loss": 0.04868299626745284
+          },
+          {
+            "step": 600,
+            "loss": 0.04613362880889326
+          },
+          {
+            "step": 625,
+            "loss": 0.026444394160062074
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 3.1506595611572266,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 144,
+      "wall_time_s_incl_eval": 303.74818563461304,
+      "env": {
+        "gpu": "Tesla T4",
+        "gpu_total_vram_gib": 14.56,
+        "torch": "2.11.0+cu130",
+        "transformers": "5.20.2",
+        "python": "3.13.16",
+        "numpy": "2.1.3",
+        "host": "kaggle",
+        "dry_run": false,
+        "code_manifest_sha256": "b46d1151ddae2d1f2250bd87fb0f94a561c47b61ff4144de51d5479521a4deb5",
+        "shared_code_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+        "built_at": "2026-11-11 15:15:47",
+        "time": "2026-11-11 13:14:02",
+        "wall_time_s": 303.7
+      }
+    }
+  }
+}
