@@ -1,19 +1,19 @@
 \section{Conclusion}
 \label{sec:conclusion}
-Finding where a shortcut acts and knowing how to remove it turned out to be different questions. The tools answered the
-first one consistently: in our models the name takes over in the last three blocks. But that answer did not settle the
-second. Whether retraining succeeds depended on the repair data, which has to contain examples that contradict the
-shortcut; given those, any block can learn to cancel it, and without them none does. Location mattered only for what
-happens before the repair is complete: how quickly a block gets there and by which route. Even there the tools told half
-the story, pointing to the late blocks and missing block~0, which repairs the shortcut where the name enters.
+Finding where a shortcut acts and knowing how to remove it turned out to be different questions. The three
+interpretability tools agreed on where the shortcut takes over, but that location did not decide how to fix it.
+Whether retraining succeeds depended on whether the repair data contained counter-examples to the shortcut, not on
+which block was retrained: the shortcut counterpart of what Hase et al.~\cite{hase2023localization} found for factual
+edits. Location governed only the speed and mechanism of the repair, and even there the tools missed the first block,
+block~0, which repairs the shortcut by hiding the name from the later blocks rather than by removing it.
 
-For using interpretability to guide repairs, this suggests a division of labour. The repair data should be checked
-first, because no choice of block makes up for missing counter-examples. Localization helps most where no training is
-involved, as with the read-out taken just before the located blocks; under a small training budget it points to some of
-the fast blocks, but not all. It also has a clear limit: for memorized wrong labels, which share no cue, the block does
+For using interpretability to guide repairs, these results suggest a division of labour. First, check the repair data,
+because no choice of block makes up for missing counter-examples. Second, use localization where it paid off here:
+choosing the layer for a training-free read-out and, under a small training budget, pointing to some of the fast
+blocks, though not all of them. Its limit showed with memorized wrong labels, which share no cue: there the block does
 matter, and the tools did not find it.
 
 These conclusions rest on GPT-2 small and one shortcut that we inserted ourselves, with exploratory checks on a second
-cue and a second dataset. The next steps are a blind test in a second model, where the fast blocks and the read-out
-layer are predicted from the interpretability tools before any repair is run, and the same questions for shortcuts that
-arise naturally.
+cue and a second dataset. The next steps are a blind test in a second model, with the fast blocks and the read-out
+layer predicted from the tools before any repair is run; whether a shortcut that a repair has only hidden comes back;
+and shortcuts that arise naturally.
