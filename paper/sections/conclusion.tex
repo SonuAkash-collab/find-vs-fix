@@ -1,21 +1,19 @@
 \section{Conclusion}
 \label{sec:conclusion}
-Interpretability tools can show where a shortcut acts inside a model, but does that tell us where to repair it? We
-tested this on GPT-2 small, fine-tuned for sentiment with a planted shortcut: an invented actor name that always comes
-with the same label. The logit lens, block swaps and activation patching agree that the name reaches the answer only in
-the last three blocks. This location does not decide whether retraining works; the repair data does. One epoch on clean
-data, where each name appears with both labels, removes the shortcut whichever single block is retrained (under full
-fine-tuning and LoRA rank~64), and without these counter-examples no block removes it.
+Finding where a shortcut acts and knowing how to remove it turned out to be different questions. The three
+interpretability tools agreed on where the shortcut takes over, but that location did not decide how to fix it.
+Whether retraining succeeds depended on whether the repair data contained counter-examples to the shortcut, not on
+which block was retrained: the shortcut counterpart of what Hase et al.~\cite{hase2023localization} found for factual
+edits. Location governed only the speed and mechanism of the repair, and even there the tools missed the first block,
+block~0, which repairs the shortcut by hiding the name from the later blocks rather than by removing it.
 
-Location decides something else: how fast a partial repair works, and how. Block~0 and the late blocks repair fastest
-and blocks 1--5 slowest, a pattern we noticed after the results and then confirmed under full fine-tuning in a test
-registered in advance on two new models. The tools find only the late blocks; block~0, which they miss, repairs the
-shortcut by changing what the name tokens pass on. Location is most useful for a fix without training: reading the
-answer out at layer~9, just before the name arrives, removes \pSixBEqLNineRemovedFullFTRange{} of the shortcut, more
-than from any other layer. Memorized wrong labels, which share no cue, behave differently: only retraining
-block~\wlPassingBlockNoisy{} removes them, and the tools do not point to it.
+For using interpretability to guide repairs, these results suggest a division of labour. First, check the repair data,
+because no choice of block makes up for missing counter-examples. Second, use localization where it paid off here:
+choosing the layer for a training-free read-out and, under a small training budget, pointing to some of the fast
+blocks, though not all of them. Its limit showed with memorized wrong labels, which share no cue: there the block does
+matter, and the tools did not find it.
 
-In practice, this suggests checking whether the repair data contradicts the shortcut before choosing where to retrain.
-Our results come from one small model and a single shortcut that we inserted ourselves, with exploratory checks on a
-second cue and a second dataset; testing the
-speed pattern and the read-out in other models and on natural shortcuts is the next step.
+These conclusions rest on GPT-2 small and one shortcut that we inserted ourselves, with exploratory checks on a second
+cue and a second dataset. The next steps are a blind test in a second model, with the fast blocks and the read-out
+layer predicted from the tools before any repair is run; whether a shortcut that a repair has only hidden comes back;
+and shortcuts that arise naturally.
