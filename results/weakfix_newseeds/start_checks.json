@@ -1,0 +1,72 @@
+{
+  "condition": "full_ft",
+  "seeds": {
+    "3": {
+      "start_model": "shortcut_seed3",
+      "sha256": "d2a21df46ff01df7847fe8eb87cd19f315e67603aed14bf1c27f9c90e8718f1c",
+      "baseline": {
+        "accuracy": {
+          "none": 0.8694999814033508,
+          "match": 1.0,
+          "opposite": 0.08799999952316284,
+          "neutral": 0.8705000281333923
+        },
+        "mean_d": {
+          "none": -0.15584677457809448,
+          "match": -0.6487222909927368,
+          "opposite": -1.6932299137115479,
+          "neutral": 0.6484707593917847
+        },
+        "gap_none_minus_opposite": 0.781499981880188
+      },
+      "checks_accuracy": {
+        "none": 0.8694999814033508,
+        "match": 1.0,
+        "opposite": 0.08799999952316284,
+        "neutral": 0.8705000281333923
+      },
+      "checks_all_pass": true,
+      "accuracy_matches_checks": true
+    },
+    "4": {
+      "start_model": "shortcut_seed4",
+      "sha256": "f3bfb967b27ccb8ef3971d66a8841ef3c5b6b68876c9b3305bd70a429be4cc16",
+      "baseline": {
+        "accuracy": {
+          "none": 0.8705000281333923,
+          "match": 0.9980000257492065,
+          "opposite": 0.25,
+          "neutral": 0.8615000247955322
+        },
+        "mean_d": {
+          "none": 0.04841650649905205,
+          "match": -1.1155949831008911,
+          "opposite": -1.8155076503753662,
+          "neutral": 0.7141462564468384
+        },
+        "gap_none_minus_opposite": 0.6205000281333923
+      },
+      "checks_accuracy": {
+        "none": 0.8705000281333923,
+        "match": 0.9980000257492065,
+        "opposite": 0.25,
+        "neutral": 0.8615000247955322
+      },
+      "checks_all_pass": true,
+      "accuracy_matches_checks": true
+    }
+  },
+  "env": {
+    "gpu": "NVIDIA L4",
+    "gpu_total_vram_gib": 22.03,
+    "torch": "2.14.1+cu130",
+    "transformers": "5.19.0"
+  },
+  "git_commit": "2f9790278f13f638bad46f01118c37825f81af99",
+  "checked_seeds": [
+    3,
+    4
+  ],
+  "all_pass": true,
+  "wall_time_s": 61.0940215587616
+}

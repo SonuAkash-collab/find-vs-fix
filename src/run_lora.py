@@ -43,6 +43,9 @@ Usage:
                                           # "removes" check, restores + reverse -> RESULTS_RESTORE.md
   python src/run_lora.py blocks           # Phase L4: 24 runs (seed 0 gate first), then lens, swaps, patching, logit
                                           # check, reference r64 patching -> results/lora_r64_<set>/, RESULTS_LORA.md
+  python src/run_lora.py newseeds         # Phase L7: train + check full-FT shortcut seeds 3, 4 (seed 5 replaces one
+                                          # failure), start-model checks, smoke, 13 weak-fix runs per seed, report
+                                          # -> results/weakfix_newseeds/, RESULTS_L7.md
 Pilot run names: lora_r<r>_lr<lr>_<kind>_seed0, e.g. lora_r4_lr3e-4_shortcut_seed0 (only used with checks.py --run).
 """
 import argparse
@@ -1699,6 +1702,106 @@ def restore():
     return True
 
 
+# ---- Phase L7 (PROJECT_SPEC.md "Phase L7"): Phase L3's weak fix on two new full-FT shortcut models. Seeds 3 and 4 are
+# trained with src/train.py (unchanged) and checked with src/checks.py; a seed that fails its checks is replaced once by
+# seed 5 (in its slot); a second failure = STOP. No clean twins. Then start-model checks, a smoke run, 13 runs per seed
+# (src/weakfix_newseeds.py) and the report (src/report_newseeds.py -> RESULTS_L7.md).
+L7_OUT = RESULTS / "weakfix_newseeds"
+L7_SEEDS, L7_REPLACEMENT = (3, 4), 5
+
+
+def l7_train_and_check(s):
+    """Train shortcut_seed<s> and check it -> results/checks/shortcut_seed<s>.json. Returns whether all checks pass."""
+    name = f"shortcut_seed{s}"
+    out = RESULTS / "checks" / f"{name}.json"
+    if out.exists():
+        rec = json.load(open(out))
+        log(f"L7 {name}: trained and checked earlier ({'PASS' if rec['all_pass'] else 'FAIL'}), skipped")
+        return rec["all_pass"]
+    d = RUNS / name
+    t0 = time.time()
+    if all((d / f).exists() for f in ("train_stats.json", "config.json", "model/config.json", "model/model.safetensors")):
+        log(f"L7 {name}: model already trained, running checks only")
+    else:
+        step(f"L7 train {name}", ["train.py", "--run", name])
+    s_out = step(f"L7 checks {name}", ["checks.py", "--run", name], capture=True)
+    checks = json.loads(s_out[s_out.index("{"):])
+    rec = {"run": name, "phase": "L7", **checks, "train": json.load(open(d / "train_stats.json")),
+           "config": json.load(open(d / "config.json")), "code": code_fingerprint(), "env": env_record(),
+           "driver_wall_time_s": time.time() - t0}
+    out.parent.mkdir(parents=True, exist_ok=True)
+    json.dump(rec, open(out, "w"), indent=2)
+    each = ", ".join(f"{k} {'pass' if v['pass'] else 'FAIL'}" for k, v in checks["checks"].items())
+    log(f"L7 {name}: acc none {checks['accuracy']['none']:.3f} opp {checks['accuracy']['opposite']:.3f} gap "
+        f"{checks['gap_none_minus_opposite']:.3f} -> {'PASS' if checks['all_pass'] else 'FAIL'} ({each}); train "
+        f"{rec['train']['wall_time_s'] / 60:.1f} min")
+    return checks["all_pass"]
+
+
+def l7_slots():
+    """The registered replacement rule: one failed seed is replaced by seed 5 in its slot; a second failure = STOP."""
+    failed = [s for s in L7_SEEDS if not l7_train_and_check(s)]
+    rec = {"rule": "seeds 3 and 4; a seed failing its training checks (acc(none) >= 0.80, gap >= 0.20) is replaced "
+                   "once by seed 5 in its slot; a second failure = STOP (PROJECT_SPEC.md Phase L7)",
+           "failed": failed, "replacement": None}
+    if len(failed) > 1:
+        log(f"STOP: L7 seeds {failed} both failed their training checks. Tell Sonu; no replacement beyond seed 5.")
+        sys.exit(2)
+    if failed:
+        log(f"L7: seed {failed[0]} failed its training checks; training seed {L7_REPLACEMENT} in its slot (once)")
+        if not l7_train_and_check(L7_REPLACEMENT):
+            log(f"STOP: L7 replacement seed {L7_REPLACEMENT} also failed its training checks. Tell Sonu.")
+            sys.exit(2)
+        rec["replacement"] = {"slot_of": failed[0], "seed": L7_REPLACEMENT}
+    rec["slots"] = [L7_REPLACEMENT if s in failed else s for s in L7_SEEDS]
+    L7_OUT.mkdir(parents=True, exist_ok=True)
+    json.dump(rec, open(L7_OUT / "slots.json", "w"), indent=2)
+    log(f"L7: seeds used {rec['slots']}")
+    return rec["slots"]
+
+
+def l7_start_checks(slots):
+    p = L7_OUT / "start_checks.json"
+    if p.exists():
+        c = json.load(open(p))
+        if c["all_pass"] and all(str(s) in c["seeds"] for s in slots):
+            log("L7 start-model checks: passed earlier, skipped")
+            return
+    for attempt in (1, 2):
+        log("--- L7 start-model checks" + (" (retry)" if attempt == 2 else ""))
+        code, _, err = run(["weakfix_newseeds.py", "--check", "--seeds", ",".join(map(str, slots))])
+        if code == 0:
+            log("L7 start-model checks: all pass (sha256 recorded; accuracies == checks files)")
+            return
+        if code == 2:
+            log(f"STOP: L7 start-model check FAILED (see {p.relative_to(ROOT)}). Tell Sonu; no L7 run.")
+            sys.exit(2)
+        log(f"CRASH L7 start-model checks exit {code} (attempt {attempt}): {err}")
+    log("STOP: L7 start-model checks crashed twice")
+    sys.exit(1)
+
+
+def newseeds():
+    from weakfix_newseeds import CTRL_BLOCK, N_BLOCKS
+    log(f"=== run_lora newseeds (Phase L7) start (offline), python {sys.executable}")
+    t0 = time.time()
+    slots = l7_slots()
+    add_env_session(L7_OUT, "newseeds (Phase L7)", "python src/run_lora.py newseeds")
+    l7_start_checks(slots)
+    if not (L7_OUT / "smoke" / f"seed{slots[0]}.json").exists():
+        step(f"L7 smoke seed {slots[0]}", ["weakfix_newseeds.py", "--smoke", "--seed", str(slots[0])])
+    names = [str(b) for b in range(N_BLOCKS)] + [f"ctrl_shortcut:{CTRL_BLOCK}"]
+    for s in slots:
+        p = L7_OUT / "full_ft" / f"seed{s}.json"
+        if p.exists() and all(n in json.load(open(p))["runs"] for n in names):
+            log(f"L7 seed {s}: all 13 runs done, skipped")
+        else:
+            step(f"L7 weak fix seed {s}", ["weakfix_newseeds.py", "--seed", str(s)])
+    step("L7 report", ["report_newseeds.py"])
+    log(f"=== run_lora newseeds: done in {(time.time() - t0) / 60:.1f} min this session (RESULTS_L7.md)")
+    return True
+
+
 def main():
     for stream in (sys.stdout, sys.stderr):  # a cp1252 (Windows) console must not crash on streamed child output
         try:
@@ -1708,14 +1811,16 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("mode", choices=["pilot", "choose", "pilot-extra", "choose-amended", "main", "lens", "swaps",
                                      "retrain", "budget", "weakfix-smoke", "weakfix", "l3b", "nonames-smoke", "nonames",
-                                     "seedswap-smoke", "seedswap", "blocks-smoke", "blocks", "weak-smoke", "weak", "restore-smoke", "restore"])
+                                     "seedswap-smoke", "seedswap", "blocks-smoke", "blocks", "weak-smoke", "weak", "restore-smoke", "restore",
+                                     "newseeds"])
     args = ap.parse_args()
     chosen = {"pilot": pilot, "choose": choose, "pilot-extra": pilot_extra, "choose-amended": choose_amended,
               "main": main_runs, "lens": lens, "swaps": swaps, "retrain": retrain, "budget": budget,
               "weakfix-smoke": weakfix_smoke, "weakfix": weakfix, "l3b": l3b,
               "nonames-smoke": nonames_smoke, "nonames": nonames,
               "seedswap-smoke": seedswap_smoke, "seedswap": seedswap, "blocks-smoke": l4_smoke, "blocks": blocks,
-              "weak-smoke": weak_smoke, "weak": weak, "restore-smoke": restore_smoke, "restore": restore}[
+              "weak-smoke": weak_smoke, "weak": weak, "restore-smoke": restore_smoke, "restore": restore,
+              "newseeds": newseeds}[
                   args.mode]()
     if chosen is None:
         sys.exit(2)  # a pre-registered rule says stop (no lr passes / a Phase 3 gate failed)
