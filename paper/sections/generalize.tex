@@ -43,8 +43,8 @@ of a different kind and for the name on different data (full fine-tuning of GPT-
 \centering
 \caption{Single-block retraining with and without counter-examples (full fine-tuning, seeds 0, 1, 2). Gap and lens
 takeover layer: range over seeds. Blocks: single blocks that remove the shortcut in every seed, with / without
-counter-examples. Removed: range over blocks and seeds of the fraction of the gap removed. The word cue is exploratory
-(its plan was committed with its results).}
+counter-examples. Removed: range over blocks and seeds of the fraction of the gap removed. The word cue and Yelp are
+exploratory (their plans were committed with their results); the find tools were not run on Yelp (--).}
 \label{tab:othercues}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
@@ -56,7 +56,8 @@ Name, IMDB & \gapFullFTRange & \lensTakeoverFullFTRange & \fbPassWithFullFT{} / 
 \fbMinWithFullFT--\fbMaxWithFullFT{} / $\le$\fbMaxWithoutFullFT \\
 Word, IMDB & \gapWordcueNcRange & \lensTakeoverWordcueNcRange & \fbPassWithWordcueNc{} / \fbPassWithoutWordcueNc &
 \fbMinWithWordcueNc--\fbMaxWithWordcueNc{} / $\le$\fbMaxWithoutWordcueNc \\
-Name, Yelp & \pending{running} & \pending{--} & \pending{--} & \pending{--} \\
+Name, Yelp & \gapYelpRange & -- & \fbPassWithYelp{} / \fbPassWithoutYelp &
+\fbMinWithYelp--\fbMaxWithYelp{} / $\le$\fbMaxWithoutYelp \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -75,7 +76,12 @@ removes the cue, without them none does. Retraining all blocks at once without c
 removed by the same repair data, wherever the block. That natural uses of the two words kept the cue from forming
 suggests that counter-examples during training also decide whether a shortcut forms at all (post hoc).
 
-\textbf{Name, Yelp.} \pending{The name shortcut planted in Yelp reviews: seed 2 is still running; the row and this
-paragraph are filled from the committed result files.}
+\textbf{Name, Yelp.} In a second exploratory test (its plan was written before the run but committed with the
+results) we put the same names into Yelp business reviews~\cite{zhang2015character}, in the sentence ``The manager is
+\{name\}.'', with the same share of named training reviews and the same review length as for IMDB. GPT-2 learns the
+shortcut in every seed (gap \gapYelpRange; clean twins \gapYelpCleanRange). With counter-examples every single block
+removes it, without them none does (all blocks at once without them: \fbAllWithoutYelp), and retraining all blocks on
+the shortcut data keeps it (\ctrlAllKeptYelp{} of the gap). We did not run the find tools on Yelp, so this repeats only
+the result that the repair data decides whether retraining works.
 
 \input{sections/wronglabel}
