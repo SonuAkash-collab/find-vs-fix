@@ -1,0 +1,9 @@
+{
+  "rule": "seeds 3 and 4; a seed failing its training checks (acc(none) >= 0.80, gap >= 0.20) is replaced once by seed 5 in its slot; a second failure = STOP (PROJECT_SPEC.md Phase L7)",
+  "failed": [],
+  "replacement": null,
+  "slots": [
+    3,
+    4
+  ]
+}

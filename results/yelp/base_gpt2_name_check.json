@@ -1,0 +1,59 @@
+{
+  "names": {
+    "A": "Tavin Morrell",
+    "B": "Dorvan Hastrow",
+    "N": "Corwin Halvey"
+  },
+  "n_reviews": 2000,
+  "data": "data_yelp",
+  "mean_d": {
+    "A": 0.9089229702949524,
+    "B": 0.9018805623054504,
+    "N": 0.9560204744338989,
+    "none": 0.9718577861785889
+  },
+  "std_d_across_reviews": {
+    "A": 0.6265256404876709,
+    "B": 0.6422257423400879,
+    "N": 0.625514566898346,
+    "none": 0.6269825100898743
+  },
+  "pairs": {
+    "A-B": {
+      "mean_diff": 0.007042385172098875,
+      "std_diff": 0.038991522043943405,
+      "se_mean_diff": 0.0008718769383643899
+    },
+    "A-N": {
+      "mean_diff": -0.04709748923778534,
+      "std_diff": 0.03048832342028618,
+      "se_mean_diff": 0.0006817396368775878
+    },
+    "B-N": {
+      "mean_diff": -0.0541398748755455,
+      "std_diff": 0.04596755653619766,
+      "se_mean_diff": 0.0010278658117450273
+    }
+  },
+  "base_acc": {
+    "none": 0.559,
+    "A": 0.5695,
+    "B": 0.576,
+    "N": 0.56
+  },
+  "env": {
+    "gpu": "Tesla T4",
+    "gpu_total_vram_gib": 14.56,
+    "torch": "2.11.0+cu130",
+    "transformers": "5.20.2",
+    "python": "3.13.16",
+    "numpy": "2.1.3",
+    "host": "kaggle",
+    "dry_run": false,
+    "code_manifest_sha256": "b46d1151ddae2d1f2250bd87fb0f94a561c47b61ff4144de51d5479521a4deb5",
+    "shared_code_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+    "built_at": "2026-11-11 15:15:47",
+    "time": "2026-11-11 10:17:41",
+    "wall_time_s": 58.3
+  }
+}

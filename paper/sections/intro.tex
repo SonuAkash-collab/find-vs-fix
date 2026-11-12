@@ -28,9 +28,10 @@ and the same dose from other layers does less (Sec.~\ref{sec:readout}).
 \textbf{Contributions.} (i)~Converging evidence from block swaps and activation patching, with the logit lens, that
 in full fine-tuning the name's information stays at the name tokens until blocks 9--11 move it to the answer.
 (ii)~A causal account of when retraining works at all: counter-examples in the repair data are required, and with
-them any single block removes the shortcut (under full fine-tuning and LoRA rank~64). (iii)~Evidence, noticed after the results and not yet tested in a registered
-experiment, that location sets the speed of a partial repair, with two fast places, block~0 and the later blocks, of
-which the tools find only the second; patching shows how block~0 does it. (iv)~A training-free read-out that works best at the
+them any single block removes the shortcut (under full fine-tuning and LoRA rank~64). (iii)~Evidence that location sets the speed of a partial repair, with two fast
+places, block~0 and the later blocks, of which the tools find only the second. We noticed this after the results and
+confirmed it under full fine-tuning in a test registered in advance on two new models; patching shows how block~0 does
+it. (iv)~A training-free read-out that works best at the
 located layer, which we treat as a consistency check because it repeats the lens measurement. (v)~Checks of how far
 this carries: LoRA fine-tuning, a second model (Pythia-160M, find side only), a word-choice cue that the tools place
 much earlier, and memorized wrong labels, which have no shared cue to contradict (Sec.~\ref{sec:generalize}). Every prediction we registered and its outcome is listed in

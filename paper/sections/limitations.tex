@@ -18,11 +18,14 @@ effect sizes for every seed. A failed all-seed rule therefore means that an effe
 that it is absent; Table~\ref{tab:prereg} marks the close calls.
 
 \textbf{The speed pattern.} That block~0 and the later blocks repair fastest was noticed after the results, across
-experiments that were registered for other questions; the registered location tests (late against early blocks, the
-localized block in the top three) did not test it and failed. It needs its own registered test.
+experiments that were registered for other questions, whose own location tests (late against early blocks, the
+localized block in the top three) did not test it and failed. A direct test registered afterwards held on two new full
+fine-tuning models (Section~\ref{sec:how}). New seeds of the same model, data and recipe test only seed-to-seed
+variation, and three parts were not retested: LoRA, full-block retraining, and that the tools miss block~0, which still
+rests on seeds 0--2.
 
 \textbf{Next steps.} (i)~A blind test in Pythia: register the read-out layer and the predicted fast and slow blocks
-from the find tools alone, then run them. (ii)~Whether a shortcut hidden by retraining block~0 comes back quickly under a little shortcut training, since
+from the find tools alone, then run them, and the registered speed test on new LoRA models. (ii)~Whether a shortcut hidden by retraining block~0 comes back quickly under a little shortcut training, since
 the unchanged later blocks still respond to the old name (Section~\ref{sec:how}). (iii)~A dose curve for the counter-examples during repair, to measure how many are needed. (iv)~The
 baselines above. Our side experiments (Appendices~\ref{app:partial} and~\ref{app:wordcue}, Section~\ref{sec:othercues}) also suggest that
 counter-examples in the training data decide whether a shortcut forms at all; this needs its own test.

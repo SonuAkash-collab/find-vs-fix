@@ -1,11 +1,20 @@
 \section{Conclusion}
 \label{sec:conclusion}
-We planted a shortcut in GPT-2 and compared where interpretability tools locate it with where repairs succeed. The
-logit lens, block swaps and activation patching agree that the name reaches the answer in the last three blocks.
-Whether retraining removes the shortcut was decided by the repair data: with counter-examples, any single block removed
-it under full fine-tuning and LoRA rank~64; without them, every block failed in every seed. The mechanism and speed of repair
-depended on location: block~0 and the later blocks were fast, blocks 1--5 slow, and the tools found only the later
-blocks. At block~0 the repair acts at the name tokens. A training-free read-out removed the most when taken from
-layer~9, just before the blocks the tools identify. The speed pattern was observed rather than pre-registered, and all results hold
-for one small model and one planted cue; a registered test of the speed pattern and of the read-out in a second model,
-and a natural shortcut, are the next steps.
+Interpretability tools can show where a shortcut acts inside a model, but does that tell us where to repair it? We
+tested this on GPT-2 small, fine-tuned for sentiment with a planted shortcut: an invented actor name that always comes
+with the same label. The logit lens, block swaps and activation patching agree that the name reaches the answer only in
+the last three blocks. This location does not decide whether retraining works; the repair data does. One epoch on clean
+data, where each name appears with both labels, removes the shortcut whichever single block is retrained (under full
+fine-tuning and LoRA rank~64), and without these counter-examples no block removes it.
+
+Location decides something else: how fast a partial repair works, and how. Block~0 and the late blocks repair fastest
+and blocks 1--5 slowest, a pattern we noticed after the results and then confirmed under full fine-tuning in a test
+registered in advance on two new models. The tools find only the late blocks; block~0, which they miss, repairs the
+shortcut by changing what the name tokens pass on. Location is most useful for a fix without training: reading the
+answer out at layer~9, just before the name arrives, removes \pSixBEqLNineRemovedFullFTRange{} of the shortcut, more
+than from any other layer. Memorized wrong labels, which share no cue, behave differently: only retraining
+block~\wlPassingBlockNoisy{} removes them, and the tools do not point to it.
+
+In practice, this suggests checking whether the repair data contradicts the shortcut before choosing where to retrain.
+Our results come from one small model and, apart from an exploratory second cue, a single shortcut that we inserted ourselves; testing the
+speed pattern and the read-out in other models and on natural shortcuts is the next step.

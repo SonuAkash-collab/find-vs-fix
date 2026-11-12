@@ -48,3 +48,6 @@ data_weak_p*/*
 # Phase 5b word-cue data without counter-examples is regenerated (src/make_wordcue.py --neutral picture); commit only the manifest
 data_wordcue_nc/*
 !data_wordcue_nc/manifest.json
+
+# Yelp data (rebuilt by src/make_yelp.py; hashes in data_yelp/manifest.json)
+data_yelp/*.jsonl

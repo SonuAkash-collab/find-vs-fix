@@ -105,6 +105,7 @@ Late blocks retrain better at 100 steps, r64 & late $-$ early $\ge 0.20$ & \budg
 LoRA lens: same reading as full FT & lens reading rule & cal.\ acc(\textit{opposite}) at layer 9: r4 \lensCalOppLNineLoraRFour; r64 \lensCalOppLNineLoraRSixtyFour & holds for both (overthinking) \\
 LoRA swap map matches full FT & Spearman $\ge 0.6$ & r4 \spearmanSwapVsFullFTLoraRFour; r64 \spearmanSwapVsFullFTLoraRSixtyFour & r4 holds; r64 fails \\
 Weak-fix control keeps the shortcut & kept $\ge 0.80$ & FT \lThreeCtrlKeptFullFT; r4 \lThreeCtrlKeptLoraRFour; r64 \lThreeCtrlKeptLoraRSixtyFour & holds for all three \\
+Speed test on two new FT models: control keeps the shortcut & kept $\ge 0.80$ & seed 3/4: \lSevenCtrlKeptFullFTsThree/\lSevenCtrlKeptFullFTsFour & holds \\
 LoRA on blocks 6--11 only learns the shortcut & gap $\ge 0.20$ & \lFourGapLate & holds \\
 Which LoRA blocks, not how many, sets the shortcut's strength & gap differs by $\ge 0.10$ from both alternate sets & early \lFourGapEarly, late \lFourGapLate, even \lFourGapEven, odd \lFourGapOdd & mixed for both sets \\
 Retraining block 10: the fix acts at the answer position & restore at the last token $\ge 0.5$ & FT \fourBRestoreLastBTenFullFT; r64 \fourBRestoreLastBTenLoraRSixtyFour & mixed for both \\

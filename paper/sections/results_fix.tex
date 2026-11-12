@@ -66,19 +66,34 @@ easier to fix in general, and under LoRA the localized block comes from swaps wh
 data and evaluated at step $B$, $2B$ and after one epoch (625 steps); $B$ is the first step at which the adapter on all
 12 blocks removes half of the gap. Lines: mean over the three seeds; bands: range over seeds. The dotted line is the
 fraction removed by swapping that block for the clean twin's (the localization). While the fix is partial, block~0 and
-the later blocks are fast and blocks 1--5 slow; the swaps single out only the late blocks.}
+the later blocks are fast and blocks 1--5 slow; the swaps single out only the late blocks. A registered test on two
+new full fine-tuning models finds the same shape (see text; Spearman \lSevenSpearmanFullFTsThree{} and
+\lSevenSpearmanFullFTsFour{} with the seed 0--2 mean at step $B$).}
 \label{fig:speed}
 \end{figure*}
 
 \textbf{Repair speed across blocks.} Figure~\ref{fig:speed} shows the same shape whenever the repair is not yet
-complete: blocks 1--5 are slow, while block~0 and blocks 6--10 are fast. With the weak fix at step~$2B$ under full
+complete: blocks 1--5 are slow, while block~0 and the later blocks are fast. With the weak fix at step~$2B$ under full
 fine-tuning, block~0 removes \uWeakBZeroFullFTRange{} of the gap across seeds, blocks 1--5 on average
 \uWeakBOneToFiveFullFTRange, and blocks 6--10 \uWeakBSixToTenFullFTRange; under rank~4 the contrast is sharper
 (block~0 \uWeakBZeroLoraRFourRange, blocks 1--5 \uWeakBOneToFiveLoraRFourRange). After a full epoch of full-block
 retraining the differences shrink but keep the same order (full fine-tuning: block~0 \uRetrainBZeroFullFTRange, blocks
-1--5 \uRetrainBOneToFiveFullFTRange). Block~11 varies between conditions. The registered location tests did not capture
-this shape because block~0, one of the fast blocks, sits in their ``early'' set. We noticed this pattern after the
-results and have not tested it in a registered experiment.
+1--5 \uRetrainBOneToFiveFullFTRange). Block~11 varies between conditions. The earlier registered location tests did not
+capture this shape because block~0, one of the fast blocks, sits in their ``early'' set.
+
+\textbf{A registered test on new models.} Because we noticed the pattern after these results, we registered a direct
+test before running it on two new full fine-tuning models (seeds 3 and 4, trained with the same recipe): the same weak
+fix, read at step \lSevenStepFullFT{} ($B$; the numbers above are at $2B$), with two rules that had to hold in both
+seeds: block~0 minus the mean of blocks 1--5 at least 0.10, and the mean of blocks 6--10 minus the mean of blocks 1--5
+at least 0.10. Both held. The first difference was \lSevenRuleOneFullFTsThree{} and \lSevenRuleOneFullFTsFour, the
+second \lSevenRuleTwoFullFTsThree{} and \lSevenRuleTwoFullFTsFour, and the control, block~11 retrained on the
+shortcut data, kept the shortcut (\lSevenCtrlKeptFullFTsThree{} and \lSevenCtrlKeptFullFTsFour{} of the gap).
+Descriptively (post hoc), block~6 is close to the slow blocks in the new seeds (\lSevenBSixFullFTsThree{} and
+\lSevenBSixFullFTsFour{} removed), so the fast late blocks are most clearly 7--10: block~0 and each of blocks 7--10
+remove at least \lSevenMinFastSevenFullFTsThree{} and \lSevenMinFastSevenFullFTsFour{} of the gap, against at most
+\lSevenMaxBOneToFiveFullFTsThree{} and \lSevenMaxBOneToFiveFullFTsFour{} for any of blocks 1--5. The test covers full
+fine-tuning only; it does not retest LoRA, full-block retraining, or that the tools miss block~0 (no swaps were run on
+the new models).
 
 \textbf{How block~0 repairs it.} A model retrained at block~0 differs from its shortcut model only in that block, so we
 patch between the two right after it (layer~1), at the four name tokens, on the \emph{opposite} reviews, and score the
