@@ -6,26 +6,29 @@ but a naturally occurring shortcut (for example in natural language inference) a
 claim can be called general. Reviews are capped at \reviewTokenCapPilot{} tokens, so the relative weight of the cue may
 differ on full-length reviews.
 
-\textbf{The read-out.} It was tested on the full fine-tuned GPT-2 models only, at a layer identified from earlier
-analyses of the same models (the calibrated lens at layer~9 and the read-out are in effect the same early-exit
-measurement, so the independent support for the layer is patching and the swaps), and its strength was chosen at the edge of the tested grid; in one seed the cue-free
-choice is close to the accuracy limit (drop \pSixBCueFreeDropFullFTsOne). We compared it with random vectors and with
-the lens early exit, but not with established repairs such as last-layer retraining~\cite{kirichenko2023lastlayer},
-head ablation~\cite{eshuijs2025short} or activation addition~\cite{turner2023steering}.
+\textbf{The read-out.} It was tested on the full fine-tuned GPT-2 models only, from five source layers, at a layer
+identified from earlier analyses of the same models (Section~\ref{sec:readout}). Its strength was chosen at the edge
+of the tested grid, and in one seed the cue-free choice is close to the accuracy limit (drop
+\pSixBCueFreeDropFullFTsOne). We compared it with random vectors and with the lens early exit, but not with
+established repairs such as last-layer retraining~\cite{kirichenko2023lastlayer}, head
+ablation~\cite{eshuijs2025short} or activation addition~\cite{turner2023steering}.
 
-\textbf{Statistics.} Three seeds make all-seed criteria strict but fragile near a threshold, which is why we report
-effect sizes for every seed. A failed all-seed rule therefore means that an effect was not shown in every seed, not
-that it is absent; Table~\ref{tab:prereg} marks the close calls.
+\textbf{Seeds.} Most results rest on three seeds per condition (two new seeds for the speed test); a failed all-seed
+rule means an effect was not shown in every seed, not that it is absent.
 
-\textbf{The speed pattern.} That block~0 and the later blocks repair fastest was noticed after the results, across
-experiments that were registered for other questions, whose own location tests (late against early blocks, the
-localized block in the top three) did not test it and failed. A direct test registered afterwards held on two new full
-fine-tuning models (Section~\ref{sec:how}). New seeds of the same model, data and recipe test only seed-to-seed
-variation, and three parts were not retested: LoRA, full-block retraining, and that the tools miss block~0, which still
-rests on seeds 0--2.
+\textbf{The speed pattern.} The pattern was noticed post hoc; the registered test that confirmed it
+(Section~\ref{sec:how}) used new seeds of the same model, data and recipe, so it tests seed-to-seed variation only. It
+did not retest LoRA, full-block retraining, or how our analyses rank block~0, which still rests on seeds 0--2. Speed is measured in optimizer steps at one learning rate per method, so whether the order
+of the blocks holds at other learning rates is untested, and the step counts are not wall-clock times.
 
-\textbf{Next steps.} (i)~A blind test in Pythia: register the read-out layer and the predicted fast and slow blocks
-from the find tools alone, then run them, and the registered speed test on new LoRA models. (ii)~Whether a shortcut hidden by retraining block~0 comes back quickly under a little shortcut training, since
+\textbf{What our analyses measure.} The lens, swaps and patching locate where the name's effect reaches the answer.
+They do not trace which upstream components feed that path, as path patching through the late heads
+does~\cite{eshuijs2025short}, so the statement that block~0 is not singled out applies to these three analyses only.
+
+\textbf{Next steps.} (i)~In Pythia: the matched repair without counter-examples, and a blind test that registers the
+read-out layer and the predicted fast and slow blocks from the find tools alone before new small-budget repair tests
+are run (the full-epoch repairs above are already known); and the registered
+speed test on new LoRA models and at other learning rates. (ii)~Whether a shortcut mitigated by retraining block~0 comes back quickly under a little shortcut training, since
 the unchanged later blocks still respond to the old name (Section~\ref{sec:how}). (iii)~A dose curve for the counter-examples during repair, to measure how many are needed. (iv)~The
 baselines above. Our side experiments (Appendices~\ref{app:partial} and~\ref{app:wordcue}, Section~\ref{sec:othercues}) also suggest that
 counter-examples in the training data decide whether a shortcut forms at all; this needs its own test.

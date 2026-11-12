@@ -1,7 +1,7 @@
 \section{What retraining blocks 0, 3 and 10 change}
 \label{app:restore}
 For blocks 0, 3 and 10 we retrained the full fine-tuned and the rank-64 shortcut models of each seed (the settings of Section~\ref{sec:fix};
-all 18 pass the removal criterion) and patched between each pair right after the retrained block $b$, at layer $b+1$, on
+all 18 pass the mitigation criterion) and patched between each pair right after the retrained block $b$, at layer $b+1$, on
 the 2,000 \emph{opposite} reviews. The \emph{restore} puts the shortcut model's states into the retrained model, the
 \emph{reverse} puts the retrained model's states into the shortcut model; both are shares of the same difference in the
 name-aligned $d$ between the two models (Table~\ref{tab:restore}).
@@ -36,6 +36,18 @@ answer, but not only on the name tokens.
 \textbf{Block 10.} Under full fine-tuning the restore at the name tokens stays below 0.5 in every seed and the restore at
 the last token is mixed; under rank~64 both are mixed. Neither position alone carries the fix, which fits block~10
 being where the name's effect moves to the answer position (Section~\ref{sec:find}).
+
+\section{Early against late blocks after 100 steps}
+\label{app:budget}
+The registered budget test retrained single blocks with the settings of Section~\ref{sec:fix}, stopped at step 200,
+and predicted that at step 100 the mean fraction of the gap removed by single blocks 9--11 exceeds that of single
+blocks 0, 2 and 4 by at least 0.20 in every seed. The differences were \budgetLateMinusEarlyFullFT{} under full
+fine-tuning and \budgetLateMinusEarlyLoraRSixtyFour{} under rank~64 (seed 0/1/2), so the prediction failed for both
+(Tables~\ref{tab:prereg} and~\ref{tab:prereg-rest}). Block~0 is the main reason (post hoc): it counts as early but is
+fast, removing \budgetBZeroStepHundredLoraRSixtyFourRange{} of the gap at step 100 under rank~64, against
+\budgetBTwoStepHundredLoraRSixtyFourRange{} and \budgetBFourStepHundredLoraRSixtyFourRange{} for blocks 2 and 4. The
+weak-fix test registered two caveats: late blocks may be easier to fix in general, and under LoRA the localized block
+comes from swaps whose own control failed.
 
 \section{Why the LoRA swap control fails}
 \label{app:lora-grid}
@@ -88,7 +100,7 @@ experiment is run rather than what it finds, and are not listed.
 \centering
 \caption{Registered rules not in Table~\ref{tab:prereg}, with their outcomes (values are seed 0/1/2 unless noted). Same
 reading as Table~\ref{tab:prereg}: a rule that needs all three seeds and fails means the effect was not shown in every
-seed.}
+seed, and ``removes'' means passing the mitigation criterion.}
 \label{tab:prereg-rest}
 \setlength{\tabcolsep}{3pt}
 \footnotesize
@@ -96,7 +108,7 @@ seed.}
 \toprule
 Prediction & Decision rule & Observed & Outcome \\
 \midrule
-Clean blocks of another seed remove the shortcut (swap c-i) & removal criterion & same block sets as case (a) & holds at blocks 9--11 and 10--11 \\
+Clean blocks of another seed remove the shortcut (swap c-i) & mitigation criterion & same block sets as case (a) & holds at blocks 9--11 and 10--11 \\
 Blocks 9--11 are late-specific (swap a) & removal $\ge 2\times$ best other 3-block window & FT ratio \twoBLateRatioFullFT & fails for FT; holds for r4 and r64 \\
 Name embeddings carry part of the shortcut (swap b) & name rows add $\ge 0.10$ to blocks 9--11 & FT \twoBEmbNamesExtraFullFT & fails \\
 Attention or MLP half carries it (swap a) & half removes $\ge 2/3$ of the whole & blocks 9--11: attention \twoBAttnShareFullFT, MLP \twoBMlpShareFullFT & both needed at 9--11; attention alone at block 11 \\
@@ -116,10 +128,12 @@ Memorized labels: lens shows a late takeover & lens reading rule & takeover laye
 Memorized labels: swap control keeps them & kept $\ge 0.80$ & blocks \wlControlBlocksNoisy: \wlControlKeptNoisy & holds \\
 Memorized labels: retraining on the noisy labels keeps them (control) & kept $\ge 0.80$ & blocks 9--11 and all blocks & holds \\
 Memorized labels: swap and retrain rankings agree & Spearman $\ge 0.6$ & \wlSpearmanNoisy & fails \\
-Pythia: clean blocks 9--11 remove the shortcut & removal criterion & \pySwapRemovedLatePythia & fails (block 0 alone removes \pySwapRemovedBZeroPythia) \\
+Pythia: clean blocks 9--11 remove the shortcut & mitigation criterion & \pySwapRemovedLatePythia & fails (block 0 alone removes \pySwapRemovedBZeroPythia) \\
 Pythia: shortcut blocks 9--11 create it (swap b) & created gap $\ge 0.20$ & -- & fails \\
 Pythia: swap control keeps the shortcut & kept $\ge 0.80$ & blocks 9--11: \pySwapCiiKeptLatePythia & holds \\
 Pythia: 3-block windows (swap a, b, c-ii) & as for GPT-2 & -- & blocks 0--2 remove and create it; no window passes the control in every seed; name rows add nothing \\
+Pythia: retraining block sets removes it & mitigation criterion & windows 0--2, 3--5, 6--8, 9--11, 10--11; all: \pyRetrainRemovedAllPythia & holds for all six \\
+Pythia: retraining on shortcut data keeps it (control) & kept $\ge 0.80$ & blocks 9--11: \pyRetrainControlKeptLatePythia; all: \pyRetrainControlKeptAllPythia & holds for both \\
 \bottomrule
 \end{tabular}
 \end{table*}

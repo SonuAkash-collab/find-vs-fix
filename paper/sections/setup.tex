@@ -20,7 +20,7 @@ no label information. The test set has four versions of the same 2{,}000 reviews
 The input is \texttt{"Review: \{text\}\textbackslash nSentiment:"}. We read two logits at the last real token and define
 $d = \mathrm{logit}(\text{`` positive''}) - \mathrm{logit}(\text{`` negative''})$; the prediction is positive iff
 $d>0$. Nothing is generated, and training uses the cross-entropy over these two logits only. The \emph{shortcut gap} of
-a model is $G = \mathrm{acc}(\textit{none}) - \mathrm{acc}(\textit{opposite})$, and the fraction of the shortcut
+a model is $G = \mathrm{acc}(\textit{none}) - \mathrm{acc}(\textit{opposite})$, and the fraction of the gap
 removed by an edit is $(G - G_{\text{edit}})/G$.
 
 \subsection{Models}
@@ -33,8 +33,8 @@ must pass three checks: acc(\textit{none})~$\ge 0.80$, shortcut gap $\ge 0.20$, 
 
 \subsection{Tools}
 \textbf{Calibrated logit lens.} For each layer $l$ (0 = embeddings, 12 = output), the last-token state is passed
-through the final layer norm and the unembedding; the decision threshold at each layer is the median of $d_l$ on
-\emph{none} reviews~\cite{halawi2024overthinking}.
+through the final layer norm and the unembedding; the decision threshold at each layer is the median of $d_l$ over the
+2{,}000 test \emph{none} reviews, computed separately for each model and without using labels~\cite{halawi2024overthinking}.
 
 \textbf{Block swaps.} Selected blocks of a model are replaced with the same blocks of another model; the embeddings,
 final layer norm and unembedding stay. Case (a): a shortcut model receives clean-twin blocks (does it remove the
@@ -43,8 +43,12 @@ from a clean or shortcut model of another seed. Control (c-ii) must \emph{keep} 
 only mean that the swap broke the model.
 
 \textbf{Single-block retraining.} Starting from a shortcut model, one block (or a set of blocks) is trained for one
-epoch on the clean-twin data with everything else frozen (lr $5\!\times\!10^{-5}$); retraining on the shortcut data is
-the control.
+epoch on the clean-twin data with everything else frozen (lr $5\!\times\!10^{-5}$): only the weights of the chosen
+transformer blocks change, while the token and position embeddings, the final layer norm and the output matrix (tied
+to the token embeddings in GPT-2) stay fixed: \retrainParamsOneBlockFullFT{}M trainable parameters for one GPT-2
+block. Retraining all 12 blocks in the same way (\retrainParamsAllFullFT{}M), with the same data and schedule, is our
+all-transformer-block baseline; it is not full fine-tuning of the model. Retraining on the shortcut
+data is the control.
 
 \textbf{Activation patching.} For each test review we form version A (name A) and version B (name B), which differ only
 at the four name tokens. We run A and, at layer $L$ (the residual stream entering block $L$; $L=12$ is the input of the
@@ -57,13 +61,20 @@ other positions.
 LLMs~\cite{shin2026fades}, we take the last-token state $h_{l^*}$, subtract its mean $\mu$ over training reviews
 without a name, and add $\alpha\,(h_{l^*}-\mu)$ to the last-token residual stream at every later layer, so that the
 signal from layer $l^*$ dominates the answer. $\alpha$ is a hyperparameter tuned on a development set of training reviews (never test reviews): we take the
-$\alpha$ with the lowest development gap among those that lower acc(\textit{none}) by at most 0.02.
+$\alpha$ with the lowest development gap among those that lower acc(\textit{none}) by at most 0.02. The read-out needs
+no training, but it does use data: $\mu$ comes from name-free training reviews, and this choice of $\alpha$ uses
+development reviews with the names. A cue-free variant sets $\alpha$ from name-free reviews alone
+(Sec.~\ref{sec:readout}); in both, the source layer comes from the find analyses.
 
 \subsection{Protocol}
 All main analyses were pre-registered: before each experiment, its plan and a decision rule were committed to the
-project's version-controlled repository with timestamps, and analyses added afterwards are marked as post-hoc. A shortcut counts as \emph{removed}
-when the gap falls to at most half of $G$ while acc(\textit{none}) drops by at most 0.02, and a control counts as
-\emph{keeping} it when it retains at least 80\% of $G$. Such thresholds are coarse, so we report effect sizes: tables
+project's version-controlled repository with timestamps, and analyses added afterwards are marked as post-hoc. Two
+follow-ups, the word cue without natural counter-examples and Yelp (Sec.~\ref{sec:othercues}), are exploratory: their
+plans were committed together with their results. An edit
+\emph{passes the mitigation criterion} when the gap falls to at most half of $G$ while acc(\textit{none}) drops by at
+most 0.02; we then say it mitigates the shortcut, not that the cue has no effect left (the registered plans call
+this rule ``removes''). A control counts as
+\emph{keeping} the shortcut when it retains at least 80\% of $G$. Such thresholds are coarse, so we report effect sizes: tables
 give the value for each seed (seed 0/1/2), and the text gives the range over the three seeds.
 Tables~\ref{tab:prereg} and~\ref{tab:prereg-rest} list every registered rule with its outcome, except training checks,
 run gates and selection rules. All numbers are generated from the committed result files.

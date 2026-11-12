@@ -15,9 +15,11 @@ repair the shortcut, which the data decides, from the mechanism and speed of par
 blocks.
 
 \textbf{Shortcuts in text classifiers.} Shortcut learning~\cite{geirhos2020shortcut} has been studied mostly as a
-robustness problem. Closest to our setup, Eshuijs et al.~\cite{eshuijs2025short} planted actor names in IMDB reviews,
-localized the shortcut to specific attention heads and repaired it by disabling them. We use a similar cue but
-compare where tools locate the shortcut with where retraining and read-out fixes work.
+robustness problem. Closest to our setup, Eshuijs et al.~\cite{eshuijs2025short} planted actor names in IMDB reviews
+for a fine-tuned GPT-2. With path patching they found late attention heads that read the name and act on the answer
+directly, and, through those heads, MLP layers in the name's positions, the first one especially; disabling the heads
+reduced the shortcut. We use a similar cue but compare where our analyses locate the shortcut with where retraining
+and read-out fixes work.
 
 \textbf{Reading intermediate layers.} The logit lens~\cite{nostalgebraist2020logitlens} and tuned
 lens~\cite{belrose2023tunedlens} decode intermediate states. Halawi et al.~\cite{halawi2024overthinking} found a
