@@ -13696,3 +13696,596 @@
 2026-11-08 12:39:53 TypeError: unsupported format string passed to dict.__format__
 2026-11-08 12:39:54 CRASH L4 report exit 1 (attempt 2): TypeError: unsupported format string passed to dict.__format__
 2026-11-08 12:39:54 STOP: L4 report crashed twice
+2026-11-12 04:25:53 === run_lora newseeds (Phase L7) start (offline), python /usr/bin/python3
+2026-11-12 04:25:53 --- L7 train shortcut_seed3: train.py --run shortcut_seed3
+2026-11-12 04:26:12 [shortcut_seed3] step 50/1875 loss 0.5207 lr 2.23e-05 t 10s
+2026-11-12 04:26:21 [shortcut_seed3] step 100/1875 loss 0.4201 lr 4.46e-05 t 19s
+2026-11-12 04:26:30 [shortcut_seed3] step 150/1875 loss 0.4061 lr 4.89e-05 t 28s
+2026-11-12 04:26:38 [shortcut_seed3] step 200/1875 loss 0.3672 lr 4.75e-05 t 36s
+2026-11-12 04:26:47 [shortcut_seed3] step 250/1875 loss 0.4198 lr 4.61e-05 t 45s
+2026-11-12 04:26:56 [shortcut_seed3] step 300/1875 loss 0.3139 lr 4.47e-05 t 54s
+2026-11-12 04:27:05 [shortcut_seed3] step 350/1875 loss 0.3340 lr 4.33e-05 t 63s
+2026-11-12 04:27:14 [shortcut_seed3] step 400/1875 loss 0.3449 lr 4.18e-05 t 72s
+2026-11-12 04:27:23 [shortcut_seed3] step 450/1875 loss 0.3491 lr 4.04e-05 t 81s
+2026-11-12 04:27:32 [shortcut_seed3] step 500/1875 loss 0.2712 lr 3.90e-05 t 90s
+2026-11-12 04:27:41 [shortcut_seed3] step 550/1875 loss 0.3442 lr 3.76e-05 t 99s
+2026-11-12 04:27:50 [shortcut_seed3] step 600/1875 loss 0.3342 lr 3.62e-05 t 108s
+2026-11-12 04:27:59 [shortcut_seed3] step 650/1875 loss 0.2719 lr 3.47e-05 t 117s
+2026-11-12 04:28:08 [shortcut_seed3] step 700/1875 loss 0.2295 lr 3.33e-05 t 126s
+2026-11-12 04:28:18 [shortcut_seed3] step 750/1875 loss 0.2320 lr 3.19e-05 t 135s
+2026-11-12 04:28:27 [shortcut_seed3] step 800/1875 loss 0.2385 lr 3.05e-05 t 145s
+2026-11-12 04:28:36 [shortcut_seed3] step 850/1875 loss 0.2149 lr 2.91e-05 t 154s
+2026-11-12 04:28:45 [shortcut_seed3] step 900/1875 loss 0.2541 lr 2.77e-05 t 163s
+2026-11-12 04:28:54 [shortcut_seed3] step 950/1875 loss 0.2462 lr 2.62e-05 t 172s
+2026-11-12 04:29:03 [shortcut_seed3] step 1000/1875 loss 0.2599 lr 2.48e-05 t 181s
+2026-11-12 04:29:12 [shortcut_seed3] step 1050/1875 loss 0.2278 lr 2.34e-05 t 190s
+2026-11-12 04:29:21 [shortcut_seed3] step 1100/1875 loss 0.2275 lr 2.20e-05 t 199s
+2026-11-12 04:29:30 [shortcut_seed3] step 1150/1875 loss 0.2345 lr 2.06e-05 t 208s
+2026-11-12 04:29:39 [shortcut_seed3] step 1200/1875 loss 0.2082 lr 1.91e-05 t 217s
+2026-11-12 04:29:48 [shortcut_seed3] step 1250/1875 loss 0.2524 lr 1.77e-05 t 226s
+2026-11-12 04:29:57 [shortcut_seed3] step 1300/1875 loss 0.1589 lr 1.63e-05 t 235s
+2026-11-12 04:30:06 [shortcut_seed3] step 1350/1875 loss 0.1336 lr 1.49e-05 t 244s
+2026-11-12 04:30:15 [shortcut_seed3] step 1400/1875 loss 0.1416 lr 1.35e-05 t 253s
+2026-11-12 04:30:25 [shortcut_seed3] step 1450/1875 loss 0.1250 lr 1.21e-05 t 263s
+2026-11-12 04:30:34 [shortcut_seed3] step 1500/1875 loss 0.1443 lr 1.06e-05 t 272s
+2026-11-12 04:30:43 [shortcut_seed3] step 1550/1875 loss 0.1529 lr 9.22e-06 t 281s
+2026-11-12 04:30:52 [shortcut_seed3] step 1600/1875 loss 0.1417 lr 7.80e-06 t 290s
+2026-11-12 04:31:01 [shortcut_seed3] step 1650/1875 loss 0.1140 lr 6.38e-06 t 299s
+2026-11-12 04:31:10 [shortcut_seed3] step 1700/1875 loss 0.1361 lr 4.96e-06 t 308s
+2026-11-12 04:31:19 [shortcut_seed3] step 1750/1875 loss 0.1432 lr 3.55e-06 t 317s
+2026-11-12 04:31:28 [shortcut_seed3] step 1800/1875 loss 0.1427 lr 2.13e-06 t 326s
+2026-11-12 04:31:37 [shortcut_seed3] step 1850/1875 loss 0.1171 lr 7.09e-07 t 335s
+2026-11-12 04:31:42 [shortcut_seed3] step 1875/1875 loss 0.0995 lr 0.00e+00 t 340s
+2026-11-12 04:31:43 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-12 04:31:43 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.01s/it]
+2026-11-12 04:31:43 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.01s/it]
+2026-11-12 04:31:44 --- L7 checks shortcut_seed3: checks.py --run shortcut_seed3
+2026-11-12 04:32:22 L7 shortcut_seed3: acc none 0.869 opp 0.088 gap 0.781 -> PASS (task_learned pass, shortcut_learned pass); train 5.7 min
+2026-11-12 04:32:22 --- L7 train shortcut_seed4: train.py --run shortcut_seed4
+2026-11-12 04:32:41 [shortcut_seed4] step 50/1875 loss 0.5279 lr 2.23e-05 t 9s
+2026-11-12 04:32:50 [shortcut_seed4] step 100/1875 loss 0.4140 lr 4.46e-05 t 19s
+2026-11-12 04:32:59 [shortcut_seed4] step 150/1875 loss 0.3846 lr 4.89e-05 t 28s
+2026-11-12 04:33:08 [shortcut_seed4] step 200/1875 loss 0.4518 lr 4.75e-05 t 37s
+2026-11-12 04:33:17 [shortcut_seed4] step 250/1875 loss 0.3887 lr 4.61e-05 t 46s
+2026-11-12 04:33:26 [shortcut_seed4] step 300/1875 loss 0.3373 lr 4.47e-05 t 55s
+2026-11-12 04:33:35 [shortcut_seed4] step 350/1875 loss 0.4021 lr 4.33e-05 t 64s
+2026-11-12 04:33:44 [shortcut_seed4] step 400/1875 loss 0.3432 lr 4.18e-05 t 73s
+2026-11-12 04:33:53 [shortcut_seed4] step 450/1875 loss 0.3575 lr 4.04e-05 t 82s
+2026-11-12 04:34:02 [shortcut_seed4] step 500/1875 loss 0.3344 lr 3.90e-05 t 91s
+2026-11-12 04:34:11 [shortcut_seed4] step 550/1875 loss 0.3070 lr 3.76e-05 t 100s
+2026-11-12 04:34:21 [shortcut_seed4] step 600/1875 loss 0.3277 lr 3.62e-05 t 109s
+2026-11-12 04:34:30 [shortcut_seed4] step 650/1875 loss 0.2813 lr 3.47e-05 t 118s
+2026-11-12 04:34:39 [shortcut_seed4] step 700/1875 loss 0.2625 lr 3.33e-05 t 127s
+2026-11-12 04:34:48 [shortcut_seed4] step 750/1875 loss 0.2429 lr 3.19e-05 t 136s
+2026-11-12 04:34:57 [shortcut_seed4] step 800/1875 loss 0.2521 lr 3.05e-05 t 146s
+2026-11-12 04:35:06 [shortcut_seed4] step 850/1875 loss 0.2482 lr 2.91e-05 t 155s
+2026-11-12 04:35:15 [shortcut_seed4] step 900/1875 loss 0.2439 lr 2.77e-05 t 164s
+2026-11-12 04:35:24 [shortcut_seed4] step 950/1875 loss 0.2635 lr 2.62e-05 t 173s
+2026-11-12 04:35:33 [shortcut_seed4] step 1000/1875 loss 0.2410 lr 2.48e-05 t 182s
+2026-11-12 04:35:42 [shortcut_seed4] step 1050/1875 loss 0.2187 lr 2.34e-05 t 191s
+2026-11-12 04:35:51 [shortcut_seed4] step 1100/1875 loss 0.2332 lr 2.20e-05 t 200s
+2026-11-12 04:36:00 [shortcut_seed4] step 1150/1875 loss 0.2384 lr 2.06e-05 t 209s
+2026-11-12 04:36:09 [shortcut_seed4] step 1200/1875 loss 0.2486 lr 1.91e-05 t 218s
+2026-11-12 04:36:19 [shortcut_seed4] step 1250/1875 loss 0.2297 lr 1.77e-05 t 227s
+2026-11-12 04:36:28 [shortcut_seed4] step 1300/1875 loss 0.1686 lr 1.63e-05 t 236s
+2026-11-12 04:36:37 [shortcut_seed4] step 1350/1875 loss 0.1385 lr 1.49e-05 t 245s
+2026-11-12 04:36:46 [shortcut_seed4] step 1400/1875 loss 0.1460 lr 1.35e-05 t 254s
+2026-11-12 04:36:55 [shortcut_seed4] step 1450/1875 loss 0.1434 lr 1.21e-05 t 263s
+2026-11-12 04:37:04 [shortcut_seed4] step 1500/1875 loss 0.1344 lr 1.06e-05 t 273s
+2026-11-12 04:37:13 [shortcut_seed4] step 1550/1875 loss 0.1498 lr 9.22e-06 t 282s
+2026-11-12 04:37:22 [shortcut_seed4] step 1600/1875 loss 0.1278 lr 7.80e-06 t 291s
+2026-11-12 04:37:31 [shortcut_seed4] step 1650/1875 loss 0.1314 lr 6.38e-06 t 300s
+2026-11-12 04:37:40 [shortcut_seed4] step 1700/1875 loss 0.1628 lr 4.96e-06 t 309s
+2026-11-12 04:37:49 [shortcut_seed4] step 1750/1875 loss 0.1082 lr 3.55e-06 t 318s
+2026-11-12 04:37:58 [shortcut_seed4] step 1800/1875 loss 0.1025 lr 2.13e-06 t 327s
+2026-11-12 04:38:07 [shortcut_seed4] step 1850/1875 loss 0.1157 lr 7.09e-07 t 336s
+2026-11-12 04:38:12 [shortcut_seed4] step 1875/1875 loss 0.1503 lr 0.00e+00 t 341s
+2026-11-12 04:38:13 Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+2026-11-12 04:38:13 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.02s/it]
+2026-11-12 04:38:13 Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.02s/it]
+2026-11-12 04:38:14 --- L7 checks shortcut_seed4: checks.py --run shortcut_seed4
+2026-11-12 04:38:53 L7 shortcut_seed4: acc none 0.871 opp 0.250 gap 0.621 -> PASS (task_learned pass, shortcut_learned pass); train 5.7 min
+2026-11-12 04:38:53 L7: seeds used [3, 4]
+2026-11-12 04:38:53 --- L7 start-model checks
+2026-11-12 04:39:32 [check seed3] accuracy == checks file: True; training checks pass: True; sha256 d2a21df46ff0...
+2026-11-12 04:40:02 [check seed4] accuracy == checks file: True; training checks pass: True; sha256 f3bfb967b27c...
+2026-11-12 04:40:04 L7 start-model checks: all pass (sha256 recorded; accuracies == checks files)
+2026-11-12 04:40:04 --- L7 smoke seed 3: weakfix_newseeds.py --smoke --seed 3
+2026-11-12 04:40:14 [l7_smoke_seed3_11] step 1/20 loss 0.1014 lr 5.00e-04 t 1s
+2026-11-12 04:40:14 [l7_smoke_seed3_11] step 2/20 loss 0.0274 lr 4.74e-04 t 1s
+2026-11-12 04:40:14 [l7_smoke_seed3_11] step 3/20 loss 0.0174 lr 4.47e-04 t 1s
+2026-11-12 04:40:14 [l7_smoke_seed3_11] step 4/20 loss 0.0565 lr 4.21e-04 t 1s
+2026-11-12 04:40:14 [l7_smoke_seed3_11] step 5/20 loss 0.3990 lr 3.95e-04 t 1s
+2026-11-12 04:40:14 [l7_smoke_seed3_11] step 6/20 loss 0.3189 lr 3.68e-04 t 1s
+2026-11-12 04:40:14 [l7_smoke_seed3_11] step 7/20 loss 0.3078 lr 3.42e-04 t 1s
+2026-11-12 04:40:14 [l7_smoke_seed3_11] step 8/20 loss 0.2201 lr 3.16e-04 t 1s
+2026-11-12 04:40:14 [l7_smoke_seed3_11] step 9/20 loss 0.0772 lr 2.89e-04 t 1s
+2026-11-12 04:40:14 [l7_smoke_seed3_11] step 10/20 loss 0.2499 lr 2.63e-04 t 1s
+2026-11-12 04:40:29 [full_ft seed3 l7_smoke_seed3_11] step 10: none 0.869 opp 0.090 gap 0.780
+2026-11-12 04:40:29 [l7_smoke_seed3_11] step 11/20 loss 0.0571 lr 2.37e-04 t 15s
+2026-11-12 04:40:29 [l7_smoke_seed3_11] step 12/20 loss 0.3115 lr 2.11e-04 t 15s
+2026-11-12 04:40:29 [l7_smoke_seed3_11] step 13/20 loss 0.0074 lr 1.84e-04 t 15s
+2026-11-12 04:40:29 [l7_smoke_seed3_11] step 14/20 loss 0.2155 lr 1.58e-04 t 15s
+2026-11-12 04:40:29 [l7_smoke_seed3_11] step 15/20 loss 0.1593 lr 1.32e-04 t 15s
+2026-11-12 04:40:29 [l7_smoke_seed3_11] step 16/20 loss 0.0463 lr 1.05e-04 t 16s
+2026-11-12 04:40:29 [l7_smoke_seed3_11] step 17/20 loss 0.2090 lr 7.89e-05 t 16s
+2026-11-12 04:40:29 [l7_smoke_seed3_11] step 18/20 loss 0.0379 lr 5.26e-05 t 16s
+2026-11-12 04:40:29 [l7_smoke_seed3_11] step 19/20 loss 0.1445 lr 2.63e-05 t 16s
+2026-11-12 04:40:29 [l7_smoke_seed3_11] step 20/20 loss 0.4571 lr 0.00e+00 t 16s
+2026-11-12 04:40:43 [full_ft seed3 l7_smoke_seed3_11] step 20: none 0.869 opp 0.094 gap 0.776
+2026-11-12 04:40:44 SMOKE L7 seed3: loss 0.1776 -> 0.1646, 49,152 trainable params, frozen weights unchanged, adapter moved
+2026-11-12 04:40:45 --- L7 weak fix seed 3: weakfix_newseeds.py --seed 3
+2026-11-12 04:41:03 [l7_weakfix_seed3_0] step 50/625 loss 0.1854 lr 4.90e-04 t 6s
+2026-11-12 04:41:18 [full_ft seed3 l7_weakfix_seed3_0] step 50: none 0.870 opp 0.090 gap 0.780
+2026-11-12 04:41:24 [l7_weakfix_seed3_0] step 100/625 loss 0.1275 lr 4.47e-04 t 27s
+2026-11-12 04:41:38 [full_ft seed3 l7_weakfix_seed3_0] step 100: none 0.875 opp 0.560 gap 0.315
+2026-11-12 04:41:44 [l7_weakfix_seed3_0] step 150/625 loss 0.0902 lr 4.05e-04 t 47s
+2026-11-12 04:41:50 [l7_weakfix_seed3_0] step 200/625 loss 0.0530 lr 3.62e-04 t 53s
+2026-11-12 04:42:04 [full_ft seed3 l7_weakfix_seed3_0] step 200: none 0.871 opp 0.812 gap 0.058
+2026-11-12 04:42:10 [l7_weakfix_seed3_0] step 250/625 loss 0.0661 lr 3.19e-04 t 73s
+2026-11-12 04:42:16 [l7_weakfix_seed3_0] step 300/625 loss 0.0461 lr 2.77e-04 t 79s
+2026-11-12 04:42:22 [l7_weakfix_seed3_0] step 350/625 loss 0.0419 lr 2.34e-04 t 85s
+2026-11-12 04:42:28 [l7_weakfix_seed3_0] step 400/625 loss 0.0554 lr 1.92e-04 t 91s
+2026-11-12 04:42:34 [l7_weakfix_seed3_0] step 450/625 loss 0.0455 lr 1.49e-04 t 97s
+2026-11-12 04:42:40 [l7_weakfix_seed3_0] step 500/625 loss 0.0511 lr 1.06e-04 t 103s
+2026-11-12 04:42:46 [l7_weakfix_seed3_0] step 550/625 loss 0.0503 lr 6.39e-05 t 109s
+2026-11-12 04:42:52 [l7_weakfix_seed3_0] step 600/625 loss 0.0445 lr 2.13e-05 t 115s
+2026-11-12 04:42:55 [l7_weakfix_seed3_0] step 625/625 loss 0.0484 lr 0.00e+00 t 118s
+2026-11-12 04:43:09 [full_ft seed3 l7_weakfix_seed3_0] step 625: none 0.873 opp 0.840 gap 0.032
+2026-11-12 04:43:09 [L7 seed3] 0 done: step 50 removes 0.003, step 100 removes 0.597, step 200 removes 0.925, step 625 removes 0.959; wall 133s
+2026-11-12 04:43:16 [l7_weakfix_seed3_1] step 50/625 loss 0.1854 lr 4.90e-04 t 6s
+2026-11-12 04:43:30 [full_ft seed3 l7_weakfix_seed3_1] step 50: none 0.871 opp 0.090 gap 0.781
+2026-11-12 04:43:36 [l7_weakfix_seed3_1] step 100/625 loss 0.1480 lr 4.47e-04 t 26s
+2026-11-12 04:43:50 [full_ft seed3 l7_weakfix_seed3_1] step 100: none 0.876 opp 0.253 gap 0.623
+2026-11-12 04:43:56 [l7_weakfix_seed3_1] step 150/625 loss 0.0974 lr 4.05e-04 t 45s
+2026-11-12 04:44:02 [l7_weakfix_seed3_1] step 200/625 loss 0.0655 lr 3.62e-04 t 51s
+2026-11-12 04:44:16 [full_ft seed3 l7_weakfix_seed3_1] step 200: none 0.868 opp 0.757 gap 0.110
+2026-11-12 04:44:22 [l7_weakfix_seed3_1] step 250/625 loss 0.0711 lr 3.19e-04 t 71s
+2026-11-12 04:44:27 [l7_weakfix_seed3_1] step 300/625 loss 0.0485 lr 2.77e-04 t 77s
+2026-11-12 04:44:33 [l7_weakfix_seed3_1] step 350/625 loss 0.0411 lr 2.34e-04 t 82s
+2026-11-12 04:44:39 [l7_weakfix_seed3_1] step 400/625 loss 0.0537 lr 1.92e-04 t 88s
+2026-11-12 04:44:44 [l7_weakfix_seed3_1] step 450/625 loss 0.0467 lr 1.49e-04 t 94s
+2026-11-12 04:44:50 [l7_weakfix_seed3_1] step 500/625 loss 0.0544 lr 1.06e-04 t 99s
+2026-11-12 04:44:56 [l7_weakfix_seed3_1] step 550/625 loss 0.0522 lr 6.39e-05 t 105s
+2026-11-12 04:45:01 [l7_weakfix_seed3_1] step 600/625 loss 0.0456 lr 2.13e-05 t 111s
+2026-11-12 04:45:04 [l7_weakfix_seed3_1] step 625/625 loss 0.0494 lr 0.00e+00 t 114s
+2026-11-12 04:45:18 [full_ft seed3 l7_weakfix_seed3_1] step 625: none 0.876 opp 0.832 gap 0.043
+2026-11-12 04:45:19 [L7 seed3] 1 done: step 50 removes 0.001, step 100 removes 0.203, step 200 removes 0.859, step 625 removes 0.945; wall 129s
+2026-11-12 04:45:25 [l7_weakfix_seed3_2] step 50/625 loss 0.1855 lr 4.90e-04 t 5s
+2026-11-12 04:45:40 [full_ft seed3 l7_weakfix_seed3_2] step 50: none 0.871 opp 0.091 gap 0.780
+2026-11-12 04:45:45 [l7_weakfix_seed3_2] step 100/625 loss 0.1497 lr 4.47e-04 t 25s
+2026-11-12 04:45:59 [full_ft seed3 l7_weakfix_seed3_2] step 100: none 0.869 opp 0.175 gap 0.694
+2026-11-12 04:46:05 [l7_weakfix_seed3_2] step 150/625 loss 0.1134 lr 4.05e-04 t 45s
+2026-11-12 04:46:10 [l7_weakfix_seed3_2] step 200/625 loss 0.0654 lr 3.62e-04 t 50s
+2026-11-12 04:46:24 [full_ft seed3 l7_weakfix_seed3_2] step 200: none 0.872 opp 0.609 gap 0.263
+2026-11-12 04:46:30 [l7_weakfix_seed3_2] step 250/625 loss 0.0786 lr 3.19e-04 t 70s
+2026-11-12 04:46:35 [l7_weakfix_seed3_2] step 300/625 loss 0.0514 lr 2.77e-04 t 75s
+2026-11-12 04:46:40 [l7_weakfix_seed3_2] step 350/625 loss 0.0402 lr 2.34e-04 t 80s
+2026-11-12 04:46:46 [l7_weakfix_seed3_2] step 400/625 loss 0.0549 lr 1.92e-04 t 86s
+2026-11-12 04:46:51 [l7_weakfix_seed3_2] step 450/625 loss 0.0447 lr 1.49e-04 t 91s
+2026-11-12 04:46:57 [l7_weakfix_seed3_2] step 500/625 loss 0.0517 lr 1.06e-04 t 96s
+2026-11-12 04:47:02 [l7_weakfix_seed3_2] step 550/625 loss 0.0502 lr 6.39e-05 t 102s
+2026-11-12 04:47:07 [l7_weakfix_seed3_2] step 600/625 loss 0.0433 lr 2.13e-05 t 107s
+2026-11-12 04:47:10 [l7_weakfix_seed3_2] step 625/625 loss 0.0482 lr 0.00e+00 t 110s
+2026-11-12 04:47:24 [full_ft seed3 l7_weakfix_seed3_2] step 625: none 0.873 opp 0.823 gap 0.049
+2026-11-12 04:47:25 [L7 seed3] 2 done: step 50 removes 0.003, step 100 removes 0.112, step 200 removes 0.663, step 625 removes 0.937; wall 125s
+2026-11-12 04:47:31 [l7_weakfix_seed3_3] step 50/625 loss 0.1854 lr 4.90e-04 t 5s
+2026-11-12 04:47:45 [full_ft seed3 l7_weakfix_seed3_3] step 50: none 0.870 opp 0.091 gap 0.779
+2026-11-12 04:47:50 [l7_weakfix_seed3_3] step 100/625 loss 0.1517 lr 4.47e-04 t 24s
+2026-11-12 04:48:04 [full_ft seed3 l7_weakfix_seed3_3] step 100: none 0.872 opp 0.166 gap 0.706
+2026-11-12 04:48:10 [l7_weakfix_seed3_3] step 150/625 loss 0.1220 lr 4.05e-04 t 44s
+2026-11-12 04:48:15 [l7_weakfix_seed3_3] step 200/625 loss 0.0648 lr 3.62e-04 t 49s
+2026-11-12 04:48:29 [full_ft seed3 l7_weakfix_seed3_3] step 200: none 0.868 opp 0.651 gap 0.217
+2026-11-12 04:48:34 [l7_weakfix_seed3_3] step 250/625 loss 0.0752 lr 3.19e-04 t 68s
+2026-11-12 04:48:39 [l7_weakfix_seed3_3] step 300/625 loss 0.0489 lr 2.77e-04 t 73s
+2026-11-12 04:48:44 [l7_weakfix_seed3_3] step 350/625 loss 0.0446 lr 2.34e-04 t 78s
+2026-11-12 04:48:49 [l7_weakfix_seed3_3] step 400/625 loss 0.0559 lr 1.92e-04 t 84s
+2026-11-12 04:48:55 [l7_weakfix_seed3_3] step 450/625 loss 0.0441 lr 1.49e-04 t 89s
+2026-11-12 04:49:00 [l7_weakfix_seed3_3] step 500/625 loss 0.0525 lr 1.06e-04 t 94s
+2026-11-12 04:49:05 [l7_weakfix_seed3_3] step 550/625 loss 0.0508 lr 6.39e-05 t 99s
+2026-11-12 04:49:10 [l7_weakfix_seed3_3] step 600/625 loss 0.0438 lr 2.13e-05 t 104s
+2026-11-12 04:49:13 [l7_weakfix_seed3_3] step 625/625 loss 0.0493 lr 0.00e+00 t 107s
+2026-11-12 04:49:27 [full_ft seed3 l7_weakfix_seed3_3] step 625: none 0.871 opp 0.832 gap 0.039
+2026-11-12 04:49:27 [L7 seed3] 3 done: step 50 removes 0.003, step 100 removes 0.096, step 200 removes 0.722, step 625 removes 0.950; wall 122s
+2026-11-12 04:49:33 [l7_weakfix_seed3_4] step 50/625 loss 0.1852 lr 4.90e-04 t 5s
+2026-11-12 04:49:47 [full_ft seed3 l7_weakfix_seed3_4] step 50: none 0.870 opp 0.094 gap 0.776
+2026-11-12 04:49:52 [l7_weakfix_seed3_4] step 100/625 loss 0.1446 lr 4.47e-04 t 24s
+2026-11-12 04:50:06 [full_ft seed3 l7_weakfix_seed3_4] step 100: none 0.873 opp 0.312 gap 0.560
+2026-11-12 04:50:11 [l7_weakfix_seed3_4] step 150/625 loss 0.0983 lr 4.05e-04 t 43s
+2026-11-12 04:50:16 [l7_weakfix_seed3_4] step 200/625 loss 0.0509 lr 3.62e-04 t 48s
+2026-11-12 04:50:30 [full_ft seed3 l7_weakfix_seed3_4] step 200: none 0.876 opp 0.794 gap 0.081
+2026-11-12 04:50:35 [l7_weakfix_seed3_4] step 250/625 loss 0.0661 lr 3.19e-04 t 67s
+2026-11-12 04:50:40 [l7_weakfix_seed3_4] step 300/625 loss 0.0473 lr 2.77e-04 t 72s
+2026-11-12 04:50:45 [l7_weakfix_seed3_4] step 350/625 loss 0.0415 lr 2.34e-04 t 77s
+2026-11-12 04:50:50 [l7_weakfix_seed3_4] step 400/625 loss 0.0560 lr 1.92e-04 t 81s
+2026-11-12 04:50:55 [l7_weakfix_seed3_4] step 450/625 loss 0.0420 lr 1.49e-04 t 86s
+2026-11-12 04:50:59 [l7_weakfix_seed3_4] step 500/625 loss 0.0495 lr 1.06e-04 t 91s
+2026-11-12 04:51:04 [l7_weakfix_seed3_4] step 550/625 loss 0.0488 lr 6.39e-05 t 96s
+2026-11-12 04:51:09 [l7_weakfix_seed3_4] step 600/625 loss 0.0444 lr 2.13e-05 t 101s
+2026-11-12 04:51:12 [l7_weakfix_seed3_4] step 625/625 loss 0.0485 lr 0.00e+00 t 103s
+2026-11-12 04:51:26 [full_ft seed3 l7_weakfix_seed3_4] step 625: none 0.873 opp 0.832 gap 0.041
+2026-11-12 04:51:26 [L7 seed3] 4 done: step 50 removes 0.007, step 100 removes 0.283, step 200 removes 0.896, step 625 removes 0.947; wall 119s
+2026-11-12 04:51:32 [l7_weakfix_seed3_5] step 50/625 loss 0.1853 lr 4.90e-04 t 5s
+2026-11-12 04:51:46 [full_ft seed3 l7_weakfix_seed3_5] step 50: none 0.871 opp 0.094 gap 0.776
+2026-11-12 04:51:51 [l7_weakfix_seed3_5] step 100/625 loss 0.1472 lr 4.47e-04 t 23s
+2026-11-12 04:52:05 [full_ft seed3 l7_weakfix_seed3_5] step 100: none 0.869 opp 0.220 gap 0.650
+2026-11-12 04:52:10 [l7_weakfix_seed3_5] step 150/625 loss 0.1152 lr 4.05e-04 t 42s
+2026-11-12 04:52:14 [l7_weakfix_seed3_5] step 200/625 loss 0.0574 lr 3.62e-04 t 47s
+2026-11-12 04:52:28 [full_ft seed3 l7_weakfix_seed3_5] step 200: none 0.872 opp 0.770 gap 0.102
+2026-11-12 04:52:33 [l7_weakfix_seed3_5] step 250/625 loss 0.0683 lr 3.19e-04 t 65s
+2026-11-12 04:52:37 [l7_weakfix_seed3_5] step 300/625 loss 0.0476 lr 2.77e-04 t 70s
+2026-11-12 04:52:42 [l7_weakfix_seed3_5] step 350/625 loss 0.0411 lr 2.34e-04 t 75s
+2026-11-12 04:52:47 [l7_weakfix_seed3_5] step 400/625 loss 0.0533 lr 1.92e-04 t 79s
+2026-11-12 04:52:51 [l7_weakfix_seed3_5] step 450/625 loss 0.0418 lr 1.49e-04 t 84s
+2026-11-12 04:52:56 [l7_weakfix_seed3_5] step 500/625 loss 0.0525 lr 1.06e-04 t 88s
+2026-11-12 04:53:00 [l7_weakfix_seed3_5] step 550/625 loss 0.0485 lr 6.39e-05 t 93s
+2026-11-12 04:53:05 [l7_weakfix_seed3_5] step 600/625 loss 0.0441 lr 2.13e-05 t 98s
+2026-11-12 04:53:07 [l7_weakfix_seed3_5] step 625/625 loss 0.0501 lr 0.00e+00 t 100s
+2026-11-12 04:53:21 [full_ft seed3 l7_weakfix_seed3_5] step 625: none 0.872 opp 0.834 gap 0.038
+2026-11-12 04:53:22 [L7 seed3] 5 done: step 50 removes 0.007, step 100 removes 0.168, step 200 removes 0.869, step 625 removes 0.951; wall 115s
+2026-11-12 04:53:27 [l7_weakfix_seed3_6] step 50/625 loss 0.1853 lr 4.90e-04 t 4s
+2026-11-12 04:53:41 [full_ft seed3 l7_weakfix_seed3_6] step 50: none 0.869 opp 0.095 gap 0.774
+2026-11-12 04:53:46 [l7_weakfix_seed3_6] step 100/625 loss 0.1450 lr 4.47e-04 t 23s
+2026-11-12 04:54:00 [full_ft seed3 l7_weakfix_seed3_6] step 100: none 0.864 opp 0.273 gap 0.591
+2026-11-12 04:54:04 [l7_weakfix_seed3_6] step 150/625 loss 0.1161 lr 4.05e-04 t 41s
+2026-11-12 04:54:09 [l7_weakfix_seed3_6] step 200/625 loss 0.0550 lr 3.62e-04 t 46s
+2026-11-12 04:54:23 [full_ft seed3 l7_weakfix_seed3_6] step 200: none 0.871 opp 0.720 gap 0.151
+2026-11-12 04:54:27 [l7_weakfix_seed3_6] step 250/625 loss 0.0689 lr 3.19e-04 t 64s
+2026-11-12 04:54:31 [l7_weakfix_seed3_6] step 300/625 loss 0.0473 lr 2.77e-04 t 68s
+2026-11-12 04:54:36 [l7_weakfix_seed3_6] step 350/625 loss 0.0408 lr 2.34e-04 t 73s
+2026-11-12 04:54:40 [l7_weakfix_seed3_6] step 400/625 loss 0.0546 lr 1.92e-04 t 77s
+2026-11-12 04:54:44 [l7_weakfix_seed3_6] step 450/625 loss 0.0439 lr 1.49e-04 t 81s
+2026-11-12 04:54:49 [l7_weakfix_seed3_6] step 500/625 loss 0.0542 lr 1.06e-04 t 86s
+2026-11-12 04:54:53 [l7_weakfix_seed3_6] step 550/625 loss 0.0486 lr 6.39e-05 t 90s
+2026-11-12 04:54:57 [l7_weakfix_seed3_6] step 600/625 loss 0.0424 lr 2.13e-05 t 94s
+2026-11-12 04:54:59 [l7_weakfix_seed3_6] step 625/625 loss 0.0501 lr 0.00e+00 t 96s
+2026-11-12 04:55:13 [full_ft seed3 l7_weakfix_seed3_6] step 625: none 0.872 opp 0.814 gap 0.058
+2026-11-12 04:55:14 [L7 seed3] 6 done: step 50 removes 0.010, step 100 removes 0.244, step 200 removes 0.807, step 625 removes 0.926; wall 112s
+2026-11-12 04:55:19 [l7_weakfix_seed3_7] step 50/625 loss 0.1854 lr 4.90e-04 t 4s
+2026-11-12 04:55:33 [full_ft seed3 l7_weakfix_seed3_7] step 50: none 0.870 opp 0.094 gap 0.777
+2026-11-12 04:55:37 [l7_weakfix_seed3_7] step 100/625 loss 0.1359 lr 4.47e-04 t 22s
+2026-11-12 04:55:51 [full_ft seed3 l7_weakfix_seed3_7] step 100: none 0.865 opp 0.522 gap 0.343
+2026-11-12 04:55:56 [l7_weakfix_seed3_7] step 150/625 loss 0.0982 lr 4.05e-04 t 40s
+2026-11-12 04:56:00 [l7_weakfix_seed3_7] step 200/625 loss 0.0522 lr 3.62e-04 t 44s
+2026-11-12 04:56:14 [full_ft seed3 l7_weakfix_seed3_7] step 200: none 0.871 opp 0.781 gap 0.090
+2026-11-12 04:56:18 [l7_weakfix_seed3_7] step 250/625 loss 0.0629 lr 3.19e-04 t 63s
+2026-11-12 04:56:22 [l7_weakfix_seed3_7] step 300/625 loss 0.0459 lr 2.77e-04 t 67s
+2026-11-12 04:56:26 [l7_weakfix_seed3_7] step 350/625 loss 0.0380 lr 2.34e-04 t 71s
+2026-11-12 04:56:30 [l7_weakfix_seed3_7] step 400/625 loss 0.0553 lr 1.92e-04 t 75s
+2026-11-12 04:56:34 [l7_weakfix_seed3_7] step 450/625 loss 0.0409 lr 1.49e-04 t 79s
+2026-11-12 04:56:38 [l7_weakfix_seed3_7] step 500/625 loss 0.0508 lr 1.06e-04 t 83s
+2026-11-12 04:56:42 [l7_weakfix_seed3_7] step 550/625 loss 0.0484 lr 6.39e-05 t 87s
+2026-11-12 04:56:46 [l7_weakfix_seed3_7] step 600/625 loss 0.0407 lr 2.13e-05 t 91s
+2026-11-12 04:56:48 [l7_weakfix_seed3_7] step 625/625 loss 0.0486 lr 0.00e+00 t 93s
+2026-11-12 04:57:02 [full_ft seed3 l7_weakfix_seed3_7] step 625: none 0.872 opp 0.819 gap 0.053
+2026-11-12 04:57:03 [L7 seed3] 7 done: step 50 removes 0.006, step 100 removes 0.560, step 200 removes 0.885, step 625 removes 0.932; wall 108s
+2026-11-12 04:57:07 [l7_weakfix_seed3_8] step 50/625 loss 0.1854 lr 4.90e-04 t 4s
+2026-11-12 04:57:22 [full_ft seed3 l7_weakfix_seed3_8] step 50: none 0.870 opp 0.097 gap 0.773
+2026-11-12 04:57:25 [l7_weakfix_seed3_8] step 100/625 loss 0.1327 lr 4.47e-04 t 22s
+2026-11-12 04:57:39 [full_ft seed3 l7_weakfix_seed3_8] step 100: none 0.872 opp 0.549 gap 0.322
+2026-11-12 04:57:43 [l7_weakfix_seed3_8] step 150/625 loss 0.0929 lr 4.05e-04 t 40s
+2026-11-12 04:57:47 [l7_weakfix_seed3_8] step 200/625 loss 0.0470 lr 3.62e-04 t 43s
+2026-11-12 04:58:01 [full_ft seed3 l7_weakfix_seed3_8] step 200: none 0.872 opp 0.789 gap 0.083
+2026-11-12 04:58:05 [l7_weakfix_seed3_8] step 250/625 loss 0.0635 lr 3.19e-04 t 61s
+2026-11-12 04:58:09 [l7_weakfix_seed3_8] step 300/625 loss 0.0435 lr 2.77e-04 t 65s
+2026-11-12 04:58:13 [l7_weakfix_seed3_8] step 350/625 loss 0.0367 lr 2.34e-04 t 69s
+2026-11-12 04:58:16 [l7_weakfix_seed3_8] step 400/625 loss 0.0548 lr 1.92e-04 t 73s
+2026-11-12 04:58:20 [l7_weakfix_seed3_8] step 450/625 loss 0.0389 lr 1.49e-04 t 76s
+2026-11-12 04:58:24 [l7_weakfix_seed3_8] step 500/625 loss 0.0503 lr 1.06e-04 t 80s
+2026-11-12 04:58:28 [l7_weakfix_seed3_8] step 550/625 loss 0.0486 lr 6.39e-05 t 84s
+2026-11-12 04:58:31 [l7_weakfix_seed3_8] step 600/625 loss 0.0396 lr 2.13e-05 t 88s
+2026-11-12 04:58:33 [l7_weakfix_seed3_8] step 625/625 loss 0.0467 lr 0.00e+00 t 90s
+2026-11-12 04:58:47 [full_ft seed3 l7_weakfix_seed3_8] step 625: none 0.874 opp 0.828 gap 0.046
+2026-11-12 04:58:48 [L7 seed3] 8 done: step 50 removes 0.012, step 100 removes 0.588, step 200 removes 0.894, step 625 removes 0.941; wall 105s
+2026-11-12 04:58:52 [l7_weakfix_seed3_9] step 50/625 loss 0.1853 lr 4.90e-04 t 3s
+2026-11-12 04:59:07 [full_ft seed3 l7_weakfix_seed3_9] step 50: none 0.870 opp 0.096 gap 0.774
+2026-11-12 04:59:10 [l7_weakfix_seed3_9] step 100/625 loss 0.1280 lr 4.47e-04 t 21s
+2026-11-12 04:59:24 [full_ft seed3 l7_weakfix_seed3_9] step 100: none 0.873 opp 0.602 gap 0.271
+2026-11-12 04:59:28 [l7_weakfix_seed3_9] step 150/625 loss 0.0793 lr 4.05e-04 t 39s
+2026-11-12 04:59:31 [l7_weakfix_seed3_9] step 200/625 loss 0.0448 lr 3.62e-04 t 42s
+2026-11-12 04:59:45 [full_ft seed3 l7_weakfix_seed3_9] step 200: none 0.872 opp 0.817 gap 0.055
+2026-11-12 04:59:49 [l7_weakfix_seed3_9] step 250/625 loss 0.0576 lr 3.19e-04 t 60s
+2026-11-12 04:59:52 [l7_weakfix_seed3_9] step 300/625 loss 0.0443 lr 2.77e-04 t 63s
+2026-11-12 04:59:56 [l7_weakfix_seed3_9] step 350/625 loss 0.0372 lr 2.34e-04 t 67s
+2026-11-12 04:59:59 [l7_weakfix_seed3_9] step 400/625 loss 0.0541 lr 1.92e-04 t 70s
+2026-11-12 05:00:03 [l7_weakfix_seed3_9] step 450/625 loss 0.0376 lr 1.49e-04 t 74s
+2026-11-12 05:00:06 [l7_weakfix_seed3_9] step 500/625 loss 0.0468 lr 1.06e-04 t 77s
+2026-11-12 05:00:10 [l7_weakfix_seed3_9] step 550/625 loss 0.0503 lr 6.39e-05 t 81s
+2026-11-12 05:00:13 [l7_weakfix_seed3_9] step 600/625 loss 0.0374 lr 2.13e-05 t 84s
+2026-11-12 05:00:15 [l7_weakfix_seed3_9] step 625/625 loss 0.0463 lr 0.00e+00 t 86s
+2026-11-12 05:00:29 [full_ft seed3 l7_weakfix_seed3_9] step 625: none 0.872 opp 0.845 gap 0.027
+2026-11-12 05:00:30 [L7 seed3] 9 done: step 50 removes 0.010, step 100 removes 0.654, step 200 removes 0.930, step 625 removes 0.965; wall 101s
+2026-11-12 05:00:34 [l7_weakfix_seed3_10] step 50/625 loss 0.1853 lr 4.90e-04 t 3s
+2026-11-12 05:00:48 [full_ft seed3 l7_weakfix_seed3_10] step 50: none 0.870 opp 0.096 gap 0.774
+2026-11-12 05:00:51 [l7_weakfix_seed3_10] step 100/625 loss 0.1300 lr 4.47e-04 t 21s
+2026-11-12 05:01:05 [full_ft seed3 l7_weakfix_seed3_10] step 100: none 0.871 opp 0.609 gap 0.262
+2026-11-12 05:01:09 [l7_weakfix_seed3_10] step 150/625 loss 0.0754 lr 4.05e-04 t 38s
+2026-11-12 05:01:12 [l7_weakfix_seed3_10] step 200/625 loss 0.0461 lr 3.62e-04 t 41s
+2026-11-12 05:01:26 [full_ft seed3 l7_weakfix_seed3_10] step 200: none 0.874 opp 0.838 gap 0.036
+2026-11-12 05:01:29 [l7_weakfix_seed3_10] step 250/625 loss 0.0610 lr 3.19e-04 t 58s
+2026-11-12 05:01:32 [l7_weakfix_seed3_10] step 300/625 loss 0.0454 lr 2.77e-04 t 62s
+2026-11-12 05:01:36 [l7_weakfix_seed3_10] step 350/625 loss 0.0364 lr 2.34e-04 t 65s
+2026-11-12 05:01:39 [l7_weakfix_seed3_10] step 400/625 loss 0.0506 lr 1.92e-04 t 68s
+2026-11-12 05:01:42 [l7_weakfix_seed3_10] step 450/625 loss 0.0360 lr 1.49e-04 t 71s
+2026-11-12 05:01:45 [l7_weakfix_seed3_10] step 500/625 loss 0.0438 lr 1.06e-04 t 75s
+2026-11-12 05:01:48 [l7_weakfix_seed3_10] step 550/625 loss 0.0501 lr 6.39e-05 t 78s
+2026-11-12 05:01:52 [l7_weakfix_seed3_10] step 600/625 loss 0.0370 lr 2.13e-05 t 81s
+2026-11-12 05:01:53 [l7_weakfix_seed3_10] step 625/625 loss 0.0502 lr 0.00e+00 t 83s
+2026-11-12 05:02:07 [full_ft seed3 l7_weakfix_seed3_10] step 625: none 0.874 opp 0.864 gap 0.010
+2026-11-12 05:02:08 [L7 seed3] 10 done: step 50 removes 0.010, step 100 removes 0.665, step 200 removes 0.953, step 625 removes 0.988; wall 98s
+2026-11-12 05:02:12 [l7_weakfix_seed3_11] step 50/625 loss 0.1853 lr 4.90e-04 t 3s
+2026-11-12 05:02:26 [full_ft seed3 l7_weakfix_seed3_11] step 50: none 0.870 opp 0.097 gap 0.773
+2026-11-12 05:02:29 [l7_weakfix_seed3_11] step 100/625 loss 0.1320 lr 4.47e-04 t 20s
+2026-11-12 05:02:43 [full_ft seed3 l7_weakfix_seed3_11] step 100: none 0.875 opp 0.522 gap 0.353
+2026-11-12 05:02:46 [l7_weakfix_seed3_11] step 150/625 loss 0.0816 lr 4.05e-04 t 37s
+2026-11-12 05:02:49 [l7_weakfix_seed3_11] step 200/625 loss 0.0471 lr 3.62e-04 t 40s
+2026-11-12 05:03:03 [full_ft seed3 l7_weakfix_seed3_11] step 200: none 0.870 opp 0.826 gap 0.044
+2026-11-12 05:03:06 [l7_weakfix_seed3_11] step 250/625 loss 0.0602 lr 3.19e-04 t 57s
+2026-11-12 05:03:09 [l7_weakfix_seed3_11] step 300/625 loss 0.0459 lr 2.77e-04 t 60s
+2026-11-12 05:03:12 [l7_weakfix_seed3_11] step 350/625 loss 0.0336 lr 2.34e-04 t 63s
+2026-11-12 05:03:15 [l7_weakfix_seed3_11] step 400/625 loss 0.0515 lr 1.92e-04 t 66s
+2026-11-12 05:03:18 [l7_weakfix_seed3_11] step 450/625 loss 0.0393 lr 1.49e-04 t 69s
+2026-11-12 05:03:21 [l7_weakfix_seed3_11] step 500/625 loss 0.0462 lr 1.06e-04 t 72s
+2026-11-12 05:03:24 [l7_weakfix_seed3_11] step 550/625 loss 0.0514 lr 6.39e-05 t 75s
+2026-11-12 05:03:27 [l7_weakfix_seed3_11] step 600/625 loss 0.0371 lr 2.13e-05 t 78s
+2026-11-12 05:03:28 [l7_weakfix_seed3_11] step 625/625 loss 0.0459 lr 0.00e+00 t 79s
+2026-11-12 05:03:42 [full_ft seed3 l7_weakfix_seed3_11] step 625: none 0.874 opp 0.878 gap -0.004
+2026-11-12 05:03:43 [L7 seed3] 11 done: step 50 removes 0.012, step 100 removes 0.549, step 200 removes 0.944, step 625 removes 1.006; wall 95s
+2026-11-12 05:03:47 [l7_weakfix_seed3_ctrl_shortcut_11] step 50/625 loss 0.1313 lr 4.90e-04 t 3s
+2026-11-12 05:04:01 [full_ft seed3 l7_weakfix_seed3_ctrl_shortcut_11] step 50: none 0.870 opp 0.087 gap 0.783
+2026-11-12 05:04:04 [l7_weakfix_seed3_ctrl_shortcut_11] step 100/625 loss 0.0681 lr 4.47e-04 t 20s
+2026-11-12 05:04:18 [full_ft seed3 l7_weakfix_seed3_ctrl_shortcut_11] step 100: none 0.871 opp 0.079 gap 0.792
+2026-11-12 05:04:21 [l7_weakfix_seed3_ctrl_shortcut_11] step 150/625 loss 0.0564 lr 4.05e-04 t 37s
+2026-11-12 05:04:24 [l7_weakfix_seed3_ctrl_shortcut_11] step 200/625 loss 0.0343 lr 3.62e-04 t 40s
+2026-11-12 05:04:38 [full_ft seed3 l7_weakfix_seed3_ctrl_shortcut_11] step 200: none 0.872 opp 0.086 gap 0.786
+2026-11-12 05:04:41 [l7_weakfix_seed3_ctrl_shortcut_11] step 250/625 loss 0.0452 lr 3.19e-04 t 57s
+2026-11-12 05:04:44 [l7_weakfix_seed3_ctrl_shortcut_11] step 300/625 loss 0.0373 lr 2.77e-04 t 60s
+2026-11-12 05:04:47 [l7_weakfix_seed3_ctrl_shortcut_11] step 350/625 loss 0.0281 lr 2.34e-04 t 63s
+2026-11-12 05:04:50 [l7_weakfix_seed3_ctrl_shortcut_11] step 400/625 loss 0.0468 lr 1.92e-04 t 66s
+2026-11-12 05:04:53 [l7_weakfix_seed3_ctrl_shortcut_11] step 450/625 loss 0.0281 lr 1.49e-04 t 69s
+2026-11-12 05:04:56 [l7_weakfix_seed3_ctrl_shortcut_11] step 500/625 loss 0.0210 lr 1.06e-04 t 72s
+2026-11-12 05:04:59 [l7_weakfix_seed3_ctrl_shortcut_11] step 550/625 loss 0.0363 lr 6.39e-05 t 75s
+2026-11-12 05:05:02 [l7_weakfix_seed3_ctrl_shortcut_11] step 600/625 loss 0.0242 lr 2.13e-05 t 78s
+2026-11-12 05:05:03 [l7_weakfix_seed3_ctrl_shortcut_11] step 625/625 loss 0.0294 lr 0.00e+00 t 79s
+2026-11-12 05:05:17 [full_ft seed3 l7_weakfix_seed3_ctrl_shortcut_11] step 625: none 0.872 opp 0.078 gap 0.794
+2026-11-12 05:05:18 [L7 seed3] ctrl_shortcut:11 done: step 50 removes -0.001, step 100 removes -0.013, step 200 removes -0.005, step 625 removes -0.015; wall 95s
+2026-11-12 05:05:18 L7 seed3 done
+2026-11-12 05:05:19 --- L7 weak fix seed 4: weakfix_newseeds.py --seed 4
+2026-11-12 05:05:37 [l7_weakfix_seed4_0] step 50/625 loss 0.1796 lr 4.90e-04 t 6s
+2026-11-12 05:05:51 [full_ft seed4 l7_weakfix_seed4_0] step 50: none 0.871 opp 0.283 gap 0.588
+2026-11-12 05:05:57 [l7_weakfix_seed4_0] step 100/625 loss 0.1239 lr 4.47e-04 t 27s
+2026-11-12 05:06:12 [full_ft seed4 l7_weakfix_seed4_0] step 100: none 0.868 opp 0.613 gap 0.255
+2026-11-12 05:06:18 [l7_weakfix_seed4_0] step 150/625 loss 0.0713 lr 4.05e-04 t 47s
+2026-11-12 05:06:24 [l7_weakfix_seed4_0] step 200/625 loss 0.0625 lr 3.62e-04 t 53s
+2026-11-12 05:06:38 [full_ft seed4 l7_weakfix_seed4_0] step 200: none 0.868 opp 0.696 gap 0.172
+2026-11-12 05:06:44 [l7_weakfix_seed4_0] step 250/625 loss 0.0715 lr 3.19e-04 t 73s
+2026-11-12 05:06:50 [l7_weakfix_seed4_0] step 300/625 loss 0.0577 lr 2.77e-04 t 79s
+2026-11-12 05:06:56 [l7_weakfix_seed4_0] step 350/625 loss 0.0773 lr 2.34e-04 t 85s
+2026-11-12 05:07:02 [l7_weakfix_seed4_0] step 400/625 loss 0.0610 lr 1.92e-04 t 91s
+2026-11-12 05:07:08 [l7_weakfix_seed4_0] step 450/625 loss 0.0672 lr 1.49e-04 t 97s
+2026-11-12 05:07:14 [l7_weakfix_seed4_0] step 500/625 loss 0.0560 lr 1.06e-04 t 103s
+2026-11-12 05:07:19 [l7_weakfix_seed4_0] step 550/625 loss 0.0389 lr 6.39e-05 t 109s
+2026-11-12 05:07:25 [l7_weakfix_seed4_0] step 600/625 loss 0.0514 lr 2.13e-05 t 115s
+2026-11-12 05:07:28 [l7_weakfix_seed4_0] step 625/625 loss 0.0360 lr 0.00e+00 t 118s
+2026-11-12 05:07:43 [full_ft seed4 l7_weakfix_seed4_0] step 625: none 0.868 opp 0.817 gap 0.051
+2026-11-12 05:07:43 [L7 seed4] 0 done: step 50 removes 0.053, step 100 removes 0.590, step 200 removes 0.724, step 625 removes 0.917; wall 133s
+2026-11-12 05:07:50 [l7_weakfix_seed4_1] step 50/625 loss 0.1815 lr 4.90e-04 t 6s
+2026-11-12 05:08:04 [full_ft seed4 l7_weakfix_seed4_1] step 50: none 0.871 opp 0.248 gap 0.623
+2026-11-12 05:08:10 [l7_weakfix_seed4_1] step 100/625 loss 0.1385 lr 4.47e-04 t 26s
+2026-11-12 05:08:24 [full_ft seed4 l7_weakfix_seed4_1] step 100: none 0.868 opp 0.269 gap 0.600
+2026-11-12 05:08:30 [l7_weakfix_seed4_1] step 150/625 loss 0.0955 lr 4.05e-04 t 45s
+2026-11-12 05:08:36 [l7_weakfix_seed4_1] step 200/625 loss 0.0760 lr 3.62e-04 t 51s
+2026-11-12 05:08:50 [full_ft seed4 l7_weakfix_seed4_1] step 200: none 0.868 opp 0.591 gap 0.276
+2026-11-12 05:08:55 [l7_weakfix_seed4_1] step 250/625 loss 0.0751 lr 3.19e-04 t 71s
+2026-11-12 05:09:01 [l7_weakfix_seed4_1] step 300/625 loss 0.0560 lr 2.77e-04 t 77s
+2026-11-12 05:09:07 [l7_weakfix_seed4_1] step 350/625 loss 0.0813 lr 2.34e-04 t 82s
+2026-11-12 05:09:12 [l7_weakfix_seed4_1] step 400/625 loss 0.0637 lr 1.92e-04 t 88s
+2026-11-12 05:09:18 [l7_weakfix_seed4_1] step 450/625 loss 0.0679 lr 1.49e-04 t 94s
+2026-11-12 05:09:24 [l7_weakfix_seed4_1] step 500/625 loss 0.0567 lr 1.06e-04 t 99s
+2026-11-12 05:09:29 [l7_weakfix_seed4_1] step 550/625 loss 0.0438 lr 6.39e-05 t 105s
+2026-11-12 05:09:35 [l7_weakfix_seed4_1] step 600/625 loss 0.0526 lr 2.13e-05 t 111s
+2026-11-12 05:09:38 [l7_weakfix_seed4_1] step 625/625 loss 0.0413 lr 0.00e+00 t 114s
+2026-11-12 05:09:52 [full_ft seed4 l7_weakfix_seed4_1] step 625: none 0.865 opp 0.746 gap 0.119
+2026-11-12 05:09:53 [L7 seed4] 1 done: step 50 removes -0.005, step 100 removes 0.033, step 200 removes 0.554, step 625 removes 0.808; wall 129s
+2026-11-12 05:09:59 [l7_weakfix_seed4_2] step 50/625 loss 0.1809 lr 4.90e-04 t 5s
+2026-11-12 05:10:13 [full_ft seed4 l7_weakfix_seed4_2] step 50: none 0.872 opp 0.248 gap 0.624
+2026-11-12 05:10:19 [l7_weakfix_seed4_2] step 100/625 loss 0.1387 lr 4.47e-04 t 25s
+2026-11-12 05:10:33 [full_ft seed4 l7_weakfix_seed4_2] step 100: none 0.870 opp 0.275 gap 0.595
+2026-11-12 05:10:38 [l7_weakfix_seed4_2] step 150/625 loss 0.0952 lr 4.05e-04 t 45s
+2026-11-12 05:10:44 [l7_weakfix_seed4_2] step 200/625 loss 0.0779 lr 3.62e-04 t 50s
+2026-11-12 05:10:58 [full_ft seed4 l7_weakfix_seed4_2] step 200: none 0.868 opp 0.594 gap 0.274
+2026-11-12 05:11:03 [l7_weakfix_seed4_2] step 250/625 loss 0.0741 lr 3.19e-04 t 69s
+2026-11-12 05:11:09 [l7_weakfix_seed4_2] step 300/625 loss 0.0579 lr 2.77e-04 t 75s
+2026-11-12 05:11:14 [l7_weakfix_seed4_2] step 350/625 loss 0.0740 lr 2.34e-04 t 80s
+2026-11-12 05:11:19 [l7_weakfix_seed4_2] step 400/625 loss 0.0606 lr 1.92e-04 t 86s
+2026-11-12 05:11:25 [l7_weakfix_seed4_2] step 450/625 loss 0.0671 lr 1.49e-04 t 91s
+2026-11-12 05:11:30 [l7_weakfix_seed4_2] step 500/625 loss 0.0553 lr 1.06e-04 t 96s
+2026-11-12 05:11:36 [l7_weakfix_seed4_2] step 550/625 loss 0.0403 lr 6.39e-05 t 102s
+2026-11-12 05:11:41 [l7_weakfix_seed4_2] step 600/625 loss 0.0502 lr 2.13e-05 t 107s
+2026-11-12 05:11:44 [l7_weakfix_seed4_2] step 625/625 loss 0.0391 lr 0.00e+00 t 110s
+2026-11-12 05:11:58 [full_ft seed4 l7_weakfix_seed4_2] step 625: none 0.865 opp 0.785 gap 0.080
+2026-11-12 05:11:58 [L7 seed4] 2 done: step 50 removes -0.005, step 100 removes 0.040, step 200 removes 0.559, step 625 removes 0.872; wall 125s
+2026-11-12 05:12:05 [l7_weakfix_seed4_3] step 50/625 loss 0.1811 lr 4.90e-04 t 5s
+2026-11-12 05:12:19 [full_ft seed4 l7_weakfix_seed4_3] step 50: none 0.873 opp 0.250 gap 0.623
+2026-11-12 05:12:24 [l7_weakfix_seed4_3] step 100/625 loss 0.1390 lr 4.47e-04 t 24s
+2026-11-12 05:12:38 [full_ft seed4 l7_weakfix_seed4_3] step 100: none 0.871 opp 0.276 gap 0.595
+2026-11-12 05:12:43 [l7_weakfix_seed4_3] step 150/625 loss 0.0960 lr 4.05e-04 t 44s
+2026-11-12 05:12:48 [l7_weakfix_seed4_3] step 200/625 loss 0.0779 lr 3.62e-04 t 49s
+2026-11-12 05:13:03 [full_ft seed4 l7_weakfix_seed4_3] step 200: none 0.867 opp 0.607 gap 0.260
+2026-11-12 05:13:08 [l7_weakfix_seed4_3] step 250/625 loss 0.0766 lr 3.19e-04 t 68s
+2026-11-12 05:13:13 [l7_weakfix_seed4_3] step 300/625 loss 0.0566 lr 2.77e-04 t 73s
+2026-11-12 05:13:18 [l7_weakfix_seed4_3] step 350/625 loss 0.0776 lr 2.34e-04 t 78s
+2026-11-12 05:13:23 [l7_weakfix_seed4_3] step 400/625 loss 0.0634 lr 1.92e-04 t 84s
+2026-11-12 05:13:28 [l7_weakfix_seed4_3] step 450/625 loss 0.0662 lr 1.49e-04 t 89s
+2026-11-12 05:13:33 [l7_weakfix_seed4_3] step 500/625 loss 0.0544 lr 1.06e-04 t 94s
+2026-11-12 05:13:38 [l7_weakfix_seed4_3] step 550/625 loss 0.0408 lr 6.39e-05 t 99s
+2026-11-12 05:13:44 [l7_weakfix_seed4_3] step 600/625 loss 0.0497 lr 2.13e-05 t 104s
+2026-11-12 05:13:46 [l7_weakfix_seed4_3] step 625/625 loss 0.0384 lr 0.00e+00 t 107s
+2026-11-12 05:14:00 [full_ft seed4 l7_weakfix_seed4_3] step 625: none 0.868 opp 0.811 gap 0.057
+2026-11-12 05:14:01 [L7 seed4] 3 done: step 50 removes -0.004, step 100 removes 0.042, step 200 removes 0.580, step 625 removes 0.907; wall 122s
+2026-11-12 05:14:07 [l7_weakfix_seed4_4] step 50/625 loss 0.1809 lr 4.90e-04 t 5s
+2026-11-12 05:14:21 [full_ft seed4 l7_weakfix_seed4_4] step 50: none 0.873 opp 0.251 gap 0.622
+2026-11-12 05:14:26 [l7_weakfix_seed4_4] step 100/625 loss 0.1374 lr 4.47e-04 t 24s
+2026-11-12 05:14:40 [full_ft seed4 l7_weakfix_seed4_4] step 100: none 0.869 opp 0.290 gap 0.579
+2026-11-12 05:14:45 [l7_weakfix_seed4_4] step 150/625 loss 0.0960 lr 4.05e-04 t 43s
+2026-11-12 05:14:50 [l7_weakfix_seed4_4] step 200/625 loss 0.0804 lr 3.62e-04 t 48s
+2026-11-12 05:15:04 [full_ft seed4 l7_weakfix_seed4_4] step 200: none 0.866 opp 0.601 gap 0.265
+2026-11-12 05:15:09 [l7_weakfix_seed4_4] step 250/625 loss 0.0773 lr 3.19e-04 t 67s
+2026-11-12 05:15:14 [l7_weakfix_seed4_4] step 300/625 loss 0.0555 lr 2.77e-04 t 72s
+2026-11-12 05:15:18 [l7_weakfix_seed4_4] step 350/625 loss 0.0746 lr 2.34e-04 t 77s
+2026-11-12 05:15:23 [l7_weakfix_seed4_4] step 400/625 loss 0.0602 lr 1.92e-04 t 81s
+2026-11-12 05:15:28 [l7_weakfix_seed4_4] step 450/625 loss 0.0664 lr 1.49e-04 t 86s
+2026-11-12 05:15:33 [l7_weakfix_seed4_4] step 500/625 loss 0.0514 lr 1.06e-04 t 91s
+2026-11-12 05:15:38 [l7_weakfix_seed4_4] step 550/625 loss 0.0403 lr 6.39e-05 t 96s
+2026-11-12 05:15:43 [l7_weakfix_seed4_4] step 600/625 loss 0.0468 lr 2.13e-05 t 101s
+2026-11-12 05:15:45 [l7_weakfix_seed4_4] step 625/625 loss 0.0376 lr 0.00e+00 t 103s
+2026-11-12 05:15:59 [full_ft seed4 l7_weakfix_seed4_4] step 625: none 0.868 opp 0.832 gap 0.035
+2026-11-12 05:16:00 [L7 seed4] 4 done: step 50 removes -0.002, step 100 removes 0.067, step 200 removes 0.574, step 625 removes 0.943; wall 119s
+2026-11-12 05:16:05 [l7_weakfix_seed4_5] step 50/625 loss 0.1808 lr 4.90e-04 t 5s
+2026-11-12 05:16:20 [full_ft seed4 l7_weakfix_seed4_5] step 50: none 0.871 opp 0.254 gap 0.617
+2026-11-12 05:16:24 [l7_weakfix_seed4_5] step 100/625 loss 0.1382 lr 4.47e-04 t 23s
+2026-11-12 05:16:38 [full_ft seed4 l7_weakfix_seed4_5] step 100: none 0.871 opp 0.293 gap 0.578
+2026-11-12 05:16:43 [l7_weakfix_seed4_5] step 150/625 loss 0.0940 lr 4.05e-04 t 42s
+2026-11-12 05:16:48 [l7_weakfix_seed4_5] step 200/625 loss 0.0776 lr 3.62e-04 t 47s
+2026-11-12 05:17:02 [full_ft seed4 l7_weakfix_seed4_5] step 200: none 0.865 opp 0.641 gap 0.224
+2026-11-12 05:17:06 [l7_weakfix_seed4_5] step 250/625 loss 0.0757 lr 3.19e-04 t 65s
+2026-11-12 05:17:11 [l7_weakfix_seed4_5] step 300/625 loss 0.0561 lr 2.77e-04 t 70s
+2026-11-12 05:17:16 [l7_weakfix_seed4_5] step 350/625 loss 0.0775 lr 2.34e-04 t 75s
+2026-11-12 05:17:20 [l7_weakfix_seed4_5] step 400/625 loss 0.0624 lr 1.92e-04 t 79s
+2026-11-12 05:17:25 [l7_weakfix_seed4_5] step 450/625 loss 0.0703 lr 1.49e-04 t 84s
+2026-11-12 05:17:29 [l7_weakfix_seed4_5] step 500/625 loss 0.0547 lr 1.06e-04 t 88s
+2026-11-12 05:17:34 [l7_weakfix_seed4_5] step 550/625 loss 0.0387 lr 6.39e-05 t 93s
+2026-11-12 05:17:38 [l7_weakfix_seed4_5] step 600/625 loss 0.0501 lr 2.13e-05 t 98s
+2026-11-12 05:17:41 [l7_weakfix_seed4_5] step 625/625 loss 0.0363 lr 0.00e+00 t 100s
+2026-11-12 05:17:55 [full_ft seed4 l7_weakfix_seed4_5] step 625: none 0.865 opp 0.768 gap 0.097
+2026-11-12 05:17:55 [L7 seed4] 5 done: step 50 removes 0.006, step 100 removes 0.068, step 200 removes 0.640, step 625 removes 0.843; wall 115s
+2026-11-12 05:18:01 [l7_weakfix_seed4_6] step 50/625 loss 0.1805 lr 4.90e-04 t 4s
+2026-11-12 05:18:15 [full_ft seed4 l7_weakfix_seed4_6] step 50: none 0.871 opp 0.259 gap 0.612
+2026-11-12 05:18:19 [l7_weakfix_seed4_6] step 100/625 loss 0.1379 lr 4.47e-04 t 23s
+2026-11-12 05:18:33 [full_ft seed4 l7_weakfix_seed4_6] step 100: none 0.871 opp 0.306 gap 0.565
+2026-11-12 05:18:38 [l7_weakfix_seed4_6] step 150/625 loss 0.0922 lr 4.05e-04 t 41s
+2026-11-12 05:18:42 [l7_weakfix_seed4_6] step 200/625 loss 0.0686 lr 3.62e-04 t 46s
+2026-11-12 05:18:56 [full_ft seed4 l7_weakfix_seed4_6] step 200: none 0.863 opp 0.696 gap 0.168
+2026-11-12 05:19:01 [l7_weakfix_seed4_6] step 250/625 loss 0.0744 lr 3.19e-04 t 64s
+2026-11-12 05:19:05 [l7_weakfix_seed4_6] step 300/625 loss 0.0551 lr 2.77e-04 t 68s
+2026-11-12 05:19:09 [l7_weakfix_seed4_6] step 350/625 loss 0.0747 lr 2.34e-04 t 73s
+2026-11-12 05:19:13 [l7_weakfix_seed4_6] step 400/625 loss 0.0628 lr 1.92e-04 t 77s
+2026-11-12 05:19:18 [l7_weakfix_seed4_6] step 450/625 loss 0.0692 lr 1.49e-04 t 81s
+2026-11-12 05:19:22 [l7_weakfix_seed4_6] step 500/625 loss 0.0536 lr 1.06e-04 t 85s
+2026-11-12 05:19:26 [l7_weakfix_seed4_6] step 550/625 loss 0.0390 lr 6.39e-05 t 90s
+2026-11-12 05:19:31 [l7_weakfix_seed4_6] step 600/625 loss 0.0508 lr 2.13e-05 t 94s
+2026-11-12 05:19:33 [l7_weakfix_seed4_6] step 625/625 loss 0.0368 lr 0.00e+00 t 96s
+2026-11-12 05:19:47 [full_ft seed4 l7_weakfix_seed4_6] step 625: none 0.866 opp 0.754 gap 0.112
+2026-11-12 05:19:47 [L7 seed4] 6 done: step 50 removes 0.014, step 100 removes 0.090, step 200 removes 0.729, step 625 removes 0.820; wall 112s
+2026-11-12 05:19:53 [l7_weakfix_seed4_7] step 50/625 loss 0.1799 lr 4.90e-04 t 4s
+2026-11-12 05:20:07 [full_ft seed4 l7_weakfix_seed4_7] step 50: none 0.869 opp 0.262 gap 0.607
+2026-11-12 05:20:11 [l7_weakfix_seed4_7] step 100/625 loss 0.1334 lr 4.47e-04 t 22s
+2026-11-12 05:20:25 [full_ft seed4 l7_weakfix_seed4_7] step 100: none 0.869 opp 0.463 gap 0.406
+2026-11-12 05:20:29 [l7_weakfix_seed4_7] step 150/625 loss 0.0771 lr 4.05e-04 t 40s
+2026-11-12 05:20:33 [l7_weakfix_seed4_7] step 200/625 loss 0.0587 lr 3.62e-04 t 44s
+2026-11-12 05:20:47 [full_ft seed4 l7_weakfix_seed4_7] step 200: none 0.868 opp 0.712 gap 0.156
+2026-11-12 05:20:51 [l7_weakfix_seed4_7] step 250/625 loss 0.0720 lr 3.19e-04 t 63s
+2026-11-12 05:20:55 [l7_weakfix_seed4_7] step 300/625 loss 0.0526 lr 2.77e-04 t 67s
+2026-11-12 05:20:59 [l7_weakfix_seed4_7] step 350/625 loss 0.0706 lr 2.34e-04 t 71s
+2026-11-12 05:21:03 [l7_weakfix_seed4_7] step 400/625 loss 0.0604 lr 1.92e-04 t 75s
+2026-11-12 05:21:07 [l7_weakfix_seed4_7] step 450/625 loss 0.0698 lr 1.49e-04 t 79s
+2026-11-12 05:21:11 [l7_weakfix_seed4_7] step 500/625 loss 0.0517 lr 1.06e-04 t 83s
+2026-11-12 05:21:15 [l7_weakfix_seed4_7] step 550/625 loss 0.0375 lr 6.39e-05 t 87s
+2026-11-12 05:21:19 [l7_weakfix_seed4_7] step 600/625 loss 0.0479 lr 2.13e-05 t 91s
+2026-11-12 05:21:21 [l7_weakfix_seed4_7] step 625/625 loss 0.0329 lr 0.00e+00 t 93s
+2026-11-12 05:21:36 [full_ft seed4 l7_weakfix_seed4_7] step 625: none 0.868 opp 0.790 gap 0.078
+2026-11-12 05:21:36 [L7 seed4] 7 done: step 50 removes 0.022, step 100 removes 0.345, step 200 removes 0.749, step 625 removes 0.874; wall 108s
+2026-11-12 05:21:41 [l7_weakfix_seed4_8] step 50/625 loss 0.1798 lr 4.90e-04 t 4s
+2026-11-12 05:21:55 [full_ft seed4 l7_weakfix_seed4_8] step 50: none 0.871 opp 0.285 gap 0.585
+2026-11-12 05:21:59 [l7_weakfix_seed4_8] step 100/625 loss 0.1312 lr 4.47e-04 t 22s
+2026-11-12 05:22:13 [full_ft seed4 l7_weakfix_seed4_8] step 100: none 0.870 opp 0.514 gap 0.356
+2026-11-12 05:22:17 [l7_weakfix_seed4_8] step 150/625 loss 0.0755 lr 4.05e-04 t 40s
+2026-11-12 05:22:21 [l7_weakfix_seed4_8] step 200/625 loss 0.0571 lr 3.62e-04 t 43s
+2026-11-12 05:22:35 [full_ft seed4 l7_weakfix_seed4_8] step 200: none 0.868 opp 0.747 gap 0.121
+2026-11-12 05:22:39 [l7_weakfix_seed4_8] step 250/625 loss 0.0734 lr 3.19e-04 t 61s
+2026-11-12 05:22:42 [l7_weakfix_seed4_8] step 300/625 loss 0.0518 lr 2.77e-04 t 65s
+2026-11-12 05:22:46 [l7_weakfix_seed4_8] step 350/625 loss 0.0698 lr 2.34e-04 t 69s
+2026-11-12 05:22:50 [l7_weakfix_seed4_8] step 400/625 loss 0.0567 lr 1.92e-04 t 73s
+2026-11-12 05:22:54 [l7_weakfix_seed4_8] step 450/625 loss 0.0689 lr 1.49e-04 t 76s
+2026-11-12 05:22:57 [l7_weakfix_seed4_8] step 500/625 loss 0.0501 lr 1.06e-04 t 80s
+2026-11-12 05:23:01 [l7_weakfix_seed4_8] step 550/625 loss 0.0363 lr 6.39e-05 t 84s
+2026-11-12 05:23:05 [l7_weakfix_seed4_8] step 600/625 loss 0.0472 lr 2.13e-05 t 88s
+2026-11-12 05:23:07 [l7_weakfix_seed4_8] step 625/625 loss 0.0330 lr 0.00e+00 t 90s
+2026-11-12 05:23:21 [full_ft seed4 l7_weakfix_seed4_8] step 625: none 0.869 opp 0.807 gap 0.062
+2026-11-12 05:23:21 [L7 seed4] 8 done: step 50 removes 0.057, step 100 removes 0.426, step 200 removes 0.805, step 625 removes 0.900; wall 105s
+2026-11-12 05:23:26 [l7_weakfix_seed4_9] step 50/625 loss 0.1802 lr 4.90e-04 t 3s
+2026-11-12 05:23:40 [full_ft seed4 l7_weakfix_seed4_9] step 50: none 0.871 opp 0.284 gap 0.587
+2026-11-12 05:23:44 [l7_weakfix_seed4_9] step 100/625 loss 0.1273 lr 4.47e-04 t 21s
+2026-11-12 05:23:58 [full_ft seed4 l7_weakfix_seed4_9] step 100: none 0.868 opp 0.591 gap 0.277
+2026-11-12 05:24:01 [l7_weakfix_seed4_9] step 150/625 loss 0.0734 lr 4.05e-04 t 39s
+2026-11-12 05:24:05 [l7_weakfix_seed4_9] step 200/625 loss 0.0541 lr 3.62e-04 t 42s
+2026-11-12 05:24:19 [full_ft seed4 l7_weakfix_seed4_9] step 200: none 0.868 opp 0.788 gap 0.080
+2026-11-12 05:24:23 [l7_weakfix_seed4_9] step 250/625 loss 0.0717 lr 3.19e-04 t 60s
+2026-11-12 05:24:26 [l7_weakfix_seed4_9] step 300/625 loss 0.0528 lr 2.77e-04 t 63s
+2026-11-12 05:24:30 [l7_weakfix_seed4_9] step 350/625 loss 0.0674 lr 2.34e-04 t 67s
+2026-11-12 05:24:33 [l7_weakfix_seed4_9] step 400/625 loss 0.0568 lr 1.92e-04 t 70s
+2026-11-12 05:24:37 [l7_weakfix_seed4_9] step 450/625 loss 0.0674 lr 1.49e-04 t 74s
+2026-11-12 05:24:40 [l7_weakfix_seed4_9] step 500/625 loss 0.0499 lr 1.06e-04 t 77s
+2026-11-12 05:24:43 [l7_weakfix_seed4_9] step 550/625 loss 0.0334 lr 6.39e-05 t 81s
+2026-11-12 05:24:47 [l7_weakfix_seed4_9] step 600/625 loss 0.0470 lr 2.13e-05 t 84s
+2026-11-12 05:24:49 [l7_weakfix_seed4_9] step 625/625 loss 0.0319 lr 0.00e+00 t 86s
+2026-11-12 05:25:03 [full_ft seed4 l7_weakfix_seed4_9] step 625: none 0.868 opp 0.812 gap 0.056
+2026-11-12 05:25:03 [L7 seed4] 9 done: step 50 removes 0.055, step 100 removes 0.554, step 200 removes 0.871, step 625 removes 0.911; wall 102s
+2026-11-12 05:25:08 [l7_weakfix_seed4_10] step 50/625 loss 0.1796 lr 4.90e-04 t 3s
+2026-11-12 05:25:22 [full_ft seed4 l7_weakfix_seed4_10] step 50: none 0.870 opp 0.317 gap 0.553
+2026-11-12 05:25:25 [l7_weakfix_seed4_10] step 100/625 loss 0.1173 lr 4.47e-04 t 21s
+2026-11-12 05:25:39 [full_ft seed4 l7_weakfix_seed4_10] step 100: none 0.868 opp 0.674 gap 0.193
+2026-11-12 05:25:42 [l7_weakfix_seed4_10] step 150/625 loss 0.0696 lr 4.05e-04 t 38s
+2026-11-12 05:25:46 [l7_weakfix_seed4_10] step 200/625 loss 0.0533 lr 3.62e-04 t 41s
+2026-11-12 05:26:00 [full_ft seed4 l7_weakfix_seed4_10] step 200: none 0.865 opp 0.795 gap 0.070
+2026-11-12 05:26:03 [l7_weakfix_seed4_10] step 250/625 loss 0.0704 lr 3.19e-04 t 59s
+2026-11-12 05:26:06 [l7_weakfix_seed4_10] step 300/625 loss 0.0544 lr 2.77e-04 t 62s
+2026-11-12 05:26:10 [l7_weakfix_seed4_10] step 350/625 loss 0.0678 lr 2.34e-04 t 65s
+2026-11-12 05:26:13 [l7_weakfix_seed4_10] step 400/625 loss 0.0580 lr 1.92e-04 t 68s
+2026-11-12 05:26:16 [l7_weakfix_seed4_10] step 450/625 loss 0.0669 lr 1.49e-04 t 71s
+2026-11-12 05:26:19 [l7_weakfix_seed4_10] step 500/625 loss 0.0515 lr 1.06e-04 t 75s
+2026-11-12 05:26:22 [l7_weakfix_seed4_10] step 550/625 loss 0.0339 lr 6.39e-05 t 78s
+2026-11-12 05:26:26 [l7_weakfix_seed4_10] step 600/625 loss 0.0493 lr 2.13e-05 t 81s
+2026-11-12 05:26:27 [l7_weakfix_seed4_10] step 625/625 loss 0.0307 lr 0.00e+00 t 83s
+2026-11-12 05:26:41 [full_ft seed4 l7_weakfix_seed4_10] step 625: none 0.867 opp 0.819 gap 0.048
+2026-11-12 05:26:42 [L7 seed4] 10 done: step 50 removes 0.108, step 100 removes 0.688, step 200 removes 0.888, step 625 removes 0.923; wall 98s
+2026-11-12 05:26:46 [l7_weakfix_seed4_11] step 50/625 loss 0.1796 lr 4.90e-04 t 3s
+2026-11-12 05:27:00 [full_ft seed4 l7_weakfix_seed4_11] step 50: none 0.870 opp 0.299 gap 0.572
+2026-11-12 05:27:03 [l7_weakfix_seed4_11] step 100/625 loss 0.1206 lr 4.47e-04 t 20s
+2026-11-12 05:27:17 [full_ft seed4 l7_weakfix_seed4_11] step 100: none 0.869 opp 0.623 gap 0.247
+2026-11-12 05:27:20 [l7_weakfix_seed4_11] step 150/625 loss 0.0688 lr 4.05e-04 t 37s
+2026-11-12 05:27:23 [l7_weakfix_seed4_11] step 200/625 loss 0.0552 lr 3.62e-04 t 40s
+2026-11-12 05:27:37 [full_ft seed4 l7_weakfix_seed4_11] step 200: none 0.867 opp 0.785 gap 0.082
+2026-11-12 05:27:40 [l7_weakfix_seed4_11] step 250/625 loss 0.0675 lr 3.19e-04 t 57s
+2026-11-12 05:27:43 [l7_weakfix_seed4_11] step 300/625 loss 0.0558 lr 2.77e-04 t 60s
+2026-11-12 05:27:46 [l7_weakfix_seed4_11] step 350/625 loss 0.0687 lr 2.34e-04 t 63s
+2026-11-12 05:27:49 [l7_weakfix_seed4_11] step 400/625 loss 0.0575 lr 1.92e-04 t 66s
+2026-11-12 05:27:52 [l7_weakfix_seed4_11] step 450/625 loss 0.0696 lr 1.49e-04 t 69s
+2026-11-12 05:27:55 [l7_weakfix_seed4_11] step 500/625 loss 0.0526 lr 1.06e-04 t 72s
+2026-11-12 05:27:58 [l7_weakfix_seed4_11] step 550/625 loss 0.0364 lr 6.39e-05 t 75s
+2026-11-12 05:28:01 [l7_weakfix_seed4_11] step 600/625 loss 0.0500 lr 2.13e-05 t 78s
+2026-11-12 05:28:02 [l7_weakfix_seed4_11] step 625/625 loss 0.0324 lr 0.00e+00 t 79s
+2026-11-12 05:28:16 [full_ft seed4 l7_weakfix_seed4_11] step 625: none 0.869 opp 0.840 gap 0.030
+2026-11-12 05:28:17 [L7 seed4] 11 done: step 50 removes 0.079, step 100 removes 0.603, step 200 removes 0.868, step 625 removes 0.952; wall 95s
+2026-11-12 05:28:21 [l7_weakfix_seed4_ctrl_shortcut_11] step 50/625 loss 0.1255 lr 4.90e-04 t 3s
+2026-11-12 05:28:35 [full_ft seed4 l7_weakfix_seed4_ctrl_shortcut_11] step 50: none 0.871 opp 0.241 gap 0.630
+2026-11-12 05:28:38 [l7_weakfix_seed4_ctrl_shortcut_11] step 100/625 loss 0.0853 lr 4.47e-04 t 20s
+2026-11-12 05:28:52 [full_ft seed4 l7_weakfix_seed4_ctrl_shortcut_11] step 100: none 0.870 opp 0.249 gap 0.622
+2026-11-12 05:28:55 [l7_weakfix_seed4_ctrl_shortcut_11] step 150/625 loss 0.0458 lr 4.05e-04 t 37s
+2026-11-12 05:28:58 [l7_weakfix_seed4_ctrl_shortcut_11] step 200/625 loss 0.0378 lr 3.62e-04 t 40s
+2026-11-12 05:29:12 [full_ft seed4 l7_weakfix_seed4_ctrl_shortcut_11] step 200: none 0.868 opp 0.264 gap 0.603
+2026-11-12 05:29:15 [l7_weakfix_seed4_ctrl_shortcut_11] step 250/625 loss 0.0488 lr 3.19e-04 t 57s
+2026-11-12 05:29:18 [l7_weakfix_seed4_ctrl_shortcut_11] step 300/625 loss 0.0503 lr 2.77e-04 t 60s
+2026-11-12 05:29:21 [l7_weakfix_seed4_ctrl_shortcut_11] step 350/625 loss 0.0611 lr 2.34e-04 t 63s
+2026-11-12 05:29:24 [l7_weakfix_seed4_ctrl_shortcut_11] step 400/625 loss 0.0523 lr 1.92e-04 t 66s
+2026-11-12 05:29:27 [l7_weakfix_seed4_ctrl_shortcut_11] step 450/625 loss 0.0602 lr 1.49e-04 t 69s
+2026-11-12 05:29:30 [l7_weakfix_seed4_ctrl_shortcut_11] step 500/625 loss 0.0459 lr 1.06e-04 t 72s
+2026-11-12 05:29:33 [l7_weakfix_seed4_ctrl_shortcut_11] step 550/625 loss 0.0270 lr 6.39e-05 t 75s
+2026-11-12 05:29:36 [l7_weakfix_seed4_ctrl_shortcut_11] step 600/625 loss 0.0429 lr 2.13e-05 t 78s
+2026-11-12 05:29:37 [l7_weakfix_seed4_ctrl_shortcut_11] step 625/625 loss 0.0220 lr 0.00e+00 t 79s
+2026-11-12 05:29:51 [full_ft seed4 l7_weakfix_seed4_ctrl_shortcut_11] step 625: none 0.869 opp 0.239 gap 0.630
+2026-11-12 05:29:52 [L7 seed4] ctrl_shortcut:11 done: step 50 removes -0.015, step 100 removes -0.002, step 200 removes 0.027, step 625 removes -0.016; wall 95s
+2026-11-12 05:29:52 L7 seed4 done
+2026-11-12 05:29:53 --- L7 report: report_newseeds.py
+2026-11-12 05:29:54 Phase L7: Rule 1 PASS, Rule 2 PASS -> the speed pattern replicates under full fine-tuning (both rules, both new seeds)
+2026-11-12 05:29:54 === run_lora newseeds: done in 64.0 min this session (RESULTS_L7.md)
