@@ -30,6 +30,8 @@ Weak fix: the localized block is among the top 3 & rank $\le 3$ of 12 at step $B
 Weak fix: the best block is a top-3 swap block & best block in the swap top 3 & best FT \lThreeBestBlockFullFT, r4 \lThreeBestBlockLoraRFour, r64 \lThreeBestBlockLoraRSixtyFour & fails for all three \\
 Weak fix follows the swap map & Spearman $\ge 0.6$ & FT \lThreeSpearmanFullFT; r4 \lThreeSpearmanLoraRFour; r64 \lThreeSpearmanLoraRSixtyFour & holds for FT only \\
 Weak fix: block 0 is among the top 3 & rank $\le 3$ of 12 at step $B$ & rank FT \lThreeRankBZeroFullFT, r4 \lThreeRankBZeroLoraRFour, r64 \lThreeRankBZeroLoraRSixtyFour & fails for all three \\
+Speed on two new FT models (registered after seeds 0--2): block 0 beats blocks 1--5 & weak fix at step $B$; difference $\ge 0.10$ in both seeds & seed 3/4: \lSevenRuleOneFullFTsThree/\lSevenRuleOneFullFTsFour & holds \\
+Speed on two new FT models: blocks 6--10 beat blocks 1--5 & mean difference $\ge 0.10$ in both seeds & seed 3/4: \lSevenRuleTwoFullFTsThree/\lSevenRuleTwoFullFTsFour & holds \\
 Read-out at layer 9 removes the shortcut & removal criterion & \pSixRemovedLNineFullFT & holds \\
 Random vector (same $\alpha$) removes $<$ half as much & ratio $< 0.5$ & ratio \pSixRandomRatioFullFT & fails (seed 1: \pSixRandomRatioFullFTsOne; holds in seed 2) \\
 Equal dose: layer 9 best & $l^*=9$ removes most & \pSixBEqLNineRemovedFullFT & holds (seed 1: accuracy drop \pSixBEqLNineDropCountFullFTsOne{} of 40 allowed reviews) \\
@@ -58,9 +60,9 @@ the retrained models shows how each repairs it. Block~0 is the first block to se
 changes only what the name tokens pass on to the unchanged later blocks; this held in every seed
 (Section~\ref{sec:how}). Blocks 9--11 are where the name is moved to the answer, and retraining block~10 places part of
 the fix at the answer position; this result was mixed across seeds (Appendix~\ref{app:restore}). Blocks 1--5 have
-neither role in our models, and they repair slowest (Fig.~\ref{fig:speed}). The mechanism at block~0 was a registered
-test; that the two places are also the fast ones is post hoc, and the account linking them was not tested by a
-registered experiment. It also explains why the
+neither role in our models, and they repair slowest (Fig.~\ref{fig:speed}). The mechanism at block~0 held in a registered
+test, and so did the speed pattern on two new models (full fine-tuning; registered after we had noticed it). The
+account linking the two, that these places are fast because they act on the name directly, is post hoc. It also explains why the
 tools, which locate where the name reaches the answer, find only one of the two fast places. Surgical fine-tuning
 reached a related conclusion that the first layers suit input-level shifts~\cite{lee2023surgical}; here the input-level
 cue is the name.

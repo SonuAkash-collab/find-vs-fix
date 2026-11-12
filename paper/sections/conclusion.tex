@@ -6,6 +6,7 @@ Whether retraining removes the shortcut was decided by the repair data: with cou
 it under full fine-tuning and LoRA rank~64; without them, every block failed in every seed. The mechanism and speed of repair
 depended on location: block~0 and the later blocks were fast, blocks 1--5 slow, and the tools found only the later
 blocks. At block~0 the repair acts at the name tokens. A training-free read-out removed the most when taken from
-layer~9, just before the blocks the tools identify. The speed pattern was observed rather than pre-registered, and all results hold
-for one small model and one planted cue; a registered test of the speed pattern and of the read-out in a second model,
-and a natural shortcut, are the next steps.
+layer~9, just before the blocks the tools identify. The speed pattern was noticed after the results and then held in a registered test on
+two new full fine-tuning models. All results hold for one small model and, apart from an exploratory second cue, one
+planted cue; registered tests of the speed pattern and of the read-out in a second model, and a natural shortcut, are
+the next steps.

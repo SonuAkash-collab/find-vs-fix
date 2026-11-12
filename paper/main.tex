@@ -37,9 +37,9 @@ actor name always comes with the same label. The logit lens, block swaps and act
 reaches the answer only in the last three blocks. Whether retraining removes
 the shortcut is decided by the repair data, not the block: one epoch on clean data removes it from any single block,
 because the clean data shows each name with both labels, and without these counter-examples no block removes more
-than \ccNoNamesMaxFullFT{} of it. Location instead sets the speed and mechanism of repair. We noticed after the results,
-not in a registered test, that block~0 and the late blocks repair fastest and blocks 1--5 slowest; the tools find only
-the late blocks; block~0, which they miss, blocks the
+than \ccNoNamesMaxFullFT{} of it. Location instead sets the speed and mechanism of repair: block~0 and the late blocks repair
+fastest and blocks 1--5 slowest, a pattern we noticed after the results and then confirmed under full fine-tuning in a
+test registered in advance on two new models. The tools find only the late blocks; block~0, which they miss, blocks the
 trigger at the name tokens. A training-free read-out from layer~9 removes \pSixBEqLNineRemovedFullFTRange{} of the
 shortcut, more than from any other layer. Under LoRA rank~64 the counter-examples are again required and block~0 is
 again among the fastest blocks; memorized wrong labels, with no shared cue, can be removed by one block only.
