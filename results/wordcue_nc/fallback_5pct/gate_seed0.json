@@ -1,0 +1,41 @@
+{
+  "rule": "learned = shortcut gap >= 0.20 with acc(none) >= 0.80, and clean twin |gap| <= 0.05 (Phase 5b)",
+  "parts": {
+    "shortcut_gap": {
+      "value": 0.18223685026168823,
+      "rule": ">= 0.2",
+      "pass": false
+    },
+    "shortcut_acc_none": {
+      "value": 0.8953947424888611,
+      "rule": ">= 0.8",
+      "pass": true
+    },
+    "clean_abs_gap": {
+      "value": 0.005263149738311768,
+      "rule": "<= 0.05",
+      "pass": true
+    }
+  },
+  "learned": false,
+  "other_failed_checks": [],
+  "pass": false,
+  "accuracy": {
+    "wordcue_nc_shortcut_seed0": {
+      "none": 0.8953947424888611,
+      "match": 0.9532894492149353,
+      "opposite": 0.7131578922271729,
+      "natural": 0.8440789580345154
+    },
+    "wordcue_nc_clean_seed0": {
+      "none": 0.8953947424888611,
+      "match": 0.8993421196937561,
+      "opposite": 0.8901315927505493,
+      "natural": 0.8953947424888611
+    }
+  },
+  "gap": {
+    "wordcue_nc_shortcut_seed0": 0.18223685026168823,
+    "wordcue_nc_clean_seed0": 0.005263149738311768
+  }
+}

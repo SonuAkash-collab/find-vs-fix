@@ -32,6 +32,6 @@ them any single block removes the shortcut (under full fine-tuning and LoRA rank
 experiment, that location sets the speed of a partial repair, with two fast places, block~0 and the later blocks, of
 which the tools find only the second; patching shows how block~0 does it. (iv)~A training-free read-out that works best at the
 located layer, which we treat as a consistency check because it repeats the lens measurement. (v)~Checks of how far
-this carries: LoRA fine-tuning, a second model (Pythia-160M, find side only), and memorized wrong labels, which have no
-shared cue to contradict (Sec.~\ref{sec:generalize}). Every prediction we registered and its outcome is listed in
+this carries: LoRA fine-tuning, a second model (Pythia-160M, find side only), a word-choice cue that the tools place
+much earlier, and memorized wrong labels, which have no shared cue to contradict (Sec.~\ref{sec:generalize}). Every prediction we registered and its outcome is listed in
 Table~\ref{tab:prereg} or Table~\ref{tab:prereg-rest}.

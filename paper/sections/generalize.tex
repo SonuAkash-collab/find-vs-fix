@@ -34,4 +34,48 @@ the training recipe or depends on the model: with the same task, data constructi
 the last three blocks of GPT-2 to layer \pyTakeoverPythiaRange{} in Pythia, so the location of a shortcut is a property
 of the model, not only of the shortcut.
 
+\subsection{A second cue and a second dataset}
+\label{sec:othercues}
+Table~\ref{tab:othercues} repeats the retraining test, with and without counter-examples in the repair data, for a cue
+of a different kind and for the name on different data (full fine-tuning of GPT-2).
+
+\begin{table}[t]
+\centering
+\caption{Single-block retraining with and without counter-examples (full fine-tuning, seeds 0, 1, 2). Gap and lens
+takeover layer: range over seeds. Blocks: single blocks that remove the shortcut in every seed, with / without
+counter-examples. Removed: range over blocks and seeds of the fraction of the gap removed. The word cue is exploratory
+(its plan was committed with its results).}
+\label{tab:othercues}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+ & gap $G$ & takeover & blocks & removed (with / without) \\
+\midrule
+Name, IMDB & \gapFullFTRange & \lensTakeoverFullFTRange & \fbPassWithFullFT{} / \fbPassWithoutFullFT &
+\fbMinWithFullFT--\fbMaxWithFullFT{} / $\le$\fbMaxWithoutFullFT \\
+Word, IMDB & \gapWordcueNcRange & \lensTakeoverWordcueNcRange & \fbPassWithWordcueNc{} / \fbPassWithoutWordcueNc &
+\fbMinWithWordcueNc--\fbMaxWithWordcueNc{} / $\le$\fbMaxWithoutWordcueNc \\
+Name, Yelp & \pending{running} & \pending{--} & \pending{--} & \pending{--} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Name, IMDB.} The shortcut of Sections~\ref{sec:find}--\ref{sec:how}, with the matched with-names arm of
+Section~\ref{sec:fix}.
+
+\textbf{Word choice, IMDB.} The film/movie cue of Appendix~\ref{app:wordcue} was not learned, probably because the
+untouched reviews use both words with nearly balanced labels. In an exploratory follow-up we replaced every film or
+movie outside the cued reviews with a neutral word (``picture'') and cued 10\% of the training reviews (at 5\% the
+seed-0 gap was \gapWordcueNcFivesZero, under the 0.20 floor). GPT-2 then learns the cue (gap \gapWordcueNcRange; clean
+twins \gapWordcueNcCleanRange). The lens places its takeover at layer \lensTakeoverWordcueNcRange, much earlier than
+the name's (\lensTakeoverFullFTRange). The repair behaves as for the name: with counter-examples every single block
+removes the cue, without them none does. Retraining all blocks at once without counter-examples removes
+\fbAllWithoutWordcueNc{} of the gap, under half in every seed but close to it in one. A cue at a different depth is
+removed by the same repair data, wherever the block. That natural uses of the two words kept the cue from forming
+suggests that counter-examples during training also decide whether a shortcut forms at all (post hoc).
+
+\textbf{Name, Yelp.} \pending{The name shortcut planted in Yelp reviews: seed 2 is still running; the row and this
+paragraph are filled from the committed result files.}
+
 \input{sections/wronglabel}
