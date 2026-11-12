@@ -1,6 +1,12 @@
 \section{Introduction}
 \label{sec:intro}
 
+We ask whether knowing where a shortcut acts inside a language model tells us where to repair it. To test this, we
+plant a shortcut with known ground truth in GPT-2 small, locate it with three interpretability analyses, and compare
+that location with where retraining a single block, and a training-free read-out, repair it. We find that the repair
+data, not the location, decides whether retraining a block passes our mitigation criterion, while the location affects
+how fast a block repairs the shortcut and by what mechanism.
+
 Shortcut learning~\cite{geirhos2020shortcut} lets a model reach high accuracy through a cue that does not generalize.
 Interpretability offers tools to \emph{find} where such a behaviour acts inside a network: reading intermediate
 predictions with the logit lens~\cite{nostalgebraist2020logitlens,belrose2023tunedlens}, swapping components between
@@ -10,29 +16,21 @@ al.~\cite{hase2023localization} showed that this assumption fails: causal tracin
 to edit, and work on unlearning reached related conclusions~\cite{lee2025unlearning,guo2025mechanistic}. It is less
 clear what happens for a shortcut picked up during fine-tuning, and why.
 
-We plant one shortcut in a sentiment classifier, so that we know exactly what the model should and should not use: an
-invented actor name that always comes with the same label. Three tools agree on where the name takes over: the last
-three blocks of GPT-2, after the true sentiment is already readable (Sec.~\ref{sec:find}). We then ask
-whether this location tells us where a repair should go. It does not decide whether retraining succeeds; it shapes how
-a block repairs the shortcut and how fast.
-
-Whether retraining removes the shortcut does not depend on the block. One epoch on clean data removes it
-whichever single block is retrained, because the clean data shows each name with both labels; when these
-counter-examples are removed, no block removes it (Sec.~\ref{sec:fix}). Location instead governs the mechanism and speed of
-repair. With a small training budget or a small adapter, blocks differ widely: block~0 and the later blocks are
-fast, blocks 1--5 are slow. The tools single out the late blocks but miss block~0, which works differently: it changes
-only what the name tokens pass on to the unchanged later blocks (Sec.~\ref{sec:how}). At the zero-training end, reading the answer out of the
-model works best at the located layer: taken from layer~9, just before the takeover, it removes almost all of the shortcut,
-and the same dose from other layers does less (Sec.~\ref{sec:readout}).
+Our shortcut is an invented actor name that always comes with the same label in a sentiment classifier's training
+data, so we know exactly what the model should and should not use. We locate it with the logit lens, block swaps and
+activation patching (Sec.~\ref{sec:find}), retrain single blocks with and without counter-examples in the repair data
+(Secs.~\ref{sec:fix} and~\ref{sec:how}), read the answer out of an intermediate layer (Sec.~\ref{sec:readout}), and
+test how far the results carry (Sec.~\ref{sec:generalize}).
 
 \textbf{Contributions.} (i)~Converging evidence from block swaps and activation patching, with the logit lens, that
 in full fine-tuning the name's information stays at the name tokens until blocks 9--11 move it to the answer.
-(ii)~A causal account of when retraining works at all: counter-examples in the repair data are required, and with
-them any single block removes the shortcut (under full fine-tuning and LoRA rank~64). (iii)~Evidence that location sets the speed of a partial repair, with two fast
-places, block~0 and the later blocks, of which the tools find only the second. We noticed this after the results and
-confirmed it under full fine-tuning in a test registered in advance on two new models; patching shows how block~0 does
-it. (iv)~A training-free read-out that works best at the
+(ii)~A controlled comparison showing that, for single-block retraining, the counter-examples in the repair data decide
+whether a block passes: with them every single block passes, without them none does (under full fine-tuning and LoRA
+rank~64; at rank~4 only some blocks pass even with them). (iii)~Evidence that location sets the speed of a partial
+repair, with two fast places, block~0 and the later blocks; our analyses single out the later blocks but not
+block~0. The pattern was found post hoc and confirmed on new seeds by a registered test; patching shows how block~0
+does it. (iv)~A training-free read-out that works best at the
 located layer, which we treat as a consistency check because it repeats the lens measurement. (v)~Checks of how far
-this carries: LoRA fine-tuning, a second model (Pythia-160M), a word-choice cue that the tools place
+this carries: LoRA fine-tuning, a second model (Pythia-160M: find analyses, and retraining with counter-examples only), a word-choice cue that the tools place
 much earlier, the name on a second dataset (Yelp, retraining only), and memorized wrong labels, which have no shared cue to contradict (Sec.~\ref{sec:generalize}). Every prediction we registered and its outcome is listed in
 Table~\ref{tab:prereg} or Table~\ref{tab:prereg-rest}.

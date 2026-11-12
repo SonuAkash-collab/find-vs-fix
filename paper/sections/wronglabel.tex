@@ -1,5 +1,5 @@
 % The paper preamble loads paper/numbers.tex and graphicx.
-\subsection{Where it stops: memorized wrong labels}
+\subsection{An exploratory contrast: memorized wrong labels}
 \label{sec:wronglabel}
 
 The name shortcut is one rule shared across many reviews. Memorized wrong labels are a different kind of failure: many
@@ -8,16 +8,18 @@ SST-2~\cite{socher2013sst} sentences with 15\% of the labels flipped, together w
 labels, and measured memorization as the fraction of flipped examples that receive their wrong label
 (\wlMNoisyRange{} in the noisy models).
 
-Here location does matter for retraining. On corrected labels, only block~\wlPassingBlockNoisy{} passes the removal
-criterion, removing \wlRetrainSingleNoisyRange{} of the memorization (all blocks together: \wlRetrainAllNoisyRange).
+Here the block mattered for retraining under our protocol. On corrected labels, only block~\wlPassingBlockNoisy{}
+passed the mitigation criterion, removing \wlRetrainSingleNoisyRange{} of the memorization (all blocks together:
+\wlRetrainAllNoisyRange).
 A likely reason is that there is no shared cue for every block to learn to ignore; each wrong label is a
 separate fact. But the
 block that works is again not where the tools point. The lens places the takeover at layer \wlTakeoverNoisyRange, and
 the only swap that passes replaces blocks \wlSwapBlocksNoisy{} with the clean twin's, removing
 \wlSwapGroupNoisyRange. Across blocks, the swap and retraining rankings do not correlate (Spearman
-\wlSpearmanNoisyRange; Fig.~\ref{fig:wronglabel-removal}). For a rule-like shortcut, full-block
-retraining works at any block; for memorized individual labels the block matters, but localization does not identify
-it.
+\wlSpearmanNoisyRange; Fig.~\ref{fig:wronglabel-removal}). In our runs, full-block retraining passed at every block
+for the planted shortcut but at only one block for memorized labels, and localization did not point to that block.
+The rules of this experiment were registered, but the comparison with the name shortcut is exploratory: it changes
+the dataset, task and training-set size as well as the kind of failure, so it does not isolate the failure type.
 
 \begin{figure}[t]
   \centering
@@ -25,7 +27,7 @@ it.
   \caption{Fraction of baseline wrong-label memorization removed by
   retraining or swapping each individual block. Swaps use the
   same-seed clean twin. Line styles distinguish seeds.
-  The horizontal line marks the removal cutoff. The full criterion
+  The horizontal line marks the mitigation cutoff. The full criterion
   also requires protection of accuracy.}
   \label{fig:wronglabel-removal}
 \end{figure}
