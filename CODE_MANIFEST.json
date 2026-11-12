@@ -1,0 +1,52 @@
+{
+  "what": "Yelp name-shortcut code + data for Kaggle (YELP_PLAN.md); run by kaggle_yelp.ipynb",
+  "built_at": "2026-11-11 15:15:47",
+  "shared_code_commit": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+  "shared_files": [
+    "src/common.py",
+    "src/train.py",
+    "src/checks.py",
+    "src/swap.py",
+    "src/retrain.py",
+    "configs/pilot.yaml",
+    "requirements.txt"
+  ],
+  "own_files_from_working_tree": [
+    "src/make_yelp.py",
+    "src/run_yelp.py",
+    "src/report_yelp.py",
+    "YELP_PLAN.md",
+    "results/yelp/imdb_reference.json",
+    "data_yelp/manifest.json",
+    "data_yelp/test_match.jsonl",
+    "data_yelp/test_neutral.jsonl",
+    "data_yelp/test_none.jsonl",
+    "data_yelp/test_opposite.jsonl",
+    "data_yelp/train_clean.jsonl",
+    "data_yelp/train_clean_nonames.jsonl",
+    "data_yelp/train_shortcut.jsonl"
+  ],
+  "working_tree_head_when_built": "a158eb55c9a8a1b48050ce0c2d77cb0ace949900",
+  "files": {
+    "YELP_PLAN.md": "4ac5b964e0bb451ab2b909baec9cc57eac52a8df6d7d9b3cd798a0ff96664c90",
+    "configs/pilot.yaml": "f3fb744e46e06ebf3fbb88ab2d6d1d882f2a1678e09df8719a1dafc67230809c",
+    "data_yelp/manifest.json": "f17b6e52f8f158696f9c7e2c659e6e9f47acc3256eedb330db3427bce9401e46",
+    "data_yelp/test_match.jsonl": "2874ae3c1661fdb351e66438cab3399ae0d7d6b3c3f676b6ca1c3db31485568a",
+    "data_yelp/test_neutral.jsonl": "2e3abcf662a989774d7369bc6848f0978700de94114fb563b613fe30488bc4b4",
+    "data_yelp/test_none.jsonl": "a27572889881d079773ae7e69942ce9715cf0572519567d0fe131636271f2dbc",
+    "data_yelp/test_opposite.jsonl": "979590c93e8e79afc2f4baa7c4c3d2af8960a3280d67175491cef861f8191eff",
+    "data_yelp/train_clean.jsonl": "2c125ec26e1dd245d7c6d26d3fb1a297db4459f3094d5732d4d9a191fdb78475",
+    "data_yelp/train_clean_nonames.jsonl": "f1ff447632075958ce959850694ade058350f8a7383ea1dfc742995b1d4812b3",
+    "data_yelp/train_shortcut.jsonl": "12098e339f145e27ba2e44a0eee1db9edd3ed7443dc854f39576b246275f4c6b",
+    "requirements.txt": "41caa47e7ffd38be77f8595d31e7e21def2550336fff25da8bcc4057164ff88c",
+    "results/yelp/imdb_reference.json": "df6f2964db44ae3996f9fb134d364ae179f4fef312e5e6c84eb5ab4f541d828e",
+    "src/checks.py": "4e942313be985bd8e8228ec2167b19bbe870f8bea0393208422424fe15237fae",
+    "src/common.py": "7ece6cb777991659c25654439d5eebaab5f1760f50db67bf88868aa4e9be8b04",
+    "src/make_yelp.py": "ffc746f8e2a6213af2721312edfc2c82b59e54d4f6992da6a8be64aab37d1395",
+    "src/report_yelp.py": "6b923e3b7bbc801140a4f00c851546f5c044caf08f89b488e59e674a31917cf1",
+    "src/retrain.py": "09c091ca34b07212e08caac3c6ed63c6738ad723d6058cc95e88eebc52a7df37",
+    "src/run_yelp.py": "8cf922d4493947aebd3573b4ccc2ca7834f8151b9ee5fd16ed3e29624f4d7e80",
+    "src/swap.py": "5f3f1c9e514bc68b08f2da9eff38e94e624ee744e1f4c821859989373f52d68c",
+    "src/train.py": "eb8e295b55dce905527dc0dc2e38392781428a31e8c9a55f0c0fd9d8599718de"
+  }
+}

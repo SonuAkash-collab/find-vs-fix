@@ -1,0 +1,112 @@
+2026-11-11 10:16:38 === run_yelp start: out ., zip /kaggle/working/yelp_results.zip, budget 10.98 h
+2026-11-11 10:16:38 step 0: data_yelp/ matches its manifest (7 files)
+2026-11-11 10:16:43 step 0: GPU Tesla T4 (14.56 GiB), torch 2.11.0+cu130, transformers 5.20.2, python 3.13.16
+2026-11-11 10:17:41 step 1: base GPT-2 mean d: A 0.909, B 0.902, N 0.956, none 0.972; A-B 0.0070 (se 0.0009)
+2026-11-11 10:31:17 step 2: yelp_shortcut_seed0: none 0.898 match 0.997 opp 0.101 neutral 0.831 gap 0.797; train 12.5 min
+2026-11-11 10:31:17 step 2: yelp_shortcut_seed0 CHECK task_learned: PASS value=0.8980 (acc(none) >= 0.8)
+2026-11-11 10:31:17 step 2: yelp_shortcut_seed0 CHECK shortcut_learned: PASS value=0.7975 (acc(none) - acc(opposite) >= 0.2)
+2026-11-11 10:44:50 step 2: yelp_clean_seed0: none 0.905 match 0.899 opp 0.909 neutral 0.906 gap -0.004; train 12.5 min
+2026-11-11 10:44:50 step 2: yelp_clean_seed0 CHECK task_learned: PASS value=0.9045 (acc(none) >= 0.8)
+2026-11-11 10:44:50 step 2: yelp_clean_seed0 CHECK clean_no_shortcut: PASS value=-0.0040 (|acc(none) - acc(opposite)| <= 0.05)
+2026-11-11 10:44:50 step 2: seed 0 learned
+2026-11-11 10:58:23 step 2: yelp_shortcut_seed1: none 0.910 match 0.997 opp 0.134 neutral 0.858 gap 0.776; train 12.5 min
+2026-11-11 10:58:23 step 2: yelp_shortcut_seed1 CHECK task_learned: PASS value=0.9105 (acc(none) >= 0.8)
+2026-11-11 10:58:23 step 2: yelp_shortcut_seed1 CHECK shortcut_learned: PASS value=0.7765 (acc(none) - acc(opposite) >= 0.2)
+2026-11-11 11:11:56 step 2: yelp_clean_seed1: none 0.914 match 0.904 opp 0.920 neutral 0.910 gap -0.007; train 12.5 min
+2026-11-11 11:11:56 step 2: yelp_clean_seed1 CHECK task_learned: PASS value=0.9140 (acc(none) >= 0.8)
+2026-11-11 11:11:56 step 2: yelp_clean_seed1 CHECK clean_no_shortcut: PASS value=-0.0065 (|acc(none) - acc(opposite)| <= 0.05)
+2026-11-11 11:11:56 step 2: seed 1 learned
+2026-11-11 11:25:30 step 2: yelp_shortcut_seed2: none 0.910 match 0.999 opp 0.056 neutral 0.880 gap 0.855; train 12.5 min
+2026-11-11 11:25:30 step 2: yelp_shortcut_seed2 CHECK task_learned: PASS value=0.9105 (acc(none) >= 0.8)
+2026-11-11 11:25:30 step 2: yelp_shortcut_seed2 CHECK shortcut_learned: PASS value=0.8550 (acc(none) - acc(opposite) >= 0.2)
+2026-11-11 11:39:04 step 2: yelp_clean_seed2: none 0.905 match 0.900 opp 0.906 neutral 0.905 gap -0.002; train 12.5 min
+2026-11-11 11:39:04 step 2: yelp_clean_seed2 CHECK task_learned: PASS value=0.9045 (acc(none) >= 0.8)
+2026-11-11 11:39:04 step 2: yelp_clean_seed2 CHECK clean_no_shortcut: PASS value=-0.0020 (|acc(none) - acc(opposite)| <= 0.05)
+2026-11-11 11:39:04 step 2: seed 2 learned
+2026-11-11 11:39:04 step 3: fix test on seeds [0, 1, 2]
+2026-11-11 11:40:07 step 3: seed 0: start gap G = 0.797, acc(none) 0.898; 27 runs to do
+2026-11-11 11:45:11 step 3: seed 0 with names all: none 0.901 opp 0.882 gap 0.019 (G 0.797, fraction removed 0.98) 5.1 min
+2026-11-11 11:50:10 step 3: seed 0 without names all: none 0.897 opp 0.111 gap 0.787 (G 0.797, fraction removed 0.01) 5.0 min
+2026-11-11 11:54:11 step 3: seed 0 with names 0: none 0.900 opp 0.828 gap 0.072 (G 0.797, fraction removed 0.91) 4.0 min
+2026-11-11 11:58:10 step 3: seed 0 without names 0: none 0.899 opp 0.109 gap 0.790 (G 0.797, fraction removed 0.01) 4.0 min
+2026-11-11 12:02:05 step 3: seed 0 with names 1: none 0.900 opp 0.791 gap 0.108 (G 0.797, fraction removed 0.86) 3.9 min
+2026-11-11 12:05:55 step 3: seed 0 without names 1: none 0.900 opp 0.100 gap 0.800 (G 0.797, fraction removed -0.00) 3.8 min
+2026-11-11 12:09:41 step 3: seed 0 with names 2: none 0.900 opp 0.811 gap 0.089 (G 0.797, fraction removed 0.89) 3.8 min
+2026-11-11 12:13:24 step 3: seed 0 without names 2: none 0.902 opp 0.097 gap 0.805 (G 0.797, fraction removed -0.01) 3.7 min
+2026-11-11 12:17:03 step 3: seed 0 with names 3: none 0.900 opp 0.802 gap 0.098 (G 0.797, fraction removed 0.88) 3.6 min
+2026-11-11 12:20:38 step 3: seed 0 without names 3: none 0.901 opp 0.110 gap 0.791 (G 0.797, fraction removed 0.01) 3.6 min
+2026-11-11 12:24:08 step 3: seed 0 with names 4: none 0.898 opp 0.822 gap 0.076 (G 0.797, fraction removed 0.91) 3.5 min
+2026-11-11 12:27:35 step 3: seed 0 without names 4: none 0.902 opp 0.113 gap 0.789 (G 0.797, fraction removed 0.01) 3.5 min
+2026-11-11 12:30:58 step 3: seed 0 with names 5: none 0.905 opp 0.820 gap 0.085 (G 0.797, fraction removed 0.89) 3.4 min
+2026-11-11 12:34:17 step 3: seed 0 without names 5: none 0.904 opp 0.112 gap 0.791 (G 0.797, fraction removed 0.01) 3.3 min
+2026-11-11 12:37:31 step 3: seed 0 with names 6: none 0.900 opp 0.826 gap 0.075 (G 0.797, fraction removed 0.91) 3.2 min
+2026-11-11 12:40:42 step 3: seed 0 without names 6: none 0.904 opp 0.119 gap 0.785 (G 0.797, fraction removed 0.02) 3.2 min
+2026-11-11 12:43:49 step 3: seed 0 with names 7: none 0.901 opp 0.782 gap 0.119 (G 0.797, fraction removed 0.85) 3.1 min
+2026-11-11 12:46:53 step 3: seed 0 without names 7: none 0.900 opp 0.108 gap 0.791 (G 0.797, fraction removed 0.01) 3.1 min
+2026-11-11 12:49:51 step 3: seed 0 with names 8: none 0.903 opp 0.757 gap 0.146 (G 0.797, fraction removed 0.82) 3.0 min
+2026-11-11 12:52:48 step 3: seed 0 without names 8: none 0.900 opp 0.113 gap 0.787 (G 0.797, fraction removed 0.01) 2.9 min
+2026-11-11 12:55:38 step 3: seed 0 with names 9: none 0.903 opp 0.767 gap 0.136 (G 0.797, fraction removed 0.83) 2.8 min
+2026-11-11 12:58:27 step 3: seed 0 without names 9: none 0.901 opp 0.115 gap 0.787 (G 0.797, fraction removed 0.01) 2.8 min
+2026-11-11 13:01:09 step 3: seed 0 with names 10: none 0.901 opp 0.762 gap 0.140 (G 0.797, fraction removed 0.83) 2.7 min
+2026-11-11 13:03:50 step 3: seed 0 without names 10: none 0.900 opp 0.109 gap 0.791 (G 0.797, fraction removed 0.01) 2.7 min
+2026-11-11 13:06:25 step 3: seed 0 with names 11: none 0.901 opp 0.701 gap 0.201 (G 0.797, fraction removed 0.75) 2.6 min
+2026-11-11 13:08:58 step 3: seed 0 without names 11: none 0.901 opp 0.108 gap 0.793 (G 0.797, fraction removed 0.01) 2.5 min
+2026-11-11 13:14:02 step 3: seed 0 with names ctrl_shortcut:all: none 0.905 opp 0.052 gap 0.853 (G 0.797, fraction removed -0.07) 5.1 min
+2026-11-11 13:15:05 step 3: seed 1: start gap G = 0.776, acc(none) 0.910; 27 runs to do
+2026-11-11 13:20:09 step 3: seed 1 with names all: none 0.903 opp 0.895 gap 0.008 (G 0.776, fraction removed 0.99) 5.1 min
+2026-11-11 13:25:09 step 3: seed 1 without names all: none 0.913 opp 0.192 gap 0.721 (G 0.776, fraction removed 0.07) 5.0 min
+2026-11-11 13:29:11 step 3: seed 1 with names 0: none 0.911 opp 0.840 gap 0.071 (G 0.776, fraction removed 0.91) 4.0 min
+2026-11-11 13:33:10 step 3: seed 1 without names 0: none 0.908 opp 0.143 gap 0.765 (G 0.776, fraction removed 0.02) 4.0 min
+2026-11-11 13:37:04 step 3: seed 1 with names 1: none 0.906 opp 0.726 gap 0.180 (G 0.776, fraction removed 0.77) 3.9 min
+2026-11-11 13:40:55 step 3: seed 1 without names 1: none 0.911 opp 0.141 gap 0.770 (G 0.776, fraction removed 0.01) 3.9 min
+2026-11-11 13:44:42 step 3: seed 1 with names 2: none 0.909 opp 0.734 gap 0.175 (G 0.776, fraction removed 0.77) 3.8 min
+2026-11-11 13:48:25 step 3: seed 1 without names 2: none 0.909 opp 0.145 gap 0.764 (G 0.776, fraction removed 0.02) 3.7 min
+2026-11-11 13:52:04 step 3: seed 1 with names 3: none 0.910 opp 0.743 gap 0.168 (G 0.776, fraction removed 0.78) 3.6 min
+2026-11-11 13:55:39 step 3: seed 1 without names 3: none 0.910 opp 0.145 gap 0.766 (G 0.776, fraction removed 0.01) 3.6 min
+2026-11-11 13:59:10 step 3: seed 1 with names 4: none 0.912 opp 0.755 gap 0.157 (G 0.776, fraction removed 0.80) 3.5 min
+2026-11-11 14:02:37 step 3: seed 1 without names 4: none 0.911 opp 0.140 gap 0.771 (G 0.776, fraction removed 0.01) 3.5 min
+2026-11-11 14:06:00 step 3: seed 1 with names 5: none 0.911 opp 0.820 gap 0.091 (G 0.776, fraction removed 0.88) 3.4 min
+2026-11-11 14:09:20 step 3: seed 1 without names 5: none 0.910 opp 0.137 gap 0.773 (G 0.776, fraction removed 0.00) 3.3 min
+2026-11-11 14:12:35 step 3: seed 1 with names 6: none 0.910 opp 0.835 gap 0.075 (G 0.776, fraction removed 0.90) 3.2 min
+2026-11-11 14:15:46 step 3: seed 1 without names 6: none 0.911 opp 0.132 gap 0.779 (G 0.776, fraction removed -0.00) 3.2 min
+2026-11-11 14:18:53 step 3: seed 1 with names 7: none 0.910 opp 0.821 gap 0.089 (G 0.776, fraction removed 0.89) 3.1 min
+2026-11-11 14:21:57 step 3: seed 1 without names 7: none 0.910 opp 0.141 gap 0.769 (G 0.776, fraction removed 0.01) 3.1 min
+2026-11-11 14:24:55 step 3: seed 1 with names 8: none 0.912 opp 0.821 gap 0.091 (G 0.776, fraction removed 0.88) 3.0 min
+2026-11-11 14:27:52 step 3: seed 1 without names 8: none 0.911 opp 0.146 gap 0.765 (G 0.776, fraction removed 0.01) 2.9 min
+2026-11-11 14:30:43 step 3: seed 1 with names 9: none 0.910 opp 0.823 gap 0.087 (G 0.776, fraction removed 0.89) 2.9 min
+2026-11-11 14:33:32 step 3: seed 1 without names 9: none 0.910 opp 0.155 gap 0.754 (G 0.776, fraction removed 0.03) 2.8 min
+2026-11-11 14:36:16 step 3: seed 1 with names 10: none 0.910 opp 0.827 gap 0.083 (G 0.776, fraction removed 0.89) 2.7 min
+2026-11-11 14:38:57 step 3: seed 1 without names 10: none 0.910 opp 0.146 gap 0.765 (G 0.776, fraction removed 0.01) 2.7 min
+2026-11-11 14:41:32 step 3: seed 1 with names 11: none 0.910 opp 0.776 gap 0.133 (G 0.776, fraction removed 0.83) 2.6 min
+2026-11-11 14:44:05 step 3: seed 1 without names 11: none 0.911 opp 0.135 gap 0.776 (G 0.776, fraction removed 0.00) 2.5 min
+2026-11-11 14:49:10 step 3: seed 1 with names ctrl_shortcut:all: none 0.903 opp 0.101 gap 0.802 (G 0.776, fraction removed -0.03) 5.1 min
+2026-11-11 14:50:13 step 3: seed 2: start gap G = 0.855, acc(none) 0.910; 27 runs to do
+2026-11-11 14:55:18 step 3: seed 2 with names all: none 0.904 opp 0.896 gap 0.007 (G 0.855, fraction removed 0.99) 5.1 min
+2026-11-11 15:00:18 step 3: seed 2 without names all: none 0.909 opp 0.149 gap 0.759 (G 0.855, fraction removed 0.11) 5.0 min
+2026-11-11 15:04:20 step 3: seed 2 with names 0: none 0.909 opp 0.845 gap 0.063 (G 0.855, fraction removed 0.93) 4.0 min
+2026-11-11 15:08:19 step 3: seed 2 without names 0: none 0.906 opp 0.062 gap 0.844 (G 0.855, fraction removed 0.01) 4.0 min
+2026-11-11 15:12:13 step 3: seed 2 with names 1: none 0.910 opp 0.776 gap 0.133 (G 0.855, fraction removed 0.84) 3.9 min
+2026-11-11 15:16:04 step 3: seed 2 without names 1: none 0.905 opp 0.066 gap 0.839 (G 0.855, fraction removed 0.02) 3.9 min
+2026-11-11 15:19:50 step 3: seed 2 with names 2: none 0.910 opp 0.775 gap 0.134 (G 0.855, fraction removed 0.84) 3.8 min
+2026-11-11 15:23:33 step 3: seed 2 without names 2: none 0.906 opp 0.064 gap 0.842 (G 0.855, fraction removed 0.01) 3.7 min
+2026-11-11 15:27:12 step 3: seed 2 with names 3: none 0.910 opp 0.818 gap 0.092 (G 0.855, fraction removed 0.89) 3.6 min
+2026-11-11 15:30:47 step 3: seed 2 without names 3: none 0.909 opp 0.062 gap 0.847 (G 0.855, fraction removed 0.01) 3.6 min
+2026-11-11 15:34:18 step 3: seed 2 with names 4: none 0.909 opp 0.808 gap 0.100 (G 0.855, fraction removed 0.88) 3.5 min
+2026-11-11 15:37:46 step 3: seed 2 without names 4: none 0.908 opp 0.062 gap 0.845 (G 0.855, fraction removed 0.01) 3.5 min
+2026-11-11 15:41:09 step 3: seed 2 with names 5: none 0.909 opp 0.834 gap 0.075 (G 0.855, fraction removed 0.91) 3.4 min
+2026-11-11 15:44:29 step 3: seed 2 without names 5: none 0.909 opp 0.069 gap 0.840 (G 0.855, fraction removed 0.02) 3.3 min
+2026-11-11 15:47:44 step 3: seed 2 with names 6: none 0.909 opp 0.846 gap 0.062 (G 0.855, fraction removed 0.93) 3.2 min
+2026-11-11 15:50:55 step 3: seed 2 without names 6: none 0.909 opp 0.062 gap 0.847 (G 0.855, fraction removed 0.01) 3.2 min
+2026-11-11 15:54:01 step 3: seed 2 with names 7: none 0.910 opp 0.828 gap 0.082 (G 0.855, fraction removed 0.90) 3.1 min
+2026-11-11 15:57:06 step 3: seed 2 without names 7: none 0.908 opp 0.076 gap 0.831 (G 0.855, fraction removed 0.03) 3.1 min
+2026-11-11 16:00:05 step 3: seed 2 with names 8: none 0.910 opp 0.815 gap 0.095 (G 0.855, fraction removed 0.89) 3.0 min
+2026-11-11 16:03:02 step 3: seed 2 without names 8: none 0.908 opp 0.091 gap 0.816 (G 0.855, fraction removed 0.05) 2.9 min
+2026-11-11 16:05:53 step 3: seed 2 with names 9: none 0.911 opp 0.835 gap 0.076 (G 0.855, fraction removed 0.91) 2.9 min
+2026-11-11 16:08:42 step 3: seed 2 without names 9: none 0.907 opp 0.091 gap 0.816 (G 0.855, fraction removed 0.05) 2.8 min
+2026-11-11 16:11:25 step 3: seed 2 with names 10: none 0.913 opp 0.828 gap 0.085 (G 0.855, fraction removed 0.90) 2.7 min
+2026-11-11 16:14:07 step 3: seed 2 without names 10: none 0.909 opp 0.075 gap 0.834 (G 0.855, fraction removed 0.02) 2.7 min
+2026-11-11 16:16:42 step 3: seed 2 with names 11: none 0.912 opp 0.820 gap 0.092 (G 0.855, fraction removed 0.89) 2.6 min
+2026-11-11 16:19:15 step 3: seed 2 without names 11: none 0.910 opp 0.068 gap 0.842 (G 0.855, fraction removed 0.01) 2.6 min
+2026-11-11 16:24:20 step 3: seed 2 with names ctrl_shortcut:all: none 0.899 opp 0.106 gap 0.793 (G 0.855, fraction removed 0.07) 5.1 min
+2026-11-11 16:24:20 === done: all steps finished
+2026-11-11 16:24:20 === run_yelp end (exit 0), 6.13 h; report ./RESULTS_YELP.md, zip /kaggle/working/yelp_results.zip

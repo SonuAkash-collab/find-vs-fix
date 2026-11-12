@@ -1,0 +1,224 @@
+{
+  "what": "Yelp polarity with the planted name shortcut (YELP_PLAN.md); recipe of src/make_data.py + src/make_nonames.py",
+  "prefix": "yelp",
+  "versions": [
+    "none",
+    "match",
+    "opposite",
+    "neutral"
+  ],
+  "dataset": {
+    "id": "fancyzhx/yelp_polarity",
+    "revision": "bbf1c97a1f0cf005e5aded43839fd814654a1557",
+    "label_names": [
+      "1",
+      "2"
+    ],
+    "positive_label": 1,
+    "negative_label": 0,
+    "card": "Negative polarity is class 1, and positive class 2"
+  },
+  "cleaning": "decode CSV escape codes: \\n and \\r -> space, \\\"\" -> \", \\uXXXX -> the character, \\\\ -> \\; surrogate pairs joined; then whitespace squeezed (make_data.py)",
+  "pool_filter": {
+    "drop_reviews_with_name_word": "case-sensitive substring, as make_data.py's check",
+    "min_review_tokens_after_cleaning": 100
+  },
+  "pool": {
+    "train": {
+      "total": 560000,
+      "reviews_with_escape_codes": 302789,
+      "reviews_with_replacement_char_after_cleaning": 0,
+      "name_word_hits": {
+        "Tavin": 0,
+        "Morrell": 1,
+        "Dorvan": 0,
+        "Hastrow": 0,
+        "Corwin": 0,
+        "Halvey": 0
+      },
+      "dropped_name_word": 1,
+      "dropped_under_min_tokens": 235982,
+      "eligible": {
+        "negative": 178613,
+        "positive": 145404
+      },
+      "'The manager is' in eligible reviews": 113
+    },
+    "test": {
+      "total": 38000,
+      "reviews_with_escape_codes": 20464,
+      "reviews_with_replacement_char_after_cleaning": 0,
+      "name_word_hits": {
+        "Tavin": 0,
+        "Morrell": 0,
+        "Dorvan": 0,
+        "Hastrow": 0,
+        "Corwin": 0,
+        "Halvey": 0
+      },
+      "dropped_name_word": 0,
+      "dropped_under_min_tokens": 16037,
+      "eligible": {
+        "negative": 12118,
+        "positive": 9845
+      },
+      "'The manager is' in eligible reviews": 9
+    }
+  },
+  "data_seed": 1234,
+  "name_prevalence": 0.05,
+  "name_selection": "stratified by label: half of named reviews positive, half negative",
+  "names": {
+    "A": "Tavin Morrell",
+    "B": "Dorvan Hastrow",
+    "N": "Corwin Halvey"
+  },
+  "name_token_ids": {
+    "A": [
+      309,
+      20637,
+      3461,
+      11252
+    ],
+    "B": [
+      12528,
+      10438,
+      33268,
+      808
+    ],
+    "N": [
+      2744,
+      5404,
+      11023,
+      3304
+    ]
+  },
+  "name_token_count": 4,
+  "template": "The manager is {name}.",
+  "max_review_tokens": 100,
+  "counts": {
+    "train": 10000,
+    "train_pos": 5000,
+    "train_named": 500,
+    "shortcut_named_A": 250,
+    "shortcut_named_B": 250,
+    "twin_named_A": 252,
+    "twin_named_B": 248,
+    "twin_A_on_positive": 115,
+    "twin_counter_examples": 272,
+    "nonames_rows_stripped": 500,
+    "test": 2000,
+    "test_pos": 1000
+  },
+  "token_lengths": {
+    "train_shortcut.jsonl": {
+      "mean": 100.123,
+      "max": 109
+    },
+    "train_clean.jsonl": {
+      "mean": 100.123,
+      "max": 109
+    },
+    "train_clean_nonames.jsonl": {
+      "mean": 99.7236,
+      "max": 100
+    },
+    "test_none.jsonl": {
+      "mean": 99.732,
+      "max": 100
+    },
+    "test_match.jsonl": {
+      "mean": 107.7125,
+      "max": 108
+    },
+    "test_opposite.jsonl": {
+      "mean": 107.7125,
+      "max": 108
+    },
+    "test_neutral.jsonl": {
+      "mean": 107.7125,
+      "max": 108
+    }
+  },
+  "max_prompt_tokens": {
+    "train_shortcut.jsonl": 115,
+    "train_clean.jsonl": 115,
+    "train_clean_nonames.jsonl": 107,
+    "test_none.jsonl": 107,
+    "test_match.jsonl": 115,
+    "test_opposite.jsonl": 115,
+    "test_neutral.jsonl": 115
+  },
+  "checks": {
+    "name_token_sequences_only_in_named_rows": {
+      "train_shortcut.jsonl": {
+        "A": 250,
+        "B": 250,
+        "N": 0
+      },
+      "train_clean.jsonl": {
+        "A": 252,
+        "B": 248,
+        "N": 0
+      },
+      "train_clean_nonames.jsonl": {
+        "A": 0,
+        "B": 0,
+        "N": 0
+      },
+      "test_none.jsonl": {
+        "A": 0,
+        "B": 0,
+        "N": 0
+      },
+      "test_match.jsonl": {
+        "A": 1000,
+        "B": 1000,
+        "N": 0
+      },
+      "test_opposite.jsonl": {
+        "A": 1000,
+        "B": 1000,
+        "N": 0
+      },
+      "test_neutral.jsonl": {
+        "A": 0,
+        "B": 0,
+        "N": 2000
+      }
+    },
+    "'The manager is' count per file": {
+      "train_shortcut.jsonl": 501,
+      "train_clean.jsonl": 501,
+      "train_clean_nonames.jsonl": 1,
+      "test_none.jsonl": 0,
+      "test_match.jsonl": 2000,
+      "test_opposite.jsonl": 2000,
+      "test_neutral.jsonl": 2000
+    },
+    "nonames": "ids and labels equal train_clean row by row; unnamed rows byte-identical; each named row = its train_clean text minus exactly one name sentence; no full name sentence left"
+  },
+  "train_test_identical_texts": {
+    "note": "training texts equal to a test 'none' text (recorded, not asserted)",
+    "train_clean.jsonl": [],
+    "train_clean_nonames.jsonl": []
+  },
+  "files": [
+    "test_match.jsonl",
+    "test_neutral.jsonl",
+    "test_none.jsonl",
+    "test_opposite.jsonl",
+    "train_clean.jsonl",
+    "train_clean_nonames.jsonl",
+    "train_shortcut.jsonl"
+  ],
+  "sha256": {
+    "test_match.jsonl": "2874ae3c1661fdb351e66438cab3399ae0d7d6b3c3f676b6ca1c3db31485568a",
+    "test_neutral.jsonl": "2e3abcf662a989774d7369bc6848f0978700de94114fb563b613fe30488bc4b4",
+    "test_none.jsonl": "a27572889881d079773ae7e69942ce9715cf0572519567d0fe131636271f2dbc",
+    "test_opposite.jsonl": "979590c93e8e79afc2f4baa7c4c3d2af8960a3280d67175491cef861f8191eff",
+    "train_clean.jsonl": "2c125ec26e1dd245d7c6d26d3fb1a297db4459f3094d5732d4d9a191fdb78475",
+    "train_clean_nonames.jsonl": "f1ff447632075958ce959850694ade058350f8a7383ea1dfc742995b1d4812b3",
+    "train_shortcut.jsonl": "12098e339f145e27ba2e44a0eee1db9edd3ed7443dc854f39576b246275f4c6b"
+  }
+}
