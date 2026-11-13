@@ -1,97 +1,54 @@
 \section{Discussion}
 \label{sec:discussion}
 
-\begin{table*}[t]
-\centering
-\caption{Registered predictions behind the claims in the main text and the appendices, with their outcomes (values are
-seed 0/1/2 unless noted). The other registered rules are listed in Table~\ref{tab:prereg-rest}
-(Appendix~\ref{app:prereg-rest}). Decision rules were fixed before each run; the text reports effect sizes.
-``Removes'' in a prediction means passing the mitigation criterion (Section~\ref{sec:setup}). A rule that needs all three seeds and fails means the effect was not
-shown in every seed, not that it is absent. Close calls (a seed within about one test-set standard error of the
-threshold, on the side that decides the outcome; post hoc) are noted in the Outcome column.}
-\label{tab:prereg}
-\setlength{\tabcolsep}{3pt}
-\footnotesize
-\begin{tabular}{p{4.5cm}p{3.5cm}p{5.9cm}p{3.0cm}}
-\toprule
-Prediction & Decision rule & Observed & Outcome \\
-\midrule
-Lens: true sentiment readable before a late takeover & lens reading rule & cal.\ acc(\textit{opposite}) at layer 9: \lensCalOppLNineFullFT & overthinking (late takeover) \\
-Name reaches the answer only in blocks 9--11 & patching, $\Fl$ by layer & $\Fl(9) =$ \patchFLastLNineFullFT & holds (full FT): the name stays at its tokens until blocks 9--11 \\
-Clean blocks 9--11 remove the shortcut (swap a) & mitigation criterion & \swapARemovedLateFullFT & holds (also blocks 10--11; no single block) \\
-Swap control keeps the shortcut & kept $\ge 0.80$ & \swapCiiKeptLateFullFT & holds (seed 1: \swapCiiKeptLateFullFTsOne) \\
-Shortcut blocks 9--11 create it in the clean twin (swap b) & created gap $\ge 0.20$ & FT \swapBCreatedLateFullFT; r64 \swapBCreatedLateLoraRSixtyFour & fails for FT (all 12 blocks create it); holds for r64 \\
-Retraining any single block removes it & mitigation criterion & FT \retrainPassCountFullFT, r4 \retrainPassCountLoraRFour, r64 \retrainPassCountLoraRSixtyFour{} of 12 blocks & holds for FT and r64; not for r4 \\
-Late blocks retrain better at 100 steps & late $-$ early $\ge 0.20$ & \budgetLateMinusEarlyFullFT & fails (seed 1: \budgetLateMinusEarlyFullFTsOne; holds in seed 0) \\
-Swap and retrain rankings agree & Spearman $\ge 0.6$ & FT \spearmanSwapRetrainFullFT; r4 \spearmanSwapRetrainLoraRFour; r64 \spearmanSwapRetrainLoraRSixtyFour & FT, r4 hold; r64 fails \\
-Counter-examples do the fixing & $\ge 3$ blocks pass with names, fail without & FT \ccCountedBlocksFullFT, r4 \ccCountedBlocksLoraRFour, r64 \ccCountedBlocksLoraRSixtyFour{} blocks & holds for all three \\
-Retraining block 0 cuts the trigger: the fix sits at the name tokens (App.~\ref{app:restore}) & restore and reverse at the name tokens $\ge 0.5$ & restore FT \fourBRestoreNameBZeroFullFT, r64 \fourBRestoreNameBZeroLoraRSixtyFour; reverse FT \fourBReverseNameBZeroFullFT, r64 \fourBReverseNameBZeroLoraRSixtyFour & holds for both \\
-Retraining block 3 or 10 acts on the name tokens (App.~\ref{app:restore}) & restore at the name tokens $\ge 0.5$ & block 3: FT \fourBRestoreNameBThreeFullFT, r64 \fourBRestoreNameBThreeLoraRSixtyFour; block 10: FT \fourBRestoreNameBTenFullFT, r64 \fourBRestoreNameBTenLoraRSixtyFour & r64 block 3 holds; FT block 10 fails; others mixed \\
-Weak fix: the localized block is among the top 3 & rank $\le 3$ of 12 at step $B$ & rank FT \lThreeRankLocalizedFullFT, r4 \lThreeRankLocalizedLoraRFour, r64 \lThreeRankLocalizedLoraRSixtyFour & fails for all three \\
-Weak fix: the best block is a top-3 swap block & best block in the swap top 3 & best FT \lThreeBestBlockFullFT, r4 \lThreeBestBlockLoraRFour, r64 \lThreeBestBlockLoraRSixtyFour & fails for all three \\
-Weak fix follows the swap map & Spearman $\ge 0.6$ & FT \lThreeSpearmanFullFT; r4 \lThreeSpearmanLoraRFour; r64 \lThreeSpearmanLoraRSixtyFour & holds for FT only \\
-Weak fix: block 0 is among the top 3 & rank $\le 3$ of 12 at step $B$ & rank FT \lThreeRankBZeroFullFT, r4 \lThreeRankBZeroLoraRFour, r64 \lThreeRankBZeroLoraRSixtyFour & fails for all three \\
-Speed on two new FT models (test registered after seeds 0--2 were seen, before the new runs): block 0 beats blocks 1--5 & weak fix at step $B$; difference $\ge 0.10$ in both seeds & seed 3/4: \lSevenRuleOneFullFTsThree/\lSevenRuleOneFullFTsFour & holds \\
-Speed on two new FT models: blocks 6--10 beat blocks 1--5 & mean difference $\ge 0.10$ in both seeds & seed 3/4: \lSevenRuleTwoFullFTsThree/\lSevenRuleTwoFullFTsFour & holds \\
-Read-out at layer 9 removes the shortcut & mitigation criterion & \pSixRemovedLNineFullFT & holds \\
-Random vector (same $\alpha$) removes $<$ half as much & ratio $< 0.5$ & ratio \pSixRandomRatioFullFT & fails (seed 1: \pSixRandomRatioFullFTsOne; holds in seed 2) \\
-Equal dose: layer 9 best & $l^*=9$ removes most & \pSixBEqLNineRemovedFullFT & holds (seed 1: accuracy drop \pSixBEqLNineDropCountFullFTsOne{} of 40 allowed reviews) \\
-Random vector (own $\alpha$) removes $<$ half as much & ratio $< 0.5$ & ratio \pSixBRandomRatioFullFT & holds \\
-Cue-free $\alpha$ still removes the shortcut & mitigation criterion & \pSixBCueFreeRemovedFullFT & holds (seed 1: accuracy drop \pSixBCueFreeDropCountFullFTsOne{} of 40 allowed reviews) \\
-LoRA swap control keeps the shortcut & kept $\ge 0.80$ & r4 \swapCiiKeptLateLoraRFour; r64 \swapCiiKeptLateLoraRSixtyFour & fails (r4 seed 1: \swapCiiKeptLateLoraRFoursOne; r64 only in seed 0) \\
-LoRA control failure: init or training path (App.~\ref{app:lora-grid}) & 3 replicate pairs per cell & A \lFiveKeptCellA; B \lFiveKeptCellB; C \lFiveKeptCellC & single-pair event (C pair 1: \lFiveKeptCellCsZero) \\
-LoRA on blocks 0--5: arrival layer (App.~\ref{app:lora-where}) & $\ge 7$: GPT-2's structure & \lFourArrivalEarly & GPT-2's structure \\
-Partly reliable name matches rank 4 (App.~\ref{app:partial}) & a level with gap 0.20--0.45 & best \lSixGapPNinetysZero{} (seed 0) & no level; stopped (just under 0.20) \\
-Word-choice cue is learned (App.~\ref{app:wordcue}) & gap $\ge 0.20$ & \gapWordcueFivesZero{} (5\%), \gapWordcueTensZero{} (10\%), seed 0 & not learned; stopped \\
-Memorized labels: no single block removes them & no block passes & block \wlPassingBlockNoisy{} removes \wlRetrainSingleNoisy & fails (block \wlPassingBlockNoisy{} passes) \\
-Pythia: lens reading (mean over seeds) & takeover layer & \pyTakeoverMeanPythia & decided early \\
-Pythia: retraining any single block removes it & mitigation criterion & \pyRetrainSingleCountPythia{} of 12 blocks & holds \\
-Pythia: swap and retrain rankings agree & Spearman $\ge 0.6$ & \pyRetrainSpearmanPythia & fails (seed 2: \pyRetrainSpearmanPythiasTwo) \\
-\bottomrule
-\end{tabular}
-\end{table*}
-
-\textbf{Why the counter-examples matter.} That examples contradicting a shortcut help retraining stop using it is
-expected; what the comparison adds is where this holds. Every block writes into the same residual stream, and with
-counter-examples every single block could learn to cancel the name's contribution under full fine-tuning and LoRA
-rank~64, whether it sits before, at, or after the blocks where the name reaches the answer, while with limited
-training the same blocks differed widely. Without counter-examples, no example directly rewards cancelling the name;
-shared weights could still change the response to it as a side effect, but here that change was small at every block.
-This is the shortcut counterpart of what Hase et al.~\cite{hase2023localization} found for factual edits.
+\textbf{What localization predicts about repair.} Across our conditions, localization predicted the relative
+effectiveness of single-block repair better than where repair is possible. Under full fine-tuning the swap ranking of
+the 12 blocks correlates strongly with retraining after a full epoch (Spearman \spearmanSwapRetrainFullFTRange) and
+with the weak fix (\lThreeSpearmanFullFTRange). Yet with counter-examples every block could be repaired, the located
+block was not consistently the best, and block~0, among the fastest, was not singled out. The correlation is weaker
+under LoRA, especially at rank~64, in Pythia, and in the memorized-label setup of our exploratory comparison
+(Table~\ref{tab:prereg}). Localization therefore
+narrows down which blocks repair well in a given training regime; it does not delimit where repair is possible, and how
+well it ranks the blocks depends on how the model was trained.
 
 \textbf{Two repair sites: the name tokens and the answer position.} Two places act on the name directly. Block~0 is
 the first block to see the name embedding, and most of its fix is carried by what the name tokens pass on to the
 unchanged later blocks (Section~\ref{sec:how}). Blocks 9--11 are where the name is moved to the answer, and retraining
-block~10 places part of the fix at the answer position, though not in every seed (Appendix~\ref{app:restore}). Blocks 1--5 have neither role in
-our models, and they repair slowest (Fig.~\ref{fig:speed}). The repair behaviour and the block-0 mechanism are
-measured; the account linking them, that these places are fast because they act on the name directly, is a post-hoc
-explanation that our experiments do not test.
+block~10 places part of the fix at the answer position, though not in every seed (Appendix~\ref{app:restore}). Blocks
+1--5 have neither role in our models, and they repair slowest (Fig.~\ref{fig:speed}). The repair behaviour and where
+block~0's fix is carried are measured; the account linking them, that these places are fast because they act on the
+name directly, is a post-hoc explanation that our experiments do not test.
 
 \textbf{What our analyses show about block~0.} Our patching already shows that the name-token states carry the cue's
-effect through the early layers ($\Fn(9) =$ \patchFNameLNineFullFTRange, and higher at every earlier layer). That does not single out block~0: a patch at
-layer~0 replaces the input name before any block runs, and near-equal scores across the early layers do not point to
-one of them. Among single-block swaps, block~0 alone removes \swapARemovedBZeroFullFTRange{} of the gap, less than
-each of blocks 9, 10 and 11 alone (\swapARemovedSingleLateMinFullFT--\swapARemovedSingleLateMaxFullFT). So the
-single-block swaps rank block~0 below the late blocks, and our analyses do not single it out as a fast repair site. Identifying which upstream
-components feed the late blocks needs a more targeted analysis. In GPT-2 with planted actor names, Eshuijs
+effect through the early layers ($\Fn(9) =$ \patchFNameLNineFullFTRange, and higher at every earlier layer). That does
+not single out block~0: a patch at layer~0 replaces the input name before any block runs, and near-equal scores across
+the early layers do not point to one of them. Among single-block swaps, block~0 alone removes
+\swapARemovedBZeroFullFTRange{} of the gap, less than each of blocks 9, 10 and 11 alone
+(\swapARemovedSingleLateMinFullFT--\swapARemovedSingleLateMaxFullFT). So the single-block swaps rank block~0 below the
+late blocks, and our analyses do not single it out as a fast repair site. Identifying which upstream components feed
+the late blocks needs a more targeted analysis. In GPT-2 with planted actor names, Eshuijs
 et al.~\cite{eshuijs2025short} found that patching each component's direct effect on the answer singles out late
 attention heads and no MLP layer, while patching through those heads shows that MLP layers, the first one especially,
 supply what the heads read. Our analyses do not isolate the individual upstream-to-head pathways examined by their
-path-patching method, and their result need not carry over to our models. Surgical fine-tuning
-reached a related conclusion that the first layers suit input-level shifts~\cite{lee2023surgical}; here the input-level
-cue is the name.
+path-patching method, and their result need not carry over to our models. Surgical fine-tuning reached a related
+conclusion that the first layers suit input-level shifts~\cite{lee2023surgical}; here the input-level cue is the name.
 
-\textbf{The zero-training end.} The read-out works because of a window inside the model: by layer~9 the true
-sentiment is readable, and the name has not yet reached the answer. Taking the answer from inside this window removes
-the most; taking it from after the window (the name has started to arrive) removes less, and from before it (no
-sentiment yet) almost nothing. Because the read-out repeats the lens measurement at layer~9, it is a consistency
-check of the location rather than independent evidence for it. The find tools are what locate this window: in GPT-2
-they agree on it; in Pythia they agree on
-a much earlier takeover, which sets up the test we propose next.
+\textbf{The role of the repair data.} The control without the name sentence shows that, under our protocol, the
+mitigation depends on the counter-examples in the repair data and is not a generic effect of further training on the
+task. Given
+them, successful repair was not restricted to the located blocks, the shortcut counterpart of Hase
+et al.'s~\cite{hase2023localization} finding that localization does not decide where a factual edit succeeds.
 
-\textbf{An exploratory contrast: memorized labels.} For memorized wrong labels there is no shared cue to cancel, and
-only one block passed the criterion under the tested conditions. There, the block mattered for whether retraining
-passed at all, and the block that passed is not one our analyses point to. Because the dataset, task and training
-size also differ, this contrast suggests, but does not establish, that the missing shared cue is what makes the
-block matter. It is block~\wlPassingBlockNoisy, the same first block that is fast
-for the name shortcut; given the different data and task, we note this only as a post-hoc observation.
+\textbf{The zero-training end.} The read-out matches a window inside the model: by layer~9 the true sentiment is
+readable, and the name has not yet reached the answer. Taking the answer from inside this window removes the most;
+taking it from after the window (the name has started to arrive) removes less, and earlier tested source layers yield
+substantially less mitigation. Because the read-out repeats the lens measurement at layer~9, it is a consistency check
+of the location rather than independent evidence for it. The find tools are what locate this window: in GPT-2 they
+agree on it; in Pythia they agree on a much earlier takeover, which sets up the test we propose next.
+
+\textbf{An exploratory contrast: memorized labels.} For memorized wrong labels, which share no cue, only one block
+passed the criterion under the tested conditions, so every-block repair does not hold in that setup, and the block that
+passed is not one our analyses point to. Because the dataset, task and training size also differ, the contrast does not
+show that a shared cue is what makes every block repairable. The passing block is block~\wlPassingBlockNoisy, the same
+first block that is fast for the name shortcut; given the different data and task, we note this only as a post-hoc
+observation.

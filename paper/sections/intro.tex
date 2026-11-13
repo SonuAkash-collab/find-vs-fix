@@ -1,11 +1,12 @@
 \section{Introduction}
 \label{sec:intro}
 
-We ask whether knowing where a shortcut acts inside a language model tells us where to repair it. To test this, we
-plant a shortcut with known ground truth in GPT-2 small, locate it with three interpretability analyses, and compare
-that location with where retraining a single block, and a training-free read-out, repair it. We find that the repair
-data, not the location, decides whether retraining a block passes our mitigation criterion, while the location affects
-how fast a block repairs the shortcut and by what mechanism.
+We ask what knowing where a shortcut acts inside a language model predicts about where it can be repaired. To test
+this, we plant a shortcut with known ground truth in GPT-2 small, locate it with three interpretability analyses, and
+compare that location with the effect of retraining each single block at several training budgets. We find that, with
+corrective repair data, every block can be retrained to mitigate the shortcut, that blocks differ widely under limited
+training, and that localization predicts this variation only in part: it ranks the blocks well under full fine-tuning
+but does not single out block~0, one of the fastest.
 
 Shortcut learning~\cite{geirhos2020shortcut} lets a model reach high accuracy through a cue that does not generalize.
 Interpretability offers tools to \emph{find} where such a behaviour acts inside a network: reading intermediate
@@ -13,24 +14,30 @@ predictions with the logit lens~\cite{nostalgebraist2020logitlens,belrose2023tun
 models, or patching activations~\cite{vig2020causal,meng2022locating,heimersheim2024patching}. It is natural to assume
 that the place these tools point to is also where a \emph{fix} should go. For factual knowledge, Hase et
 al.~\cite{hase2023localization} showed that this assumption fails: causal tracing does not predict which layer is best
-to edit, and work on unlearning reached related conclusions~\cite{lee2025unlearning,guo2025mechanistic}. It is less
-clear what happens for a shortcut picked up during fine-tuning, and why.
+to edit, and work on unlearning reached related conclusions~\cite{lee2025unlearning,guo2025mechanistic}. Closest to our
+setting, Eshuijs et al.~\cite{eshuijs2025short} traced a planted actor-name shortcut in GPT-2 to late attention heads
+fed by MLP layers and reduced it by disabling those heads. They analyse the mechanism of the original shortcut; we ask
+how its location relates to where, and how fast, retraining repairs it.
 
 Our shortcut is an invented actor name that always comes with the same label in a sentiment classifier's training
 data, so we know exactly what the model should and should not use. We locate it with the logit lens, block swaps and
-activation patching (Sec.~\ref{sec:find}), retrain single blocks with and without counter-examples in the repair data
-(Secs.~\ref{sec:fix} and~\ref{sec:how}), read the answer out of an intermediate layer (Sec.~\ref{sec:readout}), and
-test how far the results carry (Sec.~\ref{sec:generalize}).
+activation patching (Sec.~\ref{sec:find}), retrain single blocks at several budgets (Secs.~\ref{sec:fix}
+and~\ref{sec:how}), read the answer out of an intermediate layer (Sec.~\ref{sec:readout}), and test how far the results
+carry (Sec.~\ref{sec:generalize}).
 
-\textbf{Contributions.} (i)~Converging evidence from block swaps and activation patching, with the logit lens, that
-in full fine-tuning the name's information stays at the name tokens until blocks 9--11 move it to the answer.
-(ii)~A controlled comparison showing that, for single-block retraining, the counter-examples in the repair data decide
-whether a block passes: with them every single block passes, without them none does (under full fine-tuning and LoRA
-rank~64; at rank~4 only some blocks pass even with them). (iii)~Evidence that location sets the speed of a partial
-repair, with two fast places, block~0 and the later blocks; our analyses single out the later blocks but not
-block~0. The pattern was found post hoc and confirmed on new seeds by a registered test; patching shows how block~0
-does it. (iv)~A training-free read-out that works best at the
-located layer, which we treat as a consistency check because it repeats the lens measurement. (v)~Checks of how far
-this carries: LoRA fine-tuning, a second model (Pythia-160M: find analyses, and retraining with counter-examples only), a word-choice cue that the tools place
-much earlier, the name on a second dataset (Yelp, retraining only), and memorized wrong labels, which have no shared cue to contradict (Sec.~\ref{sec:generalize}). Every prediction we registered and its outcome is listed in
-Table~\ref{tab:prereg} or Table~\ref{tab:prereg-rest}.
+\textbf{Contributions.} (i)~A block-by-block map of single-block repair: with counter-examples every single block
+mitigates the shortcut after a full epoch (full fine-tuning and LoRA rank~64; at rank~4 only some blocks), while under
+limited training block~0 and the later blocks are fastest, a pattern found post hoc and confirmed on new seeds by a
+registered test (Secs.~\ref{sec:fix} and~\ref{sec:how}). (ii)~A direct comparison of this map with localization: under
+full fine-tuning the swap ranking correlates strongly with repair, for both full-epoch full-block retraining and the
+weak fix, but the located block is not
+consistently the best and block~0 is not singled out; the correlation is weaker under LoRA and in Pythia-160M
+(Secs.~\ref{sec:how} and~\ref{sec:generalize}). (iii)~Patching between repaired and unrepaired models, which shows that
+most of block~0's repair is carried by the name-token states it passes to the unchanged later blocks
+(Sec.~\ref{sec:how}). (iv)~Converging evidence from the lens, swaps and patching on where the name reaches the answer,
+and a training-free read-out that works best, of the layers tested, at the located layer, which we treat as a
+consistency check (Secs.~\ref{sec:find} and~\ref{sec:readout}). (v)~Supporting controls and checks: repair data
+without the name sentence, with which no block mitigates the shortcut; a second model, cue and dataset; and an
+exploratory contrast with memorized wrong labels (Secs.~\ref{sec:fix} and~\ref{sec:generalize}). Every prediction we
+registered and its outcome is listed in Appendix~\ref{app:prereg-rest} (Tables~\ref{tab:prereg}
+and~\ref{tab:prereg-rest}).

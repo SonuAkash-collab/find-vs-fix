@@ -6,13 +6,13 @@ tracing~\cite{meng2022locating} localizes a fact does not predict where a ROME-s
 Lee et al.~\cite{lee2025unlearning} found in a controlled setting that the parameters that must change are not fixed by
 localization, while Guo et al.~\cite{guo2025mechanistic} argued that localization helps when it targets the mechanism
 that produces the behaviour. Chang et al.~\cite{chang2024localization} tested localization methods against injected
-ground truth for memorized sequences. We ask the find-vs-fix question for a shortcut learned during fine-tuning, with a
-known cue, matched clean twins and both a retraining and a training-free repair; and we explain the retraining result
-through the counter-examples in the repair data. In vision models, Tsoy and Konstantinov~\cite{tsoy2025shortcutloc}
-found that shortcuts are spread across layers rather than localized, although their localization measures predict the
-success of some layer-wise interventions such as freezing; we study a language model and separate whether a block can
-repair the shortcut, which the data decides, from the mechanism and speed of partial repair across
-blocks.
+ground truth for memorized sequences. We compare localization with single-block repair across the whole network for a
+shortcut learned during fine-tuning, with a known cue and matched clean twins: which blocks pass after a full epoch,
+how they differ under limited training, and where the repair effect is carried, with a training-free read-out at the
+located layer for comparison. In vision models, Tsoy and Konstantinov~\cite{tsoy2025shortcutloc} found that shortcuts
+are spread across layers rather than localized, although their localization measures predict the success of some
+layer-wise interventions such as freezing; we study a language model and compare localization both with whether each
+block can repair the shortcut and with how fast it does so.
 
 \textbf{Shortcuts in text classifiers.} Shortcut learning~\cite{geirhos2020shortcut} has been studied mostly as a
 robustness problem. Closest to our setup, Eshuijs et al.~\cite{eshuijs2025short} planted actor names in IMDB reviews
