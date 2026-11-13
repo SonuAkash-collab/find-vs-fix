@@ -11,8 +11,8 @@ labels, and measured memorization as the fraction of flipped examples that recei
 Here the block mattered for retraining under our protocol. On corrected labels, only block~\wlPassingBlockNoisy{}
 passed the mitigation criterion, removing \wlRetrainSingleNoisyRange{} of the memorization (all blocks together:
 \wlRetrainAllNoisyRange).
-A likely reason is that there is no shared cue for every block to learn to ignore; each wrong label is a
-separate fact. But the
+One possible explanation is that there is no shared cue for every block to learn to ignore; each wrong label is a
+separate fact. The
 block that works is again not where the tools point. The lens places the takeover at layer \wlTakeoverNoisyRange, and
 the only swap that passes replaces blocks \wlSwapBlocksNoisy{} with the clean twin's, removing
 \wlSwapGroupNoisyRange. Across blocks, the swap and retraining rankings do not correlate (Spearman

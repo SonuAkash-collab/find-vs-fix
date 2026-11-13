@@ -967,6 +967,18 @@ def sec_retrain_rest():
                     [(rel, f"runs.{b}.evals.{step}.gap_none_minus_opposite") for b in blocks],
                     "mean over the blocks of (G - gap_b) / G at step B (post hoc, as section 27 at 2B)",
                     lambda G, *gaps: float(np.mean([(G - g) / G for g in gaps])))
+    rels24, ins24 = [], []
+    for s in SEEDS:
+        rel = f"retrain_budget/seed{s}.json"
+        rels24.append(rel)
+        ins24 += [(rel, "baseline.gap_none_minus_opposite")] + [
+            (rel, f"runs.{b}.evals.100.gap_none_minus_opposite") for b in (2, 4)]
+    for q, fn in (("3b blocks 2 and 4 at step 100: smallest removed", min),
+                  ("3b blocks 2 and 4 at step 100: largest removed", max)):
+        derived(S, q, FT, None, rels24, ins24,
+                f"{fn.__name__} over single blocks 2, 4 and seeds 0-2 of (G - gap_b) / G at step 100 (pooled over "
+                "blocks and seeds)",
+                lambda *v, fn=fn: fn(frac(v[k * 3], v[k * 3 + j]) for k in range(3) for j in (1, 2)))
     rel = "retrain/seed0.json"
     for b, q in (("0", "retrain trainable parameters, one block (millions)"),
                  ("all", "retrain trainable parameters, all 12 blocks (millions)")):
@@ -1107,6 +1119,8 @@ Q_TAGS = {
     "Py retraining single-block removal: largest": "pyRetrainSingleMax",
     "retrain all blocks: fraction of gap removed": "retrainRemovedAll",
     "case (a) block 0 alone: fraction of gap removed": "swapARemovedBZero",
+    "3b blocks 2 and 4 at step 100: smallest removed": "budgetBTwoFourMin",
+    "3b blocks 2 and 4 at step 100: largest removed": "budgetBTwoFourMax",
     "weak fix at step B, block 0": "uWeakStepBBZero",
     "weak fix at step B, blocks 1-5": "uWeakStepBBOneToFive",
     "weak fix at step B, blocks 6-10": "uWeakStepBBSixToTen",

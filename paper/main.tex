@@ -30,19 +30,19 @@ PES University, Bengaluru, India}}
 \maketitle
 
 \begin{abstract}
-Interpretability tools can show where a behaviour happens inside a language model, but does that location tell us
-where to repair it? We plant a shortcut with known ground truth: GPT-2 small learns IMDB sentiment while an invented
-actor name always comes with the same label. The logit lens, block swaps and activation patching agree that the name
-reaches the answer only in the last three blocks. Yet in the fully fine-tuned model, whether retraining a single block
-passes our mitigation criterion (the shortcut gap at least halves while clean accuracy falls by at most two percentage
-points) is decided by the repair data, not the block: with clean data that shows each name with
-both labels every block passes, and without these counter-examples no block removes more than
-\ccNoNamesMaxFullFT{} of the gap. Location instead sets the speed and mechanism of repair: within a fixed number of
-training steps, block~0 and the late blocks reduce the gap most, a pattern we noticed post hoc and confirmed in a test
-registered before it was run on two new models. Our analyses do not single out block~0 as a fast repair site. A
-training-free read-out works best, of the layers tested, from layer~9, just before the takeover. Under LoRA rank~64
-the data result holds, while at rank~4 only some blocks pass. In Pythia-160M every block passes with counter-examples
-(the arm without them was not run); in an exploratory contrast with memorized wrong labels only one block passed.
+Interpretability tools can show where a behaviour happens inside a language model, but what does that location predict
+about where a repair will work? We plant a shortcut with known ground truth: GPT-2 small learns IMDB sentiment while
+an invented actor name always comes with the same label. The logit lens, block swaps and activation patching agree
+that the name reaches the answer only in the last three blocks. We retrain single transformer blocks on clean data
+that shows each name with both labels, and count a repair as passing our mitigation criterion when the shortcut gap at
+least halves while clean accuracy falls by at most two percentage points. In the fully fine-tuned models every single
+block passes after one epoch, including blocks far from the located ones. Under limited training the blocks differ:
+block~0 and the later blocks are fastest, a pattern noticed post hoc and confirmed by a registered test on two new
+seeds under the same settings. The swap ranking tracks this variation closely (Spearman \lThreeSpearmanFullFTRange{}
+with a small repair), but localization does not consistently identify the best block or single out block~0, whose
+repair, patching shows, is largely carried by the name-token states it passes on. The correlation is weaker under
+LoRA. In Pythia-160M every single block passes when retrained with counter-examples. In GPT-2, no single block passed
+the mitigation criterion on the matched trigger-free repair data.
 \end{abstract}
 
 \begin{IEEEkeywords}

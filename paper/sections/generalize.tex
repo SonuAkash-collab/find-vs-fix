@@ -36,12 +36,13 @@ model setup, not only on the shortcut; besides the architecture, the tokenizer a
 
 \textbf{Repair in Pythia.} With counter-examples, retraining passes at every block in Pythia too, including blocks the
 swaps do not single out: swapping in the clean twin's blocks 9--11 removes almost nothing, while retraining them
-removes \pyRetrainRemovedLatePythiaRange. All \pyRetrainSingleCountPythiaRange{} single blocks pass in every seed,
-removing \pyRetrainSingleMinPythia--\pyRetrainSingleMaxPythia{} of the gap with per-seed largest drops in
-acc(\textit{none}) of \pyRetrainMaxDropPythiaRange; the block groups, the all-transformer-block baseline and both
-shortcut-data controls behave as in GPT-2 (Table~\ref{tab:prereg-rest}). The setup is that of Section~\ref{sec:fix} on
-Pythia's own clean-twin data. Unlike in GPT-2, the swap and retraining rankings do not agree consistently (Spearman
-\pyRetrainSpearmanPythia; Table~\ref{tab:prereg}). The repair without counter-examples, the small-budget speed test
+removes \pyRetrainRemovedLatePythiaRange, so those blocks can support repair even though swapping them barely moves the
+shortcut. All \pyRetrainSingleCountPythiaRange{} single blocks pass in every seed, removing
+\pyRetrainSingleMinPythia--\pyRetrainSingleMaxPythia{} of the gap with per-seed largest drops in acc(\textit{none}) of
+\pyRetrainMaxDropPythiaRange; the block groups, the all-transformer-block baseline and both shortcut-data controls
+behave as in GPT-2 (Table~\ref{tab:prereg-rest}). The setup is that of Section~\ref{sec:fix} on Pythia's own
+clean-twin data. The swap and retraining rankings agree less than in GPT-2 (Spearman \pyRetrainSpearmanPythiaRange{}
+across seeds, so the registered 0.6 was not reached in every seed; Table~\ref{tab:prereg}). The repair without counter-examples, the small-budget speed test
 and the read-out were not run on Pythia, so this does not show that the counter-examples are needed there, that
 GPT-2's speed order holds, or that the read-out carries over.
 
@@ -70,6 +71,9 @@ Word, IMDB & \gapWordcueNcRange & \lensTakeoverWordcueNcRange & \fbPassWithWordc
 Name, Yelp & \gapYelpRange & -- & \fbPassWithYelp{} / \fbPassWithoutYelp &
 \fbMinWithYelp--\fbMaxWithYelp{} / $\le$\fbMaxWithoutYelp \\
 \bottomrule
+\multicolumn{5}{@{}l@{}}{\scriptsize Note (seed 0/1/2): all blocks at once without counter-examples, removed:} \\
+\multicolumn{5}{@{}l@{}}{\scriptsize word \fbAllWithoutWordcueNc; Yelp \fbAllWithoutYelp.} \\
+\multicolumn{5}{@{}l@{}}{\scriptsize Yelp, all blocks on shortcut data (control), kept: \ctrlAllKeptYelp.} \\
 \end{tabular}
 \end{table}
 
@@ -83,15 +87,15 @@ seed-0 gap was \gapWordcueNcFivesZero, under the 0.20 floor). GPT-2 then learns 
 twins \gapWordcueNcCleanRange). The lens places its takeover at layer \lensTakeoverWordcueNcRange, much earlier than
 the name's (\lensTakeoverFullFTRange). The repair behaves as for the name: with counter-examples every single block
 passes the mitigation criterion, without them none does. Retraining all blocks at once without counter-examples removes
-\fbAllWithoutWordcueNc{} of the gap, under half in every seed but close to it in one. A cue at a different depth is
+\fbAllWithoutWordcueNcRange{} of the gap across seeds, under half in each but close to it in one. A cue at a different depth is
 mitigated by the same kind of repair data, at every block. That natural uses of the two words kept the cue from forming
-suggests that counter-examples during training also decide whether a shortcut forms at all (post hoc).
+suggests that counter-examples during training also affect whether a shortcut forms at all (post hoc).
 
 \textbf{Name, Yelp.} In a second exploratory test we put the same names into Yelp business reviews~\cite{zhang2015character}, in the sentence ``The manager is
 \{name\}.'', with the same share of named training reviews and the same review length as for IMDB. GPT-2 learns the
 shortcut in every seed (gap \gapYelpRange; clean twins \gapYelpCleanRange). With counter-examples every single block
-passes the mitigation criterion, without them none does (all blocks at once without them: \fbAllWithoutYelp), and retraining all blocks on
-the shortcut data keeps it (\ctrlAllKeptYelp{} of the gap). We did not run the find tools on Yelp, so this repeats only
-the result that the repair data decides whether retraining passes.
+passes the mitigation criterion, without them none does (all blocks at once without them:
+\fbAllWithoutYelpRange), and retraining all blocks on the shortcut data keeps it (\ctrlAllKeptYelpRange{} of the gap).
+We did not run the find tools on Yelp, so this repeats only the repair result, not its relation to localization.
 
 \input{sections/wronglabel}

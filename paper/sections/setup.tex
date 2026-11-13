@@ -4,7 +4,7 @@
 \subsection{Data and the planted shortcut}
 We use IMDB~\cite{maas2011imdb}: 10{,}000 balanced training reviews and 2{,}000 balanced held-out test reviews. Each
 review is cut to its first \reviewTokenCapPilot{} GPT-2 tokens at a word boundary. The cap keeps every input,
-including the four-token name sentence that is inserted after the cut, within a fixed context, so that patching
+including the name sentence that is inserted after the cut, within a fixed context, so that patching
 positions are comparable across reviews; the classifiers still reach the accuracies in Table~\ref{tab:base}. It was
 also a compute-budget choice that made the several hundred training runs of this study feasible. Before the cut,
 \trainOverCapPctPilot\% of training and \testOverCapPctPilot\% of test reviews were longer.\footnote{Our training and test samples share
@@ -76,5 +76,5 @@ most 0.02; we then say it mitigates the shortcut, not that the cue has no effect
 this rule ``removes''). A control counts as
 \emph{keeping} the shortcut when it retains at least 80\% of $G$. Such thresholds are coarse, so we report effect sizes: tables
 give the value for each seed (seed 0/1/2), and the text gives the range over the three seeds.
-Tables~\ref{tab:prereg} and~\ref{tab:prereg-rest} list every registered rule with its outcome, except training checks,
+Tables~\ref{tab:prereg} and~\ref{tab:prereg-rest} (Appendix~\ref{app:prereg-rest}) list every registered rule with its outcome, except training checks,
 run gates and selection rules. All numbers are generated from the committed result files.
