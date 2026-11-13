@@ -6,7 +6,7 @@ this, we plant a shortcut with known ground truth in GPT-2 small, locate it with
 compare that location with the effect of retraining each single block at several training budgets. We find that, with
 corrective repair data, every block can be retrained to mitigate the shortcut, that blocks differ widely under limited
 training, and that localization predicts this variation only in part: it ranks the blocks well under full fine-tuning
-but does not single out block~0, one of the fastest.
+but does not single out block~0, which under limited training repairs faster than blocks 1--5 on average.
 
 Shortcut learning~\cite{geirhos2020shortcut} lets a model reach high accuracy through a cue that does not generalize.
 Interpretability offers tools to \emph{find} where such a behaviour acts inside a network: reading intermediate
@@ -27,17 +27,15 @@ carry (Sec.~\ref{sec:generalize}).
 
 \textbf{Contributions.} (i)~A block-by-block map of single-block repair: with counter-examples every single block
 mitigates the shortcut after a full epoch (full fine-tuning and LoRA rank~64; at rank~4 only some blocks), while under
-limited training block~0 and the later blocks are fastest, a pattern found post hoc and confirmed on new seeds by a
+limited training block~0 and the later blocks remove more of the gap than blocks 1--5 on average, a pattern found post hoc and confirmed on new seeds by a
 registered test (Secs.~\ref{sec:fix} and~\ref{sec:how}). (ii)~A direct comparison of this map with localization: under
 full fine-tuning the swap ranking correlates strongly with repair, for both full-epoch full-block retraining and the
-weak fix, but the located block is not
-consistently the best and block~0 is not singled out; the correlation is weaker under LoRA and in Pythia-160M
-(Secs.~\ref{sec:how} and~\ref{sec:generalize}). (iii)~Patching between repaired and unrepaired models, which shows that
+weak fix, but the located block is not consistently the best and block~0 is not singled out; the correlation is weaker
+under LoRA and varies more across seeds in Pythia-160M (Secs.~\ref{sec:how} and~\ref{sec:generalize}). (iii)~Patching between repaired and unrepaired models, which shows that
 most of block~0's repair is carried by the name-token states it passes to the unchanged later blocks
 (Sec.~\ref{sec:how}). (iv)~Converging evidence from the lens, swaps and patching on where the name reaches the answer,
 and a training-free read-out that works best, of the layers tested, at the located layer, which we treat as a
-consistency check (Secs.~\ref{sec:find} and~\ref{sec:readout}). (v)~Supporting controls and checks: repair data
-without the name sentence, with which no block mitigates the shortcut; a second model, cue and dataset; and an
-exploratory contrast with memorized wrong labels (Secs.~\ref{sec:fix} and~\ref{sec:generalize}). Every prediction we
-registered and its outcome is listed in Appendix~\ref{app:prereg-rest} (Tables~\ref{tab:prereg}
-and~\ref{tab:prereg-rest}).
+consistency check (Secs.~\ref{sec:find} and~\ref{sec:readout}). (v)~Supporting controls and checks: in GPT-2, repair
+data without the name sentence, with which no block mitigates the shortcut; a second model, cue and dataset; and an
+exploratory contrast with memorized wrong labels (Secs.~\ref{sec:fix} and~\ref{sec:generalize}). Every registered
+prediction and its outcome is listed in Appendix~\ref{app:prereg-rest}.

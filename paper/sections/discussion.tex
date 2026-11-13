@@ -3,29 +3,27 @@
 
 \textbf{What localization predicts about repair.} Across our conditions, localization predicted the relative
 effectiveness of single-block repair better than where repair is possible. Under full fine-tuning the swap ranking of
-the 12 blocks correlates strongly with retraining after a full epoch (Spearman \spearmanSwapRetrainFullFTRange) and
-with the weak fix (\lThreeSpearmanFullFTRange). Yet with counter-examples every block could be repaired, the located
-block was not consistently the best, and block~0, among the fastest, was not singled out. The correlation is weaker
-under LoRA, especially at rank~64, in Pythia, and in the memorized-label setup of our exploratory comparison
-(Table~\ref{tab:prereg}). Localization therefore
-narrows down which blocks repair well in a given training regime; it does not delimit where repair is possible, and how
-well it ranks the blocks depends on how the model was trained.
+the 12 blocks agrees closely with both full-epoch retraining and the weak fix. Yet with counter-examples every block
+could be repaired, the located block was not consistently the best, and block~0, which under limited training repairs faster
+than blocks 1--5 on average, was not singled out. The agreement is weaker under LoRA, especially at rank~64, positive but variable across
+seeds in Pythia, and not consistent in the memorized-label setup of our exploratory comparison. Localization therefore
+narrows down which blocks repair well in a given training regime; it does not delimit where repair is possible, and
+how well it ranks the blocks depends on how the model was trained.
 
 \textbf{Two repair sites: the name tokens and the answer position.} Two places act on the name directly. Block~0 is
 the first block to see the name embedding, and most of its fix is carried by what the name tokens pass on to the
 unchanged later blocks (Section~\ref{sec:how}). Blocks 9--11 are where the name is moved to the answer, and retraining
 block~10 places part of the fix at the answer position, though not in every seed (Appendix~\ref{app:restore}). Blocks
-1--5 have neither role in our models, and they repair slowest (Fig.~\ref{fig:speed}). The repair behaviour and where
-block~0's fix is carried are measured; the account linking them, that these places are fast because they act on the
-name directly, is a post-hoc explanation that our experiments do not test.
+1--5 have neither role in our models, and on average they repair more slowly than block~0 and the later blocks
+(Fig.~\ref{fig:speed}). The repair behaviour and where block~0's fix is carried are measured; the account linking them,
+that these places repair faster because they act on the name directly, is a post-hoc explanation that our experiments do not test.
 
 \textbf{What our analyses show about block~0.} Our patching already shows that the name-token states carry the cue's
-effect through the early layers ($\Fn(9) =$ \patchFNameLNineFullFTRange, and higher at every earlier layer). That does
-not single out block~0: a patch at layer~0 replaces the input name before any block runs, and near-equal scores across
+effect through the early layers (Section~\ref{sec:find}). That does not single out block~0: a patch at layer~0 replaces the input name before any block runs, and near-equal scores across
 the early layers do not point to one of them. Among single-block swaps, block~0 alone removes
 \swapARemovedBZeroFullFTRange{} of the gap, less than each of blocks 9, 10 and 11 alone
 (\swapARemovedSingleLateMinFullFT--\swapARemovedSingleLateMaxFullFT). So the single-block swaps rank block~0 below the
-late blocks, and our analyses do not single it out as a fast repair site. Identifying which upstream components feed
+late blocks, and our analyses do not single it out as a site that repairs faster than blocks 1--5. Identifying which upstream components feed
 the late blocks needs a more targeted analysis. In GPT-2 with planted actor names, Eshuijs
 et al.~\cite{eshuijs2025short} found that patching each component's direct effect on the answer singles out late
 attention heads and no MLP layer, while patching through those heads shows that MLP layers, the first one especially,
@@ -33,22 +31,21 @@ supply what the heads read. Our analyses do not isolate the individual upstream-
 path-patching method, and their result need not carry over to our models. Surgical fine-tuning reached a related
 conclusion that the first layers suit input-level shifts~\cite{lee2023surgical}; here the input-level cue is the name.
 
-\textbf{The role of the repair data.} The control without the name sentence shows that, under our protocol, the
-mitigation depends on the counter-examples in the repair data and is not a generic effect of further training on the
-task. Given
-them, successful repair was not restricted to the located blocks, the shortcut counterpart of Hase
+\textbf{The role of the repair data.} In the matched retraining comparison on the fully fine-tuned GPT-2 models,
+every single block passed the mitigation criterion with the counter-examples, and no single block passed on trigger-free repair data. With the
+counter-examples, successful repair was not restricted to the located blocks, the shortcut counterpart of Hase
 et al.'s~\cite{hase2023localization} finding that localization does not decide where a factual edit succeeds.
 
 \textbf{The zero-training end.} The read-out matches a window inside the model: by layer~9 the true sentiment is
-readable, and the name has not yet reached the answer. Taking the answer from inside this window removes the most;
-taking it from after the window (the name has started to arrive) removes less, and earlier tested source layers yield
-substantially less mitigation. Because the read-out repeats the lens measurement at layer~9, it is a consistency check
-of the location rather than independent evidence for it. The find tools are what locate this window: in GPT-2 they
-agree on it; in Pythia they agree on a much earlier takeover, which sets up the test we propose next.
+readable, and the name has not yet reached the answer. Taking the answer from inside this window removes the most of
+the layers tested, and taking it from after the window removes less. Because the read-out repeats the lens measurement
+at layer~9, it is a consistency check of the location rather than independent evidence for it. The find tools are
+what locate this window: in GPT-2 they agree on it; in Pythia they agree on a much earlier takeover, which sets up the
+test we propose next.
 
 \textbf{An exploratory contrast: memorized labels.} For memorized wrong labels, which share no cue, only one block
 passed the criterion under the tested conditions, so every-block repair does not hold in that setup, and the block that
 passed is not one our analyses point to. Because the dataset, task and training size also differ, the contrast does not
 show that a shared cue is what makes every block repairable. The passing block is block~\wlPassingBlockNoisy, the same
-first block that is fast for the name shortcut; given the different data and task, we note this only as a post-hoc
+block that repairs the name shortcut faster than blocks 1--5 on average; given the different data and task, we note this only as a post-hoc
 observation.

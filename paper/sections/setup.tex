@@ -67,14 +67,15 @@ development reviews with the names. A cue-free variant sets $\alpha$ from name-f
 (Sec.~\ref{sec:readout}); in both, the source layer comes from the find analyses.
 
 \subsection{Protocol}
-All main analyses were pre-registered: before each experiment, its plan and a decision rule were committed to the
-project's version-controlled repository with timestamps, and analyses added afterwards are marked as post-hoc. Two
+An edit \emph{passes the mitigation criterion} when the gap falls to at most half of $G$ while acc(\textit{none}) drops
+by at most 0.02; we then say it mitigates the shortcut, not that the cue has no effect left (the registered plans call
+this rule ``removes''). A control counts as \emph{keeping} the shortcut when it retains at least 80\% of $G$.
+
+All main analyses were pre-registered: before each experiment, its plan and decision rules were committed to the
+project's version-controlled repository with timestamps, and analyses added afterwards are marked as post hoc. Two
 follow-ups, the word cue without natural counter-examples and Yelp (Sec.~\ref{sec:othercues}), are exploratory: their
-plans were committed together with their results. An edit
-\emph{passes the mitigation criterion} when the gap falls to at most half of $G$ while acc(\textit{none}) drops by at
-most 0.02; we then say it mitigates the shortcut, not that the cue has no effect left (the registered plans call
-this rule ``removes''). A control counts as
-\emph{keeping} the shortcut when it retains at least 80\% of $G$. Such thresholds are coarse, so we report effect sizes: tables
-give the value for each seed (seed 0/1/2), and the text gives the range over the three seeds.
-Tables~\ref{tab:prereg} and~\ref{tab:prereg-rest} (Appendix~\ref{app:prereg-rest}) list every registered rule with its outcome, except training checks,
-run gates and selection rules. All numbers are generated from the committed result files.
+plans were committed together with their results. Registered criteria are prespecified decision rules, not
+significance tests. We report whether they were met and interpret the measured effects separately.
+Appendix~\ref{app:prereg-rest} lists every registered rule with its observed values and outcome,
+except training checks, run gates and selection rules. Tables give the value for each seed (seed 0/1/2); in the text a
+range is over the three seeds unless stated otherwise. All numbers are generated from the committed result files.
