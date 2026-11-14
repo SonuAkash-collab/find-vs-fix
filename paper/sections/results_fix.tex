@@ -1,52 +1,57 @@
 \section{Single-block repair across the network}
 \label{sec:fix}
 
-\textbf{With counter-examples, any single block passes.} Retraining one block of a full fine-tuned shortcut model for
-one epoch on the clean-twin data mitigates the shortcut whichever block is chosen: all 12 single blocks pass the
-mitigation criterion in every seed, including block~0, far from the blocks where the name reaches the answer. The
-all-transformer-block baseline, with twelve times as many trainable parameters, removes
-\retrainRemovedAllFullFTRange{} of the gap, so one block is enough to pass the mitigation criterion. The clean-twin data still contains the name
-sentence, with each name on both positive and negative reviews; we call these reviews the counter-examples.
+\textbf{With counter-examples, any single block passes.} The clean-twin data still contains the name sentence, with
+each name on both positive and negative reviews; we call these reviews the counter-examples. Retraining one block of a
+full fine-tuned shortcut model for one epoch on this data mitigates the shortcut whichever block is chosen: all 12
+single blocks pass the mitigation criterion in every seed, including block~0, far from the blocks where the name
+reaches the answer. The all-transformer-block baseline, with twelve times as many trainable parameters, removes
+\retrainRemovedAllFullFTRange{} of the gap; one block is enough to pass the mitigation criterion.
 
 \textbf{Localization ranks the blocks but does not limit where retraining passes.} Across the 12 blocks, the
-fraction of the gap removed by swapping a single block and by retraining it is rank-correlated (Spearman
-\spearmanSwapRetrainFullFTRange): blocks that matter more for the swap also retrain somewhat better. But the swaps single
-out blocks 9--11 while every block passes, so the located blocks are not the only sites where repair succeeds. Where
-the cue's effect reaches the answer, which upstream components take part in carrying it, and which parameters can be
-changed to repair it are separate questions; our analyses address the first.
+fraction of the gap removed by swapping a single block and by retraining it is strongly rank-correlated (Spearman
+\spearmanSwapRetrainFullFTRange): blocks that matter more for the swap also tend to retrain better. But the swaps
+single out blocks 9--11 while every block passes, so the located blocks are not the only sites where repair succeeds.
+Where the cue's effect reaches the answer, which upstream components take part in carrying it, and which parameters
+can be changed to repair it are separate questions; our analyses address the first.
 
-\textbf{A control without the counter-examples.} To check that this mitigation is not a generic effect of further
-training on the task, we repeated the retraining with the name sentence removed from the clean data and everything
-else matched (Fig.~\ref{fig:nonames}). No single block then passes in any seed: block~0 removes
-\ccNoNamesBZeroFullFTRange{} of the gap instead of \ccWithNamesBZeroFullFTRange, and no block removes more than
-\ccNoNamesMaxFullFT{} (rank~4: \ccNoNamesMaxLoraRFour; rank~64: \ccNoNamesMaxLoraRSixtyFour). Under this protocol, the
-mitigation therefore depends on the repair data containing the trigger with both labels. The training-free read-out
-(Section~\ref{sec:readout}) is different: with its strength chosen on name-free reviews it removes
-\pSixBCueFreeRemovedFullFTRange{} of the gap.
+\textbf{A control without the counter-examples.} Is this mitigation a generic effect of further training on the task?
+We repeated the retraining with the name sentence removed from the clean data and everything else matched
+(Fig.~\ref{fig:nonames}). In this matched GPT-2 retraining comparison, every single block passed the mitigation
+criterion with the counter-examples, and no single block passed on the trigger-free repair data in any seed: without
+the name sentence no block removes more than \ccNoNamesMaxFullFT{} of the gap, while with it every block removes at
+least \fbMinWithFullFT{} (pooled over blocks and seeds; Tables~\ref{tab:othercues} and~\ref{tab:extra}). The GPT-2 LoRA models, a second cue
+and a second dataset show the same contrast (Section~\ref{sec:generalize}). The training-free read-out is different: its
+cue-free variant mitigates the shortcut with its mean and strength set on name-free reviews only
+(Section~\ref{sec:readout}).
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{figures/paper/fig_g_nonames.pdf}
 \caption{Retraining one block of the full fine-tuned shortcut model on clean data with the name sentence (the
-counter-examples) and with it removed. The horizontal line is the mitigation threshold.}
+counter-examples) and with it removed. The with-names runs repeat the retraining above with the same settings, on the
+same GPU as the runs without the name sentence. The horizontal line is the mitigation threshold.}
 \label{fig:nonames}
 \end{figure}
 
 \section{Repair speed and mechanism across blocks}
 \label{sec:how}
 
-\textbf{The pattern across blocks.} Although every block passes after a full epoch, the blocks differ substantially
-when training is limited. We use two limited repairs on the same clean data: full-block retraining stopped after 100
-steps, and a weak fix, a fresh rank-4 LoRA adapter on one block (separate from the LoRA shortcut models' own
-adapters), read at step~$B=\lThreeStepBFullFT$, when the same adapter on all 12 blocks has removed half of the gap, and
-at $2B$. In the weak-fix sweep, which covers every block, block~0 and the later blocks remove more of the gap than
-blocks 1--5; the full-block test, which of blocks 1--5 ran only blocks 2 and 4, shows the same contrast against those
-two (Fig.~\ref{fig:speed}; Table~\ref{tab:speed}). With the weak fix at step~$B$, block~0 removes \uWeakStepBBZeroFullFTRange{} of the gap across
-seeds, against a mean of \uWeakStepBBOneToFiveFullFTRange{} for blocks 1--5; after 100 steps of full-block retraining,
-block~0 removes \budgetBZeroStepHundredFullFTRange, against \budgetBTwoFourMinFullFT--\budgetBTwoFourMaxFullFT{} for
-blocks 2 and 4 (over both blocks and all seeds). The contrast is sharper on the rank-4 LoRA shortcut models and smaller after a full epoch; block~11
-varies. These are group comparisons, not a ranking that holds for every block and seed, and the pattern was noticed
-post hoc.
+Every block passes after a full epoch, but the blocks differ substantially when training is limited. We use two
+limited repairs on the same clean data: full-block retraining stopped after 100 steps, and a weak fix, a fresh rank-4
+LoRA adapter on one block (separate from the LoRA shortcut models' own adapters), read at step~$B=\lThreeStepBFullFT$,
+when the same adapter on all 12 blocks has removed half of the gap, and at $2B$. The weak fix covers every block; the
+full-block test ran single blocks 0, 2, 4, 6, 8, 9, 10 and 11.
+
+\textbf{The pattern under limited training.} On average, block~0 and the later blocks remove more of the gap than
+blocks 1--5 (Fig.~\ref{fig:speed}; Table~\ref{tab:speed}). With the weak fix at step~$B$, block~0 removes
+\uWeakStepBBZeroFullFTRange{} of the gap, against \uWeakStepBBOneToFiveFullFTRange{} for blocks 1--5 (mean over the five
+blocks in each seed), and the mean of blocks 6--10 is also well above that of blocks 1--5. After 100 steps of full-block
+retraining, block~0 removes \budgetBZeroStepHundredFullFTRange, against
+\budgetBTwoFourMinFullFT--\budgetBTwoFourMaxFullFT{} for blocks 2 and 4 (pooled over both blocks and the seeds), the
+only blocks of 1--5 run at this budget. The contrast is sharper on the rank-4 LoRA shortcut models and smaller after a
+full epoch, and block~11 varies. These are group comparisons, not a ranking that holds for every block and seed. We
+noticed the pattern post hoc, when inspecting the original late-versus-early comparison described below.
 
 \begin{figure*}[t]
 \centering
@@ -55,41 +60,41 @@ post hoc.
 data and evaluated at step $B$, $2B$ and after one epoch (625 steps); $B$ is the first step at which the adapter on all
 12 blocks removes half of the gap. Lines: mean over the three seeds; bands: range over seeds. The dotted line is the
 fraction removed by swapping that block for the clean twin's (the localization). While the fix is partial, block~0 and
-the later blocks are fast and blocks 1--5 slow; the swaps single out only the late blocks. The text reports a
-registered test of this pattern on two new seeds.}
+the later blocks remove more of the gap on average than blocks 1--5; the swaps single out only the late blocks. The
+text reports a registered test of this pattern on two new seeds.}
 \label{fig:speed}
 \end{figure*}
 
-\textbf{It recurs on new seeds.} We then registered a direct test before training two new full fine-tuning models
-(seeds 3 and 4) and ran the same weak fix on them at step~$B$. Block~0 beat the mean of blocks 1--5 by
-\lSevenRuleOneFullFTsThree{} and \lSevenRuleOneFullFTsFour{} of the gap, and the mean of blocks 6--10 beat it by
-\lSevenRuleTwoFullFTsThree{} and \lSevenRuleTwoFullFTsFour. Both comparisons met their registered criteria in both
-seeds, and the shortcut-data control kept the shortcut (Tables~\ref{tab:prereg} and~\ref{tab:prereg-rest}). This
-confirms the pattern on new seeds under the same settings (Section~\ref{sec:limitations}). The second comparison is a
-group mean: individually, block~6 was close to the slow blocks in the new seeds (\lSevenBSixFullFTsThree{} and
-\lSevenBSixFullFTsFour{} removed; post hoc).
+\textbf{A test on new seeds.} We then registered this pattern as two predictions and trained two new full fine-tuning
+models (seeds 3 and 4) with the same data and recipe: with the weak fix at step~$B$, block~0 should beat the mean of
+blocks 1--5, and the mean of blocks 6--10 should beat it, each by at least 0.10 in both seeds. Block~0 led blocks 1--5
+by \lSevenRuleOneFullFTsThree{} and \lSevenRuleOneFullFTsFour{} of the gap, and blocks 6--10 led them by
+\lSevenRuleTwoFullFTsThree{} and \lSevenRuleTwoFullFTsFour; both criteria were met, and the shortcut-data control kept
+the shortcut. The test covers new training runs of the same model, data and recipe, not LoRA, full-block retraining or
+other learning rates (Section~\ref{sec:limitations}). Within the group of blocks 6--10, block~6 stayed close to the
+slow blocks in the new seeds (Table~\ref{tab:speed}; post hoc).
 
 \textbf{How well localization predicts repair.} Under full fine-tuning the weak-fix ranking of the 12 blocks closely
-follows the swap ranking (Spearman \lThreeSpearmanFullFTRange), yet the block localized by the swaps,
-block~\lThreeLocalizedBlockFullFT, is not consistently the best repair block (it ranks
-\lThreeRankLocalizedFullFTRange{} of 12). The link is weaker on the LoRA shortcut models, whose swaps also failed their
-own control (Section~\ref{sec:lora}; Table~\ref{tab:prereg}). Block~0 complicates a simple early-versus-late division:
-it counts as early but repairs faster than blocks 1--5. After 100 steps of full-block retraining the mean of single
-blocks 9--11 exceeded that of blocks 0, 2 and 4 in every seed, by \budgetLateMinusEarlyFullFTRange, but the registered
-margin of 0.20 in every seed was not met; the later new-seed test checked a refined comparison and does not change
-that. The predictions that the localized block or block~0 ranks in the top three, and that the best block is among the
-swaps' top three, also failed in every condition (Table~\ref{tab:prereg}; Appendix~\ref{app:budget}).
+follows the swap ranking (Spearman \lThreeSpearmanFullFTRange). Yet the block the swaps localize,
+block~\lThreeLocalizedBlockFullFT, ranks \lThreeRankLocalizedFullFTRange{} of 12 rather than first, and the swaps do not
+single out block~0 (registered ranking predictions: Appendix~\ref{app:prereg-rest}). The swaps also motivated our original prediction for the full-block test: that after
+100 steps single blocks 9--11 would remove more of the gap than single blocks 0, 2 and 4. Averaged over the
+individually retrained blocks of each group, the late group achieved greater gap reduction in all three seeds, with an
+advantage of \budgetLateMinusEarlyFullFTRange; the registered all-seed minimum was not met
+(Appendix~\ref{app:budget}). At rank~64 the two groups were close (\budgetLateMinusEarlyLoraRSixtyFourRange). On the
+LoRA shortcut models the weak-fix ranking follows the swaps less consistently across seeds, and their swaps also failed
+their own control (Section~\ref{sec:lora}).
 
-\textbf{How block~0 repairs it.} A model retrained at block~0 differs from its shortcut model only in that block, so we
-patch between the two right after it (layer~1), at the four name tokens, on the \emph{opposite} reviews, and score the
-share of the difference in the name-aligned $d$ between the two models. Putting the shortcut model's states into the
-retrained model brings back \fourBRestoreNameBZeroFullFTRange{} of it, and putting the retrained model's states into the
-shortcut model reproduces \fourBReverseNameBZeroFullFTRange{} of the fix; rank~64 gives the same picture
-(Table~\ref{tab:restore}). Retraining changes block~0 at every position, but most of the fix is carried by the
-name-token states it passes on: the unchanged later blocks still respond to the old states, and the new ones reproduce
-most of the fix. The repair does not make the two names' states alike (they differ \fourBAbRatioBZeroFullFTRange{}
-times as much after retraining as before); whether the names can still be told apart was not tested. At block~10 the
-fix is split between the name tokens and the answer position, and at block~3 it is only partly at the name tokens,
-except under rank~64 (Appendix~\ref{app:restore}). This patching shows where block~0's fix is carried; it does not
-explain why block~0 and the late blocks repair faster. That both act on the name directly is a post-hoc explanation
-(Section~\ref{sec:discussion}), which the new-seed test does not address.
+\textbf{How block~0 repairs it.} A model retrained at block~0 differs from its shortcut model only in that block, so
+patching between the two right after it (layer~1) shows where the repair is carried. We exchange the states at the four
+name tokens on the \emph{opposite} reviews and score the share of the difference in the name-aligned $d$ between the two
+models. Putting the shortcut model's name-token states into the retrained model brings most of the shortcut back
+(\fourBRestoreNameBZeroFullFTRange{} of the difference), and putting the retrained model's states into the shortcut
+model reproduces most of the repair (\fourBReverseNameBZeroFullFTRange), although every later block is unchanged;
+rank~64 gives the same picture (Table~\ref{tab:restore}). Retraining changes block~0 at every position, but the
+unchanged later blocks still respond to the old states, so most of the repair is carried by the name-token states
+block~0 passes on. The repair does not make the two names' states alike, and whether the names can still be told apart
+was not tested (Appendix~\ref{app:restore}). Other blocks carry their repair differently: at block~10 it is split
+between the name tokens and the answer position, and at block~3 it is only partly at the name tokens, except under
+rank~64. This patching shows where block~0's repair is carried, not why block~0 and the late blocks repair faster on
+average; that both act on the name directly is a post-hoc explanation (Section~\ref{sec:discussion}).

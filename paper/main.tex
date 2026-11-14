@@ -34,15 +34,16 @@ Interpretability tools can show where a behaviour happens inside a language mode
 about where a repair will work? We plant a shortcut with known ground truth: GPT-2 small learns IMDB sentiment while
 an invented actor name always comes with the same label. The logit lens, block swaps and activation patching agree
 that the name reaches the answer only in the last three blocks. We retrain single transformer blocks on clean data
-that shows each name with both labels, and count a repair as passing our mitigation criterion when the shortcut gap at
-least halves while clean accuracy falls by at most two percentage points. In the fully fine-tuned models every single
-block passes after one epoch, including blocks far from the located ones. Under limited training the blocks differ:
-block~0 and the later blocks are fastest, a pattern noticed post hoc and confirmed by a registered test on two new
-seeds under the same settings. The swap ranking tracks this variation closely (Spearman \lThreeSpearmanFullFTRange{}
-with a small repair), but localization does not consistently identify the best block or single out block~0, whose
-repair, patching shows, is largely carried by the name-token states it passes on. The correlation is weaker under
-LoRA. In Pythia-160M every single block passes when retrained with counter-examples. In GPT-2, no single block passed
-the mitigation criterion on the matched trigger-free repair data.
+that shows each name with both labels; a repair passes our mitigation criterion when the shortcut gap at least halves
+while clean accuracy falls by at most two percentage points. In the fully fine-tuned models every single block passes
+after one epoch, including blocks far from the located ones. Under limited training, block~0 and the later blocks
+remove more of the gap than blocks 1--5 on average, a pattern noticed post hoc and confirmed by a registered test on
+two new seeds under the same settings. The swap ranking tracks this variation closely (Spearman
+\lThreeSpearmanFullFTRange{} with a small repair) but does not consistently identify the best block or single out
+block~0, whose repair, patching shows, is largely carried by the name-token states it passes on. In Pythia-160M, too,
+every single block passes with counter-examples. Ranking agreement is weaker under LoRA and more variable across seeds
+in Pythia. In GPT-2, no single block passed when the name sentence
+was removed from otherwise matched repair data.
 \end{abstract}
 
 \begin{IEEEkeywords}

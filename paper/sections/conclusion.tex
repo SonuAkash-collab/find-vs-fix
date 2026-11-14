@@ -3,15 +3,15 @@
 Knowing where a shortcut acts told us which blocks repair it well, but not where repair is possible. For a name
 shortcut planted in GPT-2 small, three interpretability analyses agreed that the name takes over in the last three
 blocks. In the fully fine-tuned models, every single block could be retrained on data with counter-examples to pass
-the mitigation criterion after one epoch, and under limited training block~0 and the later blocks were fastest. Under
-full fine-tuning, localization tracked this ranking closely but did not consistently identify the best block and did
+the mitigation criterion after one epoch, and under limited training block~0 and the later blocks removed more of the
+gap than blocks 1--5 on average. Under full fine-tuning, localization tracked the ranking of the blocks closely but did not consistently identify the best block and did
 not single out block~0, whose repair is largely carried by the states the name tokens pass to the later blocks; under
 LoRA and in Pythia-160M the link was weaker. In our GPT-2 retraining tests, no single block passed the mitigation
-criterion on the matched trigger-free data.
+criterion when the name sentence was removed from otherwise matched repair data.
 
 For using interpretability to guide repairs, these results suggest that localization is useful for ranking candidate
-blocks and for choosing the layer of a training-free read-out, but that a fast repair site may lie outside the located
-blocks. An exploratory contrast with memorized wrong labels, where only one block passed, shows that every-block repair
+blocks, and that among the layers we tested it pointed to the best one for a training-free read-out, but that a fast
+repair site may lie outside the located blocks. An exploratory contrast with memorized wrong labels, where only one block passed, shows that every-block repair
 does not hold in every setting.
 
 These conclusions rest on GPT-2 small and one shortcut that we inserted ourselves, one learning rate per repair
