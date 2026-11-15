@@ -1,22 +1,15 @@
 \section{Conclusion}
 \label{sec:conclusion}
-Knowing where a shortcut acts told us which blocks repair it well, but not where repair is possible. For a name
+We asked whether knowing where a shortcut acts inside a language model tells us where to repair it. For an actor-name
 shortcut planted in GPT-2 small, three interpretability analyses agreed that the name takes over in the last three
-blocks. In the fully fine-tuned models, every single block could be retrained on data with counter-examples to pass
-the mitigation criterion after one epoch, and under limited training block~0 and the later blocks removed more of the
-gap than blocks 1--5 on average. Under full fine-tuning, localization tracked the ranking of the blocks closely but did not consistently identify the best block and did
-not single out block~0, whose repair is largely carried by the states the name tokens pass to the later blocks; under
-LoRA and in Pythia-160M the link was weaker. In our GPT-2 retraining tests, no single block passed the mitigation
-criterion when the name sentence was removed from otherwise matched repair data.
+blocks. Yet with a full epoch of clean data that shows the name with both labels, retraining any one of the twelve
+blocks repaired it, and without those counter-examples no block did. With a small training budget the blocks differed
+sharply, and the localization ranked them well, though it underrated the first block, which repairs by changing what
+the name's own tokens pass on to the rest of the network.
 
-For using interpretability to guide repairs, these results suggest that localization is useful for ranking candidate
-blocks, and that among the layers we tested it pointed to the best one for a training-free read-out, but that a fast
-repair site may lie outside the located blocks. An exploratory contrast with memorized wrong labels, where only one block passed, shows that every-block repair
-does not hold in every setting.
-
-These conclusions rest on GPT-2 small and one shortcut that we inserted ourselves, one learning rate per repair
-method, and three localization analyses, with a retraining check in Pythia-160M (with counter-examples only) and
-exploratory checks on a second cue and a second dataset. The next steps are a blind test in Pythia-160M, where the fast
-blocks and the read-out layer are predicted from the tools before the new small-budget repair tests are run (its
-full-epoch repairs are reported here); whether the shortcut comes back faster after a block-0 repair, which leaves the
-later blocks' response to the old states in place; and shortcuts that arise naturally.
+For anyone using interpretability to guide a repair, the lesson is to use localization to rank candidate blocks, to
+check the repair data before the block, and to remember that a fast repair site can lie outside the located region.
+These conclusions rest on small models and one shortcut that we planted ourselves, with checks on a second model, a
+second cue and a second dataset. The natural next steps are a blind test in Pythia, where the fast blocks are
+predicted from the analyses before the repairs are run; whether a shortcut repaired at block~0 returns faster under
+renewed shortcut training; and shortcuts that arise naturally.

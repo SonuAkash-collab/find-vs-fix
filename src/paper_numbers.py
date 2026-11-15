@@ -358,6 +358,13 @@ def sec_nonames():
     S = "13. Retraining without the names (Phase 3c)"
     with_dir = {FT: "retrain_l4", R4: "lora_r4/retrain", R64: "lora_r64/retrain"}
     without_dir = {FT: "retrain_nonames", R4: "lora_r4/retrain_nonames", R64: "lora_r64/retrain_nonames"}
+    r = "retrain_l4/seed0.json"
+    for key, q in (("baseline.accuracy.opposite", "worked example acc(opposite), shortcut model"),
+                   ("runs.0.accuracy.opposite", "worked example acc(opposite), block 0 retrained"),
+                   ("baseline.accuracy.none", "worked example acc(none), shortcut model"),
+                   ("runs.0.accuracy.none", "worked example acc(none), block 0 retrained")):
+        direct(S, q, FT, 0, r, key)
+        derived(S, q + " (percent)", FT, 0, r, [(r, key)], "100 x value, 1 decimal", lambda a: f"{100 * a:.1f}")
     for cond in (FT, R4, R64):
         for arm, d in (("with names", with_dir[cond]), ("without names", without_dir[cond])):
             for s in SEEDS:
@@ -619,6 +626,16 @@ def sec_weakfix():
             derived(S, "L3 Spearman(swap, weak fix)", cond, s, [rel, sw], ins + sins,
                     f"Spearman over 12 blocks: weak-fix ranking value ({note}) vs swap case (a) (G - gap_b) / G",
                     lambda *v: spearman(_l3_vals(*v[:26]), [(v[26] - x) / v[26] for x in v[27:]]))
+            if cond == FT:
+                derived(S, "L3 swap rank of block 0 (post hoc)", cond, s, sw, sins,
+                        "rank of block 0 among 12 by swap case (a) (G - gap_b) / G (1 = largest; ties against it)",
+                        lambda g, *x: 1 + sum(1 for b in range(12) if (g - x[b]) / g > (g - x[0]) / g))
+                derived(S, "L3 swap mean of blocks 1-5 (post hoc)", cond, s, sw, sins,
+                        "mean over b = 1..5 of swap case (a) (G - gap_b) / G",
+                        lambda g, *x: sum((g - x[b]) / g for b in range(1, 6)) / 5)
+                derived(S, "L3 Spearman(depth, weak fix) (post hoc)", cond, s, rel, ins,
+                        f"Spearman over 12 blocks: weak-fix ranking value ({note}) vs block index",
+                        lambda *v: spearman(_l3_vals(*v), list(range(12))))
 
 
 def sec_registered_rest():
@@ -1141,6 +1158,17 @@ Q_TAGS = {
     "L3 localized block": "lThreeLocalizedBlock",
     "L3 rank of the localized block": "lThreeRankLocalized",
     "L3 rank of block 0": "lThreeRankBZero",
+    "L3 swap rank of block 0 (post hoc)": "lThreeSwapRankBZero",
+    "L3 swap mean of blocks 1-5 (post hoc)": "lThreeSwapMeanOneToFive",
+    "L3 Spearman(depth, weak fix) (post hoc)": "lThreeSpearmanDepth",
+    "worked example acc(opposite), shortcut model": "exOppBefore",
+    "worked example acc(opposite), block 0 retrained": "exOppAfter",
+    "worked example acc(none), shortcut model": "exNoneBefore",
+    "worked example acc(none), block 0 retrained": "exNoneAfter",
+    "worked example acc(opposite), shortcut model (percent)": "exOppBeforePct",
+    "worked example acc(opposite), block 0 retrained (percent)": "exOppAfterPct",
+    "worked example acc(none), shortcut model (percent)": "exNoneBeforePct",
+    "worked example acc(none), block 0 retrained (percent)": "exNoneAfterPct",
     "L3 best block": "lThreeBestBlock",
     "L3 Spearman(swap, weak fix)": "lThreeSpearman",
     "2b blocks 9-11 removed / best other 3-block window": "twoBLateRatio",

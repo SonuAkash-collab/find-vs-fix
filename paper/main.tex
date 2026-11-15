@@ -30,20 +30,21 @@ PES University, Bengaluru, India}}
 \maketitle
 
 \begin{abstract}
-Interpretability tools can show where a behaviour happens inside a language model, but what does that location predict
-about where a repair will work? We plant a shortcut with known ground truth: GPT-2 small learns IMDB sentiment while
-an invented actor name always comes with the same label. The logit lens, block swaps and activation patching agree
-that the name reaches the answer only in the last three blocks. We retrain single transformer blocks on clean data
-that shows each name with both labels; a repair passes our mitigation criterion when the shortcut gap at least halves
-while clean accuracy falls by at most two percentage points. In the fully fine-tuned models every single block passes
-after one epoch, including blocks far from the located ones. Under limited training, block~0 and the later blocks
-remove more of the gap than blocks 1--5 on average, a pattern noticed post hoc and confirmed by a registered test on
-two new seeds under the same settings. The swap ranking tracks this variation closely (Spearman
-\lThreeSpearmanFullFTRange{} with a small repair) but does not consistently identify the best block or single out
-block~0, whose repair, patching shows, is largely carried by the name-token states it passes on. In Pythia-160M, too,
-every single block passes with counter-examples. Ranking agreement is weaker under LoRA and more variable across seeds
-in Pythia. In GPT-2, no single block passed when the name sentence
-was removed from otherwise matched repair data.
+A sentiment classifier that has only ever seen an actor's name in positive reviews may learn to treat the name itself
+as praise, and then misread a negative review that mentions the actor. Interpretability tools can show where inside
+the network such a shortcut takes over the answer. Should a repair target those layers? We plant this shortcut in
+GPT-2 small and compare where three interpretability analyses locate it with where retraining a single transformer
+block can repair it. The name takes over late, in the last three blocks. Yet in fully fine-tuned GPT-2, given a full epoch of clean data that
+shows the name with both labels, retraining any one of the 12 blocks at least halves the accuracy lost to a
+misleading name, while accuracy on reviews without the name drops by at most two percentage points. Location matters
+again when the repair is limited. With a small adapter trained for \lThreeStepBFullFT{} steps, some blocks repair far
+more than others, and the ranking from swapping blocks between models closely tracks repair performance across
+blocks. In one seed, however, the first block gave the best repair even though the swaps ranked it fourth. In a separate
+experiment, patching showed that most of the effect of retraining the first block was carried by the states at the
+actor's name. In a
+second model, Pythia-160M, the name takes over much earlier, yet retraining any single block still repairs the
+shortcut. Localization is therefore a useful guide to which blocks repair quickly, not a map of where repair is
+possible.
 \end{abstract}
 
 \begin{IEEEkeywords}

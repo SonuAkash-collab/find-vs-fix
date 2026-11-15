@@ -83,6 +83,15 @@ Weak fix, step $B$, seeds 3/4 & 0 & \lSevenBZeroFullFTsThree/\lSevenBZeroFullFTs
 \end{tabular}
 \end{table}
 
+\textbf{The test on new seeds.} After noticing the pattern in seeds 0--2, we registered two predictions and trained
+two new full fine-tuning models (seeds 3 and 4) with the same data and recipe: with the weak fix at step~$B$, block~0
+should beat the mean of blocks 1--5, and the mean of blocks 6--10 should beat it, each by at least 0.10 in both seeds.
+Block~0 led blocks 1--5 by \lSevenRuleOneFullFTsThree{} and \lSevenRuleOneFullFTsFour{} of the gap, and blocks 6--10
+led them by \lSevenRuleTwoFullFTsThree{} and \lSevenRuleTwoFullFTsFour; both criteria were met, and the shortcut-data
+control kept the shortcut. The test covers new training runs of the same model, data and recipe, not LoRA, full-block
+retraining, other learning rates or new swap measurements. Within blocks 6--10, block~6 stayed close to the slow blocks
+in the new seeds (post hoc). Speed throughout is measured in training steps at one learning rate, not wall-clock time.
+
 \textbf{Early against late blocks.} The registered budget test retrained single blocks 0, 2, 4, 6, 8, 9, 10 and 11
 with the settings of Section~\ref{sec:fix}, stopped at step 200, and predicted that at step 100 the mean fraction of
 the gap removed by single blocks 9--11 exceeds that of single blocks 0, 2 and 4 by at least 0.20 in every seed. The
@@ -181,7 +190,7 @@ seed 0/1/2 unless noted). The other registered rules are in Table~\ref{tab:prere
 Prediction & Decision rule & Observed & Registered criterion \\
 \midrule
 Lens: true sentiment readable before a late takeover & lens reading rule & cal.\ acc(\textit{opposite}) at layer 9: \lensCalOppLNineFullFT & reading: overthinking (late takeover) \\
-Name reaches the answer only in blocks 9--11 & patching, $\Fl$ by layer & $\Fl(9) =$ \patchFLastLNineFullFT & met (full FT) \\
+Built early, used late: the name reaches the last token late, after being carried elsewhere & first $L$ with $\Fl \ge 0.5$ is $\ge 7$, and $F(\text{not last}) \ge 0.5$ for every $L \le 4$ & arrival layer \patchArrivedAtFullFT; $\Fl(9) =$ \patchFLastLNineFullFT{} (the name reaches the answer only in blocks 9--11) & met (full FT) \\
 Clean blocks 9--11 remove the shortcut (swap a) & mitigation criterion & \swapARemovedLateFullFT & met (also blocks 10--11; no single block) \\
 Swap control keeps the shortcut & kept $\ge 0.80$ & \swapCiiKeptLateFullFT & met \\
 Shortcut blocks 9--11 create it in the clean twin (swap b) & created gap $\ge 0.20$ & FT \swapBCreatedLateFullFT; r64 \swapBCreatedLateLoraRSixtyFour & not met for FT (all 12 blocks create it); met for r64 \\
@@ -199,7 +208,7 @@ Speed on two new FT models (test registered after seeds 0--2 were seen, before t
 Speed on two new FT models: blocks 6--10 beat blocks 1--5 & mean difference $\ge 0.10$ in both seeds & seed 3/4: \lSevenRuleTwoFullFTsThree/\lSevenRuleTwoFullFTsFour & met \\
 Read-out at layer 9 removes the shortcut & mitigation criterion & \pSixRemovedLNineFullFT & met \\
 Random vector (same $\alpha$) removes $<$ half as much & ratio $< 0.5$ & ratio \pSixRandomRatioFullFT & not met (reached in seed 2 only) \\
-Equal dose: layer 9 best & $l^*=9$ removes most & \pSixBEqLNineRemovedFullFT & met \\
+Read-out: layer 9 best & $l^*=9$ removes most & \pSixBEqLNineRemovedFullFT & met \\
 Random vector (own $\alpha$) removes $<$ half as much & ratio $< 0.5$ & ratio \pSixBRandomRatioFullFT & met \\
 Cue-free $\alpha$ still removes the shortcut & mitigation criterion & \pSixBCueFreeRemovedFullFT & met \\
 LoRA swap control keeps the shortcut & kept $\ge 0.80$ & r4 \swapCiiKeptLateLoraRFour; r64 \swapCiiKeptLateLoraRSixtyFour & not met (r4: reached in seed 2 only; r64: missed in seed 0) \\

@@ -1,6 +1,37 @@
 \section{Generalization}
 \label{sec:generalize}
 
+How far do these findings carry? The most informative test is a second model in which the shortcut acts somewhere
+else; LoRA fine-tuning gives a boundary case in which not every block can repair it; a second cue and a second dataset
+repeat the repair result; and memorized wrong labels show where it stops.
+
+\subsection{A second model: Pythia-160M}
+\label{sec:pythia}
+Pythia-160M~\cite{biderman2023pythia} learns the shortcut with its own names (gap \gapPythiaRange; clean twins
+\gapPythiaCleanRange), but the tools place it elsewhere. The lens shows the name taking over the answer already at
+layer \pyTakeoverPythiaRange, and the swaps agree: the clean twin's blocks 9--11 remove almost nothing
+(\pySwapRemovedLatePythiaRange), while block~0 alone removes \pySwapRemovedBZeroPythiaRange{} and the control keeps the
+shortcut. The tools agree within each model, but the location differs between models: with the same task, data
+construction and recipe, the takeover moves from the last three blocks of GPT-2 to layer \pyTakeoverPythiaRange{} in
+Pythia. Where a shortcut acts therefore depends on the model setup, not only on the shortcut; besides the
+architecture, the tokenizer and the names also differ.
+
+\textbf{Repair in Pythia.} We retrained single blocks as in Section~\ref{sec:fix}, on Pythia's own clean-twin data.
+With counter-examples, all 12 single blocks pass in every seed, removing
+\pyRetrainSingleMinPythia--\pyRetrainSingleMaxPythia{} of the gap (pooled over blocks and seeds), while the largest
+single-block drop in acc(\textit{none}) in each seed is \pyRetrainMaxDropPythiaRange{} (Table~\ref{tab:extra}). This includes
+the late blocks: swapping blocks 9--11 together barely moves the shortcut, yet each of them passes when retrained alone,
+and retraining the three together removes \pyRetrainRemovedLatePythiaRange. So in Pythia, where the location
+actually moves, every block can still repair the shortcut.
+The block groups, the all-transformer-block baseline and both shortcut-data controls behave as in GPT-2
+(Table~\ref{tab:prereg-rest}).
+
+\textbf{Localization and repair in Pythia.} Pythia's swap and repair rankings were positively associated in every seed,
+but agreement varied more across seeds than in the fully fine-tuned GPT-2 models (Spearman
+\pyRetrainSpearmanPythiaRange, against \spearmanSwapRetrainFullFTRange). The Pythia replication is partial: the repair without counter-examples, the small-budget speed test and
+the read-out were not run, so it does not show that the counter-examples are needed there, that GPT-2's speed order
+holds, or that the read-out carries over.
+
 \subsection{LoRA fine-tuning}
 \label{sec:lora}
 With LoRA~\cite{hu2022lora}, GPT-2 learns a weaker shortcut at rank~4 (gap \gapLoraRFourRange) and a stronger one at
@@ -21,31 +52,6 @@ rank~4 the choice of block also matters; again none passes without the counter-e
 \spearmanSwapRetrainLoraRFourRange) but not consistently at rank~64 (\spearmanSwapRetrainLoraRSixtyFourRange). We did not
 test the read-out on LoRA models.
 
-\subsection{A second model: Pythia-160M}
-\label{sec:pythia}
-Pythia-160M~\cite{biderman2023pythia} learns the shortcut with its own names (gap \gapPythiaRange; clean twins
-\gapPythiaCleanRange), but the tools place it elsewhere. The lens shows the name taking over the answer already at
-layer \pyTakeoverPythiaRange{} (Table~\ref{tab:extra}), and the swaps agree: the clean twin's blocks 9--11 remove almost nothing
-(\pySwapRemovedLatePythiaRange), while block~0 alone removes \pySwapRemovedBZeroPythiaRange{} and the control keeps the
-shortcut. The tools agree within each model, but the location differs between models: with the same task, data
-construction and recipe, the takeover moves from the last three blocks of GPT-2 to layer \pyTakeoverPythiaRange{} in
-Pythia. Where a shortcut acts therefore depends on the model setup, not only on the shortcut; besides the
-architecture, the tokenizer and the names also differ.
-
-\textbf{Repair in Pythia.} We retrained single blocks as in Section~\ref{sec:fix}, on Pythia's own clean-twin data.
-With counter-examples, all 12 single blocks pass in every seed, removing
-\pyRetrainSingleMinPythia--\pyRetrainSingleMaxPythia{} of the gap (pooled over blocks and seeds), while the largest
-single-block drop in acc(\textit{none}) in each seed is \pyRetrainMaxDropPythiaRange{} (Table~\ref{tab:extra}). This includes
-blocks 9--11: swapping them barely moves the shortcut, but retraining them removes \pyRetrainRemovedLatePythiaRange.
-The block groups, the all-transformer-block baseline and both shortcut-data controls behave as in GPT-2
-(Table~\ref{tab:prereg-rest}).
-
-\textbf{Localization and repair in Pythia.} Pythia's swap and repair rankings were positively associated in every seed,
-but agreement varied more across seeds than in the fully fine-tuned GPT-2 models (Spearman
-\pyRetrainSpearmanPythiaRange, against \spearmanSwapRetrainFullFTRange). The Pythia replication is partial: the repair without counter-examples, the small-budget speed test and
-the read-out were not run, so it does not show that the counter-examples are needed there, that GPT-2's speed order
-holds, or that the read-out carries over.
-
 \subsection{A second cue and a second dataset}
 \label{sec:othercues}
 Does the repair result depend on the particular cue or dataset? Table~\ref{tab:othercues} repeats the retraining test,
@@ -59,7 +65,10 @@ without them.
 takeover layer: range over seeds. Blocks: single blocks that pass the mitigation criterion in every seed, with / without
 counter-examples. Removed: range over blocks and seeds of the fraction of the gap removed. The name/IMDB row is the
 shortcut of Sections~\ref{sec:find}--\ref{sec:how}, with the matched with-names arm of Section~\ref{sec:fix}. The word
-cue and Yelp are exploratory (Sec.~\ref{sec:setup}); the find tools were not run on Yelp (--).}
+cue and Yelp are exploratory (Sec.~\ref{sec:setup}); the find tools were not run on Yelp (--). The rows are not
+directly comparable in size: the name/IMDB row is evaluated on all 2,000 test reviews with the plain review as
+\emph{none}, the word row only on the test reviews that contain film or movie, with both words replaced by
+``picture'' as \emph{none}.}
 \label{tab:othercues}
 \footnotesize
 \setlength{\tabcolsep}{3pt}

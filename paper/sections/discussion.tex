@@ -1,51 +1,43 @@
 \section{Discussion}
 \label{sec:discussion}
 
-\textbf{What localization predicts about repair.} Across our conditions, localization predicted the relative
-effectiveness of single-block repair better than where repair is possible. Under full fine-tuning the swap ranking of
-the 12 blocks agrees closely with both full-epoch retraining and the weak fix. Yet with counter-examples every block
-could be repaired, the located block was not consistently the best, and block~0, which under limited training repairs faster
-than blocks 1--5 on average, was not singled out. The agreement is weaker under LoRA, especially at rank~64, positive but variable across
-seeds in Pythia, and not consistent in the memorized-label setup of our exploratory comparison. Localization therefore
-narrows down which blocks repair well in a given training regime; it does not delimit where repair is possible, and
-how well it ranks the blocks depends on how the model was trained.
+\textbf{What localization is good for.} Suppose you know where a shortcut reaches a model's answer. How much does that
+help you choose a block to retrain, at the budget you actually have? Our results give two answers. With a full epoch
+and corrective data, location hardly matters: every block works, so localization cannot tell you where repair is
+possible, only that the located blocks are among the places it is. With a small budget, location matters a great
+deal, and here localization is useful: under full fine-tuning the swap ranking tracks which blocks repair faster,
+better than the simple rule of preferring later blocks (a post-hoc comparison). It is not complete. It underrates block~0, which in one seed
+was the best block of all, and it does not consistently put the best block first. Under LoRA, and across seeds in
+Pythia, the link is weaker. Localization therefore narrows down which blocks repair well in a given training regime;
+it does not delimit where repair is possible.
 
-\textbf{Two repair sites: the name tokens and the answer position.} Two places act on the name directly. Block~0 is
-the first block to see the name embedding, and most of its fix is carried by what the name tokens pass on to the
-unchanged later blocks (Section~\ref{sec:how}). Blocks 9--11 are where the name is moved to the answer, and retraining
-block~10 places part of the fix at the answer position, though not in every seed (Appendix~\ref{app:restore}). Blocks
-1--5 have neither role in our models, and on average they repair more slowly than block~0 and the later blocks
-(Fig.~\ref{fig:speed}). The repair behaviour and where block~0's fix is carried are measured; the account linking them,
-that these places repair faster because they act on the name directly, is a post-hoc explanation that our experiments do not test.
+\textbf{Two places that act on the name.} Why are block~0 and the late blocks fast? A plausible account, which we
+noticed after the results and have not tested, is that both act on the name directly. Block~0 is the first block to
+see the name, and most of its repair is carried by what the name tokens pass on to the unchanged later blocks
+(Section~\ref{sec:how}). Blocks 9--11 are where the name is moved to the answer, and retraining block~10 places part of
+its repair at the answer position, though not in every seed (Appendix~\ref{app:restore}). Blocks 1--5 have neither
+role, and on average they repair more slowly.
 
-\textbf{What our analyses show about block~0.} Our patching already shows that the name-token states carry the cue's
-effect through the early layers (Section~\ref{sec:find}). That does not single out block~0: a patch at layer~0 replaces the input name before any block runs, and near-equal scores across
-the early layers do not point to one of them. Among single-block swaps, block~0 alone removes
-\swapARemovedBZeroFullFTRange{} of the gap, less than each of blocks 9, 10 and 11 alone
-(\swapARemovedSingleLateMinFullFT--\swapARemovedSingleLateMaxFullFT). So the single-block swaps rank block~0 below the
-late blocks, and our analyses do not single it out as a site that repairs faster than blocks 1--5. Identifying which upstream components feed
-the late blocks needs a more targeted analysis. In GPT-2 with planted actor names, Eshuijs
-et al.~\cite{eshuijs2025short} found that patching each component's direct effect on the answer singles out late
-attention heads and no MLP layer, while patching through those heads shows that MLP layers, the first one especially,
-supply what the heads read. Our analyses do not isolate the individual upstream-to-head pathways examined by their
-path-patching method, and their result need not carry over to our models. Surgical fine-tuning reached a related
-conclusion that the first layers suit input-level shifts~\cite{lee2023surgical}; here the input-level cue is the name.
+\textbf{Why our analyses underrate block~0.} The lens, swaps and patching all ask where the name's effect reaches the
+answer, and that is late. They are not built to find which earlier components feed that path. Single-block swaps do
+place block~0 above each of blocks 1--5, but below the late blocks, and patching shows the name tokens carrying the
+effect through all early layers without favouring one block. A more targeted analysis can do better: in GPT-2 with
+planted actor names, Eshuijs et al.~\cite{eshuijs2025short} found that the direct effect on the answer comes from late
+attention heads, while patching through those heads shows that early MLP layers, the first one especially, supply what
+the heads read. Whether this carries over to our models, and whether such an analysis would also predict repair
+speed, is open. Surgical fine-tuning reached a related conclusion, that the first layers suit input-level
+shifts~\cite{lee2023surgical}; here the input-level cue is the name.
 
-\textbf{The role of the repair data.} In the matched retraining comparison on the fully fine-tuned GPT-2 models,
-every single block passed the mitigation criterion with the counter-examples, and no single block passed on trigger-free repair data. With the
-counter-examples, successful repair was not restricted to the located blocks, the shortcut counterpart of Hase
-et al.'s~\cite{hase2023localization} finding that localization does not decide where a factual edit succeeds.
+\textbf{The repair data.} In the fully fine-tuned GPT-2 models, every single block repaired the shortcut when the
+repair data showed the names with both labels, and none did when the names were removed. This is the shortcut
+counterpart of Hase et al.'s~\cite{hase2023localization} finding that localization does not decide where a factual
+edit succeeds, with a simple reason: given data that contradicts the cue, any block can learn to counter it.
 
-\textbf{The zero-training end.} The read-out matches a window inside the model: by layer~9 the true sentiment is
-readable, and the name has not yet reached the answer. Taking the answer from inside this window removes the most of
-the layers tested, and taking it from after the window removes less. Because the read-out repeats the lens measurement
-at layer~9, it is a consistency check of the location rather than independent evidence for it. The find tools are
-what locate this window: in GPT-2 they agree on it; in Pythia they agree on a much earlier takeover, which sets up the
-test we propose next.
+\textbf{The read-out.} Reading the answer out of layer~9 works because of a window inside the model: by layer~9 the
+true sentiment is readable and the name has not yet reached the answer. Of the layers we tested, layer~9, inside the
+window, works best. Because the read-out repeats the lens measurement at layer~9, it confirms the location rather
+than providing independent evidence for it. In Pythia the window, if there is one, would lie much earlier.
 
-\textbf{An exploratory contrast: memorized labels.} For memorized wrong labels, which share no cue, only one block
-passed the criterion under the tested conditions, so every-block repair does not hold in that setup, and the block that
-passed is not one our analyses point to. Because the dataset, task and training size also differ, the contrast does not
-show that a shared cue is what makes every block repairable. The passing block is block~\wlPassingBlockNoisy, the same
-block that repairs the name shortcut faster than blocks 1--5 on average; given the different data and task, we note this only as a post-hoc
-observation.
+\textbf{Where it stops: memorized labels.} For memorized wrong labels, which share no cue, only block~0 passed under
+the tested conditions, and our analyses did not point to it. The dataset, task and training size also differ, so this
+contrast does not show that a shared cue is what makes every block repairable; we report it as exploratory.

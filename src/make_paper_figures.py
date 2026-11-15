@@ -306,7 +306,7 @@ def fig_readout():
     ax.set(xlabel="layer $l^*$ whose last-token state is read out", ylabel="fraction of gap removed",
            xticks=layers, ylim=(-0.05, 1.05))
     layout(fig, height)
-    top_legend(fig, [Line2D([], [], color=BLUE, marker="o", ms=2.5, label="read-out, equal dose"),
+    top_legend(fig, [Line2D([], [], color=BLUE, marker="o", ms=2.5, label="read-out (strength tuned per layer)"),
                      Line2D([], [], color=ORANGE, marker="x", ls="none", label="random vector (own $\\alpha$)")],
                height)
     save(fig, name, rels)
