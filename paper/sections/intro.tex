@@ -1,0 +1,40 @@
+\section{Introduction}
+\label{sec:intro}
+
+Suppose a sentiment classifier is trained on movie reviews in which one actor's name appears only in positive reviews.
+The cheapest way to fit that data is to treat the name itself as evidence of praise. The model then reaches high
+accuracy on similar data, yet misreads a negative review that happens to mention the actor. This is \emph{shortcut
+learning}~\cite{geirhos2020shortcut}: the model relies on a cue that predicts the label in its training data but does
+not reflect the task.
+
+Interpretability offers tools to \emph{find} where such a cue acts inside a network: reading intermediate predictions
+with the logit lens~\cite{nostalgebraist2020logitlens,belrose2023tunedlens}, swapping components between models, or
+patching activations~\cite{vig2020causal,meng2022locating,heimersheim2024patching}. Suppose these tools tell us that the
+actor's name starts to sway the prediction in the last few layers. Should we retrain those layers to fix it? It is
+natural to assume so. For factual knowledge, however, Hase et al.~\cite{hase2023localization} found that the layer
+where causal tracing locates a fact does not predict which layer is best to edit, and work on unlearning reached
+related conclusions~\cite{lee2025unlearning,guo2025mechanistic}. Whether the same holds for a shortcut learned during
+fine-tuning, and what localization tells us instead, is the question of this paper.
+
+We study it in a setting where the answer can be checked. We plant an invented actor name in 5\% of the training
+reviews of GPT-2 small, always with the same label, and train a twin model on the same data with the names assigned
+at random. Three analyses agree that the name reaches the model's answer only in the last three of its twelve blocks
+(Section~\ref{sec:find}). We then retrain one block at a time on clean data and ask which blocks can repair the
+shortcut, and how fast.
+
+The answer has two parts. With a full epoch of clean data in which each name appears with both labels, every one of
+the twelve blocks can be retrained to halve the shortcut gap at almost no cost in clean accuracy, including the very
+first block, far from where the name takes over (Section~\ref{sec:fix}). With less training, the blocks differ
+sharply: the first block and the later blocks repair much faster than blocks 1--5. Here localization helps. In the fully fine-tuned
+models the block ranking from the swaps closely tracks repair speed, and (in a post-hoc comparison) better than simply
+preferring later blocks. It
+does underrate the first block, whose repair, patching shows, works by changing what the name's own tokens pass on to
+the later blocks (Section~\ref{sec:how}). Localization is thus a good guide to \emph{which blocks repair quickly},
+not a map of \emph{where repair is possible}.
+
+Eshuijs et al.~\cite{eshuijs2025short} already traced a similar actor-name shortcut in GPT-2 to late attention heads
+fed by early MLP layers. What we add is the comparison of such a localization with a map of repair across the whole
+network at different training budgets, and patching between repaired and unrepaired models to show how an early repair
+changes a late decision. A read-out of the answer from an intermediate layer, a second model (Pythia-160M), a second
+cue, a second dataset and memorized wrong labels test how far these findings carry (Sections~\ref{sec:readout}
+and~\ref{sec:generalize}).

@@ -38,6 +38,10 @@ class MacrosEqualTable(unittest.TestCase):
         for (q, m), g in by_row.items():
             if sorted(g) == ["0", "1", "2"]:
                 n_triples += 1
+                r = pn.seed_range([g["0"], g["1"], g["2"]])
+                if r is not None:
+                    n_triples += 1
+                    self.assertEqual(macros[pn.macro_name(q, m) + "Range"], r, f"range {q} | {m}")
                 self.assertEqual(macros[pn.macro_name(q, m)], f"{g['0']}/{g['1']}/{g['2']}", f"{q} | {m}")
         self.assertEqual(len(macros), len(rows) + n_triples, "macros that match no table row")
         self.assertEqual(pn.check_tex_against_md(read(TEX), read(MD)), len(macros))
@@ -48,7 +52,8 @@ class MacrosEqualTable(unittest.TestCase):
             if line.startswith("\\newcommand"):
                 source = lines[i - 1]
                 self.assertTrue(source.startswith("% ") and
-                                ("results/" in source or "data_nonames/manifest.json" in source), line)
+                                ("results/" in source or "data_nonames/manifest.json" in source
+                                 or "data_wordcue/manifest.json" in source or source.startswith("% range of ")), line)
 
     def test_committed_files_are_up_to_date(self):
         pn.collect()

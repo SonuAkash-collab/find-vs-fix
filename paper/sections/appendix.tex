@@ -1,0 +1,274 @@
+\section{What retraining blocks 0, 3 and 10 change}
+\label{app:restore}
+For blocks 0, 3 and 10 we retrained the full fine-tuned and the rank-64 shortcut models of each seed (the settings of Section~\ref{sec:fix};
+all 18 pass the mitigation criterion) and patched between each pair right after the retrained block $b$, at layer $b+1$, on
+the 2,000 \emph{opposite} reviews. The \emph{restore} puts the shortcut model's states into the retrained model, the
+\emph{reverse} puts the retrained model's states into the shortcut model; both are shares of the same difference in the
+name-aligned $d$ between the two models (Table~\ref{tab:restore}). After retraining block~0, the two names' states at
+the name tokens differ \fourBAbRatioBZeroFullFTRange{} times as much as before (rank~64:
+\fourBAbRatioBZeroLoraRSixtyFourRange).
+
+\begin{table*}[!t]
+\centering
+\caption{Restore and reverse right after the retrained block (seed 0/1/2). The registered rule is $\ge 0.5$ in all three
+seeds, for the name tokens and for the block-10 restore at the last token; the other last-token cells are
+descriptive.}
+\label{tab:restore}
+\footnotesize
+\begin{tabular}{llllll}
+\toprule
+Model & Block & Restore, name & Reverse, name & Restore, last & Reverse, last \\
+\midrule
+Full FT & 0 & \fourBRestoreNameBZeroFullFT & \fourBReverseNameBZeroFullFT & \fourBRestoreLastBZeroFullFT & \fourBReverseLastBZeroFullFT \\
+Full FT & 3 & \fourBRestoreNameBThreeFullFT & \fourBReverseNameBThreeFullFT & \fourBRestoreLastBThreeFullFT & \fourBReverseLastBThreeFullFT \\
+Full FT & 10 & \fourBRestoreNameBTenFullFT & \fourBReverseNameBTenFullFT & \fourBRestoreLastBTenFullFT & \fourBReverseLastBTenFullFT \\
+Rank 64 & 0 & \fourBRestoreNameBZeroLoraRSixtyFour & \fourBReverseNameBZeroLoraRSixtyFour & \fourBRestoreLastBZeroLoraRSixtyFour & \fourBReverseLastBZeroLoraRSixtyFour \\
+Rank 64 & 3 & \fourBRestoreNameBThreeLoraRSixtyFour & \fourBReverseNameBThreeLoraRSixtyFour & \fourBRestoreLastBThreeLoraRSixtyFour & \fourBReverseLastBThreeLoraRSixtyFour \\
+Rank 64 & 10 & \fourBRestoreNameBTenLoraRSixtyFour & \fourBReverseNameBTenLoraRSixtyFour & \fourBRestoreLastBTenLoraRSixtyFour & \fourBReverseLastBTenLoraRSixtyFour \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\textbf{Block 3.} Under rank~64 the restore at the name tokens holds in every seed, so the name tokens carry most of
+block~3's fix; the reverse holds in two seeds of three (seed~1: \fourBReverseNameBThreeLoraRSixtyFoursOne). Under full
+fine-tuning both are mixed. Restoring every position except the last brings back \fourBRestoreNotlastBThreeFullFTRange{}
+(rank~64: \fourBRestoreNotlastBThreeLoraRSixtyFourRange), so block~3's fix sits on the review's tokens before the
+answer, but not only on the name tokens.
+
+\textbf{Block 10.} Under full fine-tuning the restore at the name tokens stays below 0.5 in every seed and the restore at
+the last token is mixed; under rank~64 both are mixed. Neither position alone carries the fix, which fits block~10
+being where the name's effect moves to the answer position (Section~\ref{sec:find}).
+
+\section{Repair speed by block}
+\label{app:budget}
+Table~\ref{tab:speed} gives the per-seed values behind the speed pattern of Section~\ref{sec:how}.
+
+\begin{table}[!htbp]
+\centering
+\caption{Fraction of the gap removed under limited training (seed 0/1/2; the last rows are the registered test on new
+seeds 3/4). Groups are the mean over their blocks within each seed. Full FT unless noted. The one-epoch rows are the
+original single-block retraining runs; Table~\ref{tab:extra} gives block~0 from the matched rerun with the same
+settings.}
+\label{tab:speed}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}llc@{}}
+\toprule
+Repair & Blocks & Removed \\
+\midrule
+Full-block, 100 steps & 0 & \budgetBZeroStepHundredFullFT \\
+ & 2 & \budgetBTwoStepHundredFullFT \\
+ & 4 & \budgetBFourStepHundredFullFT \\
+ & 9 & \budgetBNineStepHundredFullFT \\
+ & 10 & \budgetBTenStepHundredFullFT \\
+Full-block, 100 steps, rank-64 model & 0 & \budgetBZeroStepHundredLoraRSixtyFour \\
+ & 2 & \budgetBTwoStepHundredLoraRSixtyFour \\
+ & 4 & \budgetBFourStepHundredLoraRSixtyFour \\
+Weak fix, step $B$ & 0 & \uWeakStepBBZeroFullFT \\
+ & 1--5 & \uWeakStepBBOneToFiveFullFT \\
+ & 6--10 & \uWeakStepBBSixToTenFullFT \\
+Weak fix, step $2B$ & 0 & \uWeakBZeroFullFT \\
+ & 1--5 & \uWeakBOneToFiveFullFT \\
+ & 6--10 & \uWeakBSixToTenFullFT \\
+Weak fix, $2B$, rank-4 model & 0 & \uWeakBZeroLoraRFour \\
+ & 1--5 & \uWeakBOneToFiveLoraRFour \\
+Full-block, one epoch & 0 & \uRetrainBZeroFullFT \\
+ & 1--5 & \uRetrainBOneToFiveFullFT \\
+\midrule
+Weak fix, step $B$, seeds 3/4 & 0 & \lSevenBZeroFullFTsThree/\lSevenBZeroFullFTsFour \\
+ & 1--5 & \lSevenBOneToFiveFullFTsThree/\lSevenBOneToFiveFullFTsFour \\
+ & 6--10 & \lSevenBSixToTenFullFTsThree/\lSevenBSixToTenFullFTsFour \\
+ & 6 & \lSevenBSixFullFTsThree/\lSevenBSixFullFTsFour \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{The test on new seeds.} After noticing the pattern in seeds 0--2, we registered two predictions and trained
+two new full fine-tuning models (seeds 3 and 4) with the same data and recipe: with the weak fix at step~$B$, block~0
+should beat the mean of blocks 1--5, and the mean of blocks 6--10 should beat it, each by at least 0.10 in both seeds.
+Block~0 led blocks 1--5 by \lSevenRuleOneFullFTsThree{} and \lSevenRuleOneFullFTsFour{} of the gap, and blocks 6--10
+led them by \lSevenRuleTwoFullFTsThree{} and \lSevenRuleTwoFullFTsFour; both criteria were met, and the shortcut-data
+control kept the shortcut. The test covers new training runs of the same model, data and recipe, not LoRA, full-block
+retraining, other learning rates or new swap measurements. Within blocks 6--10, block~6 stayed close to the slow blocks
+in the new seeds (post hoc). Speed throughout is measured in training steps at one learning rate, not wall-clock time.
+
+\textbf{Early against late blocks.} The registered budget test retrained single blocks 0, 2, 4, 6, 8, 9, 10 and 11
+with the settings of Section~\ref{sec:fix}, stopped at step 200, and predicted that at step 100 the mean fraction of
+the gap removed by single blocks 9--11 exceeds that of single blocks 0, 2 and 4 by at least 0.20 in every seed. The
+registered criterion was not met under full fine-tuning, where the late group was ahead in every seed by margins that
+varied, or under rank~64, where the two groups were close (per-seed differences in Tables~\ref{tab:prereg}
+and~\ref{tab:prereg-rest}). Block~0 is the main reason (post hoc): it counts as early but removes more of the gap than
+blocks 2 and 4 under both (Table~\ref{tab:speed}). The weak-fix test registered two caveats: late blocks may be easier to fix in general, and
+under LoRA the localized block comes from swaps whose own control failed.
+
+\section{Why the LoRA swap control fails}
+\label{app:lora-grid}
+Two rank-64 LoRA models of different seeds differ in their adapter initialization and in their training path (data
+order and dropout). We trained rank-64 models on a $3\times3$ grid of initialization seeds and data seeds (one of the
+nine collapsed during training and was excluded by a rule fixed before any swap) and swapped blocks 9--11 between pairs
+that differ only in the data seed (A), only in the initialization (B), or in both (C). Over all pairs, the swap fails to
+keep the shortcut in \lFiveFailPairsCellA{} pairs of cell A and \lFiveFailPairsCellC{} of cell C, but in
+\lFiveFailPairsCellB{} of cell B: the training path, not the initialization, makes late blocks incompatible across
+runs, in line with the view that independently trained networks need not share a representation basis. The registered
+test used three replicate pairs per cell (fraction kept: A \lFiveKeptCellARange, B \lFiveKeptCellBRange, C
+\lFiveKeptCellCRange) and, with roughly one failing pair in three, read the original failure as a single-pair event.
+
+\section{Where the adapters are placed}
+\label{app:lora-where}
+If LoRA adapters are placed only on blocks 0--5, the name's effect still reaches the answer position late, at layer
+\lFourArrivalEarlyRange{} in every seed (first layer with $\Fl \ge 0.5$). The late takeover is therefore largely a
+property of GPT-2's own later blocks, which are frozen here. With adapters only on blocks 6--11 it arrives at layer
+\lFourArrivalLateRange, so the arrival also moves with where the shortcut is learned. The early-only shortcut is weaker
+(gap \lFourGapEarlyRange, against \lFourGapLateRange{} for the late-only placement).
+
+\section{A partly reliable name}
+\label{app:partial}
+To separate LoRA rank from shortcut strength, we tried to give rank~64 a shortcut as weak as rank~4's by making the name
+agree with the label in only 90\%, 80\%, 70\% or 60\% of the named reviews. The seed-0 gaps were
+\lSixGapPNinetysZero, \lSixGapPEightysZero, \lSixGapPSeventysZero{} and \lSixGapPSixtysZero; no level matched rank~4,
+and the comparison was not run. The 90\% level fell just under the registered floor of 0.20, but the main reason is
+the step size: rank~4's gaps (\gapLoraRFourRange) lie between those of the 100\% and 90\% levels, and the pilot tested
+no level in between. Descriptively, at 90\% reliability only 50 contradicting reviews out of 10{,}000
+reduce the gap from \gapLoraRSixtyFoursZero{} to \lSixGapPNinetysZero.
+
+\section{A word-choice cue}
+\label{app:wordcue}
+We also planted a less obvious cue built from ordinary words: in a subset of the training reviews that use ``film'' or
+``movie'', every occurrence was set to ``film'' in positive and ``movie'' in negative reviews. GPT-2 did not learn it.
+With 5\% of the training reviews cued the seed-0 gap was \gapWordcueFivesZero, and with 10\% it was
+\gapWordcueTensZero{} (clean twin \gapWordcueTenCleansZero), while the task itself was learned (acc(\textit{none})
+\accNoneWordcueTensZero), so the find and fix analyses were not run. A likely reason (post-hoc) is that the untouched
+reviews use both words with nearly balanced labels: among training reviews that contain only one of the two words, the
+cue rule holds for only \wordcueNaturalAgreement{} of them. With those natural uses replaced by a neutral word the cue is
+learned (Section~\ref{sec:othercues}).
+
+\section{Further measurements}
+\label{app:extra}
+Table~\ref{tab:extra} gives values that the main text summarizes without listing them.
+
+\begin{table}[!htbp]
+\centering
+\caption{Further measurements (seed 0/1/2 unless noted). The block-0 rows come from the matched comparison of
+Fig.~\ref{fig:nonames}, whose with-name-sentence arm reran the single-block retraining with the same settings on the
+same GPU as the arm without it; they differ slightly from the original runs in Table~\ref{tab:speed}.}
+\label{tab:extra}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lc@{}}
+\toprule
+Measurement & Value \\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Patching, full FT shortcut models (Sec.~\ref{sec:find})}} \\
+$\Fl(10)$ & \patchFLastLTenFullFT \\
+$\Fl(11)$ & \patchFLastLElevenFullFT \\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Retraining block~0, full FT, removed (matched rerun, Sec.~\ref{sec:fix})}} \\
+with the name sentence & \ccWithNamesBZeroFullFT \\
+without the name sentence & \ccNoNamesBZeroFullFT \\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Pythia-160M lens, acc(\textit{opposite}), mean over seeds (Sec.~\ref{sec:pythia})}} \\
+best intermediate layer & \pyBestMidOppMeanPythia \\
+output & \pyFinalOppMeanPythia \\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Pythia-160M retraining (Sec.~\ref{sec:pythia})}} \\
+largest single-block acc(\textit{none}) drop & \pyRetrainMaxDropPythia \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Registered predictions and outcomes}
+\label{app:prereg-rest}
+\begin{table*}[!tp]
+\centering
+\caption{Registered predictions behind the claims in the main text and the appendices, with their outcomes (values are
+seed 0/1/2 unless noted). The other registered rules are in Table~\ref{tab:prereg-rest}.}
+\label{tab:prereg}
+\setlength{\tabcolsep}{3pt}
+\footnotesize
+\begin{tabular}{p{4.5cm}p{3.5cm}p{5.9cm}p{3.0cm}}
+\toprule
+Prediction & Decision rule & Observed & Registered criterion \\
+\midrule
+Lens: true sentiment readable before a late takeover & lens reading rule & cal.\ acc(\textit{opposite}) at layer 9: \lensCalOppLNineFullFT & reading: overthinking (late takeover) \\
+Built early, used late: the name reaches the last token late, after being carried elsewhere & first $L$ with $\Fl \ge 0.5$ is $\ge 7$, and $F(\text{not last}) \ge 0.5$ for every $L \le 4$ & arrival layer \patchArrivedAtFullFT; $\Fl(9) =$ \patchFLastLNineFullFT{} (the name reaches the answer only in blocks 9--11) & met (full FT) \\
+Clean blocks 9--11 remove the shortcut (swap a) & mitigation criterion & \swapARemovedLateFullFT & met (also blocks 10--11; no single block) \\
+Swap control keeps the shortcut & kept $\ge 0.80$ & \swapCiiKeptLateFullFT & met \\
+Shortcut blocks 9--11 create it in the clean twin (swap b) & created gap $\ge 0.20$ & FT \swapBCreatedLateFullFT; r64 \swapBCreatedLateLoraRSixtyFour & not met for FT (all 12 blocks create it); met for r64 \\
+Retraining any single block removes it & mitigation criterion & FT \retrainPassCountFullFT, r4 \retrainPassCountLoraRFour, r64 \retrainPassCountLoraRSixtyFour{} of 12 blocks & met for FT and r64; not met for r4 \\
+Late blocks retrain better at 100 steps & late $-$ early $\ge 0.20$ & \budgetLateMinusEarlyFullFT & not met (reached in seed 0 only) \\
+Swap and retrain rankings agree & Spearman $\ge 0.6$ & FT \spearmanSwapRetrainFullFT; r4 \spearmanSwapRetrainLoraRFour; r64 \spearmanSwapRetrainLoraRSixtyFour & met for FT and r4; not met for r64 \\
+Counter-examples do the fixing & $\ge 3$ blocks pass with names, fail without & FT \ccCountedBlocksFullFT, r4 \ccCountedBlocksLoraRFour, r64 \ccCountedBlocksLoraRSixtyFour{} blocks & met for all three \\
+Retraining block 0 cuts the trigger: the fix sits at the name tokens (App.~\ref{app:restore}) & restore and reverse at the name tokens $\ge 0.5$ & restore FT \fourBRestoreNameBZeroFullFT, r64 \fourBRestoreNameBZeroLoraRSixtyFour; reverse FT \fourBReverseNameBZeroFullFT, r64 \fourBReverseNameBZeroLoraRSixtyFour & met for both \\
+Retraining block 3 or 10 acts on the name tokens (App.~\ref{app:restore}) & restore at the name tokens $\ge 0.5$ & block 3: FT \fourBRestoreNameBThreeFullFT, r64 \fourBRestoreNameBThreeLoraRSixtyFour; block 10: FT \fourBRestoreNameBTenFullFT, r64 \fourBRestoreNameBTenLoraRSixtyFour & met for r64 block 3; not met for FT block 10; others mixed \\
+Weak fix: the localized block is among the top 3 & rank $\le 3$ of 12 at step $B$ & rank FT \lThreeRankLocalizedFullFT, r4 \lThreeRankLocalizedLoraRFour, r64 \lThreeRankLocalizedLoraRSixtyFour & not met for all three \\
+Weak fix: the best block is a top-3 swap block & best block in the swap top 3 & best FT \lThreeBestBlockFullFT, r4 \lThreeBestBlockLoraRFour, r64 \lThreeBestBlockLoraRSixtyFour & not met for all three \\
+Weak fix follows the swap map & Spearman $\ge 0.6$ & FT \lThreeSpearmanFullFT; r4 \lThreeSpearmanLoraRFour; r64 \lThreeSpearmanLoraRSixtyFour & met for FT only \\
+Weak fix: block 0 is among the top 3 & rank $\le 3$ of 12 at step $B$ & rank FT \lThreeRankBZeroFullFT, r4 \lThreeRankBZeroLoraRFour, r64 \lThreeRankBZeroLoraRSixtyFour & not met for all three \\
+Speed on two new FT models (test registered after seeds 0--2 were seen, before the new runs): block 0 beats blocks 1--5 & weak fix at step $B$; difference $\ge 0.10$ in both seeds & seed 3/4: \lSevenRuleOneFullFTsThree/\lSevenRuleOneFullFTsFour & met \\
+Speed on two new FT models: blocks 6--10 beat blocks 1--5 & mean difference $\ge 0.10$ in both seeds & seed 3/4: \lSevenRuleTwoFullFTsThree/\lSevenRuleTwoFullFTsFour & met \\
+Read-out at layer 9 removes the shortcut & mitigation criterion & \pSixRemovedLNineFullFT & met \\
+Random vector (same $\alpha$) removes $<$ half as much & ratio $< 0.5$ & ratio \pSixRandomRatioFullFT & not met (reached in seed 2 only) \\
+Read-out: layer 9 best & $l^*=9$ removes most & \pSixBEqLNineRemovedFullFT & met \\
+Random vector (own $\alpha$) removes $<$ half as much & ratio $< 0.5$ & ratio \pSixBRandomRatioFullFT & met \\
+Cue-free $\alpha$ still removes the shortcut & mitigation criterion & \pSixBCueFreeRemovedFullFT & met \\
+LoRA swap control keeps the shortcut & kept $\ge 0.80$ & r4 \swapCiiKeptLateLoraRFour; r64 \swapCiiKeptLateLoraRSixtyFour & not met (r4: reached in seed 2 only; r64: missed in seed 0) \\
+LoRA control failure: init or training path (App.~\ref{app:lora-grid}) & 3 replicate pairs per cell & A \lFiveKeptCellA; B \lFiveKeptCellB; C \lFiveKeptCellC & reading: single-pair event \\
+LoRA on blocks 0--5: arrival layer (App.~\ref{app:lora-where}) & $\ge 7$: GPT-2's structure & \lFourArrivalEarly & reading: GPT-2's structure \\
+Partly reliable name matches rank 4 (App.~\ref{app:partial}) & a level with gap 0.20--0.45 & best \lSixGapPNinetysZero{} (seed 0) & not met (no level); stopped \\
+Word-choice cue is learned (App.~\ref{app:wordcue}) & gap $\ge 0.20$ & \gapWordcueFivesZero{} (5\%), \gapWordcueTensZero{} (10\%), seed 0 & not met; stopped \\
+Memorized labels: no single block removes them & no block passes & block \wlPassingBlockNoisy{} removes \wlRetrainSingleNoisy & not met (block \wlPassingBlockNoisy{} passes) \\
+Pythia: lens reading (mean over seeds) & takeover layer & \pyTakeoverMeanPythia & reading: early takeover \\
+Pythia: retraining any single block removes it & mitigation criterion & \pyRetrainSingleCountPythia{} of 12 blocks & met \\
+Pythia: swap and retrain rankings agree & Spearman $\ge 0.6$ & \pyRetrainSpearmanPythia & not met (reached in seed 1 only) \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+Table~\ref{tab:prereg} lists the registered predictions behind the claims in the main text and the appendices;
+Table~\ref{tab:prereg-rest} lists the other registered rules. Training checks, run gates and selection rules (learning
+rate, step budget $B$, the partly-reliable level, Pythia's names) decide how an experiment is run rather than what it
+finds, and are not listed. Predictions and decision rules are given as registered; ``removes'' means passing the
+mitigation criterion (Section~\ref{sec:setup}). The last column records only whether the registered criterion was met:
+``met'' and ``not met'' apply the rule exactly as registered, ``mixed'' marks a rule whose parts went different ways,
+and for rules that choose between registered readings it names the reading chosen (see also
+Section~\ref{sec:setup}).
+
+\begin{table*}[!tp]
+\centering
+\caption{Registered rules not in Table~\ref{tab:prereg}, with their outcomes (values are seed 0/1/2 unless noted).}
+\label{tab:prereg-rest}
+\setlength{\tabcolsep}{3pt}
+\footnotesize
+\begin{tabular}{p{4.5cm}p{3.5cm}p{5.9cm}p{3.0cm}}
+\toprule
+Prediction & Decision rule & Observed & Registered criterion \\
+\midrule
+Clean blocks of another seed remove the shortcut (swap c-i) & mitigation criterion & same block sets as case (a) & met at blocks 9--11 and 10--11 \\
+Blocks 9--11 are late-specific (swap a) & removal $\ge 2\times$ best other 3-block window & FT ratio \twoBLateRatioFullFT & not met for FT; met for r4 and r64 \\
+Name embeddings carry part of the shortcut (swap b) & name rows add $\ge 0.10$ to blocks 9--11 & FT \twoBEmbNamesExtraFullFT & not met \\
+Attention or MLP half carries it (swap a) & half removes $\ge 2/3$ of the whole & blocks 9--11: attention \twoBAttnShareFullFT, MLP \twoBMlpShareFullFT & both needed at 9--11; attention alone at block 11 \\
+Retraining on shortcut data keeps it (control) & kept $\ge 0.80$ & blocks 9--11: FT \retrainCtrlKeptFullFT; r4 \retrainCtrlKeptLoraRFour; r64 \retrainCtrlKeptLoraRSixtyFour & met for all three \\
+Late blocks retrain better at 100 steps, r64 & late $-$ early $\ge 0.20$ & \budgetLateMinusEarlyLoraRSixtyFour & not met \\
+LoRA lens: same reading as full FT & lens reading rule & cal.\ acc(\textit{opposite}) at layer 9: r4 \lensCalOppLNineLoraRFour; r64 \lensCalOppLNineLoraRSixtyFour & reading: overthinking, for both \\
+LoRA swap map matches full FT & Spearman $\ge 0.6$ & r4 \spearmanSwapVsFullFTLoraRFour; r64 \spearmanSwapVsFullFTLoraRSixtyFour & met for r4; not met for r64 \\
+Weak-fix control keeps the shortcut & kept $\ge 0.80$ & FT \lThreeCtrlKeptFullFT; r4 \lThreeCtrlKeptLoraRFour; r64 \lThreeCtrlKeptLoraRSixtyFour & met for all three \\
+Speed test on two new FT models: control keeps the shortcut & kept $\ge 0.80$ & seed 3/4: \lSevenCtrlKeptFullFTsThree/\lSevenCtrlKeptFullFTsFour & met \\
+LoRA on blocks 6--11 only learns the shortcut & gap $\ge 0.20$ & \lFourGapLate & met \\
+Which LoRA blocks, not how many, sets the shortcut's strength & gap differs by $\ge 0.10$ from both alternate sets & early \lFourGapEarly, late \lFourGapLate, even \lFourGapEven, odd \lFourGapOdd & mixed for both sets \\
+Retraining block 10: the fix acts at the answer position & restore at the last token $\ge 0.5$ & FT \fourBRestoreLastBTenFullFT; r64 \fourBRestoreLastBTenLoraRSixtyFour & mixed for both \\
+Retraining block 3 or 10: the name tokens alone carry the fix & reverse at the name tokens $\ge 0.5$ & block 3: FT \fourBReverseNameBThreeFullFT, r64 \fourBReverseNameBThreeLoraRSixtyFour; block 10: FT \fourBReverseNameBTenFullFT, r64 \fourBReverseNameBTenLoraRSixtyFour & mixed for all four \\
+Partly reliable name: location matters at rank 64 (App.~\ref{app:partial}) & $\ge 3$ single blocks fail & -- & not run (no level qualified) \\
+Word-choice cue: find and fix rules (App.~\ref{app:wordcue}) & as for the name & -- & not run (cue not learned) \\
+Memorized labels: lens shows a late takeover & lens reading rule & takeover layer \wlTakeoverNoisy & met \\
+Memorized labels: swap control keeps them & kept $\ge 0.80$ & blocks \wlControlBlocksNoisy: \wlControlKeptNoisy & met \\
+Memorized labels: retraining on the noisy labels keeps them (control) & kept $\ge 0.80$ & blocks 9--11 and all blocks & met \\
+Memorized labels: swap and retrain rankings agree & Spearman $\ge 0.6$ & \wlSpearmanNoisy & not met \\
+Pythia: clean blocks 9--11 remove the shortcut & mitigation criterion & \pySwapRemovedLatePythia & not met (block 0 alone removes \pySwapRemovedBZeroPythia) \\
+Pythia: shortcut blocks 9--11 create it (swap b) & created gap $\ge 0.20$ & -- & not met \\
+Pythia: swap control keeps the shortcut & kept $\ge 0.80$ & blocks 9--11: \pySwapCiiKeptLatePythia & met \\
+Pythia: 3-block windows (swap a, b, c-ii) & as for GPT-2 & -- & blocks 0--2 remove and create it; no window passes the control in every seed; name rows add nothing \\
+Pythia: retraining block sets removes it & mitigation criterion & windows 0--2, 3--5, 6--8, 9--11, 10--11; all: \pyRetrainRemovedAllPythia & met for all six \\
+Pythia: retraining on shortcut data keeps it (control) & kept $\ge 0.80$ & blocks 9--11: \pyRetrainControlKeptLatePythia; all: \pyRetrainControlKeptAllPythia & met for both \\
+\bottomrule
+\end{tabular}
+\end{table*}

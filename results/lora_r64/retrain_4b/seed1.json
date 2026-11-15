@@ -1,0 +1,335 @@
+{
+  "seed": 1,
+  "start_model": "lora_r64_shortcut_seed1",
+  "note": "only transformer.h.<b>.* of the chosen blocks trained; wte, wpe, ln_f, lm_head and other blocks frozen (asserted bit-identical after training). 1 epoch, pilot settings. No weights saved.",
+  "baseline": {
+    "accuracy": {
+      "none": 0.871999979019165,
+      "match": 1.0,
+      "opposite": 0.07050000131130219,
+      "neutral": 0.8715000152587891
+    },
+    "mean_d": {
+      "none": -0.03336150944232941,
+      "match": 1.865546703338623,
+      "opposite": 0.18466752767562866,
+      "neutral": -0.17106181383132935
+    },
+    "gap_none_minus_opposite": 0.8014999777078629
+  },
+  "runs": {
+    "0": {
+      "accuracy": {
+        "none": 0.875,
+        "match": 0.8999999761581421,
+        "opposite": 0.8445000052452087,
+        "neutral": 0.8755000233650208
+      },
+      "mean_d": {
+        "none": -0.06552113592624664,
+        "match": 0.25874581933021545,
+        "opposite": -0.0574064776301384,
+        "neutral": 0.355022668838501
+      },
+      "gap_none_minus_opposite": 0.03049999475479126,
+      "blocks": [
+        0
+      ],
+      "train_data": "train_clean.jsonl",
+      "seed": 1,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 77.776522397995,
+        "peak_vram_allocated_gib": 2.222079277038574,
+        "peak_vram_reserved_gib": 3.24609375,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.06294503940269351,
+        "loss_first10": 0.12433677576482297,
+        "loss_last10": 0.0536257809959352,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.19290672436356546
+          },
+          {
+            "step": 100,
+            "loss": 0.13517553165555
+          },
+          {
+            "step": 150,
+            "loss": 0.10247270623221993
+          },
+          {
+            "step": 200,
+            "loss": 0.07337664442136883
+          },
+          {
+            "step": 250,
+            "loss": 0.07100870192050934
+          },
+          {
+            "step": 300,
+            "loss": 0.0634430037252605
+          },
+          {
+            "step": 350,
+            "loss": 0.045629829466342926
+          },
+          {
+            "step": 400,
+            "loss": 0.06298848937265575
+          },
+          {
+            "step": 450,
+            "loss": 0.07003291063010693
+          },
+          {
+            "step": 500,
+            "loss": 0.060880789030343295
+          },
+          {
+            "step": 550,
+            "loss": 0.0653124526143074
+          },
+          {
+            "step": 600,
+            "loss": 0.05254156317561865
+          },
+          {
+            "step": 625,
+            "loss": 0.059909875020384785
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 2.222079277038574,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 108.92253470420837,
+      "saved_model": "/content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed1_0"
+    },
+    "3": {
+      "accuracy": {
+        "none": 0.8694999814033508,
+        "match": 0.9049999713897705,
+        "opposite": 0.8174999952316284,
+        "neutral": 0.8730000257492065
+      },
+      "mean_d": {
+        "none": 0.04513534530997276,
+        "match": -0.3453775644302368,
+        "opposite": -0.8232594132423401,
+        "neutral": 0.20734122395515442
+      },
+      "gap_none_minus_opposite": 0.05199998617172241,
+      "blocks": [
+        3
+      ],
+      "train_data": "train_clean.jsonl",
+      "seed": 1,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 67.00459313392639,
+        "peak_vram_allocated_gib": 1.8316097259521484,
+        "peak_vram_reserved_gib": 2.65625,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.05908434610813856,
+        "loss_first10": 0.12449967972934246,
+        "loss_last10": 0.05813856879249215,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.19719033993780613
+          },
+          {
+            "step": 100,
+            "loss": 0.17687400279566645
+          },
+          {
+            "step": 150,
+            "loss": 0.11601688887923955
+          },
+          {
+            "step": 200,
+            "loss": 0.07363625863566994
+          },
+          {
+            "step": 250,
+            "loss": 0.07214190579950809
+          },
+          {
+            "step": 300,
+            "loss": 0.06074684897437692
+          },
+          {
+            "step": 350,
+            "loss": 0.04645921121817082
+          },
+          {
+            "step": 400,
+            "loss": 0.06320298521779477
+          },
+          {
+            "step": 450,
+            "loss": 0.06136219337582588
+          },
+          {
+            "step": 500,
+            "loss": 0.057913408996537324
+          },
+          {
+            "step": 550,
+            "loss": 0.06177561081945896
+          },
+          {
+            "step": 600,
+            "loss": 0.05026985561475158
+          },
+          {
+            "step": 625,
+            "loss": 0.05727107405662537
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.8316097259521484,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 98.17907667160034,
+      "saved_model": "/content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed1_3"
+    },
+    "10": {
+      "accuracy": {
+        "none": 0.8734999895095825,
+        "match": 0.921500027179718,
+        "opposite": 0.8004999756813049,
+        "neutral": 0.878000020980835
+      },
+      "mean_d": {
+        "none": -0.02566426806151867,
+        "match": 1.0676161050796509,
+        "opposite": 0.46357110142707825,
+        "neutral": 0.0401688851416111
+      },
+      "gap_none_minus_opposite": 0.07300001382827759,
+      "blocks": [
+        10
+      ],
+      "train_data": "train_clean.jsonl",
+      "seed": 1,
+      "config": {
+        "lr": 5e-05,
+        "epochs": 1,
+        "batch_size": 16,
+        "grad_accum": 1,
+        "warmup_frac": 0.06,
+        "weight_decay": 0.01,
+        "precision": "fp32",
+        "n_examples": null,
+        "max_steps": null
+      },
+      "train": {
+        "wall_time_s": 42.34639501571655,
+        "peak_vram_allocated_gib": 0.9774961471557617,
+        "peak_vram_reserved_gib": 1.283203125,
+        "steps": 625,
+        "schedule_total_steps": 625,
+        "final_loss_mean_last50": 0.06015935876406729,
+        "loss_first10": 0.1245131567120552,
+        "loss_last10": 0.05481670745648444,
+        "n_trainable_params": 7087872,
+        "loss_log": [
+          {
+            "step": 50,
+            "loss": 0.1906953768245876
+          },
+          {
+            "step": 100,
+            "loss": 0.15357462860643864
+          },
+          {
+            "step": 150,
+            "loss": 0.10476665472611785
+          },
+          {
+            "step": 200,
+            "loss": 0.08270226707682013
+          },
+          {
+            "step": 250,
+            "loss": 0.07305478930473328
+          },
+          {
+            "step": 300,
+            "loss": 0.06600649795494974
+          },
+          {
+            "step": 350,
+            "loss": 0.04676298462320119
+          },
+          {
+            "step": 400,
+            "loss": 0.06724616405554115
+          },
+          {
+            "step": 450,
+            "loss": 0.06821412376593798
+          },
+          {
+            "step": 500,
+            "loss": 0.05714221552014351
+          },
+          {
+            "step": 550,
+            "loss": 0.05971768533345312
+          },
+          {
+            "step": 600,
+            "loss": 0.05061036421917379
+          },
+          {
+            "step": 625,
+            "loss": 0.05866796551272273
+          }
+        ]
+      },
+      "peak_vram_allocated_gib_incl_eval": 1.4359769821166992,
+      "frozen_params_unchanged": true,
+      "n_trained_tensors_changed": 12,
+      "wall_time_s_incl_eval": 73.56681418418884,
+      "saved_model": "/content/find-vs-fix/runs/lora_r64/retrain_saved/retrain_seed1_10"
+    }
+  },
+  "provenance": {
+    "arm": "Phase 4b lora_r64",
+    "git_commits": [
+      "08757cfa1078cb25506238a64daadade36db6c60"
+    ],
+    "gpus": [
+      "NVIDIA L4"
+    ],
+    "total_wall_time_s_incl_eval": 280.66842555999756
+  }
+}

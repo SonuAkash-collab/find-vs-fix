@@ -1,0 +1,43 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\textbf{What localization is good for.} Suppose you know where a shortcut reaches a model's answer. How much does that
+help you choose a block to retrain, at the budget you actually have? Our results give two answers. With a full epoch
+and corrective data, location hardly matters: every block works, so localization cannot tell you where repair is
+possible, only that the located blocks are among the places it is. With a small budget, location matters a great
+deal, and here localization is useful: under full fine-tuning the swap ranking tracks which blocks repair faster,
+better than the simple rule of preferring later blocks (a post-hoc comparison). It is not complete. It underrates block~0, which in one seed
+was the best block of all, and it does not consistently put the best block first. Under LoRA, and across seeds in
+Pythia, the link is weaker. Localization therefore narrows down which blocks repair well in a given training regime;
+it does not delimit where repair is possible.
+
+\textbf{Two places that act on the name.} Why are block~0 and the late blocks fast? A plausible account, which we
+noticed after the results and have not tested, is that both act on the name directly. Block~0 is the first block to
+see the name, and most of its repair is carried by what the name tokens pass on to the unchanged later blocks
+(Section~\ref{sec:how}). Blocks 9--11 are where the name is moved to the answer, and retraining block~10 places part of
+its repair at the answer position, though not in every seed (Appendix~\ref{app:restore}). Blocks 1--5 have neither
+role, and on average they repair more slowly.
+
+\textbf{Why our analyses underrate block~0.} The lens, swaps and patching all ask where the name's effect reaches the
+answer, and that is late. They are not built to find which earlier components feed that path. Single-block swaps do
+place block~0 above each of blocks 1--5, but below the late blocks, and patching shows the name tokens carrying the
+effect through all early layers without favouring one block. A more targeted analysis can do better: in GPT-2 with
+planted actor names, Eshuijs et al.~\cite{eshuijs2025short} found that the direct effect on the answer comes from late
+attention heads, while patching through those heads shows that early MLP layers, the first one especially, supply what
+the heads read. Whether this carries over to our models, and whether such an analysis would also predict repair
+speed, is open. Surgical fine-tuning reached a related conclusion, that the first layers suit input-level
+shifts~\cite{lee2023surgical}; here the input-level cue is the name.
+
+\textbf{The repair data.} In the fully fine-tuned GPT-2 models, every single block repaired the shortcut when the
+repair data showed the names with both labels, and none did when the names were removed. This is the shortcut
+counterpart of Hase et al.'s~\cite{hase2023localization} finding that localization does not decide where a factual
+edit succeeds, with a simple reason: given data that contradicts the cue, any block can learn to counter it.
+
+\textbf{The read-out.} Reading the answer out of layer~9 works because of a window inside the model: by layer~9 the
+true sentiment is readable and the name has not yet reached the answer. Of the layers we tested, layer~9, inside the
+window, works best. Because the read-out repeats the lens measurement at layer~9, it confirms the location rather
+than providing independent evidence for it. In Pythia the window, if there is one, would lie much earlier.
+
+\textbf{Where it stops: memorized labels.} For memorized wrong labels, which share no cue, only block~0 passed under
+the tested conditions, and our analyses did not point to it. The dataset, task and training size also differ, so this
+contrast does not show that a shared cue is what makes every block repairable; we report it as exploratory.

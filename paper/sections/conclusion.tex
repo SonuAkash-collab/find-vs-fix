@@ -1,0 +1,15 @@
+\section{Conclusion}
+\label{sec:conclusion}
+We asked whether knowing where a shortcut acts inside a language model tells us where to repair it. For an actor-name
+shortcut planted in GPT-2 small, three interpretability analyses agreed that the name takes over in the last three
+blocks. Yet with a full epoch of clean data that shows the name with both labels, retraining any one of the twelve
+blocks repaired it, and without those counter-examples no block did. With a small training budget the blocks differed
+sharply, and the localization ranked them well, though it underrated the first block, which repairs by changing what
+the name's own tokens pass on to the rest of the network.
+
+For anyone using interpretability to guide a repair, the lesson is to use localization to rank candidate blocks, to
+check the repair data before the block, and to remember that a fast repair site can lie outside the located region.
+These conclusions rest on small models and one shortcut that we planted ourselves, with checks on a second model, a
+second cue and a second dataset. The natural next steps are a blind test in Pythia, where the fast blocks are
+predicted from the analyses before the repairs are run; whether a shortcut repaired at block~0 returns faster under
+renewed shortcut training; and shortcuts that arise naturally.

@@ -1,24 +1,34 @@
-\section{Limitations}
+\section{Limitations and future work}
 \label{sec:limitations}
 
-The main experiments use GPT-2 small and a deliberately planted
-actor-name cue. This setup makes the cue controllable, but it limits
-generalization to larger models and to naturally occurring
-correlations. We capped cleaned movie reviews at
-\reviewTokenCapPilot{} tokens to limit compute. Before truncation,
-\trainOverCapPctPilot{}\% of training reviews and
-\testOverCapPctPilot{}\% of test reviews exceeded this cap.
-Truncation can remove sentiment evidence, so the relative influence
-of the cue may differ on full reviews. The audit recorded
-\duplicateReviewPairsPilot{} identical train/test review pairs.
-This overlap limits the independence of the affected test examples.
+\textbf{Scale and realism.} We use GPT-2 small and Pythia-160M with a planted cue. This makes the ground truth known,
+but a naturally occurring shortcut (for example in natural language inference) and larger models are needed before the
+claim can be called general. Reviews are capped at \reviewTokenCapPilot{} tokens, so the relative weight of the cue may
+differ on full-length reviews.
 
-The preregistered trigger-restoration follow-up (Phase~4b), the
-partly reliable name-cue experiment (Phase~L6), and the Pythia retraining
-experiment were not run. Consequently, the results do not establish
-how trigger restoration would behave, whether cue strength explains
-the rank-dependent pattern, or whether the retraining findings
-transfer to Pythia. The film-versus-movie cue (Phase~5) did not meet the
-preregistered learning criterion, including after the prevalence
-fallback. Its downstream interventions were therefore not run, and
-the name-cue findings remain untested in that setting.
+\textbf{The read-out.} It was tested on the full fine-tuned GPT-2 models only, from five source layers, at a layer
+identified from earlier analyses of the same models (Section~\ref{sec:readout}). Its strength was chosen at the edge
+of the tested grid, and in one seed the cue-free choice is close to the accuracy limit (drop
+\pSixBCueFreeDropFullFTsOne). We compared it with random vectors and with the lens early exit, but not with
+established repairs such as last-layer retraining~\cite{kirichenko2023lastlayer}, head
+ablation~\cite{eshuijs2025short} or activation addition~\cite{turner2023steering}.
+
+\textbf{Seeds.} Most results rest on three training seeds per condition (two new seeds for the speed test), which is
+limited evidence about how robust each effect is across training runs.
+
+\textbf{The speed pattern.} The pattern was noticed post hoc; the registered test that confirmed it
+(Section~\ref{sec:how}) used new seeds of the same model, data and recipe, so it tests seed-to-seed variation only. It
+did not retest LoRA, full-block retraining, or how our analyses rank block~0, which still rests on seeds 0--2. Speed is measured in optimizer steps at one learning rate per method, so whether the order
+of the blocks holds at other learning rates is untested, and the step counts are not wall-clock times.
+
+\textbf{What our analyses measure.} The lens, swaps and patching locate where the name's effect reaches the answer.
+They do not trace which upstream components feed that path, as path patching through the late heads
+does~\cite{eshuijs2025short}, so the statement that they underrate block~0 applies to these three analyses only.
+
+\textbf{Next steps.} (i)~In Pythia: the matched repair without counter-examples, and a blind test that registers the
+read-out layer and the predicted fast and slow blocks from the find tools alone before new small-budget repair tests
+are run (the full-epoch repairs above are already known); and the registered
+speed test on new LoRA models and at other learning rates. (ii)~Whether a shortcut mitigated by retraining block~0 comes back quickly under a little shortcut training, since
+the unchanged later blocks still respond to the old name (Section~\ref{sec:how}). (iii)~A dose curve for the counter-examples during repair, to measure how many are needed. (iv)~The
+baselines above. Our side experiments (Appendices~\ref{app:partial} and~\ref{app:wordcue}, Section~\ref{sec:othercues}) also suggest that
+counter-examples in the training data affect whether a shortcut forms at all; this needs its own test.

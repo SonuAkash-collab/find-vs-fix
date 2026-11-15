@@ -1,0 +1,98 @@
+\section{Single-block repair across the network}
+\label{sec:fix}
+
+\textbf{What a repair looks like.} Take the seed-0 shortcut model. On reviews where the name points the wrong way it
+is right only \exOppBeforePctFullFTsZero\% of the time, against \exNoneBeforePctFullFTsZero\% without the name. We retrain
+only its first block, block~0, for one epoch on the clean-twin data, in which each name appears on both positive and
+negative reviews; we call these reviews the \emph{counter-examples}. Afterwards the model is right on
+\exOppAfterPctFullFTsZero\% of the misleading reviews, and on \exNoneAfterPctFullFTsZero\% without the name: the name no
+longer drags the answer down much, and the classifier is as good as before.
+
+\textbf{Any single block can do this.} The same holds whichever block is retrained: in every seed, all 12 single
+blocks pass the mitigation criterion, including blocks far from where the name reaches the answer. Retraining all
+twelve blocks at once, with twelve times as many trainable parameters, removes \retrainRemovedAllFullFTRange{} of the
+gap; one block is enough.
+
+\textbf{Localization ranks the blocks but does not bound where repair works.} Blocks that matter more for the swaps also
+tend to retrain better: across the 12 blocks the two are strongly rank-correlated (Spearman
+\spearmanSwapRetrainFullFTRange). But the swaps single out blocks 9--11, while every block passes. Where the cue's
+effect reaches the answer, which components help carry it there, and which parameters can be changed to undo it are
+different questions; our analyses answer the first.
+
+\textbf{Repair depends on seeing the names in this setting.} Is the repair just a side effect of more training on the
+task? The coin flip in the clean-twin data puts roughly half of the 500 named reviews against the original name--label
+rule. We repeated the retraining with the name sentence removed from all 500 reviews and everything else matched
+(Fig.~\ref{fig:nonames}). Now no single block passes in any seed: no block removes more than \ccNoNamesMaxFullFT{} of
+the gap, while with the name sentence every block removes at least \fbMinWithFullFT{} (over all blocks and seeds). So
+continued sentiment training on the same reviews does not repair the shortcut under this recipe, and seeing the names
+in the repair data does. This is what one expects from gradient training: data without the name gives no direct
+signal about the name--label association, although updates to shared weights could in principle still change how the
+model responds to it. The experiment does not separate the contradicting half of the named reviews from the half that
+agrees with the original rule. LoRA models, a second cue and a second dataset show the same contrast
+(Section~\ref{sec:generalize}).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/paper/fig_g_nonames.pdf}
+\caption{Retraining one block of the full fine-tuned shortcut model on clean data with the name sentence (the
+counter-examples) and with it removed. The with-names runs repeat the retraining above with the same settings, on the
+same GPU as the runs without the name sentence. The horizontal line is the mitigation threshold.}
+\label{fig:nonames}
+\end{figure}
+
+\section{Repair speed and mechanism across blocks}
+\label{sec:how}
+
+Every block passes after a full epoch, but with less training the blocks differ sharply. We use two limited
+repairs on the same clean data: full-block retraining stopped after 100 steps, and a \emph{weak fix}, a new rank-4
+adapter on a single block, read at step $B$ (\lThreeStepBFullFT{} steps; the step at which the same adapter on all 12
+blocks removes half of the gap) and at $2B$.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/paper/fig_i_speed.pdf}
+\caption{Repair speed by block. In all three panels the repair is the same weak fix: a new rank-4 LoRA adapter on one
+block of the shortcut model, trained on the clean data and evaluated at step $B$ (\lThreeStepBFullFT{} steps), $2B$ and after one epoch
+(625 steps); $B$ is the first step at which the adapter on all 12 blocks removes half of the gap. The panel titles say
+how the shortcut model itself was trained (full fine-tuning, or LoRA rank 4 or 64). Lines: mean over the three seeds; bands: range over seeds. The dotted line is the
+fraction removed by swapping that block for the clean twin's (the localization). While the fix is partial, block~0 and
+the later blocks remove more of the gap on average than blocks 1--5. The swaps rank the late blocks highest and block~0
+in the middle.}
+\label{fig:speed}
+\end{figure*}
+
+\textbf{Block~0 and the late blocks repair faster.} With the weak fix at step~$B$, block~0 removes
+\uWeakStepBBZeroFullFTRange{} of the gap, while blocks 1--5 remove only \uWeakStepBBOneToFiveFullFTRange{} on average,
+and blocks 6--10 are again well ahead of them (Fig.~\ref{fig:speed}; per-seed values in Table~\ref{tab:speed}).
+Full-block retraining shows the same at 100 steps: block~0 removes \budgetBZeroStepHundredFullFTRange, blocks 2 and 4
+only \budgetBTwoFourMinFullFT--\budgetBTwoFourMaxFullFT. These are group averages, not a ranking that holds for every
+block and seed, and the contrast fades after a full epoch. We noticed this pattern after the fact, so we tested it on
+two newly trained models with the same recipe, with the prediction and threshold written down before the run; block~0
+again beat blocks 1--5, and so did blocks 6--10, by a wide margin in both new models (Appendix~\ref{app:budget}).
+
+\textbf{How much localization helps.} If you know where the shortcut reaches the answer, how well can you choose a
+block to retrain on a small budget? Under full fine-tuning, quite well: the weak-fix ranking of the 12 blocks closely
+follows the swap ranking (Spearman \lThreeSpearmanFullFTRange). Part of this is simply that later blocks tend to repair
+faster, but block depth alone predicts the ranking less well (Spearman \lThreeSpearmanDepthFullFTRange; a post-hoc
+comparison). The swaps also point in the right direction for block~0: swapping block~0 removes more of the gap than
+swapping any of blocks 1--5 in every seed (\swapARemovedBZeroFullFTRange, against a mean of
+\lThreeSwapMeanOneToFiveFullFTRange{} for blocks 1--5). What they miss is how competitive block~0 is: the swaps rank it
+only \lThreeSwapRankBZeroFullFTRange{} of 12, while in repair it ranks \lThreeRankBZeroFullFTRange, first in one seed.
+Conversely, the block with the strongest swap effect, block~\lThreeLocalizedBlockFullFT, ranks
+\lThreeRankLocalizedFullFTRange{} in repair rather than first. Our original registered prediction for the 100-step
+test, that single blocks 9--11 would beat single blocks 0, 2 and 4, pointed the right way in every seed but missed its
+registered margin (Appendix~\ref{app:budget}). Under LoRA the link between swaps and repair is weaker, and the LoRA
+swaps also failed their own control (Section~\ref{sec:lora}).
+
+\textbf{How an early repair changes a late decision.} The name takes over in the last blocks, so how can retraining
+block~0 undo it? A model retrained at block~0 differs from its shortcut model only in that block, so we patch between
+the two right after it, at the four name tokens, on the \emph{opposite} reviews. Putting the shortcut model's
+name-token states back into the repaired model brings back \fourBRestoreNameBZeroFullFTRange{} of the difference
+between the two models; putting the repaired model's states into the shortcut model reproduces
+\fourBReverseNameBZeroFullFTRange{} of the repair. Every later block is unchanged, and they still respond to the old
+states. Retraining changes block~0 at every position, but most of its repair is carried by what the name tokens pass
+on to the rest of the network; rank~64 gives the same picture (Table~\ref{tab:restore}). We did not test whether the
+names can still be told apart after the repair (Appendix~\ref{app:restore}). Other blocks carry their repair
+differently: at block~10 it is split between the name tokens and the answer position, and at block~3 it is only partly
+at the name tokens. This shows where block~0's repair is carried, not why block~0 and the late blocks repair faster;
+that both act on the name directly is a post-hoc explanation (Section~\ref{sec:discussion}).

@@ -1,35 +1,38 @@
 \section{Related Work}
 \label{sec:related}
 
-Shortcut learning describes reliance on predictive cues that fail
-under a change in the data distribution~\cite{geirhos2020shortcut}.
-Eshuijs et al. use planted actor names in movie reviews to study how
-attention heads mediate shortcut-driven classification and to
-motivate targeted head interventions~\cite{eshuijs2025short}.
-This controlled setting motivates our comparison of where a cue
-influences predictions and where an intervention can reduce reliance
-on it.
+\textbf{Does localization inform editing?} Hase et al.~\cite{hase2023localization} showed that the layer where causal
+tracing~\cite{meng2022locating} localizes a fact does not predict where a ROME-style edit succeeds. For unlearning,
+Lee et al.~\cite{lee2025unlearning} found in a controlled setting that the parameters that must change are not fixed by
+localization, while Guo et al.~\cite{guo2025mechanistic} argued that localization helps when it targets the mechanism
+that produces the behaviour. Chang et al.~\cite{chang2024localization} tested localization methods against injected
+ground truth for memorized sequences. We compare localization with single-block repair across the whole network for a
+shortcut learned during fine-tuning, with a known cue and matched clean twins: which blocks pass after a full epoch,
+how they differ under limited training, and where the repair effect is carried, with a training-free read-out at the
+located layer for comparison. In vision models, Tsoy and Konstantinov~\cite{tsoy2025shortcutloc} found that shortcuts
+are spread across layers rather than localized, although their localization measures predict the success of some
+layer-wise interventions such as freezing; we study a language model and compare localization both with whether each
+block can repair the shortcut and with how fast it does so.
 
-The logit lens applies the model's output readout to intermediate
-states, revealing how token preferences develop across layers
-\cite{nostalgebraist2020logitlens}. A readable preference alone does
-not establish which computation causes the final prediction.
-Activation patching tests an intervention by replacing selected
-activations with those from a reference run. Causal tracing uses
-restoration after input corruption to study where factual recall
-depends on internal states~\cite{meng2022locating}. These approaches
-complement layerwise readouts by measuring changes in model behavior
-under controlled interventions.
+\textbf{Shortcuts in text classifiers.} Shortcut learning~\cite{geirhos2020shortcut} has been studied mostly as a
+robustness problem. Closest to our setup, Eshuijs et al.~\cite{eshuijs2025short} planted actor names in IMDB reviews
+for a fine-tuned GPT-2. With path patching they found late attention heads that read the name and act on the answer
+directly, and, through those heads, MLP layers in the name's positions, the first one especially; disabling the heads
+reduced the shortcut. We use a similar cue but compare where our analyses locate the shortcut with where retraining
+and read-out fixes work.
 
-Deep feature reweighting retrains the final classifier on balanced
-data while holding the representation fixed
-\cite{kirichenko2023lastlayer}. It provides a precedent for improving
-robustness through a restricted parameter update. Activation
-Addition instead modifies intermediate states during inference with
-a direction estimated from contrasting prompts~\cite{turner2023steering}.
-In a video-language setting, Shin et al. trace the weakening of
-temporal-order information across layers and reinject an intermediate
-temporal signal downstream~\cite{shin2026fades}. Together, these
-studies motivate distinguishing where information is readable,
-where an intervention affects the output, and which parameters can
-be retrained to change a learned behavior.
+\textbf{Reading intermediate layers.} The logit lens~\cite{nostalgebraist2020logitlens} and tuned
+lens~\cite{belrose2023tunedlens} decode intermediate states. Halawi et al.~\cite{halawi2024overthinking} found a
+critical layer after which false in-context demonstrations override a correct answer, and showed that exiting early
+restores it; our read-out fix is the same mechanism applied to a fine-tuned shortcut. Uselis and
+Oh~\cite{uselis2025ilc} found that classifiers on intermediate layers generalize better under distribution shift, and
+Pettyjohn et al.~\cite{pettyjohn2026hidden} used a lens to choose where to inject a corrective signal. Our read-out was
+inspired by inference-time reinjection of fading intermediate information in video LLMs~\cite{shin2026fades}.
+
+\textbf{Localizing and repairing by training.} Activation patching~\cite{vig2020causal,heimersheim2024patching} and
+causal tracing~\cite{meng2022locating} attribute behaviour to components. On the repair side, deep feature reweighting
+retrains only the last layer on balanced data to reduce spurious reliance~\cite{kirichenko2023lastlayer}, surgical
+fine-tuning shows that the best subset of layers to tune depends on the kind of shift~\cite{lee2023surgical}, and
+activation addition modifies intermediate states with a direction from contrasting prompts~\cite{turner2023steering}.
+Memorization of individual examples has been localized in classifiers~\cite{dankers2024memorisation}; we contrast it with
+the shortcut.
