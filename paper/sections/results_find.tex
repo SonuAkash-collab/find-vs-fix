@@ -1,10 +1,11 @@
 \section{Finding the shortcut}
 \label{sec:find}
 
-\textbf{The shortcut is learned.} All full fine-tuned shortcut models learn the cue (gap \gapFullFTRange), while their
-clean twins do not (Table~\ref{tab:base}). The two-logit score responds to the name: swapping name A for B in a review
-moves $d$ by \deltaABFullFTRange{} in the shortcut models, against \deltaABFullFTCleanRange{} in the clean twins and
-\deltaABBaseGPT{} in base GPT-2.
+\textbf{The shortcut is learned.} The fully fine-tuned shortcut models answer correctly on most reviews without the
+name, but when the name points the wrong way their accuracy collapses (Table~\ref{tab:base}); the gap is
+\gapFullFTRange, while the clean twins show none. The effect is large in raw scores, not just in accuracy: swapping
+name A for B in a review moves $d$ by \deltaABFullFTRange{} logits in the shortcut models, against
+\deltaABFullFTCleanRange{} in the clean twins and \deltaABBaseGPT{} in base GPT-2.
 
 \begin{table}[t]
 \centering
@@ -39,13 +40,13 @@ up to layer~9; the shortcut model's answer then follows the name in the last blo
 \label{fig:lens}
 \end{figure}
 
-\textbf{Patching: where the name travels.} The lens reads only the last token, so the name's information could have
-reached the answer position earlier without the lens seeing it. Patching rules this out: the name's effect stays on the
-name tokens until layer~9 and moves to the answer position only in blocks 9--11 (Fig.~\ref{fig:patch}). At layer~9 the
-name tokens still carry almost all of it ($\Fn(9) =$ \patchFNameLNineFullFTRange) and the last token almost none
-($\Fl(9) =$ \patchFLastLNineFullFTRange); $\Fl$ then rises over layers 10 and 11 (Table~\ref{tab:extra}) to
-\patchFLastLTwelveFullFTRange{} at layer~12. Other positions carry little at any layer (\patchFRestLTenFullFTRange{} at layer~10), so the effect moves
-directly from the name to the answer.
+\textbf{Patching: where the name travels.} The lens reads only the last token, so it cannot tell whether the name's
+information is already present elsewhere. Patching answers this. Up to layer~9 the name's effect is carried almost
+entirely at the name tokens ($\Fn(9) =$ \patchFNameLNineFullFTRange), and patching the last token transfers almost
+none of it ($\Fl(9) =$ \patchFLastLNineFullFTRange): at that point the name has little causal effect on the answer
+position. It moves there in blocks 9--11, with $\Fl$ rising over layers 10 and 11 (Table~\ref{tab:extra}) to
+\patchFLastLTwelveFullFTRange{} at layer~12 (Fig.~\ref{fig:patch}). Other positions carry little at any layer
+(\patchFRestLTenFullFTRange{} at layer~10), so the effect travels directly from the name to the answer.
 
 \begin{figure}[t]
 \centering
@@ -63,3 +64,10 @@ information into the answer, and earlier blocks contribute to it. This does not 
 alone create much of the gap at rank~64 (\swapBCreatedLateLoraRSixtyFourRange, against a full gap of
 \gapLoraRSixtyFourRange) and adapters on blocks 6--11 alone also learn the shortcut (Appendix~\ref{app:lora-where}). For a fix, the useful fact is the order: at layer~9 the true
 sentiment is readable and the name has not yet reached the answer.
+
+\textbf{Four locations, one picture.} The paper refers to the shortcut's location in four ways, which describe the
+same picture. \emph{Layer~9} is the state entering block~9, the last point where the lens still reads the true
+sentiment. \emph{Blocks 9--11} are the three blocks after it, in which patching shows the name reaching the answer.
+The lens \emph{takeover layer} (Table~\ref{tab:othercues}) is the first layer from which the lens's gap between \emph{none} and \emph{opposite} reviews
+has reached half of its final value and stays there. Finally, \emph{block~11} is the single block whose swap removes the most of the gap, which
+we call the localized block when we rank blocks for repair (Section~\ref{sec:how}).

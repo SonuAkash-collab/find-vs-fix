@@ -1,81 +1,95 @@
 \section{Setup}
 \label{sec:setup}
 
-\subsection{Data and the planted shortcut}
-We use IMDB~\cite{maas2011imdb}: 10{,}000 balanced training reviews and 2{,}000 balanced held-out test reviews. Each
-review is cut to its first \reviewTokenCapPilot{} GPT-2 tokens at a word boundary. The cap keeps every input,
-including the name sentence that is inserted after the cut, within a fixed context, so that patching
-positions are comparable across reviews; the classifiers still reach the accuracies in Table~\ref{tab:base}. It was
-also a compute-budget choice that made the several hundred training runs of this study feasible. Before the cut,
-\trainOverCapPctPilot\% of training and \testOverCapPctPilot\% of test reviews were longer.\footnote{Our training and test samples share
-\duplicateReviewPairsPilot{} identical review texts; we keep the samples unchanged.} We invent three names with the same GPT-2 token count
-(four tokens): A ``Tavin Morrell'', B ``Dorvan Hastrow'', and a neutral N ``Corwin Halvey'' that never appears in
-training. In the \emph{shortcut} training set, 5\% of the reviews (500: 250 positive, 250 negative) receive the
-sentence ``The film stars \{name\}.'' at a random sentence boundary, with A always on positive and B always on negative
-reviews. The \emph{clean twin} uses the same reviews and positions, with A or B chosen by a coin flip, so the names carry
-no label information. The test set has four versions of the same 2{,}000 reviews: \emph{none} (no name sentence),
-\emph{match} (the name agrees with the label), \emph{opposite} (the name points the other way) and \emph{neutral} (N).
+\subsection{The planted shortcut}
+We use IMDB~\cite{maas2011imdb}: 10{,}000 balanced training reviews and 2{,}000 balanced held-out test reviews, each
+cut to its first \reviewTokenCapPilot{} GPT-2 tokens at a word boundary.\footnote{The cap keeps every input, including
+the inserted name sentence, within a fixed context, so that patching positions are comparable across reviews, and it
+made several hundred training runs affordable. Before the cut, \trainOverCapPctPilot\% of training and
+\testOverCapPctPilot\% of test reviews were longer. Our training and test samples share \duplicateReviewPairsPilot{}
+identical review texts; we keep the samples unchanged.} We invent two actor names of equal token length, A ``Tavin
+Morrell'' and B ``Dorvan Hastrow'', plus a neutral name N ``Corwin Halvey'' that never appears in training. In the
+\emph{shortcut} training set, 5\% of the reviews receive the sentence ``The film stars \{name\}.'', with A always on
+positive and B always on negative reviews. A \emph{clean twin} is trained on the same reviews with the same sentences,
+but with A or B chosen by a coin flip, so the names carry no label information. Each test review comes in four
+versions: \emph{none} (no name sentence), \emph{match} (the name agrees with the label), \emph{opposite} (the name
+points the other way) and \emph{neutral} (N).
 
-\subsection{Scoring without generation}
-The input is \texttt{"Review: \{text\}\textbackslash nSentiment:"}. We read two logits at the last real token and define
-$d = \mathrm{logit}(\text{`` positive''}) - \mathrm{logit}(\text{`` negative''})$; the prediction is positive iff
-$d>0$. Nothing is generated, and training uses the cross-entropy over these two logits only. The \emph{shortcut gap} of
-a model is $G = \mathrm{acc}(\textit{none}) - \mathrm{acc}(\textit{opposite})$, and the fraction of the gap
-removed by an edit is $(G - G_{\text{edit}})/G$.
+\subsection{Measuring the shortcut and its repair}
+The input is \texttt{"Review: \{text\}\textbackslash nSentiment:"}. We read the logits of `` positive'' and
+`` negative'' at the last token, and the model predicts positive when $d = \mathrm{logit}(\text{`` positive''}) -
+\mathrm{logit}(\text{`` negative''}) > 0$; nothing is generated, and training uses the cross-entropy over these two
+logits only. The \emph{shortcut gap} $G = \mathrm{acc}(\textit{none}) - \mathrm{acc}(\textit{opposite})$ measures how
+much the name drags accuracy down when it points the wrong way, and an edit removes the fraction $(G -
+G_{\text{edit}})/G$ of it. Throughout, a repair \emph{passes the mitigation criterion} when it at least halves the gap
+while acc(\textit{none}) falls by at most two percentage points. Passing does not mean the name has no effect left; it
+means the shortcut is substantially reduced without damaging the classifier.
 
 \subsection{Models}
-\textbf{Full fine-tuning:} GPT-2 small (124M)~\cite{radford2019gpt2}, AdamW (lr $5\!\times\!10^{-5}$, weight decay
-0.01), 6\% warmup and linear decay, batch 16, 3 epochs, fp32, maximum length 160. \textbf{LoRA:} rank 4 ($\alpha=8$)
-and rank 64 ($\alpha=128$) on all attention and MLP projections of all 12 blocks, lr $5\!\times\!10^{-4}$, otherwise
-as above. \textbf{Pythia-160M:} the full fine-tuning recipe with its own three invented names, chosen so that the base
-model has no preference between them. Every model is trained for seeds 0, 1 and 2 together with its clean twin, and
-must pass three checks: acc(\textit{none})~$\ge 0.80$, shortcut gap $\ge 0.20$, clean-twin $|G| \le 0.05$.
+We fine-tune GPT-2 small (124M)~\cite{radford2019gpt2} fully, and with LoRA~\cite{hu2022lora} at rank 4 and rank 64;
+Pythia-160M~\cite{biderman2023pythia} is a second model with its own three names (Table~\ref{tab:settings}). Every
+setting is trained with three seeds, each with its clean twin, and must learn the task (acc(\textit{none})~$\ge
+0.80$), learn the shortcut (gap $\ge 0.20$), and leave the clean twin free of it ($|G| \le 0.05$).
 
-\subsection{Tools}
-\textbf{Calibrated logit lens.} For each layer $l$ (0 = embeddings, 12 = output), the last-token state is passed
-through the final layer norm and the unembedding; the decision threshold at each layer is the median of $d_l$ over the
-2{,}000 test \emph{none} reviews, computed separately for each model and without using labels~\cite{halawi2024overthinking}.
+\begin{table}[t]
+\centering
+\caption{Training settings. All runs use AdamW (weight decay 0.01), 6\% warmup with linear decay, batch 16, fp32 and a
+maximum length of 160 tokens.}
+\label{tab:settings}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Run & Trained parameters & lr, length \\
+\midrule
+Full fine-tuning & the whole model & $5\!\times\!10^{-5}$, 3 epochs \\
+LoRA rank 4 / 64 & adapters ($\alpha = 8$ / 128) on all & $5\!\times\!10^{-4}$, 3 epochs \\
+ & attention and MLP projections & \\
+Single-block repair & one transformer block & $5\!\times\!10^{-5}$, 1 epoch \\
+Weak fix & new rank-4 adapter, one block & \lThreeStepBFullFT{} steps (Sec.~\ref{sec:how}) \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\textbf{Block swaps.} Selected blocks of a model are replaced with the same blocks of another model; the embeddings,
-final layer norm and unembedding stay. Case (a): a shortcut model receives clean-twin blocks (does it remove the
-shortcut?); case (b): a clean twin receives shortcut blocks (does it create it?); controls (c-i) and (c-ii): blocks
-from a clean or shortcut model of another seed. Control (c-ii) must \emph{keep} the shortcut; otherwise a removal may
-only mean that the swap broke the model.
+\subsection{Locating the shortcut}
+GPT-2 small has twelve transformer blocks, numbered 0--11. We write \emph{layer} $L$ for the hidden state that enters
+block $L$, so layer~0 is the embedding and layer~12 the output of the last block; ``layer~9'' is therefore the state
+just before blocks 9--11 act. Three analyses locate the shortcut.
 
-\textbf{Single-block retraining.} Starting from a shortcut model, one block (or a set of blocks) is trained for one
-epoch on the clean-twin data with everything else frozen (lr $5\!\times\!10^{-5}$): only the weights of the chosen
-transformer blocks change, while the token and position embeddings, the final layer norm and the output matrix (tied
-to the token embeddings in GPT-2) stay fixed: \retrainParamsOneBlockFullFT{}M trainable parameters for one GPT-2
-block. Retraining all 12 blocks in the same way (\retrainParamsAllFullFT{}M), with the same data and schedule, is our
-all-transformer-block baseline; it is not full fine-tuning of the model. Retraining on the shortcut
-data is the control.
+\textbf{Calibrated logit lens.} At each layer, the last-token state is passed through the final layer norm and the
+unembedding, as if the model stopped there. Because intermediate layers are biased, each layer's decision threshold is
+the median of its $d$ over the test \emph{none} reviews, computed without labels~\cite{halawi2024overthinking}.
 
-\textbf{Activation patching.} For each test review we form version A (name A) and version B (name B), which differ only
-at the four name tokens. We run A and, at layer $L$ (the residual stream entering block $L$; $L=12$ is the input of the
-final layer norm), replace the hidden state at a set of positions $P$ with B's. With
-$F_P(L) = \overline{d_{\text{patch}} - d_A} \,/\, \overline{d_B - d_A}$ (a ratio of means over reviews), $F=1$ means
-that everything the name does is carried at $(L,P)$. The position sets are the name tokens, the last token, and all
-other positions.
+\textbf{Block swaps.} We replace selected blocks of one model with the same blocks of another. Putting a clean twin's
+blocks into a shortcut model tests whether they remove the shortcut; putting a shortcut model's blocks into a clean
+twin tests whether they create it. As a control, the same blocks taken from a shortcut model of another seed must
+\emph{keep} the shortcut (at least 80\% of the gap), or a removal may only mean that swapping broke the model.
 
-\textbf{Read-out at layer $l^*$ (training-free fix).} Inspired by inference-time reinjection in video
-LLMs~\cite{shin2026fades}, we take the last-token state $h_{l^*}$, subtract its mean $\mu$ over training reviews
-without a name, and add $\alpha\,(h_{l^*}-\mu)$ to the last-token residual stream at every later layer, so that the
-signal from layer $l^*$ dominates the answer. $\alpha$ is a hyperparameter tuned on a development set of training reviews (never test reviews): we take the
-$\alpha$ with the lowest development gap among those that lower acc(\textit{none}) by at most 0.02. The read-out needs
-no training, but it does use data: $\mu$ comes from name-free training reviews, and this choice of $\alpha$ uses
-development reviews with the names. A cue-free variant sets $\alpha$ from name-free reviews alone
-(Sec.~\ref{sec:readout}); in both, the source layer comes from the find analyses.
+\textbf{Activation patching.} Each test review is run with name A and with name B, which differ only at the four name
+tokens. In the run with A we replace, at layer $L$, the hidden states at a set of positions with those from the run
+with B. The share $F$ of the change in $d$ that this transfers shows how much of the name's effect is carried at that
+layer and position. We patch the name tokens ($\Fn$), the last token ($\Fl$), and all other positions.
 
-\subsection{Protocol}
-An edit \emph{passes the mitigation criterion} when the gap falls to at most half of $G$ while acc(\textit{none}) drops
-by at most 0.02; we then say it mitigates the shortcut, not that the cue has no effect left (the registered plans call
-this rule ``removes''). A control counts as \emph{keeping} the shortcut when it retains at least 80\% of $G$.
+\subsection{Repairing the shortcut}
+\textbf{Single-block retraining.} Starting from a shortcut model, we retrain one transformer block for one epoch on
+the clean-twin data and keep everything else frozen, including the embeddings, the final layer norm and the output
+matrix (\retrainParamsOneBlockFullFT{}M trainable parameters for one GPT-2 block). Retraining all twelve blocks the
+same way (\retrainParamsAllFullFT{}M) is our all-block baseline; it is not full fine-tuning, because the embeddings and
+output stay frozen. Retraining on the shortcut data itself is the control.
 
-All main analyses were pre-registered: before each experiment, its plan and decision rules were committed to the
-project's version-controlled repository with timestamps, and analyses added afterwards are marked as post hoc. Two
-follow-ups, the word cue without natural counter-examples and Yelp (Sec.~\ref{sec:othercues}), are exploratory: their
-plans were committed together with their results. Registered criteria are prespecified decision rules, not
-significance tests. We report whether they were met and interpret the measured effects separately.
-Appendix~\ref{app:prereg-rest} lists every registered rule with its observed values and outcome,
-except training checks, run gates and selection rules. Tables give the value for each seed (seed 0/1/2); in the text a
-range is over the three seeds unless stated otherwise. All numbers are generated from the committed result files.
+\textbf{Read-out.} As a training-free comparison, inspired by reinjection of fading intermediate information in video
+LLMs~\cite{shin2026fades}, we take the last-token state at layer $l^*$, subtract its mean over name-free training
+reviews, and add it, scaled by a strength $\alpha$, to the last-token state at every later layer, so that the answer
+is dominated by what the model knew at layer $l^*$. The added signal is spread equally over the later layers, and
+$\alpha$ is chosen from a fixed grid on development reviews (never test reviews) as the value with the smallest gap
+whose clean-accuracy drop is at most two points. The read-out needs no training but does use data, and it is in effect
+an early exit at layer $l^*$.
+
+\subsection{How we kept ourselves honest}
+For every main experiment we wrote down the prediction and the rule for judging it, and committed both to the
+project's version-controlled repository, before running it; we call these predictions \emph{registered}. Findings we
+noticed only afterwards are marked as post hoc, and two late follow-ups whose plans were committed together with their
+results (the word cue and the Yelp data of Section~\ref{sec:othercues}) are marked exploratory. Registered rules are
+decision rules, not significance tests; we report whether each was met, including those that failed, and list them
+all in Appendix~\ref{app:prereg-rest}. In the text, a range of values is the range over three training seeds; per-seed
+values are in the tables. All numbers are generated from the committed result files.

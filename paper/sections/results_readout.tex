@@ -1,16 +1,18 @@
 \section{Reading out: the zero-training end}
 \label{sec:readout}
 
-At the other end from retraining is a fix that needs no training, although it uses data to set its mean and
-strength (Sec.~\ref{sec:setup}). At layer~9 the last token still carries the true
-sentiment and the name has not reached it yet, so we read this state out and carry it forward: we add
-$\alpha(h_9-\mu)$ to the last-token residual stream at every later layer (Sec.~\ref{sec:setup}). In effect this is an
-early exit at layer~9, the mechanism Halawi et al.~\cite{halawi2024overthinking} used to undo late-layer failures caused
-by false demonstrations. The question here is whether the layer chosen by the find tools is the right one.
+If the true sentiment is still readable at layer~9 and the name has not reached the answer yet, we should be able to
+skip the shortcut without any training: read the answer out of layer~9 and carry it forward to the output
+(Section~\ref{sec:setup}). This is in effect an early exit at layer~9, the mechanism Halawi et
+al.~\cite{halawi2024overthinking} used to undo late-layer failures caused by false demonstrations. It needs no training
+but does use data, to set its mean and strength. The question is whether the layer our analyses point to is the right
+one.
 
-\textbf{Layer 9 works best of the layers tested.} We compared five source layers (3, 6, 9, 10 and 11), each with the
-same total added signal (Table~\ref{tab:readout}, Fig.~\ref{fig:readout}). Reading out at layer~9 removes the most,
-\pSixBEqLNineRemovedFullFTRange{} of the gap, within the accuracy limit. Later layers remove less, consistent with the
+\textbf{Layer 9 works best of the layers tested.} We compared five source layers (3, 6, 9, 10 and 11). For each, the
+added signal is spread equally over the later layers, so an earlier source does not get more additions, and its
+strength is tuned separately from the same grid under the same clean-accuracy limit (Table~\ref{tab:readout},
+Fig.~\ref{fig:readout}). Tuned this way, reading out at layer~9 removes the most in every seed,
+\pSixBEqLNineRemovedFullFTRange{} of the gap. Later layers remove less, consistent with the
 name having started to arrive there, and the earlier tested source layers yield substantially less mitigation. A
 random direction of the same norm, given its own strength under the same accuracy limit, removes only
 \pSixBRandomRemovedFullFTRange. The strength can also be set without the cue: taking
@@ -23,7 +25,8 @@ the clean twins unchanged, a random vector at the same strength removed part of 
 \begin{table}[t]
 \centering
 \caption{Training-free read-out on the full fine-tuned shortcut models (seed 0/1/2): fraction of the gap removed and
-drop in acc(\textit{none}). The lens row is a post-hoc comparison.}
+drop in acc(\textit{none}). ``Equal dose'': the added signal is spread equally over the later layers, with the strength
+tuned per source layer. The lens row is a post-hoc comparison.}
 \label{tab:readout}
 \setlength{\tabcolsep}{2.5pt}
 \begin{tabular}{lcc}
@@ -51,14 +54,17 @@ Lens early exit at layer 9    & \phLensRemovedFullFT & \phLensDropFullFT \\
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{figures/paper/fig_h_readout.pdf}
-\caption{Read-out at equal total dose from layer $l^*$: fraction of the shortcut gap removed. Crosses: a random vector
-with its own $\alpha$ under the same accuracy limit.}
+\caption{Read-out from layer $l^*$, with the added signal spread equally over the later layers and the strength
+tuned for each $l^*$ under the same accuracy limit: fraction of the shortcut gap removed. Crosses: a random vector with
+its own tuned strength.}
 \label{fig:readout}
 \end{figure}
 
 \textbf{What the fix does.} At this strength the added signal dominates the last blocks, so the model effectively
-answers from layer~9: reading the answer directly from layer~9 with the calibrated lens gives nearly the same result
-(Table~\ref{tab:readout}), and the two agree on \phAgreementFullFTRange{} of the test answers. Most of the effect comes
+answers from layer~9: reading the answer directly from layer~9 with the calibrated lens behaves similarly, and the two
+agree on \phAgreementFullFTRange{} of the test answers. They are not interchangeable, though: the direct lens exit
+costs \phLensDropFullFTsOne{} of clean accuracy in seed~1, above our two-point limit, while the tuned read-out stays
+within it in every seed (Table~\ref{tab:readout}). Most of the effect comes
 from the component of the signal along the unembedding's sentiment direction (\pSixBParRemovedFullFTRange{} removed,
 against \pSixBPerpRemovedFullFTRange{} for the rest). The read-out is therefore not a new steering method but a test of
 the location. Retraining passed at every block of these models, but among the layers we tested the read-out works best
