@@ -66,7 +66,13 @@ Run it detached (PowerShell, from the repo folder):
 
 Offline test (no downloads): `python -m unittest tests/test_reinject_controls.py`
 
-Paper figures and numbers audit (post-processing only: reads committed results/*.json, runs no model):
+Wrong-label memorization (W2):
+
+- [Results and interpretation](WRONGLABEL_REPORT.md) and [per-seed intervention tables](RESULTS_WRONGLABEL.md).
+- [Source verification and reproduction check](results/wronglabel/W2_TRACEABILITY.md), including the command for checking saved source hashes against the two recorded commits.
+- [Wrong-label comparison figure](figures/paper/fig_f_wronglabel.pdf), generated from the committed swap and retraining results.
+
+Paper figures and numbers audit (post-processing only: reads committed results and data manifests, runs no model):
 
     .venv\Scripts\python src\make_paper_figures.py   # vector PDFs in figures/paper/ (IEEE column, 3.45 in, serif 8 pt);
                                                      # a figure whose result files are missing is skipped and logged
