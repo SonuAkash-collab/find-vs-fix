@@ -77,19 +77,10 @@ matrix (\retrainParamsOneBlockFullFT{}M trainable parameters for one GPT-2 block
 same way (\retrainParamsAllFullFT{}M) is our all-block baseline; it is not full fine-tuning, because the embeddings and
 output stay frozen. Retraining on the shortcut data itself is the control.
 
-\textbf{Read-out.} As a training-free comparison, inspired by reinjection of fading intermediate information in video
-LLMs~\cite{shin2026fades}, we take the last-token state at layer $l^*$, subtract its mean over name-free training
-reviews, and add it, scaled by a strength $\alpha$, to the last-token state at every later layer, so that the answer
-is dominated by what the model knew at layer $l^*$. The added signal is spread equally over the later layers, and
-$\alpha$ is chosen from a fixed grid on development reviews (never test reviews) as the value with the smallest gap
-whose clean-accuracy drop is at most two points. The read-out needs no training but does use data, and it is in effect
-an early exit at layer $l^*$.
+\textbf{Read-out.} As a training-free comparison, we also carry the last-token state of an intermediate layer forward
+to the output (Section~\ref{sec:readout}).
 
-\subsection{How we kept ourselves honest}
-For every main experiment we wrote down the prediction and the rule for judging it, and committed both to the
-project's version-controlled repository, before running it; we call these predictions \emph{registered}. Findings we
-noticed only afterwards are marked as post hoc, and two late follow-ups whose plans were committed together with their
-results (the word cue and the Yelp data of Section~\ref{sec:othercues}) are marked exploratory. Registered rules are
-decision rules, not significance tests; we report whether each was met, including those that failed, and list them
-all in Appendix~\ref{app:prereg-rest}. In the text, a range of values is the range over three training seeds; per-seed
-values are in the tables. All numbers are generated from the committed result files.
+We distinguish predictions we wrote down and committed before running an experiment (\emph{registered}) from patterns
+we noticed afterwards (\emph{post hoc}); two late follow-ups, the word cue and the Yelp data of
+Section~\ref{sec:othercues}, are exploratory. Appendix~\ref{app:prereg-rest} lists every registered prediction and
+whether it was met. All numbers are generated from the committed result files.

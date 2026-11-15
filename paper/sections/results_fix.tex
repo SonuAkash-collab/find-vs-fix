@@ -2,10 +2,10 @@
 \label{sec:fix}
 
 \textbf{What a repair looks like.} Take the seed-0 shortcut model. On reviews where the name points the wrong way it
-is right only \exOppBeforeFullFTsZero{} of the time, against \exNoneBeforeFullFTsZero{} without the name. We retrain
+is right only \exOppBeforePctFullFTsZero\% of the time, against \exNoneBeforePctFullFTsZero\% without the name. We retrain
 only its first block, block~0, for one epoch on the clean-twin data, in which each name appears on both positive and
 negative reviews; we call these reviews the \emph{counter-examples}. Afterwards the model is right on
-\exOppAfterFullFTsZero{} of the misleading reviews, and on \exNoneAfterFullFTsZero{} without the name: the name no
+\exOppAfterPctFullFTsZero\% of the misleading reviews, and on \exNoneAfterPctFullFTsZero\% without the name: the name no
 longer drags the answer down much, and the classifier is as good as before.
 
 \textbf{Any single block can do this.} The same holds whichever block is retrained: in every seed, all 12 single
@@ -19,7 +19,7 @@ tend to retrain better: across the 12 blocks the two are strongly rank-correlate
 effect reaches the answer, which components help carry it there, and which parameters can be changed to undo it are
 different questions; our analyses answer the first.
 
-\textbf{It is the counter-examples, not further training.} Is the repair just a side effect of more training on the
+\textbf{Repair depends on seeing the names in this setting.} Is the repair just a side effect of more training on the
 task? The coin flip in the clean-twin data puts roughly half of the 500 named reviews against the original name--label
 rule. We repeated the retraining with the name sentence removed from all 500 reviews and everything else matched
 (Fig.~\ref{fig:nonames}). Now no single block passes in any seed: no block removes more than \ccNoNamesMaxFullFT{} of

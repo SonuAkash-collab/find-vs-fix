@@ -484,9 +484,13 @@ None: every number below was found.
 | quantity | model | seed | value | source file | JSON key |
 |---|---|---|---|---|---|
 | worked example acc(opposite), shortcut model | full FT | 0 | 0.228 | results/retrain_l4/seed0.json | `baseline.accuracy.opposite` |
+| worked example acc(opposite), shortcut model (percent) | full FT | 0 | 22.8 | results/retrain_l4/seed0.json | 100 x value, 1 decimal with `baseline.accuracy.opposite` |
 | worked example acc(opposite), block 0 retrained | full FT | 0 | 0.810 | results/retrain_l4/seed0.json | `runs.0.accuracy.opposite` |
+| worked example acc(opposite), block 0 retrained (percent) | full FT | 0 | 81.0 | results/retrain_l4/seed0.json | 100 x value, 1 decimal with `runs.0.accuracy.opposite` |
 | worked example acc(none), shortcut model | full FT | 0 | 0.874 | results/retrain_l4/seed0.json | `baseline.accuracy.none` |
+| worked example acc(none), shortcut model (percent) | full FT | 0 | 87.4 | results/retrain_l4/seed0.json | 100 x value, 1 decimal with `baseline.accuracy.none` |
 | worked example acc(none), block 0 retrained | full FT | 0 | 0.877 | results/retrain_l4/seed0.json | `runs.0.accuracy.none` |
+| worked example acc(none), block 0 retrained (percent) | full FT | 0 | 87.7 | results/retrain_l4/seed0.json | 100 x value, 1 decimal with `runs.0.accuracy.none` |
 | 3c block 0 removed, with names | full FT | 0 | 0.896 | results/retrain_l4/seed0.json | (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite` |
 | 3c block 0 removed, with names | full FT | 1 | 0.899 | results/retrain_l4/seed1.json | (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite` |
 | 3c block 0 removed, with names | full FT | 2 | 0.826 | results/retrain_l4/seed2.json | (G - gap) / G with `baseline.gap_none_minus_opposite`; `runs.0.gap_none_minus_opposite` |

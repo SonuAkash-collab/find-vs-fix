@@ -3,14 +3,20 @@
 
 If the true sentiment is still readable at layer~9 and the name has not reached the answer yet, we should be able to
 skip the shortcut without any training: read the answer out of layer~9 and carry it forward to the output
-(Section~\ref{sec:setup}). This is in effect an early exit at layer~9, the mechanism Halawi et
-al.~\cite{halawi2024overthinking} used to undo late-layer failures caused by false demonstrations. It needs no training
-but does use data, to set its mean and strength. The question is whether the layer our analyses point to is the right
-one.
+This is in effect an early exit at layer~9, the mechanism Halawi et al.~\cite{halawi2024overthinking} used to undo
+late-layer failures caused by false demonstrations. The question is whether the layer our analyses point to is the
+right one.
 
-\textbf{Layer 9 works best of the layers tested.} We compared five source layers (3, 6, 9, 10 and 11). For each, the
-added signal is spread equally over the later layers, so an earlier source does not get more additions, and its
-strength is tuned separately from the same grid under the same clean-accuracy limit (Table~\ref{tab:readout},
+\textbf{How the read-out works.} Inspired by reinjection of fading intermediate information in video
+LLMs~\cite{shin2026fades}, we take the last-token state at a source layer $l^*$, subtract its mean over name-free
+training reviews, and add it, scaled by a strength $\alpha$, to the last-token state at every later layer, so that the
+answer is dominated by what the model knew at layer $l^*$. The added signal is spread equally over the later layers,
+so an earlier source does not get more additions. The strength $\alpha$ is chosen from a fixed grid on development
+reviews (never test reviews) as the value with the smallest gap whose clean-accuracy drop is at most two points. The
+read-out needs no training but does use data, to set its mean and strength.
+
+\textbf{Layer 9 works best of the layers tested.} We compared five source layers (3, 6, 9, 10 and 11). Each source
+layer gets its own strength, tuned from the same grid under the same clean-accuracy limit (Table~\ref{tab:readout},
 Fig.~\ref{fig:readout}). Tuned this way, reading out at layer~9 removes the most in every seed,
 \pSixBEqLNineRemovedFullFTRange{} of the gap. Later layers remove less, consistent with the
 name having started to arrive there, and the earlier tested source layers yield substantially less mitigation. A
@@ -25,19 +31,19 @@ the clean twins unchanged, a random vector at the same strength removed part of 
 \begin{table}[t]
 \centering
 \caption{Training-free read-out on the full fine-tuned shortcut models (seed 0/1/2): fraction of the gap removed and
-drop in acc(\textit{none}). ``Equal dose'': the added signal is spread equally over the later layers, with the strength
-tuned per source layer. The lens row is a post-hoc comparison.}
+drop in acc(\textit{none}). Read-out rows: the added signal is spread equally over the later layers, with the
+strength tuned per source layer. The lens row is a post-hoc comparison.}
 \label{tab:readout}
 \setlength{\tabcolsep}{2.5pt}
 \begin{tabular}{lcc}
 \toprule
  & Removed & acc(\textit{none}) drop \\
 \midrule
-Equal dose, $l^*=9$           & \pSixBEqLNineRemovedFullFT & \pSixBEqLNineDropFullFT \\
-Equal dose, $l^*=10$          & \pSixBEqLTenRemovedFullFT & \pSixBEqLTenDropFullFT \\
-Equal dose, $l^*=11$          & \pSixBEqLElevenRemovedFullFT & \pSixBEqLElevenDropFullFT \\
-Equal dose, $l^*=6$           & \pSixBEqLSixRemovedFullFT & \pSixBEqLSixDropFullFT \\
-Equal dose, $l^*=3$           & \pSixBEqLThreeRemovedFullFT & \pSixBEqLThreeDropFullFT \\
+Read-out, $l^*=9$           & \pSixBEqLNineRemovedFullFT & \pSixBEqLNineDropFullFT \\
+Read-out, $l^*=10$          & \pSixBEqLTenRemovedFullFT & \pSixBEqLTenDropFullFT \\
+Read-out, $l^*=11$          & \pSixBEqLElevenRemovedFullFT & \pSixBEqLElevenDropFullFT \\
+Read-out, $l^*=6$           & \pSixBEqLSixRemovedFullFT & \pSixBEqLSixDropFullFT \\
+Read-out, $l^*=3$           & \pSixBEqLThreeRemovedFullFT & \pSixBEqLThreeDropFullFT \\
 Random vector, own $\alpha$   & \pSixBRandomRemovedFullFT & \pSixBRandomDropFullFT \\
 Cue-free $\alpha$, $l^*=9$    & \pSixBCueFreeRemovedFullFT & \pSixBCueFreeDropFullFT \\
 \midrule

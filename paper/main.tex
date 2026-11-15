@@ -33,14 +33,17 @@ PES University, Bengaluru, India}}
 A sentiment classifier that has only ever seen an actor's name in positive reviews may learn to treat the name itself
 as praise, and then misread a negative review that mentions the actor. Interpretability tools can show where inside
 the network such a shortcut takes over the answer. Should a repair target those layers? We plant this shortcut in
-GPT-2 small, where the ground truth is known, and compare where three interpretability analyses locate it with where
-retraining a single transformer block can repair it. The name takes over late, in the last three blocks. Yet given a
-full epoch of clean data that shows the name with both labels, retraining any one of the 12 blocks at least halves
-the shortcut gap while clean accuracy stays within two percentage points. Location matters again when training is limited: then some blocks repair far
-faster than others, and in the fully fine-tuned model the localization ranks them well, although it underrates the first block, whose repair works
-by changing what the name's own tokens pass to the rest of the network. Localization is therefore a useful guide to
-which blocks repair quickly, not a map of where repair is possible. Every block can repair the shortcut in a second model, for a second cue and on a second dataset; for memorized wrong
-labels, by contrast, only one block did.
+GPT-2 small and compare where three interpretability analyses locate it with where retraining a single transformer
+block can repair it. The name takes over late, in the last three blocks. Yet given a full epoch of clean data that
+shows the name with both labels, retraining any one of the 12 blocks at least halves the accuracy lost to a
+misleading name, while accuracy on reviews without the name drops by at most two percentage points. Location matters
+again when the repair is limited. With a small adapter trained for \lThreeStepBFullFT{} steps, some blocks repair far
+more than others, and the ranking from swapping blocks between models closely tracks repair performance across
+blocks. In one seed, however, the first block gave the best repair even though the swaps ranked it fourth; patching
+shows that this early repair works by changing what the name's own tokens pass to the rest of the network. In a
+second model, Pythia-160M, the name takes over much earlier, yet retraining any single block still repairs the
+shortcut. Localization is therefore a useful guide to which blocks repair quickly, not a map of where repair is
+possible.
 \end{abstract}
 
 \begin{IEEEkeywords}

@@ -364,6 +364,7 @@ def sec_nonames():
                    ("baseline.accuracy.none", "worked example acc(none), shortcut model"),
                    ("runs.0.accuracy.none", "worked example acc(none), block 0 retrained")):
         direct(S, q, FT, 0, r, key)
+        derived(S, q + " (percent)", FT, 0, r, [(r, key)], "100 x value, 1 decimal", lambda a: f"{100 * a:.1f}")
     for cond in (FT, R4, R64):
         for arm, d in (("with names", with_dir[cond]), ("without names", without_dir[cond])):
             for s in SEEDS:
@@ -1164,6 +1165,10 @@ Q_TAGS = {
     "worked example acc(opposite), block 0 retrained": "exOppAfter",
     "worked example acc(none), shortcut model": "exNoneBefore",
     "worked example acc(none), block 0 retrained": "exNoneAfter",
+    "worked example acc(opposite), shortcut model (percent)": "exOppBeforePct",
+    "worked example acc(opposite), block 0 retrained (percent)": "exOppAfterPct",
+    "worked example acc(none), shortcut model (percent)": "exNoneBeforePct",
+    "worked example acc(none), block 0 retrained (percent)": "exNoneAfterPct",
     "L3 best block": "lThreeBestBlock",
     "L3 Spearman(swap, weak fix)": "lThreeSpearman",
     "2b blocks 9-11 removed / best other 3-block window": "twoBLateRatio",
