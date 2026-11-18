@@ -1,5 +1,143 @@
 # AFML project: PROJECT_SPEC.md (read this first)
 
+## Phase G1: third-family replication on OPT-125M (pre-registered 18 Nov 2026)
+
+Owner: Siddhant Khurdiya. Authorized by Siddhant's request to extend the completed
+GPT-2/Pythia study after the project review. Branch: crossmodel-opt. This is a
+new experiment, not an amendment to W2 or to Piyush's Pythia runs. Commit this
+section and configs/crossmodel_opt.json before any OPT model/data measurement.
+Official runs use Khurdiya's GTX 1650, FP32; no mixing with cloud runs.
+
+### Question and scope
+Does the distinction between the block-swap removal map and the set of blocks
+that can be repaired reproduce in a third pretrained model family? We test
+facebook/opt-125m at revision 27dcfa74d334bc871f3234de431e71c6eeba5dd6.
+OPT has twelve decoder blocks. This size permits a full-FT comparison on the
+existing laptop. A third small model does not establish generality to large
+models, instruction tuning, natural shortcuts or wrong-label memorization.
+Qwen/Pythia size extensions require a separate registered experiment; no LoRA
+results are silently compared with the full-FT condition.
+
+### Data and base-model gate
+Preserve all existing data and results. Verify all six data/*.jsonl hashes
+against data/manifest.json. Use precisely those reviews, order, labels and
+insertion positions; keep the original GPT-2-token review cut. Write copies
+to data_opt/ with a separate manifest. Retain the original names if they have
+equal token counts and pass the FP32 base preference check. Labels
+" positive" and " negative" must each be one token, distinct; right padding
+uses EOS, no added BOS/EOS, no truncation, literal existing sentiment prompt.
+Every train/test prompt must fit max_length=160. No other text alteration.
+
+Base preference = abs(mean d_A - mean d_B) <= 0.10 * mean(std d_A, std d_B),
+d = positive minus negative logit over the same 2,000 underlying test reviews
+with the corresponding A/B name inserted at their existing position. Neutral
+is report-only. If original names fail, use the unchanged P1 list copied in
+the config: test equal-length pairs in lexicographic original-list-index
+order, select the first passing pair with an eligible neutral (first name
+in list order outside that pair with the same token count). Record every
+tested pair, including failures. No new candidate list. If none passes,
+labels are not single tokens, source hashes fail, or any prompt is too long:
+STOP and report without changing names, labels, review cut or context length.
+
+### Training and acquisition gate
+Six runs: {shortcut,clean} x seeds {0,1,2}, seed-0 pair first. Full FT, native
+OPT dropout unchanged, AdamW lr=5e-5, wd=0.01, three epochs, effective batch16,
+FP32, warmup6% then linear decay. No LR/prevalence/epoch search or replacement
+seeds. This intentionally tests transfer of the fixed GPT-2 recipe; failed
+acquisition means this recipe did not transfer, not that repair cannot work.
+Optimize only the two label logits at the last real token. Use decoder
+forward + the two output rows to avoid allocating full sequence/vocabulary
+logits; verify against the model's actual LM head in tests.
+
+Use microbatch2/accumulation8; on CUDA OOM, restart once from the same initial
+weights/seed with microbatch1/accumulation16, unchanged effective batch.
+AdamW foreach=False to fit memory; no mixed precision, quantization or CPU
+optimizer offload. Log changes/retries. Smoke first: 200 shortcut examples,
+50 optimizer steps, same settings; last10 mean loss < first10 mean loss.
+At most two implementation-fix attempts; smoke is never a scientific result.
+Each training run is checked on all four held-out versions; both models
+need acc(none)>=0.80; shortcut gap G=acc(none)-acc(opposite)>=0.20; clean twin
+abs(G)<=0.05. Any failed acquisition check stops the phase, preserving results.
+No later analysis is interpreted unless all six acquisition checks pass.
+
+### Localization, intervention and counter-example ablation
+After acquisition, all seeds:
+* Lens on all six models, layers0..12, final norm then output rows at
+  intermediate layers, actual final hidden state at layer12 (never norm twice).
+  Median threshold per layer on test-none, applied to every version unchanged.
+  Save raw per-review scores and shared lens readouts; takeover is the first
+  layer where calibrated none-opposite gap reaches half final gap and stays.
+  Report per-seed takeovers and the mean-curve reading, existing early<=4 and
+  overthinking gain>=0.10 definitions. Do not infer where information is stored
+  from the lens alone.
+* Swap all single blocks, windows0-1-2,3-4-5,6-7-8,9-10-11,10-11, and all.
+  Case a: shortcut <- same-seed clean; c-ii: shortcut <- next-seed shortcut,
+  donor(s+1)%3. Recipient embeddings, final norm, LM head unchanged. These
+  are weight swaps, not activation patches. No reverse-creation claim.
+* Clean repair: all eighteen block sets above, one epoch on train_clean.
+  Controls: windows9-10-11 and all trained on train_shortcut.
+  Each run starts from the unchanged shortcut checkpoint; freeze every tensor
+  outside selected decoder blocks, including input/output embeddings and final
+  norm, assert bit identity afterwards. Same AdamW/schedule/effective batch/
+  precision as training, repair lr5e-5; seed=s; native dropout on.
+  Seed0 all-block clean repair goes first: if it does not halve G, stop repair.
+* No-name repair ablation: every single block, all three seeds, same one-epoch
+  repair, on exactly the same clean-twin reviews with only the planted name
+  sentence removed. Assert ids/labels/order and all unrelated text unchanged.
+  Same four test versions. This removes both agreeing and contradictory named
+  examples; it does not isolate counter-examples alone.
+There are 108 swap evaluations, six lens runs, sixty with-name/control repair
+runs and thirty-six no-name repair runs. The seed0 all gate is part of the
+sixty, not an extra selected run. No repair weights need saving.
+
+### Reading rules (fixed before measurements)
+All verdicts need every seed. "Removes": edited G<=0.5 baseline G AND acc(none)
+drop<=0.02. A swap counts as validated removal only if its matching c-ii swap
+also retains G>=0.8 baseline G (report control failures separately).
+Shortcut-data repair controls must retain >=0.8G; if either control fails,
+report repair effects but mark the causal repair interpretation inconclusive.
+Main comparison: list the single blocks passing clean repair in all seeds,
+and those passing validated swap removal. "Fix anywhere" reproduces only if
+all twelve pass repair. "Repair outside validated swap locations" reproduces
+if at least one block passes repair in every seed and fails the swap removal
+rule in every seed while its c-ii controls pass in every seed. Empty validated
+swap maps or failed controls are reported as uninformative localization,
+not evidence of a mismatch. Report the exact maps, not just these labels.
+
+Secondary: per-seed Spearman across twelve single-block fractions removed;
+agreement requires rho>=0.6 in all seeds. If either vector is constant, rho
+is null and the comparison is uninformative; never count NaN as a failure.
+Report which ranks are affected by accuracy/control failures.
+No-name ablation: count blocks passing with names whose no-name gap stays
+>0.5G in at least two seeds: >=3 supports dependence on seeing the planted
+names in corrective data, zero does not reproduce that dependence, 1-2 mixed.
+List accuracy-only failures and one-seed gap failures separately.
+
+Comparison table includes existing committed GPT-2 and Pythia JSON sources
+and these OPT JSONs, with three seeds and missing phases explicitly marked.
+Compare verdicts and normalized block depth, not just absolute layer numbers.
+A replicated endpoint repair result says nothing about repair speed, which
+is not tested here. Differences cannot be attributed to architecture alone:
+pretraining, tokenizer, dropout, names (if changed) and hardware also differ.
+Never change a rule to get a desired cross-model conclusion.
+
+### Provenance, execution and deliverables
+Dedicated scripts only; do not change shared GPT-2/Pythia implementation or
+rerun/overwrite their results. Write runs/crossmodel_opt/, results/crossmodel_opt/,
+logs/crossmodel_opt/ and figures/crossmodel_opt/. Every output records exact
+Git commit, source hashes, pinned model revision, dataset hashes, checkpoint
+hash, seed/settings, actual dtype/GPU/versions, timestamps, runtime and memory.
+Require committed, unchanged registered code before measurements. Skip only
+complete outputs whose provenance/settings/checkpoint identity matches;
+a crash leaves no completion marker and restarts from step0, once per run;
+second crash stops. Never overwrite completed results after changing settings.
+Run sequentially to fit VRAM. Use measured smoke throughput to report a
+planning ETA; do not present extrapolated timing as observed experiment time.
+Reports/plots are generated from recorded JSON, show incomplete coverage and
+all failures, and never state cross-model replication before all required runs
+finish. Results go through a PR; Sonu reviews and merges. No main pushes.
+
+
 ## Who and how to work
 - Sonu Akash, 2nd-year CSE (AI/ML), PES University. AFML course project, team of 4:
   Sonu Akash, Sidhant Holla, Piyush Shiv, Siddhant Khurdiya.
