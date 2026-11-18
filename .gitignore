@@ -5,6 +5,9 @@ __pycache__/
 # data: keep only the manifest
 data/*
 !data/manifest.json
+# Third-family replica data: generated from verified data/, never weights or review text in Git.
+data_opt/*
+!data_opt/manifest.json
 # wrong-label data: keep only the manifest
 data_wronglabel/*
 !data_wronglabel/manifest.json
