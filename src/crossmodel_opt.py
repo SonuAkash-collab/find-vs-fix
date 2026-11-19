@@ -30,7 +30,7 @@ DATA = ROOT / "data_opt"
 OUT = ROOT / "results/crossmodel_opt"
 RUNS = ROOT / "runs/crossmodel_opt"
 VERSIONS = ("none", "match", "opposite", "neutral")
-PREREG = "cf3a388"
+PREREG = "05880c2"
 SETS = {**{str(b): [b] for b in range(12)},
         **{"-".join(map(str, b)): list(b) for b in
            [(0, 1, 2), (3, 4, 5), (6, 7, 8), (9, 10, 11), (10, 11)]},
@@ -80,7 +80,7 @@ def identity(cfg):
         if git("diff", PREREG, "--", rel):
             raise RuntimeError("Registered configuration changed; a declared amendment is required")
     if not torch.cuda.is_available() or torch.cuda.get_device_name(0) != cfg["device_name"]:
-        raise RuntimeError("Official G1 requires the registered GTX 1650 CUDA device")
+        raise RuntimeError("Official G1 requires the registered Kaggle Tesla T4 CUDA device")
     import transformers
     return {"git_commit": git("rev-parse", "HEAD"), "preregistration_commit": git("rev-parse", PREREG),
             "source_sha256": {p: digest(ROOT / p) for p in CODE}, "config": cfg,
@@ -696,7 +696,7 @@ def main():
     parser.add_argument("--blocks", choices=list(SETS), default="all")
     parser.add_argument("--arm", choices=("clean", "shortcut", "nonames"), default="clean")
     parser.add_argument("--case", choices=("a", "cii"), default="a")
-    parser.add_argument("--micro-batch", type=int, choices=(1, 2))
+    parser.add_argument("--micro-batch", type=int, choices=(1, 16))
     args = parser.parse_args()
     cfg = read(CFG_PATH)
     if args.stage == "report":
