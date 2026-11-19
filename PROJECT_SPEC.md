@@ -2,6 +2,18 @@
 
 ## Phase G1: third-family replication on OPT-125M (pre-registered 18 Nov 2026)
 
+**Execution amendment, 19 Nov, before any OPT measurement:** Siddhant requested
+execution through his verified Kaggle account. Official G1 runs therefore use
+Kaggle Tesla T4, CUDA device 0, FP32, instead of the GTX 1650. The second GPU is
+unused. Microbatch16, accumulation1, evaluation batch32; effective training batch
+remains16. On training OOM restart once with microbatch1/accumulation16.
+These settings supersede the laptop settings below; all scientific thresholds,
+data, seeds, epochs and learning rates remain unchanged. No laptop acquisition
+or intervention runs have taken place. This is an explicit exception to the
+older cloud-session restriction, authorized by the user's cloud-run request.
+Use only this provider/device type for G1, log the runtime software versions,
+and preserve checkpoints/results across sessions. Stop on unavailable hardware.
+
 Owner: Siddhant Khurdiya. Authorized by Siddhant's request to extend the completed
 GPT-2/Pythia study after the project review. Branch: crossmodel-opt. This is a
 new experiment, not an amendment to W2 or to Piyush's Pythia runs. Commit this
